@@ -111,11 +111,7 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
 
 REAL limit (REAL f(int))
 {
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   REAL lim;
   sizetype lim_error;
@@ -125,16 +121,14 @@ REAL limit (REAL f(int))
   while (1) {
    try {
     iRRAM_DEBUG2(2,"trying to compute limit_0 with precision %d...\n",ACTUAL_STACK.actual_prec);
-    lim=f(SAVED_STACK.data.actual_prec);
+    lim=f(env.saved_prec());
     iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n", lim.error.mantissa, lim.error.exponent);
     break;
-  }
-    catch ( Iteration it) {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+  } catch (const Iteration &it) {
+      env.inc_step(2);
       limit_debug2("limit_0 failed");
    }}
-  sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
+  sizetype_set(lim_error,1,env.saved_prec());
   lim.adderror(lim_error);
   iRRAM_DEBUG0(2,{lim.geterror(lim_error);
             fprintf(stderr,"end of limit_0 with error %d*2^(%d)\n",

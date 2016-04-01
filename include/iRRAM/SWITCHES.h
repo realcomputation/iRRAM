@@ -47,8 +47,8 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-  extern int iRRAM_prec_array[];
-  extern const int iRRAM_prec_steps;
+extern int iRRAM_prec_array[];
+extern const int iRRAM_prec_steps;
 
 // explicit declaration of single_valued behaviour of a code section despite multi-valued operations
 //
@@ -57,10 +57,10 @@ namespace iRRAM {
 // obsoletes continous_begin(), continous_end
 class single_valued
 {
-int saved;
+	int saved;
 public:
-  inline  single_valued(){ saved=ACTUAL_STACK.inlimit++; }
-  inline ~single_valued(){ ACTUAL_STACK.inlimit=saved; }
+	inline  single_valued() noexcept : saved(ACTUAL_STACK.inlimit++) {}
+	inline ~single_valued() noexcept { ACTUAL_STACK.inlimit = saved; }
 };
 
 
@@ -72,12 +72,14 @@ public:
 // obsoletes precision_policy()
 class precision_mode
 {
-int saved;
+	int saved;
 public:
-  inline precision_mode(int policy){
-    saved=ACTUAL_STACK.prec_policy;
-    ACTUAL_STACK.prec_policy=policy; }
-  inline ~precision_mode(){ACTUAL_STACK.prec_policy=saved; }
+	inline precision_mode(int policy) noexcept
+	: saved(ACTUAL_STACK.prec_policy)
+	{
+		ACTUAL_STACK.prec_policy = policy;
+	}
+	inline ~precision_mode() noexcept { ACTUAL_STACK.prec_policy = saved; }
 };
 
 // temporary increase of the working precision
@@ -89,8 +91,8 @@ public:
 class stiff
 {
 	int saved;
-
-	static inline void set_prec_step(int n)
+protected:
+	static inline void set_prec_step(int n) noexcept
 	{
 		if (n<1) n=1;
 		if (iRRAM_prec_steps <= n) n = iRRAM_prec_steps-1;
@@ -99,15 +101,26 @@ class stiff
 		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 	}
 public:
-	explicit inline stiff(int n = 1) {
+	explicit inline stiff(int n = 1) noexcept {
 		saved = ACTUAL_STACK.prec_step;
 		set_prec_step(ACTUAL_STACK.prec_step + n);
 	}
-	inline ~stiff() {
+	inline ~stiff() noexcept {
 		set_prec_step(saved);
 	}
 	stiff(const stiff &) = delete;
 	stiff operator=(const stiff &) = delete;
+
+	int saved_step() const noexcept { return saved; }
+	int saved_prec() const noexcept { return iRRAM_prec_array[saved]; }
+};
+
+struct limit_computation : public stiff, single_valued
+{
+	void inc_step(int n) const noexcept
+	{
+		set_prec_step(ACTUAL_STACK.prec_step + n);
+	}
 };
 
 } // namespace iRRAM
