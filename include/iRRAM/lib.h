@@ -64,8 +64,8 @@ extern "C" void iRRAM_initialize(int argc,char** argv);
 
 namespace iRRAM{
 
-template <class RESULT,class... ARGUMENT> 
- RESULT iRRAM_exec (RESULT (*f)(const ARGUMENT&...), const ARGUMENT&...);
+template <class RESULT, class... ARGUMENT>
+RESULT iRRAM_exec(RESULT (*f)(const ARGUMENT &...), const ARGUMENT &...);
 
 
 // forward declaration of some classes
@@ -77,38 +77,38 @@ class LAZY_BOOLEAN;
 class REAL;
 class COMPLEX;
 
-extern char* iRRAM_error_msg[];
-class iRRAM_Numerical_Exception
-{
-public:
-iRRAM_Numerical_Exception(const int msg){type=msg;};
-//private:
-int type;
+extern char * iRRAM_error_msg[];
+struct iRRAM_Numerical_Exception {
+	iRRAM_Numerical_Exception(const int msg) noexcept : type(msg) {}
+	// private:
+	int type;
 };
-#define ERRORDEFINE(x,y) x,
+#define ERRORDEFINE(x, y) x,
 enum iRRAM_exception_list {
 #include <iRRAM/errno.h>
 };
-
+#undef ERRORDEFINE
 
 
 typedef unsigned int SIZETYPEMANTISSA;
-typedef int SIZETYPEEXPONENT;
+typedef          int SIZETYPEEXPONENT;
 
-struct sizetype { SIZETYPEMANTISSA  mantissa; SIZETYPEEXPONENT exponent; } ;
-
-struct ITERATION_DATA {
-  int prec_policy;
-  int inlimit;
-  int actual_prec;
-  int prec_step;
+struct sizetype {
+	SIZETYPEMANTISSA mantissa;
+	SIZETYPEEXPONENT exponent;
 };
 
-class ITERATION_STACK {
-public:
-  ITERATION_STACK();
-  ~ITERATION_STACK();
-  ITERATION_DATA data;
+struct ITERATION_DATA {
+	int prec_policy;
+	int inlimit;
+	int actual_prec;
+	int prec_step;
+};
+
+struct ITERATION_STACK {
+	ITERATION_STACK() noexcept;
+	~ITERATION_STACK() noexcept;
+	ITERATION_DATA data;
 };
 
 
@@ -116,13 +116,12 @@ extern __thread ITERATION_DATA ACTUAL_STACK;
 extern __thread bool iRRAM_highlevel;
 extern __thread bool inReiterate;
 
-inline  ITERATION_STACK::ITERATION_STACK(){
-	this->data=ACTUAL_STACK;
-	}
-inline  ITERATION_STACK::~ITERATION_STACK(){
-	ACTUAL_STACK= this->data;
+inline ITERATION_STACK::ITERATION_STACK() noexcept : data(ACTUAL_STACK) {}
+inline ITERATION_STACK::~ITERATION_STACK() noexcept
+{
+	ACTUAL_STACK = this->data;
 	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-	}
+}
 
 } // namespace iRRAM
 
@@ -152,8 +151,8 @@ REAL atoREAL(const char* s);
 /****************************************************************************/
 // arithmetic functions
 /****************************************************************************/
-REAL power(const REAL& x, const REAL& y);
-REAL power(const REAL& x, int n);
+REAL power   (const REAL& x, const REAL& y);
+REAL power   (const REAL& x, int n);
 REAL modulo  (const REAL& x, const REAL& y);
 REAL maximum (const REAL& x, const REAL& y);
 REAL minimum (const REAL& x, const REAL& y);
@@ -245,20 +244,18 @@ inline int    round      (const REAL& x){ return int (x.as_INTEGER()); }
 // templates for limit operators
 /****************************************************************************/
 
-template <class ARGUMENT, class RESULT> 
-RESULT limit_mv (RESULT f(int prec,
-                                         int* choice,
-                                         const ARGUMENT&),
-                           const ARGUMENT& x);
+template <class ARGUMENT, class RESULT>
+RESULT limit_mv          (RESULT f(int prec, int * choice, const ARGUMENT &),
+                          const ARGUMENT & x);
 
-template <class ARGUMENT, class RESULT> 
-RESULT limit (RESULT f(int prec,const ARGUMENT&),
-                           const ARGUMENT& x);
+template <class ARGUMENT, class RESULT>
+RESULT limit             (RESULT f(int prec, const ARGUMENT &),
+                          const ARGUMENT & x);
 
-
-template <class ARGUMENT, class DISCRETE, class RESULT> 
-RESULT limit (RESULT f(int prec,const ARGUMENT&, DISCRETE),
-                           const ARGUMENT& x, DISCRETE param);
+template <class ARGUMENT, class DISCRETE, class RESULT>
+RESULT limit             (RESULT f(int prec, const ARGUMENT &, DISCRETE),
+                          const ARGUMENT & x,
+                          DISCRETE param);
 
 } // namespace iRRAM
 
