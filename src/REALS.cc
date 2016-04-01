@@ -470,9 +470,7 @@ void rwritee(const REAL & x, const int w) { cout << swrite(x, w, float_form::rel
 void rshow(const REAL & x, const int w)   { cout << swrite(x, w, float_form::show); }
 
 
-#define iRRAM_ABSOLUTE 0
-#define iRRAM_RELATIVE 1
-void precision_policy(int policy) { ACTUAL_STACK.prec_policy = policy; }
+void precision_policy(int policy) noexcept { ACTUAL_STACK.prec_policy = policy; }
 
 REAL REAL::mp_square() const
 {

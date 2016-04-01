@@ -168,7 +168,7 @@ namespace iRRAM {
 
 #define iRRAM_ABSOLUTE 0
 #define iRRAM_RELATIVE 1
-void precision_policy (int policy);
+void precision_policy(int policy) noexcept;
 
 REAL atoREAL(const char* s);
 
