@@ -113,7 +113,7 @@ struct ITERATION_STACK {
 
 
 extern __thread ITERATION_DATA ACTUAL_STACK;
-extern __thread bool iRRAM_highlevel;
+extern __thread bool iRRAM_highlevel; /* TODO: remove: iRRAM-timings revealed no performance loss */
 extern __thread bool inReiterate;
 
 inline ITERATION_STACK::ITERATION_STACK() noexcept : data(ACTUAL_STACK) {}
