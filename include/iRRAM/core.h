@@ -28,7 +28,9 @@ MA 02111-1307, USA.
 #include <cstdio>
 #include <vector>
 #include <cfenv>
-#include <pthread.h>
+#include <thread>
+#include <algorithm>	/* std::min, std::max */
+#include <sstream>
 
 #include <iRRAM/lib.h>
 #include <iRRAM/version.h>
@@ -36,10 +38,9 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-inline int min(const int a, const int b)
-   { return (a < b ? a : b); }
-inline int max(const int a, const int b)
-   { return (a >= b ? a : b); }
+using std::min;
+using std::max;
+
 inline int max3(const int a,const int b,const int c)
    { return max(max(a,b),c); }
 inline int max4(const int a,const int b,const int c,const int d)
@@ -399,8 +400,11 @@ auto iRRAM_exec(F f) -> decltype(f())
 	cache_active = new cachelist;
 
 	if (iRRAM_unlikely(iRRAM_debug > 0)) {
+		std::stringstream s;
+		s << std::this_thread::get_id();
 		cerr << "\niRRAM (version " << iRRAM_VERSION_rt << ", backend "
-		     << iRRAM_BACKENDS << ") starting...\n";
+		     << iRRAM_BACKENDS << ") thread "
+		     << s.str() << " starting...\n";
 		iRRAM_max_prec = ACTUAL_STACK.prec_step;
 	}
 
@@ -465,71 +469,6 @@ auto iRRAM_exec(F f) -> decltype(f())
 
 	return result;
 }
-
-/*****************************************/
-// templates needed for iRRAM_thread_exec 
-extern unsigned int iRRAM_thread_maxid;
-
-template <class ARGUMENT, class RESULT>
-struct iRRAM_thread_data {
-	ARGUMENT argument;
-	RESULT result;
-	RESULT (*f)(const ARGUMENT &);
-	pthread_t thread;
-	bool finished;
-	unsigned int id;
-};
-
-template <class ARGUMENT, class RESULT>
-void iRRAM_thread_exec(RESULT iRRAM_compute(const ARGUMENT &),
-                       const ARGUMENT & x,
-                       iRRAM_thread_data<ARGUMENT, RESULT> & data)
-{
-	data.argument = x;
-	data.f = iRRAM_compute;
-	data.id = ++iRRAM_thread_maxid;
-	data.finished = false;
-
-	auto my_f = [](void *_data) -> void * {
-		using thread_data_t = iRRAM_thread_data<ARGUMENT, RESULT>;
-		thread_data_t &data = *static_cast<thread_data_t *>(_data);
-
-		if (iRRAM_unlikely(iRRAM_debug > 0))
-			cerr << "\nthread " << data.id << ") starting...";
-		data.result = iRRAM_exec([&data]{ return data.f(data.argument); });
-		data.finished = true;
-
-		return NULL;
-	};
-
-	if (int errcode = pthread_create(&data.thread, /* thread struct */
-	                                 NULL, /* default thread attributes */
-	                                 my_f, /* start routine */
-	                                 &data)) /* arg to routine */
-		cerr << "Error " << errcode << " in pthread_create";
-}
-
-
-template <class ARGUMENT, class RESULT>
-RESULT iRRAM_thread_wait(const iRRAM_thread_data<ARGUMENT, RESULT> & data)
-{
-	if (iRRAM_unlikely(iRRAM_debug > 0))
-		cerr << "Waiting for termination of thread " << data.id << "\n";
-
-	pthread_join(data.thread, NULL);
-
-	if (iRRAM_unlikely(iRRAM_debug > 0))
-		cerr << "Thread " << data.id << " now terminated.\n";
-	return data.result;
-}
-
-
-template <class ARGUMENT, class RESULT>
-bool iRRAM_thread_finished(const iRRAM_thread_data<ARGUMENT, RESULT> & data)
-{
-	return data.finished;
-}
-
 
 } /* ! namespace iRRAM */
 

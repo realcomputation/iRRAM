@@ -1,6 +1,8 @@
 
 #include "iRRAM/core.h"
 #include <unistd.h>
+#include <thread>
+#include <future>
 
 using namespace iRRAM;
 
@@ -17,7 +19,7 @@ public:
 
 double compute(const my_arg_type & arg)
 {
-	REAL x(arg.s); // with no automatic conversion
+	REAL x(arg.s); // with no automatic conversion as a std::string may also represent a COMPLEX 
 	for (long long i = 0; i < arg.n; i++) {
 		x = f(x);
 	}
@@ -29,17 +31,14 @@ int main(int argc, char ** argv)
 	iRRAM_initialize(argc, argv);
 	cout << "Starting an example with two threads...\n";
 
-	iRRAM_thread_data<my_arg_type, double> t_1, t_2;
-
-	my_arg_type arg;
-
-	arg.s = "0.3456789";
-	arg.n = 345678;
-	iRRAM_thread_exec(compute, arg, t_1);
-
-	arg.s = "0.9876543";
-	arg.n = 987654;
-	iRRAM_thread_exec(compute, arg, t_2);
+	std::future<double> t_1 =
+	        std::async(std::launch::async, &iRRAM_exec<double()>, []{
+	        	return compute({"0.3456789", 345678});
+	        });
+	std::future<double> t_2 =
+	        std::async(std::launch::async, &iRRAM_exec<double()>, []{
+	        	return compute({"0.9876543", 987654});
+	        });
 
 	// just do something else or just wait...
 	// but don't touch the result variables!
@@ -47,17 +46,19 @@ int main(int argc, char ** argv)
 	cout << "Threads are running now\n"
 	     << "They will finish in a few seconds...\n";
 	for (int i = 1; i <= 10; i++) {
-		cout << "Ready: " << iRRAM_thread_finished(t_1)
-		     << iRRAM_thread_finished(t_2) << "\n";
+		cout << "Ready: "
+		     << (t_1.wait_for(std::chrono::duration<int>()) == std::future_status::ready)
+		     << (t_2.wait_for(std::chrono::duration<int>()) == std::future_status::ready)
+		     << "\n";
 		usleep(200000);
 	}
 
 	// now print the results
 	cout << std::setprecision(17);
 
-	double d_1 = iRRAM_thread_wait(t_1);
+	double d_1 = t_1.get();
 	cout << "First result:  " << d_1 << "\n";
 
-	double d_2 = iRRAM_thread_wait(t_2);
+	double d_2 = t_2.get();
 	cout << "Second result: " << d_2 << "\n";
 }

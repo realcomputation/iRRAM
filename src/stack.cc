@@ -58,12 +58,6 @@ might continue in later iterations!
 __thread bool inReiterate=false;
 
 
-/*
-Threads have an internal id for debugging purposes
-The following global counter is use to get (almost) unique id's.
-*/
-unsigned int iRRAM_thread_maxid=0;
-
 
 
 /*****************************************/
