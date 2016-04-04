@@ -87,7 +87,7 @@ int choose(const LAZY_BOOLEAN& x1,
 }
 
 LAZY_BOOLEAN operator && 
-   (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y)
+   (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y) noexcept
    {
      if (x.value==1 && y.value==1) return 1;
      if (x.value==0 || y.value==0) return 0;
@@ -95,7 +95,7 @@ LAZY_BOOLEAN operator &&
    } 
 
 LAZY_BOOLEAN operator || 
-   (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y)
+   (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y) noexcept
    {
      if (x.value==1 || y.value==1) return 1;
      if (x.value==0 && y.value==0) return 0;
@@ -103,7 +103,7 @@ LAZY_BOOLEAN operator ||
    } 
 
 LAZY_BOOLEAN operator !
-   (const LAZY_BOOLEAN& x)
+   (const LAZY_BOOLEAN& x) noexcept
    {
      if (x.value==1) return 0;
      if (x.value==0) return 1;

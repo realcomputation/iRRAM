@@ -37,15 +37,15 @@ class LAZY_BOOLEAN
 
 
 public:  
-LAZY_BOOLEAN(){value=false;};
-LAZY_BOOLEAN(const LAZY_BOOLEAN& y){value=y.value;};
-LAZY_BOOLEAN& operator = (const LAZY_BOOLEAN& y){value=y.value; return *this;};
-LAZY_BOOLEAN(bool b){value=b;};
+LAZY_BOOLEAN() noexcept : LAZY_BOOLEAN(false) {}
+LAZY_BOOLEAN(const LAZY_BOOLEAN& y) noexcept : value(y.value) {}
+LAZY_BOOLEAN& operator = (const LAZY_BOOLEAN& y) noexcept {value=y.value; return *this;};
+LAZY_BOOLEAN(bool b) noexcept : value(b) {}
 
 
-friend LAZY_BOOLEAN operator && (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y);
-friend LAZY_BOOLEAN operator || (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y);
-friend LAZY_BOOLEAN operator ! ( const LAZY_BOOLEAN& x);
+friend LAZY_BOOLEAN operator && (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y) noexcept;
+friend LAZY_BOOLEAN operator || (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y) noexcept;
+friend LAZY_BOOLEAN operator ! ( const LAZY_BOOLEAN& x) noexcept;
 friend int choose(const LAZY_BOOLEAN& x1,
                   const LAZY_BOOLEAN& x2,
                   const LAZY_BOOLEAN& x3,
@@ -68,7 +68,7 @@ friend class REAL;
 
 private:
 
-LAZY_BOOLEAN(int b){value=b;};
+LAZY_BOOLEAN(int b) noexcept : value(b) {}
 int value;
 const static int BOTTOM = -1; 
 };
@@ -79,8 +79,6 @@ int choose(const LAZY_BOOLEAN& x1= false,
            const LAZY_BOOLEAN& x4= false,
            const LAZY_BOOLEAN& x5= false,
            const LAZY_BOOLEAN& x6= false );
-
-
 
 } // namespace iRRAM
 
