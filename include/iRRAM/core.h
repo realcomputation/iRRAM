@@ -383,9 +383,8 @@ inline void sizetype_div(sizetype& x,const sizetype& y,const sizetype& z)
 /*****************************************/
 // iRRAM_exec template
 
-template <class RESULT, class... ARGUMENT>
-RESULT iRRAM_exec(RESULT (*iRRAM_compute)(const ARGUMENT &...),
-                  const ARGUMENT &... x)
+template <class F>
+auto iRRAM_exec(F f) -> decltype(f())
 {
 	iRRAM_thread_data_address = new iRRAM_thread_data_class;
 
@@ -405,6 +404,7 @@ RESULT iRRAM_exec(RESULT (*iRRAM_compute)(const ARGUMENT &...),
 		iRRAM_max_prec = ACTUAL_STACK.prec_step;
 	}
 
+	using RESULT = decltype(f());
 	RESULT result;
 
 	while (true) {
@@ -418,15 +418,15 @@ RESULT iRRAM_exec(RESULT (*iRRAM_compute)(const ARGUMENT &...),
 
 		int p_end = 0;
 		try {
-			result = iRRAM_compute(x...);
+			result = f();
 			if (iRRAM_likely(!iRRAM_infinite))
 				break;
-		} catch (Iteration it) {
+		} catch (const Iteration &it) {
 			p_end = ACTUAL_STACK.actual_prec + it.prec_diff;
-		} catch (const iRRAM_Numerical_Exception exc) {
+		} catch (const iRRAM_Numerical_Exception &exc) {
 			cerr << "iRRAM exception: " << iRRAM_error_msg[exc.type]
 			     << "\n";
-			throw iRRAM_Numerical_Exception(exc);
+			throw;
 		}
 
 		int prec_skip = 0;
@@ -454,7 +454,7 @@ RESULT iRRAM_exec(RESULT (*iRRAM_compute)(const ARGUMENT &...),
 		cache_active->id[n]->clear();
 
 	max_active = 0;
-	ACTUAL_STACK.inlimit = -1;
+	ACTUAL_STACK.inlimit = -1; /* TODO: huh? out-of-domain? */
 	delete cache_active;
 	delete iRRAM_thread_data_address;
 
@@ -465,7 +465,6 @@ RESULT iRRAM_exec(RESULT (*iRRAM_compute)(const ARGUMENT &...),
 
 	return result;
 }
-
 
 /*****************************************/
 // templates needed for iRRAM_thread_exec 
@@ -482,109 +481,30 @@ struct iRRAM_thread_data {
 };
 
 template <class ARGUMENT, class RESULT>
-void * iRRAM_thread_wrapper(iRRAM_thread_data<ARGUMENT, RESULT> * _data)
-{
-	iRRAM_thread_data_address = new iRRAM_thread_data_class;
-
-	ITERATION_STACK SAVED_STACK;
-
-	ACTUAL_STACK.prec_step = iRRAM_prec_start;
-	ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
-	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-	fesetround(FE_DOWNWARD);
-	// set the correct rounding mode for REAL using double intervals):
-
-	cache_active = new cachelist;
-
-	if (iRRAM_unlikely(iRRAM_debug > 0)) {
-		cerr << "\niRRAM (version " << iRRAM_VERSION_rt << ", backend "
-		     << iRRAM_BACKENDS << ", thread " << _data->id
-		     << ") starting...\n";
-		iRRAM_max_prec = ACTUAL_STACK.prec_step;
-	}
-
-	while (true) {
-		iRRAM::cout.rewind();
-		for (int n = 0; n < max_active; n++)
-			cache_active->id[n]->rewind();
-		inReiterate = false;
-		ACTUAL_STACK.inlimit = 0;
-
-		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-
-		int p_end = 0;
-
-		try {
-			_data->result = _data->f(_data->argument);
-			if (iRRAM_likely(!iRRAM_infinite))
-				break;
-		} catch (const Iteration it) {
-			p_end = ACTUAL_STACK.actual_prec + it.prec_diff;
-		} catch (const iRRAM_Numerical_Exception exc) {
-			cerr << "iRRAM exception: " << iRRAM_error_msg[exc.type]
-			     << "\n";
-			throw iRRAM_Numerical_Exception(exc);
-		}
-		int prec_skip = 0;
-		do {
-			prec_skip++;
-			ACTUAL_STACK.prec_step += 4;
-			ACTUAL_STACK.actual_prec =
-			        iRRAM_prec_array[ACTUAL_STACK.prec_step];
-		} while ((ACTUAL_STACK.actual_prec > p_end) &&
-		         (prec_skip != iRRAM_prec_skip));
-
-		ACTUAL_STACK.inlimit = 0;
-		iRRAM_prec_start = ACTUAL_STACK.prec_step;
-		if (iRRAM_unlikely(iRRAM_debug > 0)) {
-			show_statistics();
-			if (iRRAM_max_prec <= ACTUAL_STACK.prec_step)
-				iRRAM_max_prec = ACTUAL_STACK.prec_step;
-			cerr << "increasing precision bound to "
-			     << ACTUAL_STACK.actual_prec << "["
-			     << ACTUAL_STACK.prec_step << "]\n";
-			cerr << "iRRAM iterating in thread " << _data->id
-			     << "\n";
-		}
-	}
-
-	iRRAM::cout.reset();
-	for (int n = 0; n < max_active; n++)
-		cache_active->id[n]->clear();
-
-	max_active = 0;
-	ACTUAL_STACK.inlimit = -1;
-	delete cache_active;
-	delete iRRAM_thread_data_address;
-
-	if (iRRAM_unlikely(iRRAM_debug > 0)) {
-		show_statistics();
-		cerr << "iRRAM thread " << _data->id << " ending \n";
-	}
-
-	_data->finished = true;
-
-	return NULL;
-}
-
-
-template <class ARGUMENT, class RESULT>
 void iRRAM_thread_exec(RESULT iRRAM_compute(const ARGUMENT &),
                        const ARGUMENT & x,
                        iRRAM_thread_data<ARGUMENT, RESULT> & data)
 {
-	typedef void * (*testf)(void *);
 	data.argument = x;
 	data.f = iRRAM_compute;
 	data.id = ++iRRAM_thread_maxid;
 	data.finished = false;
 
-	void * (*my_f)(iRRAM_thread_data<ARGUMENT, RESULT> *) =
-	        &iRRAM_thread_wrapper<ARGUMENT, RESULT>;
-	testf my_function = reinterpret_cast<testf>(my_f);
+	auto my_f = [](void *_data) -> void * {
+		using thread_data_t = iRRAM_thread_data<ARGUMENT, RESULT>;
+		thread_data_t &data = *static_cast<thread_data_t *>(_data);
+
+		if (iRRAM_unlikely(iRRAM_debug > 0))
+			cerr << "\nthread " << data.id << ") starting...";
+		data.result = iRRAM_exec([&data]{ return data.f(data.argument); });
+		data.finished = true;
+
+		return NULL;
+	};
+
 	if (int errcode = pthread_create(&data.thread, /* thread struct */
 	                                 NULL, /* default thread attributes */
-	                                 my_function, /* start routine */
+	                                 my_f, /* start routine */
 	                                 &data)) /* arg to routine */
 		cerr << "Error " << errcode << " in pthread_create";
 }
@@ -613,7 +533,4 @@ bool iRRAM_thread_finished(const iRRAM_thread_data<ARGUMENT, RESULT> & data)
 
 } /* ! namespace iRRAM */
 
-//*************************************************************************************/
-// predefined instantiations of some iRRAM_exec routines can be found in stack.cc
-//*************************************************************************************/
 #endif /* ! iRRAM_CORE_H  */

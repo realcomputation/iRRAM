@@ -155,7 +155,7 @@ public:
 		return REAL(b)/a;
 	}
 	REAL & operator/=(const REAL &y) { return *this = *this / y; }
-	REAL & operator/=(      int   n);
+//	REAL & operator/=(      int   n);
 
 	friend REAL   operator << (const REAL   &x,       int     n);
 	friend REAL   operator >> (const REAL   &x,       int     n);

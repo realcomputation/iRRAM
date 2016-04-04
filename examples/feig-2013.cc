@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 {
   iRRAM_initialize(argc, argv);
     
-  return iRRAM_exec(initialize, argc, argv);
+  return iRRAM_exec([&]{return initialize(argc, argv);});
 }
 
 

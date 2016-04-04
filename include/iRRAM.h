@@ -29,13 +29,12 @@ MA 02111-1307, USA.
 
 #include <iRRAM/lib.h>
 
-void compute(void); 
+void compute(void);
 
-int iRRAM_compute(const int& arg){compute();return 0;}
- 
-int main (int argc,char **argv){
-  iRRAM_initialize(argc,argv);
-  return iRRAM::iRRAM_exec(iRRAM_compute,0);
+int main(int argc, char **argv)
+{
+	iRRAM_initialize(argc, argv);
+	return iRRAM::iRRAM_exec([]{compute(); return 0;});
 }
 
 #endif

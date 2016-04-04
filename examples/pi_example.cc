@@ -12,7 +12,7 @@ REAL maxapprox(int prec, const REAL & x, const REAL & y)
 
 REAL max(const REAL & x, const REAL & y) { return limit(maxapprox, x, y); }
 
-int iRRAM_compute(const int & dummy)
+int iRRAM_compute()
 {
 
 	cout << "Small test program showing some features...\n";
@@ -32,5 +32,5 @@ int iRRAM_compute(const int & dummy)
 int main(int argc, char ** argv)
 {
 	iRRAM_initialize(argc, argv);
-	return iRRAM_exec(iRRAM_compute, 0);
+	return iRRAM_exec(iRRAM_compute);
 }

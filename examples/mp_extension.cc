@@ -6,9 +6,6 @@ using namespace iRRAM;
 // iRRAM-routine to compute a DYADIC cosine
 DYADIC compute_cos(const DYADIC &x, const int &p) { return approx(cos(REAL(x)),p); }
 
-template DYADIC iRRAM::iRRAM_exec <DYADIC,DYADIC,int>
-(DYADIC (*) (const DYADIC &,const int &),const DYADIC &,const int &);
-
 
 
 // main routine that internally calls iRRAM three times:
@@ -18,10 +15,11 @@ iRRAM_initialize(argc,argv);
 DYADIC d=2.0,d2;
 int p=-10;
 
-d2=iRRAM_exec(compute_cos,d,p);
+auto compute = [&](){return compute_cos(d,p);};
+d2=iRRAM_exec(compute);
 
 cout << setRwidth(100);
-cout << iRRAM_exec(compute_cos,d,p)<<"\n";
+cout << iRRAM_exec(compute)<<"\n";
 
 }
 

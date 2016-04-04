@@ -160,13 +160,5 @@ int module(REAL f(const REAL&),const REAL& x, int p){
 
 }
 
-
-//*************************************************************************************
-// instantiation of some iRRAM_exec routines
-//*************************************************************************************
-
-template double iRRAM_exec <double, double> (double (*) (const double&), const double&);
-template int    iRRAM_exec <int,int> (int (*) (const int&), const int&);
-
 } // namespace iRRAM
 // 

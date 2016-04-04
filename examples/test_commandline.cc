@@ -3,10 +3,6 @@
 
 using namespace iRRAM;
 
-template int iRRAM::iRRAM_exec<int, int, char **>(int (*)(const int &,
-                                                          char ** const &),
-                                                  const int &, char ** const &);
-
 int iRRAM_compute(const int & argc, char ** const & argv)
 {
 	REAL x1, x2;
@@ -22,5 +18,5 @@ int iRRAM_compute(const int & argc, char ** const & argv)
 int main(int argc, char ** argv)
 {
 	iRRAM_initialize(argc, argv);
-	return iRRAM_exec(iRRAM_compute, argc, argv);
+	return iRRAM_exec([&](){return iRRAM_compute(argc, argv);});
 }
