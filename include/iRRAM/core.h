@@ -458,7 +458,6 @@ auto iRRAM_exec(F f) -> decltype(f())
 		cache_active->id[n]->clear();
 
 	max_active = 0;
-	ACTUAL_STACK.inlimit = -1; /* TODO: huh? out-of-domain? */
 	delete cache_active;
 	delete iRRAM_thread_data_address;
 
