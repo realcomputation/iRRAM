@@ -46,8 +46,8 @@ __thread int max_active=0;
 __thread iRRAM_thread_data_class *iRRAM_thread_data_address=0; 
 __thread bool iRRAM_highlevel=false;
 __thread int iRRAM_DYADIC_precision=-60;
-__thread bool iRRAM_COMPARE_exact=true;
-__thread int iRRAM_COMPARE_precision=-60;
+// __thread bool iRRAM_COMPARE_exact=true; /* unused */
+// __thread int iRRAM_COMPARE_precision=-60; /* unused */
 
 /*
 The following boolean "inReiterate" is used to distinguish voluntary 
