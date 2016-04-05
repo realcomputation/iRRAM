@@ -36,7 +36,7 @@ inline void MPIclear(void* x){MP_int_clear(*(MP_int_type*)(x));}
 class iRRAM_cache_type{
 public:
 virtual void clear()=0;
-virtual void rewind()=0;
+virtual void rewind() noexcept =0;
 };
 
 class cachelist{public:
@@ -53,7 +53,7 @@ DATA *data;
 unsigned int current,end,size;
 bool active;
 
-iRRAM_cache(){active=false;data=NULL;size=0;end=0;current=0;};
+iRRAM_cache() noexcept {active=false;data=NULL;size=0;end=0;current=0;};
 
 void put(const DATA& x){
   if (iRRAM_unlikely(!active)){activate();}
@@ -70,17 +70,17 @@ void put(const DATA& x){
   current++;
 };
 
-bool get(DATA& x){
+bool get(DATA& x) noexcept(noexcept(x=x)) {
   if (current>=end)return false;
     x=data[current++];
   return true; 
 }
 
-void modify(DATA& x){
+void modify(const DATA& x) noexcept(noexcept(const_cast<DATA &>(x)=x)) {
   data[current-1]=x;
 }
 
-void rewind(){
+void rewind() noexcept {
   current=0;
 };
 
