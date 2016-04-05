@@ -36,7 +36,7 @@ namespace iRRAM {
 // runtime identification of the iRRAM version, cf. iRRAM_version.h
 //*************************************************************************************
 
-const char* iRRAM_VERSION_rt = iRRAM_VERSION_ct;
+const char iRRAM_VERSION_rt[] = iRRAM_VERSION_ct;
 
 
 
