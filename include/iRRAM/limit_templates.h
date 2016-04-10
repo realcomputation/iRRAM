@@ -396,7 +396,7 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
             bool on_domain(const CONT_ARGUMENT&, const PARAM& param),
             const CONT_ARGUMENT& x, const PARAM& param )
 {
-  if ( on_domain(param,x) != true ) REITERATE(0);
+  if ( on_domain(param,x) != true ) REITERATE(0); /* TODO: param order reversed?? */
 
   ITERATION_STACK SAVED_STACK;
 
