@@ -24,4 +24,5 @@ no_base_include_HEADERS = \
 	iRRAM/core.h \
 	iRRAM/GMP_intrat.h \
 	iRRAM/MPFR_interface.h \
-	iRRAM/mpfr_extension.h
+	iRRAM/mpfr_extension.h \
+	iRRAM/pipe.hh

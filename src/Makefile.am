@@ -22,7 +22,8 @@ main_sources = \
 	SPARSEREALMATRIX.cc \
 	INTERVAL.cc \
 	GMP_int_ext.c \
-	GMP_rat_ext.c
+	GMP_rat_ext.c \
+	pipe.cc
 
 mpfr_sources = \
 	MPFR/MPFR_ext.c \

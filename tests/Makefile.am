@@ -9,7 +9,8 @@ check_PROGRAMS = \
 	t_size \
 	t_string_conv \
 	t_FUNCTION \
-	t_COMPLEX
+	t_COMPLEX \
+	t_pipe
 
 TESTS = $(check_PROGRAMS)
 
@@ -21,3 +22,4 @@ t_double_conv_SOURCES = t_double_conv.cc
 t_size_SOURCES = t_size.cc
 t_string_conv_SOURCES = t_string_conv.cc
 t_COMPLEX_SOURCES = t_COMPLEX.cc
+t_pipe_SOURCES = t_pipe.cc
