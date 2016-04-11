@@ -39,18 +39,14 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
                            const REAL& x,
                            const REAL& y)
 {
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   REAL lim,limnew;
   sizetype limnew_error,element_error;
   sizetype lim_error,x_error,y_error;
 
-  int element=SAVED_STACK.data.actual_prec;
-  int element_step=SAVED_STACK.data.prec_step;
+  int element=env.saved_prec();
+  int element_step=env.saved_step();
   int firsttime=2;
 
   x.geterror(x_error);
@@ -65,9 +61,9 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[SAVED_STACK.data.prec_step-1]
-    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[SAVED_STACK.data.prec_step-1]
-    	&&  limnew_error.exponent > y_error.exponent -iRRAM_prec_array[SAVED_STACK.data.prec_step-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]
+    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[env.saved_step()-1]
+    	&&  limnew_error.exponent > y_error.exponent -iRRAM_prec_array[env.saved_step()-1]) {
     iRRAM_DEBUG0(2,{fprintf(stderr,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
                    limnew_error.mantissa,limnew_error.exponent);});
        element_step=1;
@@ -83,7 +79,7 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
       iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       }
     firsttime=0;
-    if (element<=SAVED_STACK.data.actual_prec)break;
+    if (element<=env.saved_prec())break;
     element_step+=4;
     element=iRRAM_prec_array[element_step];
     }
@@ -143,11 +139,7 @@ REAL limit_lip (REAL f(int,const REAL&),
 {
   if ( on_domain(x) != true ) REITERATE(0);
 
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   REAL x_new,lim;
   sizetype lim_error,x_error;
@@ -161,10 +153,9 @@ REAL limit_lip (REAL f(int,const REAL&),
   while (1) {
     try{
     iRRAM_DEBUG2(2,"trying to compute limit_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
-    lim=f(SAVED_STACK.data.actual_prec,x_new);
-    if (lim.error.exponent > SAVED_STACK.data.actual_prec ) {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+    lim=f(env.saved_prec(),x_new);
+    if (lim.error.exponent > env.saved_prec()) {
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } else {
       iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
@@ -172,11 +163,10 @@ REAL limit_lip (REAL f(int,const REAL&),
       break;
     }}
     catch ( Iteration it){
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } }
-  sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
+  sizetype_set(lim_error,1,env.saved_prec());
   lim.adderror(lim_error);
   sizetype_shift(lim_error,x_error,lip_value);
   lim.adderror(lim_error);
@@ -198,12 +188,7 @@ REAL limit_lip (REAL f(int,const REAL&),
     lip_value=lip_bound(x);
   }
   
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-
+  limit_computation env;
   REAL x_new;
   REAL lim;
   sizetype lim_error,x_error;
@@ -217,10 +202,9 @@ REAL limit_lip (REAL f(int,const REAL&),
   while (1) {
      try{
       iRRAM_DEBUG2(2,"trying to compute limit_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
-    lim=f(SAVED_STACK.data.actual_prec,x_new);
-    if (lim.error.exponent > SAVED_STACK.data.actual_prec ) {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+    lim=f(env.saved_prec(),x_new);
+    if (lim.error.exponent > env.saved_prec()) {
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } else {
       iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
@@ -228,11 +212,10 @@ REAL limit_lip (REAL f(int,const REAL&),
       break;
     }}
     catch ( Iteration it){
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } }
-  sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
+  sizetype_set(lim_error,1,env.saved_prec());
   lim.adderror(lim_error);
   sizetype_shift(lim_error,x_error,lip_value);
   lim.adderror(lim_error);
@@ -252,11 +235,7 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
 {
   if ( on_domain(x,y) != true ) REITERATE(0);
 
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   REAL x_new,y_new,lim;
   sizetype lim_error,x_error,y_error;
@@ -269,10 +248,9 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
   while (1) {
     try {
       iRRAM_DEBUG2(2,"trying to compute limit_lip2 with precision %d...\n",ACTUAL_STACK.actual_prec);
-      lim=f(SAVED_STACK.data.actual_prec,x_new,y_new);
-     if (lim.error.exponent > SAVED_STACK.data.actual_prec ) {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+      lim=f(env.saved_prec(),x_new,y_new);
+     if (lim.error.exponent > env.saved_prec()) {
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip2 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } else {
       iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
@@ -280,11 +258,10 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
       break;
     }}
     catch ( Iteration it) {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     }}
-  sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
+  sizetype_set(lim_error,1,env.saved_prec());
   lim.adderror(lim_error);
   sizetype_shift(lim_error,x_error,lip);
   lim.adderror(lim_error);
@@ -348,16 +325,10 @@ REAL lipschitz (REAL f(const REAL&),
 
 // for the computation of the Lipschitz bound, we work with
 // reduced precision:
-  ACTUAL_STACK.prec_step=(ACTUAL_STACK.prec_step+1)/2;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-
-  lip_bound=lip_f(x);
-
-  ACTUAL_STACK.prec_step=SAVED_STACK.data.prec_step;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-
+  {
+    relaxed rel;
+    lip_bound=lip_f(x);
+  }
   x_new=x;
   x_new.geterror(x_error);
   sizetype_exact(x_new.error);
@@ -411,17 +382,10 @@ REAL lipschitz (REAL f(const REAL&),
 
 // for the computation of the Lipschitz bound, we work with
 // reduced precision:
-  int saved_step=ACTUAL_STACK.prec_step;
-  ACTUAL_STACK.prec_step=(ACTUAL_STACK.prec_step+1)/2;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-
-  lip_bound=lip_f(x);
-
-  ACTUAL_STACK.prec_step=saved_step;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-
+  {
+    relaxed rel;
+    lip_bound=lip_f(x);
+  }
   iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
@@ -548,11 +512,7 @@ REAL limit_hint    (REAL f(int, const REAL&),
                     int hint,
                     const REAL& x)
 {
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   REAL lim,limnew;
   sizetype limnew_error,element_error;
@@ -561,7 +521,7 @@ REAL limit_hint    (REAL f(int, const REAL&),
   int success=0;
 
   x.geterror(element_error);
-  int element=max(element_error.exponent,SAVED_STACK.data.actual_prec);
+  int element=max(element_error.exponent,env.saved_prec());
 
   iRRAM_DEBUG1(2,"starting limit_hint1...\n");
 
@@ -604,11 +564,7 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
                     int hint,
                     const REAL& x, const REAL&y)
 {
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   REAL lim,limnew;
   sizetype limnew_error,element_error;
@@ -617,7 +573,7 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
   int success=0;
 
   x.geterror(element_error);
-  int element=max(element_error.exponent,SAVED_STACK.data.actual_prec);
+  int element=max(element_error.exponent,env.saved_prec());
 
   limit_debug("starting limit_hint1");
 
@@ -663,11 +619,7 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
 {
   if ( on_domain(x) != true ) REITERATE(0);
 
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
 
   REALMATRIX x_new,lim,limnew;
@@ -681,12 +633,11 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
   while (1) {
    try {
      iRRAM_DEBUG2(2,"trying to compute limit_matrix_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
-     limnew=f(SAVED_STACK.data.actual_prec,x_new);
+     limnew=f(env.saved_prec(),x_new);
      lim=limnew;
      lim.geterror(lim_error);
-     if (lim_error.exponent > SAVED_STACK.data.actual_prec ) {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+     if (lim_error.exponent > env.saved_prec()) {
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } else {
       iRRAM_DEBUG0(2,fprintf(stderr,"getting result with local error %d*2^(%d)\n",
@@ -694,8 +645,7 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
     break;
   }}
     catch ( Iteration it)  {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     }}
   sizetype_exact(lim_error);
@@ -776,11 +726,7 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
 REAL iteration (void f(REAL&,REAL&,const int& param),
             const REAL& l,const REAL& r,const int& param)
 {
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step=1;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];//int((upperbound(rc-lc)-50)*1);
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env; //int((upperbound(rc-lc)-50)*1);
 
   REAL lc=l;
   REAL rc=r;
@@ -812,12 +758,11 @@ REAL iteration (void f(REAL&,REAL&,const int& param),
         diff=rc-lc;
       }
       diff.getsize(diff_size);
-      if (diff_size.exponent > SAVED_STACK.data.actual_prec ) {
+      if (diff_size.exponent > env.saved_prec()) {
         iRRAM_DEBUG0(2,{ fprintf(stderr,"iteration with error %d*2^(%d)\n",
               diff_size.mantissa,diff_size.exponent);});
-      if (diff_size.exponent >= diff_old_size.exponent ) {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];}
+      if (diff_size.exponent >= diff_old_size.exponent)
+        env.inc_step(2);
       iRRAM_DEBUG2(2,"iteration result too imprecise, trying a new iteration with %d...\n",ACTUAL_STACK.actual_prec);
     } else {
       iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
@@ -825,8 +770,7 @@ REAL iteration (void f(REAL&,REAL&,const int& param),
       break;
     }}
     catch ( Iteration it){
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"iteration failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } }
       sizetype_half(diff_size_h,diff_size);
@@ -848,18 +792,14 @@ REAL iteration (void f(REAL&,REAL&,const int& param),
 
 REAL limit (const FUNCTION<REAL,int> & f )
 {
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   REAL lim,limnew;
   sizetype limnew_error,element_error;
   sizetype lim_error;
 
-  int element=SAVED_STACK.data.actual_prec;
-  int element_step=SAVED_STACK.data.prec_step;
+  int element=env.saved_prec();
+  int element_step=env.saved_step();
   int firsttime=2;
 
   limit_debug("starting limit_FUNCTION");
@@ -871,7 +811,7 @@ REAL limit (const FUNCTION<REAL,int> & f )
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[SAVED_STACK.data.prec_step-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
                   << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
                   <<"), trying normal p-sequence\n";});
@@ -888,7 +828,7 @@ REAL limit (const FUNCTION<REAL,int> & f )
       iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       }
     firsttime=0;
-    if (element<=SAVED_STACK.data.actual_prec)break;
+    if (element<=env.saved_prec())break;
     element_step+=4;
     element=iRRAM_prec_array[element_step];
     }

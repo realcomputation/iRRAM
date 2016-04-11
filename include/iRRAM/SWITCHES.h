@@ -55,12 +55,10 @@ extern const int iRRAM_prec_steps;
 // single_valued code  --> all possible computation paths again lead to single-valued function
 //
 // obsoletes continous_begin(), continous_end
-class single_valued
+struct single_valued
 {
-	int saved;
-public:
-	inline  single_valued() noexcept : saved(ACTUAL_STACK.inlimit++) {}
-	inline ~single_valued() noexcept { ACTUAL_STACK.inlimit = saved; }
+	inline  single_valued() noexcept { ACTUAL_STACK.inlimit++; }
+	inline ~single_valued() noexcept { --ACTUAL_STACK.inlimit; }
 };
 
 
@@ -100,11 +98,11 @@ protected:
 		ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
 		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 	}
+	stiff(int prec, bool abs) noexcept : saved(ACTUAL_STACK.prec_step)
+	{ set_prec_step(prec); }
 public:
-	explicit inline stiff(int n = 1) noexcept {
-		saved = ACTUAL_STACK.prec_step;
-		set_prec_step(ACTUAL_STACK.prec_step + n);
-	}
+	explicit inline stiff(int n = 1) noexcept
+	: stiff(ACTUAL_STACK.prec_step + n, true) {}
 	inline ~stiff() noexcept {
 		set_prec_step(saved);
 	}
@@ -113,6 +111,10 @@ public:
 
 	int saved_step() const noexcept { return saved; }
 	int saved_prec() const noexcept { return iRRAM_prec_array[saved]; }
+};
+
+struct relaxed : public stiff {
+	relaxed() : stiff((ACTUAL_STACK.prec_step+1)/2, true) {}
 };
 
 struct limit_computation : public stiff, single_valued
