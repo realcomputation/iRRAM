@@ -1,36 +1,14 @@
 
-#include <future>
-#include <cstdio>
-
-#include <iRRAM/pipe.hh>
-
-using namespace iRRAM;
-
-struct bla {
-	int x[16];
-};
-
-void compute1(effort_t eff, std::shared_ptr<OSock<REAL>> &e_out)
-{
-	e_out->put(euler());
-}
-
-void compute2(effort_t eff, const std::shared_ptr<ISock<REAL>> &e_in)
-{
-	printf("bla\n");
-	cout << e_in->get() << "\n";
-}
+#include "t_pipe-impl.cc"
 
 int main(int argc, char **argv)
 {
-	auto p = std::make_shared<Process>();
-	auto q = std::make_shared<Process>();
-	auto so = p->out_sock<REAL>();
-	auto si = q->connect(so);
+	Process_t p = make_process();
+	Process_t q = make_process();
+	Process_t r = make_process();
+	OSock_t<REAL> so = p->out_sock<REAL>();
 
-	p->exec(argc, argv, compute1, 0, std::ref(so));
-	q->exec(argc, argv, compute2, 0, std::cref(si));
-
-//	cout << si->get(0) << "\n";
-	si->get(0);
+	p->exec(argc, argv, compute1, so);
+	q->exec(argc, argv, compute2, q->connect(so));
+	r->exec(argc, argv, compute3, r->connect(so));
 }
