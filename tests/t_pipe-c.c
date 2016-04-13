@@ -20,16 +20,14 @@ int main(int argc, const char *const *argv)
 	iRRAM_process_connect(&ir, &r, &o);
 
 	iRRAM_process_exec(&p, argc, argv, compute1_c, &o);
-	//iRRAM_process_exec(&q, argc, argv, compute2_c, &iq);
-	//iRRAM_process_exec(&r, argc, argv, compute3_c, &ir);
-
-	sleep(2);
+	iRRAM_process_exec(&q, argc, argv, compute2_c, &iq);
+	iRRAM_process_exec(&r, argc, argv, compute3_c, &ir);
 
 	iRRAM_release_process(&p);
 	iRRAM_release_process(&q);
 	iRRAM_release_process(&r);
 
-	iRRAM_release_osocket(&o);
-	iRRAM_release_isocket(&iq);
 	iRRAM_release_isocket(&ir);
+	iRRAM_release_isocket(&iq);
+	iRRAM_release_osocket(&o);
 }

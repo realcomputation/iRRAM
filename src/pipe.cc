@@ -46,12 +46,12 @@ template class Process::Sock<SPARSEREALMATRIX>;
 template class Process::Sock<TM>;
 
 template <typename T>
-static inline void * osock(Process_t &p) { return new OSock_t<T>(p->out_sock<T>()); }
+static inline void * osock(Process_t &p) { return new OSock_t<T>(std::move(p->out_sock<T>())); }
 
 template <typename T>
 static inline void * isock(Process_t &p, void *s)
 {
-	return new ISock_t<T>(p->connect(*static_cast<OSock_t<T> *>(s)));
+	return new ISock_t<T>(std::move(p->connect(*static_cast<OSock_t<T> *>(s))));
 }
 
 }
@@ -158,10 +158,10 @@ int iRRAM_release_isocket(iRRAM_isocket_t *s)
 
 int iRRAM_process_exec(const iRRAM_process_t *_p,
                        int argc, const char *const *argv,
-                       void compute(void *cb_data), void *cb_data)
+                       void (*compute)(void *cb_data), void *cb_data)
 {
 	Process_t &p = *static_cast<Process_t *>(_p->p);
-	p->exec(argc, argv, compute, cb_data);
+	p->exec(argc, argv, *compute, cb_data);
 	return 0;
 }
 

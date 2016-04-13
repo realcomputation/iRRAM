@@ -19,13 +19,13 @@ typedef unsigned effort_t;
 
 template <typename T>
 struct OSock {
-	virtual ~OSock() {}
+	virtual ~OSock() { printf("~OSock()\n"); }
 	virtual void put(T, effort_t=ACTUAL_STACK.prec_step) = 0;
 };
 
 template <typename T>
 struct ISock {
-	virtual ~ISock() {}
+	virtual ~ISock() { printf("~ISock()\n"); }
 	virtual T get(effort_t=ACTUAL_STACK.prec_step) const = 0;
 };
 
@@ -113,7 +113,7 @@ T Process::Sock<T>::get(effort_t e) const
 		cond.wait(lock, [&]{return e <= effort;});
 		return data;
 	}
-	throw "not connected: src Process gone";
+	throw "Sock::get: not connected: src Process gone";
 }
 
 template <typename T>
@@ -148,27 +148,30 @@ ISock_t<T> Process::connect(const OSock_t<T> &s)
 		inputs.push_back(ss);
 		return ss;
 	}
-	throw "not connected: src Process gone";
+	throw "connect: not connected: src Process gone";
 }
 
 template <typename Func,typename... Args>
 void Process::exec(int argc, const char *const *argv, Func &&f, Args &&... args)
 {
 	printf("Process::exec(%d,%p,...)\n", argc, (void *)argv);
-	thr = std::thread([&f,&args...,this](int argc, const char *const *argv) -> void {
+	thr = std::thread([g = std::bind(f, std::forward<Args>(args)...),this]
+	                  (int argc, const char *const *argv) {
 		printf("Process::exec(%d,%p,...) -> thread\n", argc, (void *)argv);
 		iRRAM_initialize(argc, argv);
+		try {
 		iRRAM_exec([&]{
 			printf("Process iterating...\n");
-			f(args...);
+			g();
 			std::unique_lock<decltype(mtx_outputs)> lock(mtx_outputs);
 			output_requested.wait(lock, [&]{
 				return cancelled ||
-				       ACTUAL_STACK.prec_step < max_effort_requested;
+				       (effort_t)ACTUAL_STACK.prec_step < max_effort_requested;
 			});
 			iRRAM_infinite = !cancelled;
 			return 0;
 		});
+		} catch (const char *msg) { printf("exception: %s\n", msg); }
 	}, argc, argv);
 }
 

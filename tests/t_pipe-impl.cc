@@ -34,5 +34,5 @@ extern "C" void compute2_c(void *cb)
 extern "C" void compute3_c(void *cb)
 {
 	iRRAM_isocket_t *i = static_cast<iRRAM_isocket_t *>(cb);
-	compute2(*static_cast<const ISock_t<REAL> *>(i->s));
+	compute3(*static_cast<const ISock_t<REAL> *>(i->s));
 }
