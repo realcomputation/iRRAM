@@ -6,9 +6,12 @@
 extern "C" {
 #endif
 
+typedef unsigned iRRAM_effort_t;
+
 enum iRRAM_type {
 	iRRAM_TYPE_INT,
 	iRRAM_TYPE_DOUBLE,
+	iRRAM_TYPE_STRING,
 	iRRAM_TYPE_INTEGER,
 	iRRAM_TYPE_RATIONAL,
 	iRRAM_TYPE_DYADIC,
@@ -24,7 +27,13 @@ typedef struct { void *p;                    } iRRAM_process_t;
 typedef struct { void *s; enum iRRAM_type t; } iRRAM_osocket_t;
 typedef struct { void *s; enum iRRAM_type t; } iRRAM_isocket_t;
 
-int iRRAM_make_process(iRRAM_process_t *);
+typedef union {
+	int i;
+	double d;
+	char *s;
+} iRRAM_simple_t;
+
+int iRRAM_make_process(iRRAM_process_t *, const char *id);
 
 int iRRAM_process_out_sock(iRRAM_osocket_t *,
                            const iRRAM_process_t *process,
@@ -37,6 +46,8 @@ int iRRAM_process_connect(iRRAM_isocket_t *,
 int iRRAM_process_exec(const iRRAM_process_t *process,
                        int argc, const char *const *argv,
                        void (*compute)(void *cb_data), void *cb_data);
+
+int iRRAM_osock_get(iRRAM_simple_t *result, iRRAM_osocket_t *os, iRRAM_effort_t effort);
 
 int iRRAM_release_process(iRRAM_process_t *process);
 int iRRAM_release_osocket(iRRAM_osocket_t *sock);

@@ -5,7 +5,7 @@ namespace iRRAM {
 
 struct Process::hide_constructor {};
 
-Process::Process(hide_constructor) {}
+Process::Process(std::string id, hide_constructor) : id(std::move(id)) {}
 
 Process::~Process()
 {
@@ -13,7 +13,7 @@ Process::~Process()
 	output_requested.notify_one();
 	if (thr.joinable())
 		thr.join();
-	printf("~Process()\n");
+	printf("[%08x] ~Process(%s)\n", std::this_thread::get_id(), id.c_str());
 }
 
 void Process::run(effort_t e)
@@ -25,16 +25,17 @@ void Process::run(effort_t e)
 			output_requested.notify_one();
 		}
 	}
-	printf("Process::run(%u)\n", e);
+	printf("[%08x] Process(%s)::run(%u)\n", std::this_thread::get_id(), id.c_str(), e);
 }
 
-Process_t make_process()
+Process_t make_process(std::string id)
 {
-	return std::make_shared<Process>(Process::hide_constructor{});
+	return std::make_shared<Process>(std::move(id), Process::hide_constructor{});
 }
 
 template class Process::Sock<int>;
 template class Process::Sock<double>;
+template class Process::Sock<std::string>;
 template class Process::Sock<INTEGER>;
 template class Process::Sock<RATIONAL>;
 template class Process::Sock<DYADIC>;
@@ -46,12 +47,12 @@ template class Process::Sock<SPARSEREALMATRIX>;
 template class Process::Sock<TM>;
 
 template <typename T>
-static inline void * osock(Process_t &p) { return new OSock_t<T>(std::move(p->out_sock<T>())); }
+static inline void * osock(Process_t &p) { return new OSock_t<T>(p->out_sock<T>()); }
 
 template <typename T>
 static inline void * isock(Process_t &p, void *s)
 {
-	return new ISock_t<T>(std::move(p->connect(*static_cast<OSock_t<T> *>(s))));
+	return new ISock_t<T>(p->connect(*static_cast<OSock_t<T> *>(s)));
 }
 
 }
@@ -60,9 +61,9 @@ extern "C" {
 
 using namespace iRRAM;
 
-int iRRAM_make_process(iRRAM_process_t *p)
+int iRRAM_make_process(iRRAM_process_t *p, const char *id)
 {
-	p->p = new Process_t(make_process());
+	p->p = new Process_t(make_process(id));
 	return 0;
 }
 
@@ -78,6 +79,7 @@ int iRRAM_process_out_sock(iRRAM_osocket_t *s, const iRRAM_process_t *_p, enum i
 	switch (type) {
 	case iRRAM_TYPE_INT             : s->s = osock<int>(p); break;
 	case iRRAM_TYPE_DOUBLE          : s->s = osock<double>(p); break;
+	case iRRAM_TYPE_STRING          : s->s = osock<std::string>(p); break;
 	case iRRAM_TYPE_INTEGER         : s->s = osock<INTEGER>(p); break;
 	case iRRAM_TYPE_RATIONAL        : s->s = osock<RATIONAL>(p); break;
 	case iRRAM_TYPE_DYADIC          : s->s = osock<DYADIC>(p); break;
@@ -100,6 +102,7 @@ int iRRAM_process_connect(iRRAM_isocket_t *s, const iRRAM_process_t *_p, const i
 	switch (o->t) {
 	case iRRAM_TYPE_INT             : s->s = isock<int>(p, o->s); break;
 	case iRRAM_TYPE_DOUBLE          : s->s = isock<double>(p, o->s); break;
+	case iRRAM_TYPE_STRING          : s->s = isock<std::string>(p, o->s); break;
 	case iRRAM_TYPE_INTEGER         : s->s = isock<INTEGER>(p, o->s); break;
 	case iRRAM_TYPE_RATIONAL        : s->s = isock<RATIONAL>(p, o->s); break;
 	case iRRAM_TYPE_DYADIC          : s->s = isock<DYADIC>(p, o->s); break;
@@ -116,11 +119,38 @@ int iRRAM_process_connect(iRRAM_isocket_t *s, const iRRAM_process_t *_p, const i
 	return 0;
 }
 
+int iRRAM_osock_get(iRRAM_simple_t *result, iRRAM_osocket_t *s, iRRAM_effort_t effort)
+{
+	switch (s->t) {
+	case iRRAM_TYPE_INT:
+		result->i = std::static_pointer_cast<Process::Sock<int>>(
+			*static_cast<OSock_t<int> *>(s->s)
+		)->get(effort);
+		break;
+	case iRRAM_TYPE_DOUBLE:
+		result->d = std::static_pointer_cast<Process::Sock<double>>(
+			*static_cast<OSock_t<double> *>(s->s)
+		)->get(effort);
+		break;
+	case iRRAM_TYPE_STRING:
+		result->s = ::strdup(
+			std::static_pointer_cast<Process::Sock<std::string>>(
+				(*static_cast<OSock_t<std::string> *>(s->s))
+			)->get(effort).c_str()
+		);
+		break;
+	default:
+		return -EINVAL;
+	}
+	return 0;
+}
+
 int iRRAM_release_osocket(iRRAM_osocket_t *s)
 {
 	switch (s->t) {
 	case iRRAM_TYPE_INT             : delete static_cast<OSock_t<int             > *>(s->s); break;
 	case iRRAM_TYPE_DOUBLE          : delete static_cast<OSock_t<double          > *>(s->s); break;
+	case iRRAM_TYPE_STRING          : delete static_cast<OSock_t<std::string     > *>(s->s); break;
 	case iRRAM_TYPE_INTEGER         : delete static_cast<OSock_t<INTEGER         > *>(s->s); break;
 	case iRRAM_TYPE_RATIONAL        : delete static_cast<OSock_t<RATIONAL        > *>(s->s); break;
 	case iRRAM_TYPE_DYADIC          : delete static_cast<OSock_t<DYADIC          > *>(s->s); break;
@@ -141,6 +171,7 @@ int iRRAM_release_isocket(iRRAM_isocket_t *s)
 	switch (s->t) {
 	case iRRAM_TYPE_INT             : delete static_cast<ISock_t<int             > *>(s->s); break;
 	case iRRAM_TYPE_DOUBLE          : delete static_cast<ISock_t<double          > *>(s->s); break;
+	case iRRAM_TYPE_STRING          : delete static_cast<ISock_t<std::string     > *>(s->s); break;
 	case iRRAM_TYPE_INTEGER         : delete static_cast<ISock_t<INTEGER         > *>(s->s); break;
 	case iRRAM_TYPE_RATIONAL        : delete static_cast<ISock_t<RATIONAL        > *>(s->s); break;
 	case iRRAM_TYPE_DYADIC          : delete static_cast<ISock_t<DYADIC          > *>(s->s); break;
