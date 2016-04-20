@@ -165,7 +165,7 @@ lock_old_archive_extraction=no
 LTCC="gcc -std=gnu99"
 
 # LTCC compiler flags.
-LTCFLAGS="-O2 -g"
+LTCFLAGS="-g -O2"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 \\2 \\2/p' | sed '/ __gnu_lto/d'"
@@ -11671,7 +11671,7 @@ reload_cmds="\$LD\$reload_flag -o \$output\$reload_objs"
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$tool_oldlib"
 
 # A language specific compiler.
-CC="clang++"
+CC="g++"
 
 # Is the compiler the GNU compiler?
 with_gcc=yes
@@ -11792,7 +11792,7 @@ file_list_spec=""
 hardcode_action=immediate
 
 # The directories searched by this compiler when creating a shared library.
-compiler_lib_search_dirs="/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3 /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../../../lib64 /usr/bin/../lib64 /lib/../lib64 /usr/lib/../lib64 /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../../../x86_64-pc-linux-gnu/lib /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../.. /usr/bin/../lib /lib /usr/lib"
+compiler_lib_search_dirs="/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3 /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../../../lib64 /lib/../lib64 /usr/lib/../lib64 /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../../../x86_64-pc-linux-gnu/lib /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../.."
 
 # Dependencies to place before and after the objects being linked to
 # create a shared library.
@@ -11803,6 +11803,6 @@ postdeps="-lstdc++ -lm -lgcc_s -lc -lgcc_s"
 
 # The library search path used internally by the compiler when linking
 # a shared library.
-compiler_lib_search_path="-L/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3 -L/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../../../lib64 -L/usr/bin/../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../../../x86_64-pc-linux-gnu/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../.. -L/usr/bin/../lib -L/lib -L/usr/lib"
+compiler_lib_search_path="-L/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3 -L/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../../../x86_64-pc-linux-gnu/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/../../.."
 
 # ### END LIBTOOL TAG CONFIG: CXX
