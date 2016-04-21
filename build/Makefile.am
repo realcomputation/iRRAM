@@ -12,7 +12,7 @@ include $(top_srcdir)/sourcefile.list
 DISTCLEANFILES = @iRRAM_src@
 
 lib_LTLIBRARIES      = libiRRAM.la
-libiRRAM_la_LDFLAGS  = -version-info @iRRAM_shared_version@
+libiRRAM_la_LDFLAGS  = -version-info @iRRAM_shared_version@ $(AM_LDFLAGS)
 libiRRAM_la_SOURCES  = $(main_sources)
 
 if WITH_BACKEND_MPFR

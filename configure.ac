@@ -61,6 +61,7 @@ AC_SUBST(LD)
 dnl Checks for programs.
 AC_PROG_MAKE_SET
 AC_PROG_CXX
+AC_PROG_LIBTOOL
 # these macros (may) modify *FLAGS, so we'll save those
 save_CFLAGS=$CFLAGS
 save_CXXFLAGS=$CXXFLAGS

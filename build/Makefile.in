@@ -366,7 +366,7 @@ mpfr_sources = MPFR_ext.c mpfr_extension.cc
 mpfr_headers = MPFR_ext.h
 DISTCLEANFILES = @iRRAM_src@ $(am__append_2)
 lib_LTLIBRARIES = libiRRAM.la
-libiRRAM_la_LDFLAGS = -version-info @iRRAM_shared_version@
+libiRRAM_la_LDFLAGS = -version-info @iRRAM_shared_version@ $(AM_LDFLAGS)
 libiRRAM_la_SOURCES = $(main_sources) $(am__append_1)
 all: all-am
 
