@@ -10,15 +10,18 @@ void compute1(OSock_t<REAL> &e_out)
 
 void compute2(const ISock_t<REAL> &e_in, OSock_t<std::string> &o2)
 {
+	REAL e = e_in->get();
 	// cout << e_in->get() << "\n";
-	o2->put(swrite(e_in->get(), 20));
+	std::string s = swrite(e, 20);
+	o2->put(s);
 }
 
 void compute3(const ISock_t<REAL> &e_in, OSock_t<std::string> &o3)
 {
 	REAL e = e_in->get();
 	// cout << power(1/e, 1e4/e) << "\n";
-	o3->put(swrite(power(1/e, 1e4/e), 20));
+	std::string s = swrite(power(1/e, 1e4/e), 20);
+	o3->put(s);
 }
 
 extern "C" void compute1_c(void *cb)

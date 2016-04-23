@@ -55,22 +55,23 @@ static inline void * isock(Process_t &p, void *s)
 
 }
 
-extern "C" {
-
 using namespace iRRAM;
 
+extern "C"
 int iRRAM_make_process(iRRAM_process_t *p, const char *id)
 {
 	p->p = new Process_t(make_process(id));
 	return 0;
 }
 
+extern "C"
 int iRRAM_release_process(iRRAM_process_t *p)
 {
 	delete static_cast<Process_t *>(p->p);
 	return 0;
 }
 
+extern "C"
 int iRRAM_process_out_sock(iRRAM_osocket_t *s, const iRRAM_process_t *_p, enum iRRAM_type type)
 {
 	Process_t &p = *static_cast<Process_t *>(_p->p);
@@ -94,6 +95,7 @@ int iRRAM_process_out_sock(iRRAM_osocket_t *s, const iRRAM_process_t *_p, enum i
 	return 0;
 }
 
+extern "C"
 int iRRAM_process_connect(iRRAM_isocket_t *s, const iRRAM_process_t *_p, const iRRAM_osocket_t *o)
 {
 	Process_t &p = *static_cast<Process_t *>(_p->p);
@@ -117,6 +119,7 @@ int iRRAM_process_connect(iRRAM_isocket_t *s, const iRRAM_process_t *_p, const i
 	return 0;
 }
 
+extern "C"
 int iRRAM_osock_get(iRRAM_simple_t *result, iRRAM_osocket_t *s, iRRAM_effort_t effort)
 {
 	switch (s->t) {
@@ -133,7 +136,7 @@ int iRRAM_osock_get(iRRAM_simple_t *result, iRRAM_osocket_t *s, iRRAM_effort_t e
 	case iRRAM_TYPE_STRING:
 		result->s = ::strdup(
 			std::static_pointer_cast<Process::Sock<std::string>>(
-				(*static_cast<OSock_t<std::string> *>(s->s))
+				*static_cast<OSock_t<std::string> *>(s->s)
 			)->get(effort).c_str()
 		);
 		break;
@@ -143,6 +146,7 @@ int iRRAM_osock_get(iRRAM_simple_t *result, iRRAM_osocket_t *s, iRRAM_effort_t e
 	return 0;
 }
 
+extern "C"
 int iRRAM_release_osocket(iRRAM_osocket_t *s)
 {
 	switch (s->t) {
@@ -164,6 +168,7 @@ int iRRAM_release_osocket(iRRAM_osocket_t *s)
 	return 0;
 }
 
+extern "C"
 int iRRAM_release_isocket(iRRAM_isocket_t *s)
 {
 	switch (s->t) {
@@ -185,6 +190,7 @@ int iRRAM_release_isocket(iRRAM_isocket_t *s)
 	return 0;
 }
 
+extern "C"
 int iRRAM_process_exec(const iRRAM_process_t *_p,
                        int argc, const char *const *argv,
                        void (*compute)(void *cb_data), void *cb_data)
@@ -194,7 +200,5 @@ int iRRAM_process_exec(const iRRAM_process_t *_p,
 	return 0;
 }
 
+extern "C"
 int iRRAM_il_interpret(const char *code, const struct iRRAM_il_env_entry *ios);
-
-
-}

@@ -124,8 +124,7 @@ template <typename T> using ISock_t = std::shared_ptr<ISock<T>>;
 
 
 #define iRRAM_PIPE_DEBUG(fmt, ...) \
-	iRRAM_DEBUG2(0,"[%08x] " fmt,\
-	             std::this_thread::get_id(),__VA_ARGS__)
+	iRRAM_DEBUG2(0,"[%08x] " fmt,std::this_thread::get_id(),__VA_ARGS__)
 
 #define iRRAM_SOCK_DEBUG(fmt, ...) \
 	iRRAM_PIPE_DEBUG("Sock[out <- %s]" fmt,process->id.c_str(),__VA_ARGS__)
