@@ -7,4 +7,6 @@ __thread int ext_mpfr_var_count=0;
 __thread ext_mpfr_type mpfr_FreeVars[MaxFreeVars];
 __thread int mpfr_FreeVarCount=0L;
 
+__thread int mpfr_TotalAllocVarCount=0;
+__thread int mpfr_TotalFreedVarCount=0;
 

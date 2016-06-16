@@ -261,6 +261,8 @@ extern __thread int ext_mpfr_var_count;
 #define MaxFreeVars 1000
 extern __thread ext_mpfr_type mpfr_FreeVars[];
 extern __thread int mpfr_FreeVarCount;
+extern __thread int mpfr_TotalAllocVarCount;
+extern __thread int mpfr_TotalFreedVarCount;
 
 #define MPFR_PREC(x) ((x)->_mpfr_prec)
 #define MPFR_SIZE(x) ((MPFR_PREC(x)-1)/BITS_PER_MP_LIMB+1)
@@ -288,6 +290,7 @@ inline ext_mpfr_type ext_mpfr_init()
 	} else {
 		z = (ext_mpfr_type)malloc(sizeof(__mpfr_struct));
 		mpfr_init(z);
+		mpfr_TotalAllocVarCount++;
 	}
 	ext_mpfr_var_count += 1;
 
@@ -307,6 +310,7 @@ inline void ext_mpfr_free(ext_mpfr_type z)
 	} else {
 		mpfr_clear(z);
 		free(z);
+		mpfr_TotalFreedVarCount++;
 	}
 	ext_mpfr_var_count -= 1;
 }
