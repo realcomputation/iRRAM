@@ -129,7 +129,7 @@ RATIONAL& RATIONAL::operator = (const INTEGER& y){
 
 RATIONAL& RATIONAL::operator = (const int y){
   MP_int_to_RATIONAL(y,value);
-  return (*this)=y;
+  return (*this);
 }
 
 //**************************************************************/
