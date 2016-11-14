@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(iRRAM,2014_01,[],[iRRAM],[iRRAM.uni-trier.de])
+AC_INIT([iRRAM],[2014_01],[],[iRRAM],[iRRAM.uni-trier.de])
 
 iRRAM_VERSION=2014_01
 iRRAM_shared_version=14:1:0
@@ -48,20 +48,23 @@ AC_ARG_ENABLE([profiling],
 	[enable_profiling=no])
 
 AM_SILENT_RULES(yes)
-AM_INIT_AUTOMAKE()
+AM_INIT_AUTOMAKE([nostdinc])
 
-AM_CPPFLAGS="$AM_CPPFLAGS $GMPCPPFLAGS $MPFRCPPFLAGS"
+
+
+AM_CPPFLAGS="$AM_CPPFLAGS -I\$(top_srcdir)/include -I\$(top_builddir)/include $GMPCPPFLAGS $MPFRCPPFLAGS"
 AM_LDFLAGS="$AM_LDFLAGS $GMPLDFLAGS $MPFRLDFLAGS"
+
+dnl Checks for programs.
+AC_PROG_MAKE_SET
+AC_PROG_CXX
+AM_PROG_AR
 
 LT_INIT
 AC_SUBST(LIBTOOL)
 AC_SUBST(LIBTOOL_DEPS)
 AC_SUBST(LD)
 
-dnl Checks for programs.
-AC_PROG_MAKE_SET
-AC_PROG_CXX
-AC_PROG_LIBTOOL
 # these macros (may) modify *FLAGS, so we'll save those
 save_CFLAGS=$CFLAGS
 save_CXXFLAGS=$CXXFLAGS
@@ -96,6 +99,11 @@ AS_CASE([$host],
 
 	dnl Do not use dynamic linking on Windows
 	#AM_LDFLAGS="-all-static $AM_LDFLAGS"
+
+	AC_CHECK_HEADERS([windows.h Psapi.h],,,[[
+#ifdef HAVE_WINDOWS_H
+# include <windows.h>
+#endif]])
 
 	save_LIBS=$LIBS
 	LIBS=
@@ -148,6 +156,9 @@ AC_DEFUN([gmp_link_check],[
 	AC_LANG_PUSH([$1])
 	AC_MSG_CHECKING([whether $1-linking against GMP works])
 	AC_LINK_IFELSE([AC_LANG_SOURCE([[
+#ifdef __cplusplus
+# include <cstddef> /* MinGW's GMP header doesn't include this but uses ::max_align_t */
+#endif
 #include <gmp.h>
 int main() {
 	mpz_init(0);
@@ -245,7 +256,8 @@ done
 AC_CONFIG_FILES([build/Makefile])
 AC_CONFIG_FILES([iRRAM_VERSION include/iRRAM/version.h] )
 
-AC_OUTPUT(Makefile include/Makefile tests/Makefile examples/Makefile-pre doc/Makefile )
+AC_CONFIG_FILES([Makefile include/Makefile tests/Makefile examples/Makefile-pre doc/Makefile ])
+AC_OUTPUT
 
 AC_MSG_NOTICE([
 

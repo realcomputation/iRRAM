@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in 
 # echo -e "\n***  Compiling iRRAM with MPFR multiple precision package as backend ***\n"
 
-DEFAULT_INCLUDES=-I$(top_srcdir)/include -I$(top_builddir)/include
+#DEFAULT_INCLUDES=-I$(top_srcdir)/include -I$(top_builddir)/include
 
 srcdir = @srcdir@
 VPATH = ../src

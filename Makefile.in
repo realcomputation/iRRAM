@@ -86,8 +86,9 @@ DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
 	$(top_srcdir)/configure $(am__configure_deps) \
 	$(srcdir)/iRRAM_VERSION.in \
 	$(top_srcdir)/include/iRRAM/version.h.in \
-	$(top_srcdir)/examples/Makefile-pre.in COPYING TODO compile \
-	config.guess config.sub depcomp install-sh missing ltmain.sh
+	$(top_srcdir)/examples/Makefile-pre.in COPYING TODO ar-lib \
+	compile config.guess config.sub depcomp install-sh missing \
+	ltmain.sh
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
 	$(top_srcdir)/m4/irram_gmp_version_check.m4 \

@@ -1,3 +1,3 @@
 ## Process this file with automake to produce Makefile.in 
-distclean-am:
+distclean-local:
 	rm Makefile
