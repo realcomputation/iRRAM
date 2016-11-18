@@ -1,5 +1,6 @@
+
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([iRRAM],[2014_01],[],[iRRAM],[iRRAM.uni-trier.de])
+AC_INIT([iRRAM],[2014_01],[],[iRRAM],[irram.uni-trier.de])
 
 iRRAM_VERSION=2014_01
 iRRAM_shared_version=14:1:0
@@ -100,7 +101,9 @@ AS_CASE([$host],
 	dnl Do not use dynamic linking on Windows
 	#AM_LDFLAGS="-all-static $AM_LDFLAGS"
 
-	AC_CHECK_HEADERS([windows.h Psapi.h],,,[[
+	save_CPPFLAGS=$CPPFLAGS
+	CPPFLAGS="$AM_CPPFLAGS $CPPFLAGS"
+	AC_CHECK_HEADERS([windows.h psapi.h],,[AC_MSG_ERROR([required Windows system headers not found])],[[
 #ifdef HAVE_WINDOWS_H
 # include <windows.h>
 #endif]])
@@ -111,6 +114,8 @@ AS_CASE([$host],
 		[AC_MSG_ERROR([unable to find library containing GetProcessMemoryInfo().])])
 	LIBS_INST="$LIBS_INST $LIBS"
 	LIBS="$LDADD $save_LIBS $LIBS_INST"
+
+	CPPFLAGS=$save_CPPFLAGS
 ])
 
 dnl Test backends

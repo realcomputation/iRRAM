@@ -28,7 +28,9 @@ MA 02111-1307, USA.
 #include <cstdio>
 #include <vector>
 #include <cfenv>
-#include <pthread.h>
+#ifdef HAVE_PTHREAD_H
+# include <pthread.h>
+#endif
 
 #include <iRRAM/lib.h>
 #include <iRRAM/version.h>
@@ -458,7 +460,7 @@ if ( iRRAM_unlikely (iRRAM_debug>0) ) {
 return result;
 }
 
-
+#ifdef HAVE_PTHREAD_H
 /*****************************************/
 // templates needed for iRRAM_thread_exec 
 extern unsigned int iRRAM_thread_maxid;
@@ -590,7 +592,7 @@ template <class ARGUMENT, class RESULT>
 bool iRRAM_thread_finished(const iRRAM_thread_data<ARGUMENT,RESULT>& data){
   return data.finished;
 }
-
+#endif /* def HAVE_PTHREAD_H */
 
 } /* ! namespace iRRAM */
 

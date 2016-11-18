@@ -590,7 +590,7 @@ PACKAGE_TARNAME='iRRAM'
 PACKAGE_VERSION='2014_01'
 PACKAGE_STRING='iRRAM 2014_01'
 PACKAGE_BUGREPORT=''
-PACKAGE_URL='iRRAM.uni-trier.de'
+PACKAGE_URL='irram.uni-trier.de'
 
 ac_unique_file="sourcefile.list"
 # Factoring default headers for most tests.
@@ -1478,7 +1478,7 @@ Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
 
 Report bugs to the package provider.
-iRRAM home page: <iRRAM.uni-trier.de>.
+iRRAM home page: <irram.uni-trier.de>.
 _ACEOF
 ac_status=$?
 fi
@@ -16478,7 +16478,9 @@ case $host in #(
 
 		#AM_LDFLAGS="-all-static $AM_LDFLAGS"
 
-	for ac_header in windows.h Psapi.h
+	save_CPPFLAGS=$CPPFLAGS
+	CPPFLAGS="$AM_CPPFLAGS $CPPFLAGS"
+	for ac_header in windows.h psapi.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 ac_fn_cxx_check_header_compile "$LINENO" "$ac_header" "$as_ac_Header" "
@@ -16491,6 +16493,8 @@ if eval test \"x\$"$as_ac_Header"\" = x"yes"; then :
 #define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
 _ACEOF
 
+else
+  as_fn_error $? "required Windows system headers not found" "$LINENO" 5
 fi
 
 done
@@ -16558,6 +16562,8 @@ fi
 
 	LIBS_INST="$LIBS_INST $LIBS"
 	LIBS="$LDADD $save_LIBS $LIBS_INST"
+
+	CPPFLAGS=$save_CPPFLAGS
  ;; #(
   *) :
      ;;
@@ -17595,7 +17601,7 @@ Configuration commands:
 $config_commands
 
 Report bugs to the package provider.
-iRRAM home page: <iRRAM.uni-trier.de>."
+iRRAM home page: <irram.uni-trier.de>."
 
 _ACEOF
 cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
