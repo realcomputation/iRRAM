@@ -1,0 +1,39 @@
+REITERATE:
+  sizetype_normalize(sizetype &)
+  sizetype_shift(sizetype &)
+
+  limit(R (*f)(int prec, const ARG &, const ARG &), const ARG &)
+  limit(R (*f)(int prec, const ARG &, const DISCRETE &), const ARG &, const DISCRETE &)
+  limit(R (*f)(int prec, int *choice, const ARG &), const ARG &)
+  limit(REAL (*f)(int prec, const REAL &, const REAL &), const REAL &, const REAL &)
+    "computation of limit_gen1 failed totally\n"
+
+  limit(const FUNCTION<REAL,int> &)
+    "computation of limit_FUNCTION failed totally\n"
+
+  limit_lip(R (*f)(int prec, const ARG &, DISCRETE), int lip_value, bool (*ondomain)(const ARG &), const ARG &x, DISCRETE)
+  limit_lip(REAL (*f)(int prec, const REAL &), int lip, bool (*ondomain)(const REAL &), const REAL &)
+  limit_lip(REAL (*f)(int prec, const REAL &, const REAL &), int lip, bool (*ondomain)(const REAL &, const REAL &), const REAL &, const REAL &)
+  limit_lip(REALMATRIX (*f)(int prec, const REALMATRIX &), int lip, bool (*ondomain)(const REALMATRIX &), const REALMATRIX &)
+  lipschitz_1p_1a(R (*f)(const DISCRETE &, const PARAM &), int lip, bool (*ondomain)(const CONT_ARG &, const PARAM &), const CONT_ARG &, const PARAM &)
+  lipschitz(REAL (*f)(const REAL &), int lip, bool (*ondomain)(const REAL &), const REAL &)
+  lipschitz(REAL (*f)(const REAL &), int lip, bool (*ondomain)(int k, const REAL &), int k, const REAL &)
+  lipschitz(REAL (*f)(const REAL &), REAL (*lip)(const REAL &), bool (*ondomain)(const REAL &), const REAL &)
+  lipschitz(REAL (*f)(const REAL &, const REAL &), int lip, bool (*ondomain)(const REAL &, const REAL &), const REAL &, const REAL &)
+  lipschitz(REAL (*f)(const REAL &, const REAL &), int lip, bool (*ondomain)(int k, const REAL &, const REAL &), int k, const REAL &, const REAL &)
+    if (!ondomain(x))
+
+  limit_hint(REAL (*f)(int prec, const REAL &), int hint, const REAL &)
+  limit_hint(REAL (*f)(int prec, const REAL &, const REAL &), int hint, const REAL &, const REAL &)
+    "computation of limit_hint1 failed\n"
+
+  LAZY_BOOLEAN::operator bool() const
+    value <= BOTTOM
+  choose(const LAZY_BOOLEAN &...)
+
+  REAL::mp_make_mp()
+  REAL::mp_division(const REAL & y) const
+  REAL::as_INTEGER() const
+  approx(const REAL & x, const int p)
+  size(const REAL & x)
+  swrite(const REAL & x, const int w, const float_form form)
