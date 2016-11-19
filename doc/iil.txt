@@ -1,0 +1,26 @@
+iRRAM (Interface|Intermediate) Language
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Computable function (proglet):
+* GLSL-style:
+** defines set of inputs and outputs
+** defines one function 'compute' using these I/Os
+
+Proglet with iRRAM functionality:
+* provide iRRAM's data types
+  (INTEGER/RATIONAL/DYADIC/REAL/COMPLEX/REALMATRIX/SPARSEREALMATRIX)
+  and standard conversions from/to int/double/string
+  + convenience structures (structs / (dyn) arrays / sets)
+
+Requirements for compute:
+* independence of names of Reals given as inputs, i.e. continuity
+* re-runability, i.e. adhering to GCC's attributes
+** leaf (?, c.f. limit)
+** pure (when assuming inputs from their respective domains) or
+   const (when additionally single_valuedness can be guarranteed 
+
+Requirements for inputs/outputs:
+* ability to provide, on request, data with any given accuracy,
+  i.e. $Z\to\Sigma^*$
+
+Create a data flow graph for all proglets and submit that to iRRAM.
