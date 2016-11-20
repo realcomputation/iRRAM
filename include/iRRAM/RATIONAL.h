@@ -118,37 +118,37 @@ friend bool 	operator <      (const RATIONAL& x, const RATIONAL& y);
 friend bool 	operator <      (const RATIONAL& x, const INTEGER&  y);
 friend bool 	operator <      (const INTEGER&  x, const RATIONAL&  y);
 friend bool 	operator <      (const RATIONAL& x, const int       y);
-friend bool 	operator <      (const int       x, const INTEGER&  y);
+friend bool 	operator <      (const int       x, const RATIONAL& y);
 
 friend bool 	operator <=     (const RATIONAL& x, const RATIONAL& y);
 friend bool 	operator <=     (const RATIONAL& x, const INTEGER&  y);
 friend bool 	operator <=     (const INTEGER&  x, const RATIONAL&  y);
 friend bool 	operator <=     (const RATIONAL& x, const int       y);
-friend bool 	operator <=     (const int       x, const INTEGER&  y);
+friend bool 	operator <=     (const int       x, const RATIONAL& y);
 
 friend bool 	operator >      (const RATIONAL& x, const RATIONAL& y);
 friend bool 	operator >      (const RATIONAL& x, const INTEGER&  y);
 friend bool 	operator >      (const INTEGER&  x, const RATIONAL&  y);
 friend bool 	operator >      (const RATIONAL& x, const int       y);
-friend bool 	operator >      (const int       x, const INTEGER&  y);
+friend bool 	operator >      (const int       x, const RATIONAL& y);
 
 friend bool 	operator >=     (const RATIONAL& x, const RATIONAL& y);
 friend bool 	operator >=     (const RATIONAL& x, const INTEGER&  y);
 friend bool 	operator >=     (const INTEGER&  x, const RATIONAL&  y);
 friend bool 	operator >=     (const RATIONAL& x, const int       y);
-friend bool 	operator >=     (const int       x, const INTEGER&  y);
+friend bool 	operator >=     (const int       x, const RATIONAL& y);
 
 friend bool 	operator ==     (const RATIONAL& x, const RATIONAL& y);
 friend bool 	operator ==     (const RATIONAL& x, const INTEGER&  y);
 friend bool 	operator ==     (const INTEGER&  x, const RATIONAL&  y);
 friend bool 	operator ==     (const RATIONAL& x, const int       y);
-friend bool 	operator ==     (const int       x, const INTEGER&  y);
+friend bool 	operator ==     (const int       x, const RATIONAL& y);
 
 friend bool 	operator !=     (const RATIONAL& x, const RATIONAL& y);
 friend bool 	operator !=     (const RATIONAL& x, const INTEGER&  y);
 friend bool 	operator !=     (const INTEGER&  x, const RATIONAL&  y);
 friend bool 	operator !=     (const RATIONAL& x, const int       y);
-friend bool 	operator !=     (const int       x, const INTEGER&  y);
+friend bool 	operator !=     (const int       x, const RATIONAL& y);
 
 /****** String conversion ******/
 
