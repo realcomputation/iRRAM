@@ -110,8 +110,12 @@ void show_statistics()
     cerr << "   maximal precision:  double\n"; 
 }
 
+} // namespace iRRAM
+
 extern "C" void iRRAM_initialize(int argc,char **argv)
 {
+	using namespace iRRAM;
+
 int iRRAM_starting_prec=-50;
 int iRRAM_prec_inc=-20;
 double iRRAM_prec_factor=1.25;
@@ -194,6 +198,4 @@ for (int i=2;i<iRRAM_prec_steps;i++){
 if (iRRAM_debug) cerr << "\n"; 
 
 }
-
-} // namespace iRRAM
 

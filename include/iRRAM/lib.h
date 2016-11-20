@@ -166,6 +166,7 @@ namespace iRRAM {
 #define iRRAM_RELATIVE 1
 void precision_policy(int policy) noexcept;
 
+REAL strtoREAL(const char* s, char** endptr);
 REAL atoREAL(const char* s);
 
 
