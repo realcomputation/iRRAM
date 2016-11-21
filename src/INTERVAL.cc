@@ -32,12 +32,6 @@ INTERVAL::INTERVAL()
   upp=0;
 }
 
-INTERVAL::INTERVAL(const REAL& x)
-{
-  low=x;
-  upp=x;
-}
-
 INTERVAL::INTERVAL(const REAL& x, const REAL& y)
 {
   low=minimum(x,y);
@@ -113,10 +107,10 @@ return INTERVAL(x.low*maximum(x.low,REAL(0)) + x.upp*minimum(x.upp,REAL(0)),
 }
 
 INTERVAL power(const INTERVAL& x,int n){
-  if (n==0)  return 1;
+  if (n==0)  return INTERVAL(1);
   if (n==1)  return x;
   if (n==2)  return square(x);
-  if (n<0)   return power(1/x,-n);
+  if (n<0)   return power(INTERVAL(1)/x,-n);
   if (n%2==1)return INTERVAL(power(x.low,n),power(x.upp,n), true);
   REAL l=power(x.low,n-1);
   REAL u=power(x.upp,n-1);

@@ -42,23 +42,18 @@ public:
 
 // value: point interval [0,0]
 INTERVAL();
+INTERVAL(const INTERVAL &x) : low(x.low), upp(x.upp) {}
+INTERVAL(INTERVAL &&x) noexcept : low(std::move(x.low)), upp(std::move(x.upp)) {}
 
 // value: point interval [x,x]
-INTERVAL(const REAL& x);
+INTERVAL(const REAL& x) : low(x), upp(x) {}
 
 // value: interval [ min(l,r), max(l,r) ]
 INTERVAL(const REAL& l, const REAL& r);
 
-// value: point interval [x,x], for types that can be cast to REAL 
-template <class T>
-INTERVAL(const T& x):INTERVAL(REAL(x)){}
-
-// value: interval [ min(l,r), max(l,r) ], for types that can be cast to REAL 
-template <class T1,class T2>
-INTERVAL(const T1& l,const T2& r):INTERVAL(REAL(l),REAL(r)){}
-
 //  Fast construction of an interval from an ordered(!) pair of reals
-INTERVAL(const REAL& l, const REAL& r, bool dummy){ low=l;  upp=r;}
+INTERVAL(const REAL& l, const REAL& r, bool dummy) : low(l), upp(r) {}
+INTERVAL(REAL &&l, REAL &&r, bool dummy) : low(std::forward<REAL>(l)), upp(std::forward<REAL>(r)) {}
 
 
 // Standard Arithmetic: ------------------------
