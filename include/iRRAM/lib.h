@@ -123,6 +123,15 @@ inline ITERATION_STACK::~ITERATION_STACK() noexcept
 	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 }
 
+/* helper for reduced overload visibility of binary operator declarations */
+template <typename Base,typename EquivBase,typename Compat,typename Ret = Base>
+using enable_if_compat = typename std::enable_if<
+	std::is_same<typename std::remove_cv<EquivBase>::type,
+	             typename std::remove_cv<Base>::type
+	            >::value &&
+	std::is_convertible<Compat,Base>::value
+,Ret>::type;
+
 } // namespace iRRAM
 
 #include <iRRAM/LAZYBOOLEAN.h>
