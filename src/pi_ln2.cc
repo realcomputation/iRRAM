@@ -14,7 +14,7 @@ namespace iRRAM {
 double ln2_time = 0.0;
 double pi_time = 0.0;
 
-REAL ln2_approx(int prec)
+static REAL ln2_approx(int prec)
 {
 	stiff code;
 	int N = 100 - prec / 2;
@@ -80,7 +80,8 @@ REAL ln2()
 __thread REAL * pi_val;
 __thread int pi_err = 0;
 
-REAL pi_approx_MACHIN(int prec)
+#if 0 /* unused */
+static REAL pi_approx_MACHIN(int prec)
 {
 	REAL z1 = REAL(1) / REAL(5);
 	REAL z2 = REAL(1) / REAL(239);
@@ -107,8 +108,10 @@ REAL pi_approx_MACHIN(int prec)
 	}
 	return 4 * (4 * z1 - z2);
 }
+#endif
 
-REAL pi_approx_AGM(int prec)
+#if 0 /* unused */
+static REAL pi_approx_AGM(int prec)
 {
 	REAL a = 1;
 	REAL b = 1 / sqrt(REAL(2));
@@ -125,8 +128,9 @@ REAL pi_approx_AGM(int prec)
 	} while (!bound(a - b, prec));
 	return a * a / t;
 }
+#endif
 
-REAL pi_inv_approx_BORWEIN(int prec)
+static REAL pi_inv_approx_BORWEIN(int prec)
 {
 	REAL a = 6 - 4 * sqrt(REAL(2));
 	REAL y = sqrt(REAL(2)) - 1;

@@ -9,7 +9,7 @@
 
 using namespace iRRAM;
 
-void error(int i){
+static void error(int i){
 cout << "RATIONAL test: Error "<< i <<"\n";
 exit(1);
 }

@@ -2,13 +2,13 @@
 
 using namespace iRRAM;
 
-RATIONAL R_identity( const RATIONAL& x ){ return x; }
-INTEGER I_identity ( const INTEGER& x ){ return x; }
+static RATIONAL R_identity( const RATIONAL& x ){ return x; }
+static INTEGER I_identity ( const INTEGER& x ){ return x; }
 
-INTEGER I_multiply (const std::pair<INTEGER,INTEGER>& x ){ return x.first*x.second; }
+//static INTEGER I_multiply (const std::pair<INTEGER,INTEGER>& x ){ return x.first*x.second; }
 
 
-void error(int i){
+static void error(int i){
 cerr << i <<"\n";
 exit(1);
 }

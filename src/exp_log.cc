@@ -5,7 +5,7 @@
 
 namespace iRRAM {
 
-REAL exp_approx(int prec, const REAL & x)
+static REAL exp_approx(int prec, const REAL & x)
 {
 	precision_mode rel(iRRAM_RELATIVE);
 	REAL xs = x / ln2();
@@ -72,7 +72,7 @@ REAL exp_approx(int prec, const REAL & x)
 	return scale(z, s);
 }
 
-int exp_bound(const REAL & x) { return (int)((round(x) + 1) * 1.443); }
+static int exp_bound(const REAL & x) { return (int)((round(x) + 1) * 1.443); }
 
 REAL exp(const REAL & x)
 {
@@ -85,7 +85,7 @@ REAL exp(const REAL & x)
 	return y;
 }
 
-REAL euler_approx(int prec)
+static REAL euler_approx(int prec)
 {
 	if (prec >= 2)
 		return 0;
@@ -103,7 +103,7 @@ REAL euler() { return limit(euler_approx); }
 
 
 
-REAL log_taylor_approx(int prec, const REAL & x0)
+static REAL log_taylor_approx(int prec, const REAL & x0)
 {
 	// Computing series expansion for log(x) for x > 1/2
 	REAL x = x0;
@@ -144,7 +144,7 @@ REAL iterate(REAL f(REAL &, REAL &), REAL const & a_0, REAL const & b_0)
 	return a;
 }
 
-REAL agm(REAL & a, REAL & b)
+static REAL agm(REAL & a, REAL & b)
 {
 	REAL e = a * b;
 	a = scale(a + b, -1);
@@ -154,7 +154,7 @@ REAL agm(REAL & a, REAL & b)
 
 
 
-REAL log_agm_approx(int prec, const REAL & z)
+static REAL log_agm_approx(int prec, const REAL & z)
 {
 	int N = 25 - prec / 2;
 	precision_mode rel(7); // TODO: erh, what?
@@ -163,14 +163,14 @@ REAL log_agm_approx(int prec, const REAL & z)
 	return l;
 }
 
-REAL log_approx(int prec, const REAL & z)
+static REAL log_approx(int prec, const REAL & z)
 {
 	if (prec > -100)
 		return log_taylor_approx(prec, z);
 	return log_agm_approx(prec, z);
 }
 
-bool log_domain(const REAL & x) { return x > REAL(1); }
+static bool log_domain(const REAL & x) { return x > REAL(1); }
 
 REAL log(const REAL & x)
 {

@@ -145,7 +145,7 @@ REAL abs(const COMPLEX& z)
 { return sqrt(z._real*z._real+z._imag*z._imag); }
 
 
-COMPLEX c_sqrt_approx(int p, int* choice, const COMPLEX& z)
+static COMPLEX c_sqrt_approx(int p, int* choice, const COMPLEX& z)
 {
   REAL a,b,c,d,r;
   COMPLEX y;

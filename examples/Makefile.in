@@ -1,17 +1,17 @@
 # Makefile for user_programs
 
-prefix=@prefix@
-exec_prefix=@exec_prefix@
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
 
-CC = @CC@ -std=c11
-CFLAGS = @CFLAGS@
-CPP = @CPP@
-CPPFLAGS = @CPPFLAGS_INST@ -I@includedir@
-CXX = @CXX@ -std=c++11
-CXXCPP = @CXXCPP@ -std=c++11
-CXXFLAGS = @CXXFLAGS@
-LDFLAGS = -Xlinker -rpath -Xlinker @libdir@
-LDLIBS =  -L@libdir@ -liRRAM @LIBS_INST@
+CC          = @CC@
+CFLAGS      = @CFLAGS@ @PTHREAD_CFLAGS@
+CPP         = @CPP@
+CPPFLAGS    = @CPPFLAGS_INST@ -I@includedir@
+CXX         = @CXX@
+CXXCPP      = @CXXCPP@
+CXXFLAGS    = @CXXFLAGS@ @PTHREAD_CFLAGS@
+LDFLAGS     = -Xlinker -rpath -Xlinker @libdir@
+LDLIBS      = -L@libdir@ -liRRAM @LIBS_INST@
 
 EXAMPLES_BIN = \
 	euler e_example swanseatest-2 itsyst itsyst2 itsyst3 factorial \
@@ -25,6 +25,7 @@ EXAMPLES_BIN = \
 all: $(EXAMPLES_BIN)
 
 maintainer-clean: distclean
+
 distclean: clean
 	rm -f Makefile
 

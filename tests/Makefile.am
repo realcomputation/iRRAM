@@ -1,4 +1,3 @@
-DEFAULT_INCLUDES=-I$(top_srcdir)/include -I$(top_builddir)/include
 
 LDADD=$(top_builddir)/build/libiRRAM.la @LDADD@
 

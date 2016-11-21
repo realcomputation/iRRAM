@@ -115,7 +115,7 @@ REAL minimum (const REAL& x, const REAL& y){
 
 
 
-REALMATRIX expmatrix_approx (int prec, const REALMATRIX& x){
+static REALMATRIX expmatrix_approx (int prec, const REALMATRIX& x){
    if (rows(x)!=columns(x)) {
      fprintf(stderr,"Exponentiation of non-quadratic real matrix [%d,%d]\n",
            columns(x),rows(x));
@@ -132,7 +132,7 @@ REALMATRIX expmatrix_approx (int prec, const REALMATRIX& x){
    return z;
 }
 
-bool exp_domain(const REALMATRIX& x){
+static bool exp_domain(const REALMATRIX& x){
   return bound(x,-2);
 }
 

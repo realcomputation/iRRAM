@@ -9,7 +9,7 @@
 
 using namespace iRRAM;
 
-void error(int i){
+static void error(int i){
 cerr << i <<"\n";
 exit(1);
 }

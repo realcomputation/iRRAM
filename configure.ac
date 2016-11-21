@@ -1,5 +1,6 @@
+
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(iRRAM,2014_01,[],[iRRAM],[iRRAM.uni-trier.de])
+AC_INIT([iRRAM],[2014_01],[],[iRRAM],[irram.uni-trier.de])
 
 iRRAM_VERSION=2014_01
 iRRAM_shared_version=14:1:0
@@ -8,6 +9,7 @@ AC_SUBST(iRRAM_shared_version)
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([sourcefile.list])
+AC_CANONICAL_HOST
 
 GMPLDFLAGS=
 GMPCPPFLAGS=
@@ -41,26 +43,22 @@ AC_ARG_WITH([mpfr-lib],
 
 dnl Profiling
 AC_ARG_ENABLE([profiling],
-	[AS_HELP_STRING([--enable-profiling],[build with profiler support @<:@available: gprof, default: no@:>@])],
-	[AS_CASE([$enableval],
-		[no|gprof],[],
-		[AC_MSG_ERROR([bad value $enableval for --enable-profiling, need no/gprof])])],
-	[enable_profiling=no])
+	[AS_HELP_STRING([--enable-profiling],[build with profiler support @<:@default=no@:>@])])
 
-AM_SILENT_RULES(yes)
-AM_INIT_AUTOMAKE()
-
-AM_CPPFLAGS="$AM_CPPFLAGS $GMPCPPFLAGS $MPFRCPPFLAGS"
-AM_LDFLAGS="$AM_LDFLAGS $GMPLDFLAGS $MPFRLDFLAGS"
-
-LT_INIT
-AC_SUBST(LIBTOOL)
-AC_SUBST(LIBTOOL_DEPS)
-AC_SUBST(LD)
+AM_INIT_AUTOMAKE([nostdinc -Wall subdir-objects])
+AM_SILENT_RULES([yes])
+AM_MAINTAINER_MODE([enable])
 
 dnl Checks for programs.
 AC_PROG_MAKE_SET
 AC_PROG_CXX
+AM_PROG_AR
+
+LT_INIT([win32-dll])
+AC_SUBST(LIBTOOL)
+AC_SUBST(LIBTOOL_DEPS)
+AC_SUBST(LD)
+
 # these macros (may) modify *FLAGS, so we'll save those
 save_CFLAGS=$CFLAGS
 save_CXXFLAGS=$CXXFLAGS
@@ -73,19 +71,63 @@ AM_CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
 CFLAGS=$save_CFLAGS
 CXXFLAGS=$save_CXXFLAGS
 
-if test "$enable_profiling" != "no" ; then
-  AM_CFLAGS="$AM_CFLAGS -pg -fno-inline"
-  AM_CXXFLAGS="$AM_CXXFLAGS -pg -fno-inline"
-  AM_LDFLAGS="$AM_LDFLAGS -pg -fno-inline"
-fi
+dnl ----------------------------------------------------------------------------
+dnl check profiling support
+dnl ----------------------------------------------------------------------------
+AS_CASE(["$enable_profiling"],[yes|gprof],[
+   AC_LANG_PUSH([C])
+   AX_CHECK_COMPILE_FLAG([-pg],
+     [PROFILING_CFLAGS=-pg]
+     [AX_CHECK_COMPILE_FLAG([-fno-inline],
+       [PROFILING_CFLAGS="$PROFILING_CFLAGS -fno-inline"],
+       [AC_MSG_WARN([profiling requested, but cannot disable inlining on $CC])],
+       [$PROFILING_CFLAGS])])
+   AC_LANG_POP([C])
+
+   AS_IF([test -n "$PROFILING_CFLAGS"],[
+      AC_LANG_PUSH([C++])
+      AX_CHECK_COMPILE_FLAG([-pg],
+        [PROFILING_CXXFLAGS=-pg]
+        [AX_CHECK_COMPILE_FLAG([-fno-inline],
+          [PROFILING_CXXFLAGS="$PROFILING_CXXFLAGS -fno-inline"],
+          [AC_MSG_WARN([profiling requested, but cannot disable inlining on $CXX])],
+          [$PROFILING_CXXFLAGS])])
+      AC_LANG_POP([C++])])
+
+   AS_IF([test -n "$PROFILING_CFLAGS" -a "$PROFILING_CXXFLAGS" = "$PROFILING_CFLAGS"],
+     [AX_CHECK_LINK_FLAG([$PROFILING_CFLAGS],
+       [AM_CFLAGS="$AM_CFLAGS $PROFILING_CFLAGS"]
+       [AM_CXXFLAGS="$AM_CXXFLAGS $PROFILING_CFLAGS"]
+       [AM_LDFLAGS="$AM_LDFLAGS $PROFILING_CFLAGS"],
+       [AC_MSG_ERROR([linker does not support profiling flags $PROFILING_CFLAGS])])],
+     [AC_MSG_ERROR([profiling requested but not supported])])
+])
+
+dnl ----------------------------------------------------------------------------
+dnl use some warning flags if supported
+dnl ----------------------------------------------------------------------------
+AC_LANG_PUSH([C])
+WARN_CFLAGS=
+AX_CHECK_COMPILE_FLAG([-Wall],
+  [WARN_CFLAGS="-Wall"]
+  [AX_CHECK_COMPILE_FLAG([-Wno-implicit],[WARN_CFLAGS="$WARN_CFLAGS -Wno-implicit"],,[$WARN_CFLAGS])]
+  [AX_CHECK_COMPILE_FLAG([-Wmissing-prototypes],[WARN_CFLAGS="$WARN_CFLAGS -Wmissing-prototypes"],,[$WARN_CFLAGS])]
+  [AX_CHECK_COMPILE_FLAG([-pedantic],[WARN_CFLAGS="$WARN_CFLAGS -pedantic"],,[$WARN_CFLAGS])])
+AM_CFLAGS="$AM_CFLAGS $WARN_CFLAGS"
+AC_LANG_POP([C])
+
+AC_LANG_PUSH([C++])
+WARN_CXXFLAGS=
+AX_CHECK_COMPILE_FLAG([-Wall],
+  [WARN_CXXFLAGS="-Wall"]
+  [AX_CHECK_COMPILE_FLAG([-Wmissing-declarations],[WARN_CXXFLAGS="$WARN_CXXFLAGS -Wmissing-declarations"],,[$WARN_CXXFLAGS])]
+  [AX_CHECK_COMPILE_FLAG([-pedantic],[WARN_CXXFLAGS="$WARN_CXXFLAGS -pedantic"],,[$WARN_CXXFLAGS])])
+AM_CXXFLAGS="$AM_CXXFLAGS $WARN_CXXFLAGS"
+AC_LANG_POP([C++])
+
+dnl ----------------------------------------------------------------------------
 
 AC_LANG([C++])
-
-dnl If compiler is gcc, then use some warning flags
-if test -n "$GCC"; then
-  AM_CFLAGS="$AM_CFLAGS -Wall -Wno-implicit -Wmissing-prototypes -pedantic"
-  AM_CXXFLAGS="$AM_CXXFLAGS -Wall -pedantic"
-fi
 
 AS_CASE([$host],
 	[*-mingw*],[
@@ -96,27 +138,27 @@ AS_CASE([$host],
 	dnl Do not use dynamic linking on Windows
 	#AM_LDFLAGS="-all-static $AM_LDFLAGS"
 
+	save_CPPFLAGS=$CPPFLAGS
+	CPPFLAGS="$AM_CPPFLAGS $CPPFLAGS"
+	AC_CHECK_HEADERS([windows.h psapi.h],,[AC_MSG_ERROR([required Windows system headers not found])],[[
+#ifdef HAVE_WINDOWS_H
+# include <windows.h>
+#endif]])
+
 	save_LIBS=$LIBS
 	LIBS=
 	AC_SEARCH_LIBS([GetProcessMemoryInfo],[psapi kernel32],,
 		[AC_MSG_ERROR([unable to find library containing GetProcessMemoryInfo().])])
 	LIBS_INST="$LIBS_INST $LIBS"
 	LIBS="$LDADD $save_LIBS $LIBS_INST"
+
+	CPPFLAGS=$save_CPPFLAGS
 ])
 
 dnl Test backends
 
-if test "$with_include_path" != "" ; then
-	AM_CPPFLAGS="$AM_CPPFLAGS -I$with_include_path"
-	AC_MSG_RESULT([new AM_CPPFLAGS=$AM_CPPFLAGS])
-fi
-
-if test "$with_lib_path" != "" ; then
-	LDADD="-L$with_lib_path $LDADD"
-	RPATH="-Xlinker -rpath -Xlinker $with_lib_path $RPATH"
-	LD_LIBRARY_PATH="$with_lib_path:$LD_LIBRARY_PATH"
-	LIBS="$LDADD $LIBS_INST"
-fi
+AM_CPPFLAGS="$AM_CPPFLAGS $GMPCPPFLAGS $MPFRCPPFLAGS"
+AM_LDFLAGS="$AM_LDFLAGS $GMPLDFLAGS $MPFRLDFLAGS"
 
 CPPFLAGS_INST="$AM_CPPFLAGS $CPPFLAGS"
 
@@ -129,12 +171,12 @@ CFLAGS="$AM_CFLAGS $CFLAGS"
 CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
 LDFLAGS="$AM_LDFLAGS $LDFLAGS"
 
-AC_CHECK_LIB(m,sin,LIBS_INST="-lm")
-
-AC_CHECK_HEADERS(pthread.h)
-AC_CHECK_LIB(pthread, pthread_create,LIBS_INST="$LIBS_INST -lpthread")
+AC_SEARCH_LIBS([sin],[m],[AS_CASE([$ac_cv_search_sin],["none required"],[],[LIBS_INST="$ac_cv_search_sin"])])
+AX_PTHREAD([
+	LIBS_INST="${PTHREAD_LIBS} ${LIBS_INST}"
+	AM_CFLAGS="$AM_CFLAGS $PTHREAD_CFLAGS"
+	AM_CXXFLAGS="$AM_CXXFLAGS $PTHREAD_CFLAGS"],[AC_MSG_ERROR([need pthread support])])
 LIBS="$LDADD $LIBS_INST"
-
 
 AS_BOX([Checking GMP headers/lib...])
 AC_CHECK_HEADER(gmp.h,,[AC_MSG_ERROR([GNU Multiple Precision Arithmetic library (<https://gmplib.org/>) is required.])])
@@ -147,6 +189,9 @@ AC_DEFUN([gmp_link_check],[
 	AC_LANG_PUSH([$1])
 	AC_MSG_CHECKING([whether $1-linking against GMP works])
 	AC_LINK_IFELSE([AC_LANG_SOURCE([[
+#ifdef __cplusplus
+# include <cstddef> /* MinGW's GMP header doesn't include this but uses ::max_align_t */
+#endif
 #include <gmp.h>
 int main() {
 	mpz_init(0);
@@ -199,6 +244,8 @@ CFLAGS="$save_CFLAGS"
 CXXFLAGS="$save_CXXFLAGS"
 LDFLAGS="$save_LDFLAGS"
 
+AM_CPPFLAGS="$AM_CPPFLAGS -I\$(top_srcdir)/include -I\$(top_builddir)/include"
+
 AC_SUBST(CPPFLAGS_INST)
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CFLAGS)
@@ -242,9 +289,9 @@ for be in $BACKENDS; do
 done
 
 AC_CONFIG_FILES([build/Makefile])
-AC_CONFIG_FILES([iRRAM_VERSION include/iRRAM/version.h] )
-
-AC_OUTPUT(Makefile include/Makefile tests/Makefile examples/Makefile-pre doc/Makefile )
+AC_CONFIG_FILES([iRRAM_VERSION include/iRRAM/version.h])
+AC_CONFIG_FILES([Makefile include/Makefile tests/Makefile examples/Makefile doc/Makefile])
+AC_OUTPUT
 
 AC_MSG_NOTICE([
 

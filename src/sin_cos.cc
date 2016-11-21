@@ -11,9 +11,9 @@ namespace iRRAM {
 
 // Here, the Lipschitz bounds will usually be valid
 // on the whole set of real numbers;
-bool total_domain(const REAL & x) { return true; }
+static bool total_domain(const REAL & x) { (void)x; return true; }
 
-REAL sin_taylor(int prec, const REAL & x)
+static REAL sin_taylor(int prec, const REAL & x)
 {
 	// We compute sin(x) to a precision of 2^prec using the Taylor
 	// expansion. The evaluation of the expansion is improved by grouping
@@ -74,7 +74,7 @@ REAL sin_taylor(int prec, const REAL & x)
 	return z;
 }
 
-REAL sin_range_red3(int hint, const REAL & x)
+static REAL sin_range_red3(int hint, const REAL & x)
 {
 	// This function computes sin(x) (exactly) on [-1,1]
 	// using a range reduction and a call to a further sin(x)-algorithm.
@@ -120,7 +120,7 @@ REAL sin_range_red3(int hint, const REAL & x)
 	return y;
 }
 
-REAL sin_range_red1(int prec, const REAL & x)
+static REAL sin_range_red1(int prec, const REAL & x)
 {
 	// This function computes an approximation to sin(x) for arbitray x.
 
@@ -224,7 +224,7 @@ REAL tan(const REAL & x)
 }
 
 ///////////////////////////////////////////////////////////////////
-REAL atan_approx(int prec, const REAL & x)
+static REAL atan_approx(int prec, const REAL & x)
 {
 	if (prec >= 2)
 		return 0;
@@ -238,7 +238,7 @@ REAL atan_approx(int prec, const REAL & x)
 	return z;
 }
 
-REAL atan_reduction(int p, const REAL & x)
+static REAL atan_reduction(int p, const REAL & x)
 {
 	// only applied for |x|<2
 	if (bound(x, p))

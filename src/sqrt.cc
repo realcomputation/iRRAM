@@ -11,7 +11,7 @@
 
 namespace iRRAM {
 
-REAL root_approx(int prec, const REAL & x, int n)
+static REAL root_approx(int prec, const REAL & x, int n)
 {
 	int u = upperbound(x) / n;
 	REAL error;
