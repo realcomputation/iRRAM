@@ -3,6 +3,7 @@
 #include <cmath>
 #include "iRRAM.h"
 #include "iRRAM/core.h"
+#include "iRRAM/lib.h" /* iRRAM_ABSOLUTE, iRRAM_RELATIVE */
 
 using namespace iRRAM;
 
