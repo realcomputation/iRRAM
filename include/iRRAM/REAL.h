@@ -68,8 +68,8 @@ public:
 
 	REAL();
 	REAL(      int           i);
-	REAL(const std::string  &s);
-	REAL(const char         *s);
+	explicit REAL(const std::string  &s);
+	explicit REAL(const char         *s);
 	REAL(const DYADIC       &y);
 	REAL(const REAL         &y);          /* copy constructor */
 	REAL(      REAL        &&y) noexcept; /* move constructor */
