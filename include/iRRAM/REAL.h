@@ -34,7 +34,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-class REAL : conditional_comparison_overloads<REAL,LAZY_BOOLEAN>
+class REAL final : conditional_comparison_overloads<REAL,LAZY_BOOLEAN>
 {
 	struct double_pair {
 	#ifdef _use_SSE2__
@@ -288,29 +288,24 @@ friend REAL lipschitz (REAL f(const REAL&),
 
 friend class REALMATRIX;
 friend class SPARSEREALMATRIX;
-friend class INTEGER;
-friend class DYADIC;
-friend class RATIONAL;
+//friend class INTEGER;
+//friend class DYADIC;
+//friend class RATIONAL;
 
 // for the sake of proving computational adequacy:
 // if q=module(f,x,p), then |z-x|<2^q => |f(z)-f(x)| < 2^p
 friend int module(REAL f(const REAL&),const REAL& x, int p);
 
+friend void swap(REAL &, REAL &) noexcept;
 
 // implementational issues: --------------------
-
+private:
 	double_pair   dp;
 	MP_type       value;
 	sizetype      error;
 	sizetype      vsize;
 
 public:
-	REAL(MP_type y, sizetype errorinfo) noexcept;
-	REAL(const double_pair &ydp) noexcept;
-#ifdef _use_SSE2__
-	REAL(const __m128d     &y_sse) noexcept;
-#endif
-
 	void         adderror           (sizetype  error);
 	void         seterror           (sizetype  error);
 	void         geterror           (sizetype &error) const;
@@ -320,6 +315,13 @@ public:
 friend REAL intervall_join (const REAL& x,const REAL& y);
 
 // internal use:
+private:
+	REAL(MP_type y, sizetype errorinfo) noexcept;
+	REAL(const double_pair &ydp) noexcept;
+#ifdef _use_SSE2__
+	REAL(const __m128d     &y_sse) noexcept;
+#endif
+
 	void         mp_copy            (const REAL   &);
 	void         mp_copy_init       (const REAL   &);
 	void         mp_make_mp         ();
