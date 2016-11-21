@@ -34,7 +34,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-class REAL
+class REAL : conditional_comparison_overloads<REAL,LAZY_BOOLEAN>
 {
 	struct double_pair {
 	#ifdef _use_SSE2__
@@ -78,46 +78,81 @@ public:
 
 	// Standard Arithmetic: ------------------------
 
-	friend REAL   operator +  (const REAL   &x, const REAL   &y);
-	friend REAL   operator +  (const REAL   &x,       int     n);
-	friend REAL   operator +  (      int     n, const REAL   &x) { return x+n; }
-	friend REAL   operator +  (const REAL   &x,       double  y);
-	friend REAL   operator +  (      double  y, const REAL   &x) { return x+y; }
-	friend REAL & operator += (      REAL   &x, const REAL   &y);
-	friend REAL & operator += (      REAL   &x,       int     n) { return x=x+n; }
-	friend REAL & operator += (      REAL   &x,       double  d) { return x=x+d; }
+	friend REAL operator+(const REAL &, const REAL &);
 
-	friend REAL   operator -  (const REAL   &x, const REAL   &y);
-	friend REAL   operator -  (const REAL   &x,       int     n);
-	friend REAL   operator -  (      int     n, const REAL   &x);
-	/* not optimized yet, maybe MPFR contains "x-d" and "d-x"
-	friend REAL   operator -  (const REAL   &x, const double  d);
-	friend REAL   operator -  (const double  d, const REAL   &x);*/
-	friend REAL   operator -  (const REAL   &x);
-	friend REAL & operator -= (      REAL   &x, const REAL   &y) { return x=x-y; }
-	friend REAL & operator -= (      REAL   &x,       int     n) { return x=x-n; }
+	REAL & operator+=(const REAL &);
 
-	friend REAL   operator *  (const REAL   &x, const REAL   &y);
-	friend REAL   operator *  (const REAL   &x,       int     n);
-	friend REAL   operator *  (      int     n, const REAL   &x) { return x*n; }
-	/* not optimized yet, maybe MPFR contains "x*d" and "d*x"
-	friend REAL   operator *  (const REAL   &x, const double  y);
-	friend REAL   operator *  (const double  y, const REAL   &x);*/
-	friend REAL & operator *= (      REAL   &x, const REAL   &y) { return x=x*y; }
-	friend REAL & operator *= (      REAL   &x,       int     n);
+	template <typename A,typename B>
+	friend enable_if_compat<REAL,A,B> operator+(const A &a, const B &b)
+	{
+		return a+REAL(b);
+	}
 
-	friend REAL   operator /  (const REAL   &x, const REAL   &y);
-	friend REAL   operator /  (const REAL   &x,       int     n);
-	/* not optimized yet, maybe MPFR contains "x/d" and "d/x"
-	friend REAL   operator /  (const REAL   &x,       double  y);
-	friend REAL   operator /  (      double  y, const REAL   &x);*/
-	friend REAL & operator /= (      REAL   &x, const REAL   &y) { return x=x/y; }
-	friend REAL & operator /= (      REAL   &x,       int     n) { return x=x/n; }
+	template <typename A,typename B>
+	friend enable_if_compat<REAL,A,B> operator+(const B &b, const A &a)
+	{
+		return a+b;
+	}
 
 
-	friend REAL   sqrt  (const REAL &x);
-	friend REAL   square(const REAL &x);
-	friend REAL   scale (const REAL &x, const int k);
+	friend REAL operator-(const REAL &x, const REAL &y);
+
+	template <typename A,typename B>
+	friend enable_if_compat<REAL,A,B> operator-(const A &a, const B &b)
+	{
+		return a-REAL(b);
+	}
+
+	template <typename A,typename B>
+	friend enable_if_compat<REAL,A,B> operator-(const B &b, const A &a)
+	{
+		return REAL(b)-a;
+	}
+
+	/* double not optimized yet, maybe MPFR contains "x-d" and "d-x" */
+	REAL operator-() const;
+	REAL & operator-=(const REAL &y);
+	REAL & operator-=(      int   n);
+
+	friend REAL operator*(const REAL &x, const REAL &y);
+
+	template <typename A,typename B>
+	friend enable_if_compat<REAL,A,B> operator*(const A &a, const B &b)
+	{
+		return a*REAL(b);
+	}
+
+	template <typename A,typename B>
+	friend enable_if_compat<REAL,A,B> operator*(const B &b, const A &a)
+	{
+		return a*b;
+	}
+
+	REAL & operator*=(const REAL &y) { return *this = *this * y; }
+	REAL & operator*=(      int   n);
+
+	friend REAL operator/(const REAL &x, const REAL &y);
+
+	template <typename A,typename B>
+	friend enable_if_compat<REAL,A,B> operator/(const A &a, const B &b)
+	{
+		return a/REAL(b);
+	}
+
+	template <typename A,typename B>
+	friend enable_if_compat<REAL,A,B> operator/(const B &b, const A &a)
+	{
+		return REAL(b)/a;
+	}
+	REAL & operator/=(const REAL &y) { return *this = *this / y; }
+	REAL & operator/=(      int   n);
+
+	friend REAL   operator << (const REAL   &x,       int     n);
+	friend REAL   operator >> (const REAL   &x,       int     n);
+
+	friend REAL          sqrt        (const REAL &x);
+	friend REAL          square      (const REAL &x);
+	friend REAL          scale       (const REAL &x, const int k);
 
 	// Comparisons: --------------------------------
 
@@ -459,7 +494,8 @@ inline REAL operator+(const REAL& x, const REAL& y)
 #endif
 }
 
-inline REAL operator+(const REAL& x, int i)
+template <>
+inline REAL operator+(const REAL &x, const int &i)
 {
 	if (iRRAM_unlikely(x.value))
 		return x.mp_addition(i);
@@ -467,26 +503,19 @@ inline REAL operator+(const REAL& x, int i)
 	                              x.dp.upper_neg-i));
 }
 
-inline REAL operator+(const REAL & x, double d)
+inline REAL & REAL::operator+=(const REAL &y)
 {
-	if (iRRAM_unlikely(x.value))
-		return x.mp_addition(d);
-	return REAL(REAL::double_pair(x.dp.lower_pos + d, x.dp.upper_neg - d));
-}
-
-inline REAL & operator+=(REAL & x, const REAL & y)
-{
-	if (iRRAM_unlikely(x.value || y.value)) {
-		x.mp_conv().mp_eqaddition(y.mp_conv());
-		return x;
+	if (iRRAM_unlikely(value||y.value)) {
+		mp_conv().mp_eqaddition(y.mp_conv());
+		return *this;
 	}
 #ifdef _use_SSE2__
-	x.dp.sse_data = _mm_add_pd(x.dp.sse_data, y.dp.sse_data);
+	dp.sse_data = _mm_add_pd(x.dp.sse_data,y.dp.sse_data);
 #else
-	x.dp.lower_pos += y.dp.lower_pos;
-	x.dp.upper_neg += y.dp.upper_neg;
+	dp.lower_pos+=y.dp.lower_pos;
+	dp.upper_neg+=y.dp.upper_neg;
 #endif
-	return x;
+	return *this;
 }
 
 inline REAL operator-(const REAL& x, const REAL& y)
@@ -497,7 +526,8 @@ inline REAL operator-(const REAL& x, const REAL& y)
 	                              x.dp.upper_neg+y.dp.lower_pos));
 }
 
-inline REAL operator - (const REAL& x, int n)
+template <>
+inline REAL operator-(const REAL& x, const int &n)
 {
 	if (iRRAM_unlikely(x.value))
 		return x.mp_subtraction(n);
@@ -505,7 +535,8 @@ inline REAL operator - (const REAL& x, int n)
 	                              x.dp.upper_neg+n));
 }
 
-inline REAL operator - (int n, const REAL& x)
+template <>
+inline REAL operator-(const int &n, const REAL& x)
 {
 	if (iRRAM_unlikely(x.value))
 		return x.mp_invsubtraction(n);
@@ -513,7 +544,7 @@ inline REAL operator - (int n, const REAL& x)
 	                              x.dp.lower_pos-n));
 }
 
-inline REAL operator - (const REAL& x)
+inline REAL REAL::operator-() const
 {
 	if (iRRAM_unlikely(value))
 		return mp_invsubtraction(int(0));
@@ -521,6 +552,8 @@ inline REAL operator - (const REAL& x)
 	                              -dp.upper_neg));
 }
 
+inline REAL & REAL::operator-=(const REAL &y) { return *this = *this - y; }
+inline REAL & REAL::operator-=(      int   n) { return *this = *this - n; }
 
 // inline double my_fmin(const double& x,const double& y)
 // { return  x<y?x:y ; }
@@ -551,7 +584,8 @@ inline REAL operator*(const REAL & x, const REAL & y)
 	return REAL(z);
 }
 
-inline REAL operator * (const REAL& x, int n)
+template <>
+inline REAL operator*(const REAL& x, const int &n)
 {
 	if (iRRAM_unlikely(x.value))
 		return x.mp_multiplication(n);
@@ -566,22 +600,19 @@ inline REAL operator * (const REAL& x, int n)
 	return REAL(z);
 }
 
-
-inline REAL & operator*=(REAL & x, int n)
+inline REAL & REAL::operator*=(int n)
 {
-	if (iRRAM_unlikely(x.value)) {
-		x = x.mp_multiplication(n);
-		return x;
-	}
+	if (iRRAM_unlikely(value))
+		return *this = mp_multiplication(n);
 	if (n >= 0) {
-		x.dp.lower_pos = x.dp.lower_pos * n;
-		x.dp.upper_neg = x.dp.upper_neg * n;
+		dp.lower_pos *= n;
+		dp.upper_neg *= n;
 	} else {
-		double tmp = (-x.dp.upper_neg) * n;
-		x.dp.upper_neg = (-x.dp.lower_pos) * n;
-		x.dp.lower_pos = tmp;
+		double tmp    = -dp.upper_neg * n;
+		dp.upper_neg  = -dp.lower_pos * n;
+		dp.lower_pos  = tmp;
 	}
-	return x;
+	return *this;
 }
 
 inline REAL operator/(const REAL& x, const REAL& y)
@@ -617,7 +648,8 @@ inline REAL operator/(const REAL& x, const REAL& y)
 	return REAL(z);
 }
 
-inline REAL operator / (const REAL& x, int n) {
+template <>
+inline REAL operator/(const REAL& x, const int &n)
 {
 	if (iRRAM_unlikely(x.value))
 		return x.mp_division(n);
