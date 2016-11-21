@@ -34,21 +34,24 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-class iRRAM_double_pair{
-	public: 
-#ifdef _use_SSE2__
-	union {struct{double lower_pos,upper_neg;}; __m128d sse_data;};
-#else
-	double lower_pos,upper_neg;
-#endif
-	iRRAM_double_pair(const double l,const double u)
-		{lower_pos=l;upper_neg=u;};
-	iRRAM_double_pair(){};
-};
-
-
 class REAL 
 {
+	struct double_pair {
+	#ifdef _use_SSE2__
+		union {
+			struct {
+				double lower_pos, upper_neg;
+			};
+			__m128d sse_data;
+		};
+		double_pair(const __m128d& sse) noexcept : sse_data(sse) {}
+	#else
+		double lower_pos, upper_neg;
+	#endif
+		double_pair(const double l,const double u) noexcept
+		: lower_pos(l), upper_neg(u) {}
+		double_pair() noexcept {}
+	};
 public:
 
 	// Constructors: -------------------------------
@@ -271,7 +274,7 @@ friend int module(REAL f(const REAL&),const REAL& x, int p);
 
 public:
 	REAL(MP_type y, sizetype errorinfo) noexcept;
-	REAL(const iRRAM_double_pair &ydp) noexcept;
+	REAL(const double_pair &ydp) noexcept;
 #ifdef _use_SSE2__
 	REAL(const __m128d     &y_sse) noexcept;
 #endif
@@ -327,7 +330,7 @@ inline REAL::REAL(MP_type y,const sizetype errorinfo)
 }
 
 //"private" internal  constructor
-inline REAL::REAL(const iRRAM_double_pair& ydp)
+inline REAL::REAL(const double_pair& ydp) noexcept
 {
     value=NULL;
     dp = ydp;
@@ -416,7 +419,8 @@ inline REAL operator + (const REAL& x, const REAL& y)
 #ifdef _use_SSE2__
     return REAL(_mm_add_pd(x.dp.sse_data,y.dp.sse_data));
 #else
-    return REAL(iRRAM_double_pair(x.dp.lower_pos+y.dp.lower_pos,x.dp.upper_neg+y.dp.upper_neg));
+    return REAL(REAL::double_pair(x.dp.lower_pos+y.dp.lower_pos,
+                                  x.dp.upper_neg+y.dp.upper_neg));
 #endif
 }
 
@@ -424,16 +428,16 @@ inline REAL operator + (const REAL& x, int i)
 {
     if (iRRAM_unlikely( x.value ) )
 	{ return x.mp_addition(i); }
-    iRRAM_double_pair z(x.dp.lower_pos+i,x.dp.upper_neg-i);
-    return REAL(z);
+    return REAL(REAL::double_pair(x.dp.lower_pos+i,
+                                  x.dp.upper_neg-i));
 }
 
 inline REAL operator + (const REAL& x, double d)
 {
     if (iRRAM_unlikely( x.value ) )
 	{ return x.mp_addition(d); }
-    iRRAM_double_pair z(x.dp.lower_pos+d,x.dp.upper_neg-d);
-    return REAL(z);
+    return REAL(REAL::double_pair(x.dp.lower_pos+d,
+                                  x.dp.upper_neg-d));
 }
 
 inline REAL& operator += (REAL& x,const REAL& y)
@@ -453,32 +457,32 @@ inline REAL operator - (const REAL& x, const REAL& y)
 {
     if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_subtraction(y.mp_conv()); }
-    iRRAM_double_pair z(x.dp.lower_pos+y.dp.upper_neg,x.dp.upper_neg+y.dp.lower_pos);
-    return REAL(z);
+    return REAL(REAL::double_pair(x.dp.lower_pos+y.dp.upper_neg,
+                                  x.dp.upper_neg+y.dp.lower_pos));
 }
 
 inline REAL operator - (const REAL& x, int n)
 {
     if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_subtraction(n); }
-    iRRAM_double_pair z(x.dp.lower_pos-n,x.dp.upper_neg+n);
-    return REAL(z);
+    return REAL(REAL::double_pair(x.dp.lower_pos-n,
+                                  x.dp.upper_neg+n));
 }
 
 inline REAL operator - (int n, const REAL& x)
 {
     if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_invsubtraction(n); }
-    iRRAM_double_pair z(x.dp.upper_neg+n,x.dp.lower_pos-n);
-    return REAL(z);
+    return REAL(REAL::double_pair(x.dp.upper_neg+n,
+                                  x.dp.lower_pos-n));
 }
 
 inline REAL operator - (const REAL& x)
 {
     if ( iRRAM_unlikely ( x.value ) )
 	{ return x.mp_invsubtraction(int(0)); }
-    iRRAM_double_pair z(-x.dp.lower_pos,-x.dp.upper_neg);
-    return REAL(z);
+    return REAL(REAL::double_pair(-x.dp.lower_pos,
+                                  -x.dp.upper_neg));
 }
 
 
@@ -489,7 +493,7 @@ inline REAL operator * (const REAL& x, const REAL& y)
 {
     if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_multiplication(y.mp_conv()); }
-    iRRAM_double_pair z;
+    REAL::double_pair z;
     if (x.dp.lower_pos >= 0 && y.dp.lower_pos >= 0) {
       z.lower_pos = x.dp.lower_pos * y.dp.lower_pos;
       z.upper_neg = (-x.dp.upper_neg) * y.dp.upper_neg;
@@ -513,7 +517,7 @@ inline REAL operator * (const REAL& x, int n)
 {
     if ( iRRAM_unlikely ( x.value) )
 	 { return x.mp_multiplication(n); }
-    iRRAM_double_pair z;
+    REAL::double_pair z;
     if ( n >= 0) {
       z.lower_pos = x.dp.lower_pos * n;
       z.upper_neg = x.dp.upper_neg * n;
@@ -542,7 +546,7 @@ inline REAL& operator *= (REAL& x, int n){
 inline REAL operator / (const REAL& x, const REAL& y) {
     if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_division(y.mp_conv()); }
-    iRRAM_double_pair z;
+    REAL::double_pair z;
     if (y.dp.lower_pos > 0.0 ) {
       if (x.dp.lower_pos > 0.0 ) {
         z.lower_pos  = x.dp.lower_pos/(-y.dp.upper_neg);
@@ -574,7 +578,7 @@ inline REAL operator / (const REAL& x, const REAL& y) {
 inline REAL operator / (const REAL& x, int n) {
     if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_division(n); }
-    iRRAM_double_pair z;
+    REAL::double_pair z;
     if (n > 0 ) {
 #ifdef _use_SSE2__
         __m128d n_sse= _mm_set_pd1(double(n));
@@ -598,7 +602,7 @@ inline REAL square (const REAL& x)
 {
     if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_square(); }
-    iRRAM_double_pair z;
+    REAL::double_pair z;
     if (x.dp.lower_pos >= 0 ) {
       z.lower_pos = x.dp.lower_pos * x.dp.lower_pos;
       z.upper_neg = (-x.dp.upper_neg) * x.dp.upper_neg;
@@ -632,20 +636,19 @@ inline LAZY_BOOLEAN operator != (const REAL &x, const REAL &y) { return  (y<x)||
 inline REAL abs (const REAL& x){
     if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_absval(); }
-    iRRAM_double_pair z;
     if (x.dp.lower_pos > 0.0 )
-		return REAL(iRRAM_double_pair(x.dp.lower_pos,x.dp.upper_neg));
+		return REAL(REAL::double_pair(x.dp.lower_pos,x.dp.upper_neg));
     if (x.dp.upper_neg > 0.0 )
-		return REAL(iRRAM_double_pair(x.dp.upper_neg,x.dp.lower_pos));
+		return REAL(REAL::double_pair(x.dp.upper_neg,x.dp.lower_pos));
     if (x.dp.lower_pos > x.dp.upper_neg)
-		return REAL(iRRAM_double_pair(0.0,x.dp.upper_neg));
-    return REAL(iRRAM_double_pair(0.0,x.dp.lower_pos));
+		return REAL(REAL::double_pair(0.0,x.dp.upper_neg));
+    return REAL(REAL::double_pair(0.0,x.dp.lower_pos));
 }
 
 // inline REAL intervall_join (const REAL& x,const REAL& y){
 //     if ( iRRAM_unlikely ( x.value||y.value ) )
 // 	 { return x.mp_conv().mp_intervall_join(y.mp_conv()); }
-//     iRRAM_double_pair z;
+//     double_pair z;
 //     if (x.dp.lower_pos < y.dp.lower_pos )
 //       z.dp.lower_pos=x.dp.lower_pos
 //     else
