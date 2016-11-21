@@ -32,8 +32,6 @@ MA 02111-1307, USA.
 #define _use_SSE2_
 #endif
 
-//#include <cmath>
-
 namespace iRRAM {
 
 class iRRAM_double_pair{
@@ -53,67 +51,70 @@ class REAL
 {
 public:
 
-// Constructors: -------------------------------
+	// Constructors: -------------------------------
 
-REAL();
-REAL(const int  i);
-REAL(const std::string s);
-REAL(const char* s);
-REAL(const DYADIC& y);
-REAL(const REAL& y);
-REAL(const double d);
-REAL(const INTEGER& y);
-REAL(const RATIONAL& y);
+	REAL();
+	REAL(      int           i);
+	REAL(const std::string  &s);
+	REAL(const char         *s);
+	REAL(const DYADIC       &y);
+	REAL(const REAL         &y);          /* copy constructor */
+	REAL(      double        d);
+	REAL(const INTEGER      &y);
+	REAL(const RATIONAL     &y);
 
-// Copy Constructor: ---------------------------
+	// Copy/Move Assignment: -----------------------
 
-REAL& operator = (const REAL& y);
+	REAL & operator = (const REAL& y);
 
-// Destructor: ---------------------------------
+	// Destructor: ---------------------------------
 
-~REAL();
+	~REAL();
 
 // Standard Arithmetic: ------------------------
 
-friend REAL  operator +  (const REAL& x,	const REAL& y);
-friend REAL  operator +  (const REAL& x,	const int n);
-friend REAL  operator +  (const int n,		const REAL& x);
-friend REAL  operator +  (const REAL& x,	const double y);
-friend REAL  operator +  (const double y,	const REAL& x);
-friend REAL& operator += (REAL& x,		const REAL& y);
-			  
-friend REAL  operator -  (const REAL& x, 	const REAL& y);
-friend REAL  operator -  (const REAL& x,	const int n);
-friend REAL  operator -  (const int n,		const REAL& x);
-friend REAL  operator -  (const REAL& x,	const double y);
-friend REAL  operator -  (const double y,	const REAL& x);
-friend REAL  operator -  (const REAL& x);
-friend REAL& operator -= (REAL& x,		const REAL& y);
+friend REAL   operator +  (const REAL   &x, const REAL   &y);
+friend REAL   operator +  (const REAL   &x,       int     n);
+friend REAL   operator +  (      int     n, const REAL   &x) { return x+n; }
+friend REAL   operator +  (const REAL   &x,       double  y);
+friend REAL   operator +  (      double  y, const REAL   &x) { return x+y; }
+friend REAL & operator += (      REAL   &x, const REAL   &y);
+friend REAL & operator += (      REAL   &x,       int     n) { return x=x+n; }
+friend REAL & operator += (      REAL   &x,       double  d) { return x=x+d; }
 
-friend REAL  operator *  (const REAL& x,	const REAL& y);
-friend REAL  operator *  (const REAL& x, 	const int n);
-friend REAL  operator *  (const int n,		const REAL& x);
-friend REAL  operator *  (const REAL& x,	const double y);
-friend REAL  operator *  (const double y,	const REAL& x);
-friend REAL& operator *= (REAL& x,		const REAL& y);
-			  
-friend REAL  operator /  (const REAL& x,	const REAL& y);
-friend REAL  operator /  (const REAL& x,	const int n);
-friend REAL  operator /  (const int n,		const REAL& x);
-friend REAL  operator /  (const REAL& x,	const double y);
-friend REAL  operator /  (const double y,	const REAL& x);
-friend REAL& operator /= (REAL& x,		const REAL& y);
+friend REAL   operator -  (const REAL   &x, const REAL   &y);
+friend REAL   operator -  (const REAL   &x,       int     n);
+friend REAL   operator -  (      int     n, const REAL   &x);
+friend REAL   operator -  (const REAL   &x, const double  d);
+friend REAL   operator -  (const double  d, const REAL   &x);
+friend REAL   operator -  (const REAL   &x);
+friend REAL & operator -= (      REAL   &x, const REAL   &y) { return x=x-y; }
+friend REAL & operator -= (      REAL   &x,       int     n) { return x=x-n; }
 
-friend REAL  operator << (const REAL& x,	const int n);
-friend REAL  operator >> (const REAL& x,	const int n);
+friend REAL   operator *  (const REAL   &x, const REAL   &y);
+friend REAL   operator *  (const REAL   &x,       int     n);
+friend REAL   operator *  (      int     n, const REAL   &x) { return x*n; }
+friend REAL   operator *  (const REAL   &x, const double  y);
+friend REAL   operator *  (const double  y, const REAL   &x);
+friend REAL & operator *= (      REAL   &x, const REAL   &y) { return x=x*y; }
+friend REAL & operator *= (      REAL   &x,       int     n);
+
+friend REAL   operator /  (const REAL   &x, const REAL   &y);
+friend REAL   operator /  (const REAL   &x,       int     n);
+friend REAL   operator /  (const REAL   &x,       double  y);
+friend REAL   operator /  (      double  y, const REAL   &x);
+friend REAL & operator /= (      REAL   &x, const REAL   &y) { return x=x/y; }
+friend REAL & operator /= (      REAL   &x,       int     n) { return x=x/n; }
+
+friend REAL   operator << (const REAL   &x,       int     n);
+friend REAL   operator >> (const REAL   &x,       int     n);
 
 
-friend REAL  sqrt        (const REAL& x);
+friend REAL          sqrt        (const REAL &x);
 
-friend REAL  square      (const REAL& x);
+friend REAL          square      (const REAL &x);
 
-friend REAL  scale       (const REAL& x,
-                          const int k);
+friend REAL          scale       (const REAL &x, const int k);
 
 // Comparisons: --------------------------------
 
@@ -182,35 +183,38 @@ friend LAZY_BOOLEAN  positive    (const REAL& x, const int k);
 
 friend LAZY_BOOLEAN  bound       (const REAL& x, const int k);
 
-friend DYADIC approx     (const REAL& x, const int p);
-DYADIC as_DYADIC (const int p) const;
-DYADIC as_DYADIC () const;
+	/* Conversions: */
 
-double as_double (const int p) const;
-double as_double () const { return this->as_double(53); };
+friend DYADIC        approx      (const REAL& x, const int p);
+friend REAL          round2      (const REAL& x);
+friend int           round       (const REAL& x);
 
-INTEGER as_INTEGER() const;
-friend REAL   round2     (const REAL& x); 
-friend int    round      (const REAL& x); 
+	DYADIC        as_DYADIC   (const int p) const;
+	DYADIC        as_DYADIC   () const;
 
+	double        as_double   (const int p) const;
+	double        as_double   () const { return this->as_double(53); };
+
+	INTEGER       as_INTEGER  () const;
+
+
+// Output: -------------------------------------
 
 #define iRRAM_float_absolute 0
 #define iRRAM_float_relative 1
 #define iRRAM_float_show 2
-friend std::string swrite     (const REAL& x, const int p, const int form);
+friend std::string   swrite      (const REAL& x, const int p, const int form);
 
-// Output: -------------------------------------
+friend void          rwrite      (const REAL& x, const int w);
+friend void          rwritee     (const REAL& x, const int w);
+friend void          rshow       (const REAL& x, const int w);
 
-friend void   rwrite     (const REAL& x, const int w);
-friend void   rwritee    (const REAL& x, const int w);
-friend void   rshow      (const REAL& x, const int w);
+	void          rcheck      (int n=50) const;
 
-void rcheck(int n=50) const;
+friend int           upperbound  (const REAL& x);
+friend int           size        (const REAL& x);
 
-friend int    upperbound (const REAL& x);
-friend int    size       (const REAL& x); 
-
-friend REAL   abs        (const REAL& x);
+friend REAL          abs         (const REAL& x);
  
 
 // limit operators: ------------------------
@@ -310,57 +314,58 @@ friend int module(REAL f(const REAL&),const REAL& x, int p);
 
 // implementational issues: --------------------
 
-iRRAM_double_pair dp;
-MP_type       value; 
-sizetype      error;
-sizetype      vsize;
+	double_pair   dp;
+	MP_type       value;
+	sizetype      error;
+	sizetype      vsize;
 
 public:
-REAL(MP_type y, const sizetype errorinfo);
-REAL(const iRRAM_double_pair& ydp);
+	REAL(MP_type y, sizetype errorinfo) noexcept;
+	REAL(const iRRAM_double_pair &ydp) noexcept;
 #ifdef _use_SSE2__
-REAL(const __m128d& y_sse);
+	REAL(const __m128d     &y_sse) noexcept;
 #endif
-void adderror (sizetype error);
-void seterror (sizetype error);
-void geterror (sizetype& error) const;
-void getsize  (sizetype& error) const;
-void to_formal_ball (DYADIC&,sizetype& error) const;
+
+	void         adderror           (sizetype  error);
+	void         seterror           (sizetype  error);
+	void         geterror           (sizetype &error) const;
+	void         getsize            (sizetype &error) const;
+	void         to_formal_ball     (DYADIC &, sizetype &error) const;
+
 friend REAL intervall_join (const REAL& x,const REAL& y);
 
 // internal use:
-void mp_copy(const REAL&);
-void mp_copy_init(const REAL&);
-void mp_make_mp();
-void mp_from_mp(const REAL& y);
-void mp_from_int(const int i);
-void mp_from_double(const double d);
-REAL& mp_conv ()const;
-REAL mp_addition (const REAL& y)const;
-REAL mp_addition (const int i)const;
-REAL& mp_eqaddition (const REAL& y);
-REAL mp_addition (const double i)const;//fehlt noch
-REAL mp_subtraction (const REAL& y)const;
-REAL mp_subtraction (const int i)const;
-REAL mp_invsubtraction (const int i)const;
-REAL mp_multiplication (const REAL& y)const;
-REAL mp_multiplication (const int y)const;
-REAL& mp_eqmultiplication (const REAL& y);
-REAL& mp_eqmultiplication (const int i);
-REAL mp_multiplication (const double y)const; //fehlt noch
-REAL mp_division (const REAL& y)const;
-REAL mp_division (const int y)const;
-REAL mp_division (const double y)const;
-REAL mp_square()const;
-REAL mp_absval()const;
-REAL mp_intervall_join (const REAL& y)const;
-LAZY_BOOLEAN mp_less (const REAL& y)const;
-
+	void         mp_copy            (const REAL   &);
+	void         mp_copy_init       (const REAL   &);
+	void         mp_make_mp         ();
+	void         mp_from_mp         (const REAL   &y);
+	void         mp_from_int        (const int     i);
+	void         mp_from_double     (const double  d);
+	REAL &       mp_conv            ()                const;
+	REAL         mp_addition        (const REAL   &y) const;
+	REAL         mp_addition        (const int     i) const;
+	REAL &       mp_eqaddition      (const REAL   &y);
+	REAL         mp_addition        (const double  i) const; //fehlt noch
+	REAL         mp_subtraction     (const REAL   &y) const;
+	REAL         mp_subtraction     (const int     i) const;
+	REAL         mp_invsubtraction  (const int     i) const;
+	REAL         mp_multiplication  (const REAL   &y) const;
+	REAL         mp_multiplication  (const int     y) const;
+	REAL &       mp_eqmultiplication(const REAL   &y);
+	REAL &       mp_eqmultiplication(const int     i);
+	REAL         mp_multiplication  (const double  y) const; //fehlt noch
+	REAL         mp_division        (const REAL   &y) const;
+	REAL         mp_division        (const int     y) const;
+	REAL         mp_division        (const double  y) const;
+	REAL         mp_square          ()                const;
+	REAL         mp_absval          ()                const;
+	REAL         mp_intervall_join  (const REAL   &y) const;
+	LAZY_BOOLEAN mp_less            (const REAL   &y) const;
 };
 
+#define USE_HIGH_LEVEL iRRAM_unlikely(iRRAM_highlevel)
 std::string swrite(const REAL& x, const int p, const int form=iRRAM_float_absolute);
 
-#define USE_HIGH_LEVEL iRRAM_unlikely(iRRAM_highlevel)
 // inlined versions of most important functions:
 
 //"private" internal  constructor
@@ -446,11 +451,11 @@ inline REAL& REAL::operator = (const REAL& y) {
     return (*this);
 }
 
-inline REAL operator << (const REAL& x, const int n) {
+inline REAL operator << (const REAL& x, int n) {
     return scale(x,n);
 }
 
-inline REAL operator >> (const REAL& x, const int n) {
+inline REAL operator >> (const REAL& x, int n) {
     return scale(x,-n);
 }
 
@@ -465,7 +470,7 @@ inline REAL operator + (const REAL& x, const REAL& y)
 #endif
 }
 
-inline REAL operator + (const REAL& x, const int i)
+inline REAL operator + (const REAL& x, int i)
 {
     if (iRRAM_unlikely( x.value ) )
 	{ return x.mp_addition(i); }
@@ -473,7 +478,7 @@ inline REAL operator + (const REAL& x, const int i)
     return REAL(z);
 }
 
-inline REAL operator + (const REAL& x, const double d)
+inline REAL operator + (const REAL& x, double d)
 {
     if (iRRAM_unlikely( x.value ) )
 	{ return x.mp_addition(d); }
@@ -494,16 +499,6 @@ inline REAL& operator += (REAL& x,const REAL& y)
     return x;
 }
 
-inline REAL operator + (const int i, const REAL& x)
-{
-  return (x+i);
-}
-
-inline REAL operator + (const double d, const REAL& x)
-{
-  return (x+d);
-}
-
 inline REAL operator - (const REAL& x, const REAL& y)
 {
     if ( iRRAM_unlikely ( x.value||y.value ) )
@@ -512,7 +507,7 @@ inline REAL operator - (const REAL& x, const REAL& y)
     return REAL(z);
 }
 
-inline REAL operator - (const REAL& x, const int n)
+inline REAL operator - (const REAL& x, int n)
 {
     if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_subtraction(n); }
@@ -520,7 +515,7 @@ inline REAL operator - (const REAL& x, const int n)
     return REAL(z);
 }
 
-inline REAL operator - (const int n, const REAL& x)
+inline REAL operator - (int n, const REAL& x)
 {
     if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_invsubtraction(n); }
@@ -534,23 +529,6 @@ inline REAL operator - (const REAL& x)
 	{ return x.mp_invsubtraction(int(0)); }
     iRRAM_double_pair z(-x.dp.lower_pos,-x.dp.upper_neg);
     return REAL(z);
-}
-
-//not optimized yet, maybe MPFR contains "x-d"
-inline REAL operator - (const REAL& x, const double d)
-{
-    return x - REAL(d);
-}
-
-//not optimized yet, maybe MPFR contains "d-x"
-inline REAL operator - (const double d, const REAL& x)
-{
-    return REAL(d) - x;
-}
-
-inline REAL& operator -= (REAL& x, const REAL& y){
-  x=x-y;
-  return x;
 }
 
 
@@ -581,7 +559,7 @@ inline REAL operator * (const REAL& x, const REAL& y)
     return REAL(z);
 }
 
-inline REAL operator * (const REAL& x, const int n) 
+inline REAL operator * (const REAL& x, int n)
 {
     if ( iRRAM_unlikely ( x.value) )
 	 { return x.mp_multiplication(n); }
@@ -597,27 +575,7 @@ inline REAL operator * (const REAL& x, const int n)
 }
 
 
-inline REAL operator * (const int n, const REAL& x){
-  return (x*n);
-}
-
-inline REAL& operator *= (REAL& x, const REAL& y){
-  x=x*y;
-  return x;
-}
-
-//not optimized yet, maybe MPFR contains "x*d"
-inline REAL operator * (const REAL& x, const double d)
-{
-    return x * REAL(d);
-}
-
-inline REAL operator * (const double d, const REAL& x)
-{
-    return x * d;
-}
-
-inline REAL& operator *= (REAL& x, const int n){
+inline REAL& operator *= (REAL& x, int n){
     if ( iRRAM_unlikely ( x.value) )
 	 { x=x.mp_multiplication(n); return x;}
     if ( n >= 0) {
@@ -663,10 +621,7 @@ inline REAL operator / (const REAL& x, const REAL& y) {
     return REAL(z);
 }
 
-inline REAL operator / (const int n, const REAL& y) {
-  return REAL(n)/y;
-}
-inline REAL operator / (const REAL& x, const int n) {
+inline REAL operator / (const REAL& x, int n) {
     if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_division(n); }
     iRRAM_double_pair z;
@@ -689,28 +644,6 @@ inline REAL operator / (const REAL& x, const int n) {
 }
 
 
-//not optimized yet, maybe MPFR contains "x/d"
-inline REAL operator / (const REAL& x, const double d)
-{
-    return x / REAL(d);
-}
-
-//not optimized yet, maybe MPFR contains "d/x"
-inline REAL operator / (const double d, const REAL& x)
-{
-    return REAL(d) / x;
-}
-
-inline REAL& operator /= (REAL& x, const REAL& y){
-  x=x/y;
-  return x;
-}
-
-inline REAL& operator /= (REAL& x, const int n){
-  x=x/n;
-  return x;
-}
-
 inline REAL square (const REAL& x) 
 {
     if ( iRRAM_unlikely ( x.value ) )
@@ -732,7 +665,7 @@ inline REAL square (const REAL& x)
     return REAL(z);
 }
 
-inline LAZY_BOOLEAN operator < (const REAL& x, const REAL& y) {
+inline LAZY_BOOLEAN operator < (const REAL &x, const REAL &y) {
     if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_less(y.mp_conv()); }
     if ((-x.dp.upper_neg) < y.dp.lower_pos) return true;

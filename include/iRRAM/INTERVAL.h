@@ -62,20 +62,21 @@ INTERVAL(const REAL& l, const REAL& r, bool dummy){ low=l;  upp=r;}
 
 
 // Standard Arithmetic: ------------------------
+INTERVAL & operator=(const INTERVAL &x) { low = x.low; upp = x.upp; return *this; }
+INTERVAL & operator=(INTERVAL &&x) noexcept { low = std::move(x.low); upp = std::move(x.upp); return *this; }
 
-friend INTERVAL  operator +  (const INTERVAL& x,  const INTERVAL& y);
-friend INTERVAL& operator += (INTERVAL& x, const INTERVAL& y){x=x+y; return x;}
+friend INTERVAL  operator +  (const INTERVAL& x, const INTERVAL& y);
+friend INTERVAL& operator += (      INTERVAL& x, const INTERVAL& y) { return x=x+y; }
 
-friend INTERVAL  operator -  (const INTERVAL& x,  const INTERVAL& y);
-friend INTERVAL& operator -= (INTERVAL& x, const INTERVAL& y){x=x-y; return x;}
-
+friend INTERVAL  operator -  (const INTERVAL& x, const INTERVAL& y);
+friend INTERVAL& operator -= (      INTERVAL& x, const INTERVAL& y) { return x=x-y; }
 friend INTERVAL  operator -  (const INTERVAL& x);
 
 friend INTERVAL  operator *  (const INTERVAL& x, const INTERVAL& y);
-friend INTERVAL& operator *= (INTERVAL& x, const INTERVAL& y){x=x*y; return x;}
+friend INTERVAL& operator *= (      INTERVAL& x, const INTERVAL& y) { return x=x*y; }
 
 friend INTERVAL  operator /  (const INTERVAL& x, const INTERVAL& y);
-friend INTERVAL& operator /= (INTERVAL& x, const INTERVAL& y){x=x/y; return x;}
+friend INTERVAL& operator /= (      INTERVAL& x, const INTERVAL& y) { return x=x/y; }
 
 friend REAL wid(const INTERVAL& x);
 friend REAL inf(const INTERVAL& x);
