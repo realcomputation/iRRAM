@@ -18,7 +18,6 @@ namespace iRRAM {
 template <typename T>
 struct numeric_limits {
 	static constexpr bool is_specialized = false;
-	static constexpr bool is_continuous  = false;
 };
 
 template <>
@@ -124,6 +123,13 @@ template <typename T> using ISock_t = std::shared_ptr<ISock<T>>;
 
 
 
+#define iRRAM_PIPE_DEBUG(fmt, ...) \
+	iRRAM_DEBUG2(0,"[%08x] " fmt,\
+	             std::this_thread::get_id(),__VA_ARGS__)
+
+#define iRRAM_SOCK_DEBUG(fmt, ...) \
+	iRRAM_PIPE_DEBUG("Sock[out <- %s]" fmt,process->id.c_str(),__VA_ARGS__)
+
 
 
 
@@ -133,12 +139,14 @@ class Process : public std::enable_shared_from_this<Process> {
 
 	struct BaseSock {
 		const   std::shared_ptr<Process>    process;
-		BaseSock(Process_t src) noexcept;
-		virtual ~BaseSock() noexcept {}
+		explicit BaseSock(Process_t src) noexcept;
+		virtual ~BaseSock() noexcept { iRRAM_SOCK_DEBUG("%s","::~BaseSock()\n"); }
 	};
 
+	typedef std::shared_ptr<BaseSock> BaseSock_t;
+
 	template <typename T>
-	class Sock : public OSock<T>, public ISock<T>, public BaseSock {
+	class Sock : public BaseSock, public OSock<T>, public ISock<T> {
 		mutable std::shared_timed_mutex     mtx;
 		mutable std::condition_variable_any cond;
 		        effort_t                    effort;
@@ -157,7 +165,6 @@ class Process : public std::enable_shared_from_this<Process> {
 
 	std::vector<std::weak_ptr<BaseSock>> outputs;
 	std::vector<std::shared_ptr<BaseSock>> inputs;
-	std::thread thr;
 	std::atomic<bool> cancelled;
 	std::string id;
 
@@ -215,22 +222,17 @@ T Process::Sock<T>::get(effort_t e) const
 {
 	if (e <= effort)
 		return data;
-	if (auto p = process) {
-		printf("[%08x] Sock[out <- %s]::get w/ effort %u\n", std::this_thread::get_id(), p->id.c_str(), e);
-		std::shared_lock<decltype(mtx)> lock(mtx);
-		p->run(e);
-		cond.wait(lock, [&]{return e <= effort;});
-		return data;
-	}
-	throw "Sock::get: not connected: src Process gone";
+	iRRAM_SOCK_DEBUG("::get w/ effort %u\n", e);
+	std::shared_lock<decltype(mtx)> lock(mtx);
+	process->run(e);
+	cond.wait(lock, [&]{return e <= effort;});
+	return data;
 }
 
 template <typename T>
 void Process::Sock<T>::put(T v, effort_t e)
 {
-	printf("[%08x] Sock[out <- %s]::put w/ effort %u\n", std::this_thread::get_id(),
-	       [p = process]{ return p ? p->id.c_str(): "<disconn>"; }(),
-	       e);
+	iRRAM_SOCK_DEBUG("::put w/ effort %u\n",e);
 	std::unique_lock<decltype(mtx)> lock(mtx);
 	data = std::move(v);
 	effort = e;
@@ -262,27 +264,32 @@ ISock_t<T> Process::connect(const OSock_t<T> &s)
 	throw "connect: not connected: src Process gone";
 }
 
+#define iRRAM_PROCESS_DEBUG(fmt, ...) \
+	iRRAM_PIPE_DEBUG("Process(%s)" fmt,id.c_str(),__VA_ARGS__)
+
 template <typename Func,typename... Args>
 void Process::exec(int argc, const char *const *argv, Func &&f, Args &&... args)
 {
-	printf("[%08x] Process(%s)::exec(%d,%p,...)\n", std::this_thread::get_id(), id.c_str(), argc, (void *)argv);
-	thr = std::thread([g = std::bind(f, std::forward<Args>(args)...),this]
-	                  (int argc, const char *const *argv) {
-		printf("[%08x] Process(%s)::exec(%d,%p,...) -> thread %08x\n", std::this_thread::get_id(), id.c_str(), argc, (void *)argv, std::this_thread::get_id());
+	iRRAM_PROCESS_DEBUG("::exec(%d,%p,...)\n", argc, (void *)argv);
+	std::thread([g = std::bind(f, std::forward<Args>(args)...),this]
+	            (int argc, const char *const *argv) {
+		iRRAM_PROCESS_DEBUG("::exec(%d,%p,...) -> thread %08x\n",
+		                    argc, (void *)argv, std::this_thread::get_id());
 		iRRAM_initialize(argc, argv);
 		try {
 		iRRAM_exec([&]{
-			printf("[%08x] Process(%s) iterating w/ effort %u...\n", std::this_thread::get_id(), id.c_str(), (effort_t)ACTUAL_STACK.prec_step);
+			iRRAM_PROCESS_DEBUG(" iterating w/ effort %u...\n",
+			                    (effort_t)ACTUAL_STACK.prec_step);
 			try {
-				std::vector<std::shared_ptr<BaseSock>> locked_outputs(outputs.size());
+				std::vector<BaseSock_t> locked_outputs(outputs.size());
 				for (auto &s : outputs)
 					locked_outputs.push_back(s.lock());
 				g();
 			} catch (const Iteration &) {
-				printf("[%08x] Process(%s) caught exception, reiterating...\n", std::this_thread::get_id(), id.c_str());
+				iRRAM_PROCESS_DEBUG("%s", " caught exception, reiterating...\n");
 				throw;
 			}
-			printf("[%08x] Process(%s) finished computation g()\n", std::this_thread::get_id(), id.c_str());
+			iRRAM_PROCESS_DEBUG("%s", " finished computation g()\n");
 			std::unique_lock<decltype(mtx_outputs)> lock(mtx_outputs);
 			output_requested.wait(lock, [&]{
 				return cancelled ||
@@ -291,9 +298,11 @@ void Process::exec(int argc, const char *const *argv, Func &&f, Args &&... args)
 			iRRAM_infinite = !cancelled;
 			return 0;
 		});
-		} catch (const char *msg) { printf("[%08x] Process(%s) exception: %s\n", std::this_thread::get_id(), id.c_str(), msg); }
-		printf("[%08x] Process(%s) thread finishes\n", std::this_thread::get_id(), id.c_str());
-	}, argc, argv);
+		} catch (const char *msg) {
+			iRRAM_PROCESS_DEBUG(" exception: %s\n", msg);
+		}
+		iRRAM_PROCESS_DEBUG("%s", " thread finishes\n");
+	}, argc, argv).detach();
 }
 
 /******************************************************************************

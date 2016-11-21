@@ -11,9 +11,7 @@ Process::~Process()
 {
 	cancelled = true;
 	output_requested.notify_one();
-	if (thr.joinable())
-		thr.join();
-	printf("[%08x] ~Process(%s)\n", std::this_thread::get_id(), id.c_str());
+	iRRAM_PROCESS_DEBUG("%s", "::~Process()\n");
 }
 
 void Process::run(effort_t e)
@@ -25,7 +23,7 @@ void Process::run(effort_t e)
 			output_requested.notify_one();
 		}
 	}
-	printf("[%08x] Process(%s)::run(%u)\n", std::this_thread::get_id(), id.c_str(), e);
+	iRRAM_PROCESS_DEBUG("::run(%u)\n", e);
 }
 
 Process_t make_process(std::string id)
