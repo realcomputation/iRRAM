@@ -34,6 +34,16 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
+enum struct float_form : int {
+	absolute,
+	relative,
+	show,
+};
+
+#define iRRAM_float_absolute ::iRRAM::float_form::absolute
+#define iRRAM_float_relative ::iRRAM::float_form::relative
+#define iRRAM_float_show     ::iRRAM::float_form::show
+
 class REAL final : conditional_comparison_overloads<REAL,LAZY_BOOLEAN>
 {
 	struct double_pair {
@@ -69,8 +79,8 @@ public:
 
 	// Copy/Move Assignment: -----------------------
 
-	REAL & operator = (const REAL& y);
-	REAL & operator = (REAL &&y) noexcept;
+	REAL & operator=(const REAL& y);
+	REAL & operator=(REAL &&y) noexcept;
 
 	// Destructor: ---------------------------------
 
@@ -185,9 +195,6 @@ public:
 
 	// Output: -------------------------------------
 
-#define iRRAM_float_absolute 0
-#define iRRAM_float_relative 1
-#define iRRAM_float_show 2
 	friend std::string swrite    (const REAL& x, const int p, const float_form form);
 
 	friend void        rwrite    (const REAL& x, const int w);
@@ -350,7 +357,8 @@ private:
 	LAZY_BOOLEAN mp_less            (const REAL   &y) const;
 };
 
-std::string swrite(const REAL& x, const int p, const int form=iRRAM_float_absolute);
+std::string swrite(const REAL & x, const int p,
+                   const float_form form = float_form::absolute);
 
 // inlined versions of most important functions:
 

@@ -44,7 +44,7 @@ orstream::orstream(std::ostream * s, bool respect_iteration)
 	iRRAM_DEBUG1(2, "I/O-handler: Creating output stream \n");
 	_respect_iteration = respect_iteration;
 	real_w = 20;
-	real_f = iRRAM_float_absolute;
+	real_f = float_form::absolute;
 }
 orstream::orstream()
 {
@@ -52,7 +52,7 @@ orstream::orstream()
 	iRRAM_DEBUG1(2, "I/O-handler: Creating output stream cout\n");
 	_respect_iteration = true;
 	real_w = 20;
-	real_f = iRRAM_float_absolute;
+	real_f = float_form::absolute;
 }
 orstream::orstream(std::string s, std::ios::openmode mod)
 {
@@ -63,7 +63,7 @@ orstream::orstream(std::string s, std::ios::openmode mod)
 	}
 	_respect_iteration = true;
 	real_w = 20;
-	real_f = iRRAM_float_absolute;
+	real_f = float_form::absolute;
 
 	if (ACTUAL_STACK.inlimit == 0) {
 		if (iRRAM_thread_data_address->cache_os.get(target)) {

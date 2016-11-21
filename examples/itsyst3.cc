@@ -17,9 +17,9 @@ void compute(){
   double xd= 0.5, cd=3.75;
   cout << setw(20);
   for (long i=1;i<=count;i++ ) {
-    cout <<  setRflags(iRRAM_float_absolute)<< xr << " ";
+    cout <<  setRflags(float_form::absolute)<< xr << " ";
     cout << xd << " ";
-    cout << setRflags(iRRAM_float_show) << xr - REAL(xd);
+    cout << setRflags(float_form::show) << xr - REAL(xd);
     cout << " " << i << "\n";
     xr=cr*xr*(1-xr);
     xd=cd*xd*(1-xd);

@@ -29,6 +29,6 @@ void compute(){
   DYADIC_precision block1(-1000);
   d=pi().as_DYADIC();
   d=d+0;
-  cout << setRflags(iRRAM_float_relative);
+  cout << setRflags(float_form::relative);
   cout << x-REAL(d)<<"\n";
 }

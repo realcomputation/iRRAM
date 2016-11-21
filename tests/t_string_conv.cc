@@ -6,7 +6,7 @@ using std::string;
 bool error=false;
 
 inline void chk1(const string& s1, const string& s2a, int n ){
-  string s=swrite(REAL(s1),n,iRRAM_float_relative);
+  string s=swrite(REAL(s1),n,float_form::relative);
   if  ( s == s2a){ return; };
   cout << s1 << "  yields  "
        << s << "  instead of  " 
@@ -15,7 +15,7 @@ inline void chk1(const string& s1, const string& s2a, int n ){
 }
 
 inline void chk2(const string& s1, const string& s2a, const string& s2b, int n ){
-  string s=swrite(REAL(s1),n,iRRAM_float_relative);
+  string s=swrite(REAL(s1),n,float_form::relative);
   if  ( s == s2a){
      return;
   }

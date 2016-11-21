@@ -41,12 +41,12 @@ inline _SetRwidth  setRwidth(int __n) {
   return __x;
 }
 
-struct _SetRflags { int _M_n; };
+struct _SetRflags { float_form _M_n; };
 
-inline _SetRflags  setRflags(int __n) {
-  _SetRflags __x;
-  __x._M_n = __n;
-  return __x;
+inline _SetRflags  setRflags(float_form n) {
+  _SetRflags x;
+  x._M_n = n;
+  return x;
 }
 
 class rstream { 
@@ -67,7 +67,7 @@ public:
   operator bool(); 
   friend  bool operator !(orstream&);
   unsigned int real_w;
-  unsigned int real_f;
+  float_form real_f;
 
   orstream(std::string s, std::ios::openmode mod=std::ios::out);
   ~orstream();

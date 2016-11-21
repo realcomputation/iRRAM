@@ -191,7 +191,7 @@ REAL & REAL::mp_eqaddition(const REAL & y)
 	return (*this);
 }
 
-std::string swrite(const REAL & x, const int w, const int form)
+std::string swrite(const REAL & x, const int w, const float_form form)
 {
 	if (!x.value) {
 		REAL y(x);
@@ -209,7 +209,8 @@ std::string swrite(const REAL & x, const int w, const int form)
 		width = 9;
 	char * erg;
 
-	if (form == iRRAM_float_absolute) {
+	switch (form) {
+	case float_form::absolute: {
 		sizetype psize;
 		int p = -10 * (width - 8) / 3;
 		sizetype_set(psize, 1, p);
@@ -233,8 +234,8 @@ std::string swrite(const REAL & x, const int w, const int form)
 		} else {
 			erg = MP_swrite(x.value, width);
 		}
-
-	} else if (form == iRRAM_float_relative) {
+	}
+	case float_form::relative: {
 		int p;
 		{
 			single_valued code;
@@ -271,9 +272,8 @@ std::string swrite(const REAL & x, const int w, const int form)
 			REITERATE(p - x.error.exponent);
 		}
 		erg = MP_swrite(x.value, width);
-
-	} else if (form == iRRAM_float_show) {
-
+	}
+	case float_form::show: {
 		int mantissa = (int)(int((MP_size(x.value) - x.error.exponent -
 		                          GUARD_BITS)) *
 		                     .30103);
@@ -294,6 +294,7 @@ std::string swrite(const REAL & x, const int w, const int form)
 			erg[width] = 0;
 			free(erg2);
 		}
+	}
 	}
 
 	result = erg;
@@ -464,18 +465,9 @@ REAL REAL::mp_division(const int n) const
 }
 
 
-void rwrite(const REAL & x, const int w)
-{
-	iRRAM::cout << swrite(x, w, iRRAM_float_absolute);
-}
-void rwritee(const REAL & x, const int w)
-{
-	iRRAM::cout << swrite(x, w, iRRAM_float_relative);
-}
-void rshow(const REAL & x, const int w)
-{
-	iRRAM::cout << swrite(x, w, iRRAM_float_show);
-}
+void rwrite(const REAL & x, const int w)  { cout << swrite(x, w, float_form::absolute); }
+void rwritee(const REAL & x, const int w) { cout << swrite(x, w, float_form::relative); }
+void rshow(const REAL & x, const int w)   { cout << swrite(x, w, float_form::show); }
 
 
 #define iRRAM_ABSOLUTE 0
