@@ -30,6 +30,8 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
+class INTERVAL;
+
 class LAZY_BOOLEAN
 {
 
@@ -56,6 +58,7 @@ friend int check (const LAZY_BOOLEAN& x);
 
 friend REAL maximum ( const REAL& x, const REAL& y);
 friend REAL minimum ( const REAL& x, const REAL& y);
+friend INTERVAL operator*(const INTERVAL &, const INTERVAL &);
 
 friend LAZY_BOOLEAN operator < (const REAL&, const REAL&);
 friend LAZY_BOOLEAN positive (const REAL& x, int k);

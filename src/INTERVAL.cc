@@ -50,7 +50,34 @@ INTERVAL operator - (const INTERVAL  & x){
 	return INTERVAL( -x.upp, -x.low, true);
 }
 
+static INTERVAL mul_pos_x(const INTERVAL &x, const INTERVAL &y, int y_sgn)
+{
+	if (y_sgn > 0)
+		return INTERVAL(x.low * y.low, x.upp * y.upp);
+	if (y_sgn < 0)
+		return INTERVAL(x.upp * y.low, x.low * y.upp);
+	return INTERVAL(x.upp * y.low, x.upp * y.upp);
+}
+
 INTERVAL operator * (const INTERVAL  & x, const INTERVAL  & y){
+	LAZY_BOOLEAN x_gt0, x_lt0, y_gt0, y_lt0;
+	{
+		single_valued code;
+		x_gt0 = x.low > 0;
+		x_lt0 = x.upp < 0;
+		y_gt0 = y.low > 0;
+		y_lt0 = y.upp < 0;
+	}
+	int x_sgn = x_gt0.value == true ? +1 : x_lt0.value == true ? -1 : 0;
+	int y_sgn = y_gt0.value == true ? +1 : y_lt0.value == true ? -1 : 0;
+	if (x_sgn > 0)
+		return mul_pos_x(x, y, y_sgn);
+	if (x_sgn < 0)
+		return -mul_pos_x(-x, y, y_sgn);
+	if (y_sgn > 0)
+		return mul_pos_x(y, x, x_sgn);
+	if (y_sgn < 0)
+		return -mul_pos_x(-y, x, x_sgn);
 	REAL aa= x.low*y.low;
 	REAL ab= x.upp*y.low;
 	REAL ba= x.low*y.upp;
