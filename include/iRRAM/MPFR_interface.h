@@ -280,34 +280,35 @@ void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s);
 ext_mpfr_type ext_mpfr_init(void);
 
 inline ext_mpfr_type ext_mpfr_init()
-{ ext_mpfr_type z;
-  if (mpfr_FreeVarCount > 0) {
-    mpfr_FreeVarCount -=1;
-    z =mpfr_FreeVars[mpfr_FreeVarCount];
-  } else {
-    z = (ext_mpfr_type) malloc(sizeof (__mpfr_struct));
-    mpfr_init(z);
-  }
-  ext_mpfr_var_count +=1;
+{
+	ext_mpfr_type z;
+	if (mpfr_FreeVarCount > 0) {
+		mpfr_FreeVarCount -= 1;
+		z = mpfr_FreeVars[mpfr_FreeVarCount];
+	} else {
+		z = (ext_mpfr_type)malloc(sizeof(__mpfr_struct));
+		mpfr_init(z);
+	}
+	ext_mpfr_var_count += 1;
 
-/* fprintf(stderr,"create %x\n",z); */
+	/* fprintf(stderr,"create %x\n",z); */
 
-  return z;
+	return z;
 }
 
 void ext_mpfr_free(ext_mpfr_type z);
 
 inline void ext_mpfr_free(ext_mpfr_type z)
 {
-/* fprintf(stderr,"delete %x\n",z); */
-  if ( mpfr_FreeVarCount < MaxFreeVars ) {
-    mpfr_FreeVars[mpfr_FreeVarCount]=z;
-    mpfr_FreeVarCount +=1;
-  } else {
-    mpfr_clear(z); 
-    free (z);
-  }
-  ext_mpfr_var_count -=1;
+	/* fprintf(stderr,"delete %x\n",z); */
+	if (mpfr_FreeVarCount < MaxFreeVars) {
+		mpfr_FreeVars[mpfr_FreeVarCount] = z;
+		mpfr_FreeVarCount += 1;
+	} else {
+		mpfr_clear(z);
+		free(z);
+	}
+	ext_mpfr_var_count -= 1;
 }
 
 #endif /*ifndef MPFR_INTERFACE_H */
