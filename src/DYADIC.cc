@@ -69,51 +69,12 @@ DYADIC ADD (const DYADIC& x, const DYADIC& y, const int p) {
   return zvalue;
 }
 
-DYADIC operator + (const DYADIC& x, const DYADIC& y) {
-  MP_type zvalue;
-  MP_init(zvalue);
-  MP_add(x.value,y.value,zvalue,iRRAM_DYADIC_precision);
-  return zvalue;
-}
-
-DYADIC  operator +  (const int      x, const DYADIC&  y){return DYADIC(x)+y;}
-DYADIC  operator +  (const DYADIC&  x, const int      y){return x+DYADIC(y);}
-DYADIC  operator +  (const INTEGER& x, const DYADIC&  y){return DYADIC(x)+y;}
-DYADIC  operator +  (const DYADIC&  x, const INTEGER& y){return x+DYADIC(y);}
-DYADIC  operator +  (const double   x, const DYADIC&  y){return DYADIC(x)+y;}
-DYADIC  operator +  (const DYADIC&  x, const double   y){return x+DYADIC(y);}
-
-
 DYADIC SUB (const DYADIC& x, const DYADIC& y,const int p) {
   MP_type zvalue;
   MP_init(zvalue);
   MP_sub(x.value,y.value,zvalue,p);
   return zvalue;
 }
-
-DYADIC operator - (const DYADIC& x, const DYADIC& y) {
-  MP_type zvalue;
-  MP_init(zvalue);
-  MP_sub(x.value,y.value,zvalue,iRRAM_DYADIC_precision);
-  return zvalue;
-}
-
-DYADIC  operator -  (const int      x, const DYADIC&  y){return DYADIC(x)-y;}
-DYADIC  operator -  (const DYADIC&  x, const int      y){return x-DYADIC(y);}
-DYADIC  operator -  (const INTEGER& x, const DYADIC&  y){return DYADIC(x)-y;}
-DYADIC  operator -  (const DYADIC&  x, const INTEGER& y){return x-DYADIC(y);}
-DYADIC  operator -  (const double   x, const DYADIC&  y){return DYADIC(x)-y;}
-DYADIC  operator -  (const DYADIC&  x, const double   y){return x-DYADIC(y);}
-
-
-DYADIC operator - (const DYADIC& x) {
-  DYADIC y;
-  MP_type zvalue;
-  MP_init(zvalue);
-  MP_sub(y.value,x.value,zvalue,iRRAM_DYADIC_precision);
-  return zvalue;
-}
-
 
 DYADIC MULT (const DYADIC& x, const DYADIC& y, const int p) {
   MP_type zvalue;
@@ -122,21 +83,6 @@ DYADIC MULT (const DYADIC& x, const DYADIC& y, const int p) {
   return zvalue;
 }
 
-DYADIC operator * (const DYADIC& x, const DYADIC& y) {
-  MP_type zvalue;
-  MP_init(zvalue);
-  MP_mul(x.value,y.value,zvalue,iRRAM_DYADIC_precision);
-  return zvalue;
-}
-
-DYADIC  operator *  (const int      x, const DYADIC&  y){return DYADIC(x)*y;}
-DYADIC  operator *  (const DYADIC&  x, const int      y){return x*DYADIC(y);}
-DYADIC  operator *  (const INTEGER& x, const DYADIC&  y){return DYADIC(x)*y;}
-DYADIC  operator *  (const DYADIC&  x, const INTEGER& y){return x*DYADIC(y);}
-DYADIC  operator *  (const double   x, const DYADIC&  y){return DYADIC(x)*y;}
-DYADIC  operator *  (const DYADIC&  x, const double   y){return x*DYADIC(y);}
-
-
 DYADIC DIV (const DYADIC& x, const DYADIC& y,const int p) {
   MP_type zvalue;
   MP_init(zvalue);
@@ -144,19 +90,6 @@ DYADIC DIV (const DYADIC& x, const DYADIC& y,const int p) {
   return zvalue;
 }
 
-DYADIC operator / (const DYADIC& x, const DYADIC& y) {
-  MP_type zvalue;
-  MP_init(zvalue);
-  MP_div(x.value,y.value,zvalue,iRRAM_DYADIC_precision);
-  return zvalue;
-}
-
-DYADIC  operator /  (const int      x, const DYADIC&  y){return DYADIC(x)/y;}
-DYADIC  operator /  (const DYADIC&  x, const int      y){return x/DYADIC(y);}
-DYADIC  operator /  (const INTEGER& x, const DYADIC&  y){return DYADIC(x)/y;}
-DYADIC  operator /  (const DYADIC&  x, const INTEGER& y){return x/DYADIC(y);}
-DYADIC  operator /  (const double   x, const DYADIC&  y){return DYADIC(x)/y;}
-DYADIC  operator /  (const DYADIC&  x, const double   y){return x/DYADIC(y);}
 
 
 #ifdef MP_shift
@@ -184,56 +117,14 @@ bool operator <  (const DYADIC& x, const DYADIC& y) {
   int erg=MP_compare((x.value),(y.value));
   return  (erg==-1);
 }
-
-bool operator <  (const int      x, const DYADIC&  y) {return DYADIC(x)<y;}
-bool operator <  (const DYADIC&  x, const int      y) {return x<DYADIC(y);}
-bool operator <  (const double   x, const DYADIC&  y) {return DYADIC(x)<y;}
-bool operator <  (const DYADIC&  x, const double   y) {return x<DYADIC(y);}
-bool operator <  (const INTEGER& x, const DYADIC&  y) {return DYADIC(x)<y;}
-bool operator <  (const DYADIC&  x, const INTEGER  y) {return x<DYADIC(y);}
-
-bool operator >  (const DYADIC&  x, const DYADIC&  y) {return (y<x);}
-bool operator >  (const int      x, const DYADIC&  y) {return y<DYADIC(x);}
-bool operator >  (const DYADIC&  x, const int      y) {return DYADIC(y)<x;}
-bool operator >  (const double   x, const DYADIC&  y) {return y<DYADIC(x);}
-bool operator >  (const DYADIC&  x, const double   y) {return DYADIC(y)<x;}
-bool operator >  (const INTEGER& x, const DYADIC&  y) {return y<DYADIC(x);}
-bool operator >  (const DYADIC&  x, const INTEGER  y) {return DYADIC(y)<x;}
-
-bool operator <= (const DYADIC&  x, const DYADIC&  y) {return !(y<x);}
-bool operator <= (const int      x, const DYADIC&  y) {return !(y<DYADIC(x));}
-bool operator <= (const DYADIC&  x, const int      y) {return !(DYADIC(y)<x);}
-bool operator <= (const double   x, const DYADIC&  y) {return !(y<DYADIC(x));}
-bool operator <= (const DYADIC&  x, const double   y) {return !(DYADIC(y)<x);}
-bool operator <= (const INTEGER& x, const DYADIC&  y) {return !(y<DYADIC(x));}
-bool operator <= (const DYADIC&  x, const INTEGER  y) {return !(DYADIC(y)<x);}
-
-bool operator >= (const DYADIC&  x, const DYADIC&  y) {return !(x<y);}
-bool operator >= (const int      x, const DYADIC&  y) {return !(DYADIC(x)<y);}
-bool operator >= (const DYADIC&  x, const int      y) {return !(x<DYADIC(y));}
-bool operator >= (const double   x, const DYADIC&  y) {return !(DYADIC(x)<y);}
-bool operator >= (const DYADIC&  x, const double   y) {return !(x<DYADIC(y));}
-bool operator >= (const INTEGER& x, const DYADIC&  y) {return !(DYADIC(x)<y);}
-bool operator >= (const DYADIC&  x, const INTEGER  y) {return !(x<DYADIC(y));}
-
+bool operator >  (const DYADIC& x, const DYADIC& y) {return  (y<x);}
+bool operator <= (const DYADIC& x, const DYADIC& y) {return !(y<x);}
+bool operator >= (const DYADIC& x, const DYADIC& y) {return !(x<y);}
 bool operator == (const DYADIC& x, const DYADIC& y) {
   int erg=MP_compare((x.value),(y.value));
   return  (erg==0);
 }
-bool operator == (const int      x, const DYADIC&  y) {return DYADIC(x)==y;}
-bool operator == (const DYADIC&  x, const int      y) {return x==DYADIC(y);}
-bool operator == (const double   x, const DYADIC&  y) {return DYADIC(x)==y;}
-bool operator == (const DYADIC&  x, const double   y) {return x==DYADIC(y);}
-bool operator == (const INTEGER& x, const DYADIC&  y) {return DYADIC(x)==y;}
-bool operator == (const DYADIC&  x, const INTEGER  y) {return x==DYADIC(y);}
-
-bool operator != (const DYADIC&  x, const DYADIC&  y) {return !(x==y);}
-bool operator != (const int      x, const DYADIC&  y) {return !(DYADIC(x)==y);}
-bool operator != (const DYADIC&  x, const int      y) {return !(x==DYADIC(y));}
-bool operator != (const double   x, const DYADIC&  y) {return !(DYADIC(x)==y);}
-bool operator != (const DYADIC&  x, const double   y) {return !(x==DYADIC(y));}
-bool operator != (const INTEGER& x, const DYADIC&  y) {return !(DYADIC(x)==y);}
-bool operator != (const DYADIC&  x, const INTEGER  y) {return !(x==DYADIC(y));}
+bool operator != (const DYADIC& x, const DYADIC& y) {return !(x==y);}
 
 std::string swrite (const DYADIC& x,const int w){
   int width=w;
