@@ -132,6 +132,22 @@ using enable_if_compat = typename std::enable_if<
 	std::is_convertible<Compat,Base>::value
 ,Ret>::type;
 
+template <typename Base,typename Ret = bool>
+struct conditional_comparison_overloads {
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator<(const A &a, const B &b) { return a<Base(b); }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator<(const B &b, const A &a) { return Base(b)<a; }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator>(const A &a, const B &b) { return a>Base(b); }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator>(const B &b, const A &a) { return Base(b)>a; }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator<=(const A &a, const B &b) { return a<=Base(b); }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator<=(const B &b, const A &a) { return Base(b)<=a; }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator>=(const A &a, const B &b) { return a>=Base(b); }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator>=(const B &b, const A &a) { return Base(b)>=a; }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator==(const A &a, const B &b) { return a==Base(b); }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator==(const B &b, const A &a) { return Base(b)==a; }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator!=(const A &a, const B &b) { return a!=Base(b); }
+	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator!=(const B &b, const A &a) { return Base(b)!=a; }
+};
+
 } // namespace iRRAM
 
 #include <iRRAM/LAZYBOOLEAN.h>
