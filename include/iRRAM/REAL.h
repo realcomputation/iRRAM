@@ -348,7 +348,6 @@ friend REAL intervall_join (const REAL& x,const REAL& y);
 	LAZY_BOOLEAN mp_less            (const REAL   &y) const;
 };
 
-#define USE_HIGH_LEVEL iRRAM_unlikely(iRRAM_highlevel)
 std::string swrite(const REAL& x, const int p, const int form=iRRAM_float_absolute);
 
 // inlined versions of most important functions:
