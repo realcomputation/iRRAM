@@ -345,7 +345,7 @@ friend REAL intervall_join (const REAL& x,const REAL& y);
 	REAL         mp_addition        (const REAL   &y) const;
 	REAL         mp_addition        (const int     i) const;
 	REAL &       mp_eqaddition      (const REAL   &y);
-	REAL         mp_addition        (const double  i) const; //fehlt noch
+//	REAL         mp_addition        (const double  i) const; //fehlt noch
 	REAL         mp_subtraction     (const REAL   &y) const;
 	REAL         mp_subtraction     (const int     i) const;
 	REAL         mp_invsubtraction  (const int     i) const;
@@ -353,7 +353,7 @@ friend REAL intervall_join (const REAL& x,const REAL& y);
 	REAL         mp_multiplication  (const int     y) const;
 	REAL &       mp_eqmultiplication(const REAL   &y);
 	REAL &       mp_eqmultiplication(const int     i);
-	REAL         mp_multiplication  (const double  y) const; //fehlt noch
+//	REAL         mp_multiplication  (const double  y) const; //fehlt noch
 	REAL         mp_division        (const REAL   &y) const;
 	REAL         mp_division        (const int     y) const;
 	REAL         mp_division        (const double  y) const;
