@@ -20,12 +20,12 @@ class Process;
 template <typename T>
 struct OSock {
 	virtual ~OSock() noexcept {}
-	virtual void put(T, effort_t) = 0;
+	virtual void put(T, effort_t=ACTUAL_STACK.prec_step) = 0;
 };
 template <typename T>
 struct ISock {
 	virtual ~ISock() noexcept {}
-	virtual T get(effort_t) const = 0;
+	virtual T get(effort_t=ACTUAL_STACK.prec_step) const = 0;
 };
 
 class Process : public std::enable_shared_from_this<Process> {
@@ -52,6 +52,7 @@ class Process : public std::enable_shared_from_this<Process> {
 
 		void put(T v, effort_t e)
 		{
+			printf("Sock::put w/ effort %u\n", e);
 			std::unique_lock<decltype(mtx)> lock(mtx);
 			data = std::move(v);
 			effort = e;
@@ -107,11 +108,16 @@ public:
 	template <typename Func,typename... Args>
 	void exec(int argc, char **argv, Func &&f, Args &&... args)
 	{
-		thr = std::thread([&]{
+		printf("Process::exec(%d,%p,...)\n", argc, (void *)argv);
+		thr = std::thread([&,argc,argv]{
+			printf("Process::exec(%d,%p,...) -> thread\n", argc, (void *)argv);
 			iRRAM_initialize(argc, argv);
-			while (!cancelled) {
-				iRRAM_exec([&]{f(std::forward<Args>(args)...); return 0;});
-			}
+			iRRAM_exec([&]{
+				iRRAM_infinite = !cancelled;
+				printf("Process iterating...\n");
+				f(std::forward<Args>(args)...);
+				return 0;
+			});
 		});
 	}
 
@@ -121,6 +127,7 @@ public:
 
 template <typename T> T Process::Sock<T>::get(effort_t e) const
 {
+	printf("Sock::get w/ effort %u\n", e);
 	if (auto p = process.lock()) {
 		std::shared_lock<decltype(mtx)> lock(mtx);
 		p->run(e);

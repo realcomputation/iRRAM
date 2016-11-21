@@ -12,13 +12,13 @@ struct bla {
 
 void compute1(effort_t eff, std::shared_ptr<OSock<REAL>> &e_out)
 {
-	e_out->put(euler(), eff);
+	e_out->put(euler());
 }
 
 void compute2(effort_t eff, const std::shared_ptr<ISock<REAL>> &e_in)
 {
 	printf("bla\n");
-	cout << e_in->get(eff) << "\n";
+	cout << e_in->get() << "\n";
 }
 
 int main(int argc, char **argv)
