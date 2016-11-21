@@ -32,159 +32,156 @@ namespace iRRAM {
 class DYADIC
 {
 public:
+	static int getprec() { return iRRAM_DYADIC_precision; };
 
-friend class DYADIC_precision;
-static int getprec() {return iRRAM_DYADIC_precision;};
-// Constructors: -------------------------------
+	// Constructors: -------------------------------
 
-DYADIC ();
-DYADIC (const int i);
-DYADIC (const double y);
-DYADIC (const INTEGER& y);
-DYADIC (const DYADIC& y);
+	DYADIC();
+	DYADIC(const int i);
+	DYADIC(const double y);
+	DYADIC(const INTEGER & y);
+	DYADIC(const DYADIC & y);
+	DYADIC(      DYADIC &&y) noexcept : DYADIC(y.value) { y.value = nullptr; }
 
-// Copy Constructor: ---------------------------
+	// Copy/Move assignment: -----------------------
 
-DYADIC&   operator = (const DYADIC& y);
+	DYADIC & operator=(const DYADIC & y);
+	DYADIC & operator=(      DYADIC &&y) noexcept { using std::swap; swap(value, y.value); return *this; }
 
-// Destructor: ---------------------------------
+	// Destructor: ---------------------------------
 
-~DYADIC();
+	~DYADIC();
 
-// Standard Arithmetic: ------------------------
+	// Standard Arithmetic: ------------------------
 
-friend DYADIC  ADD  (const DYADIC&  x, const DYADIC& y, int p);
-friend DYADIC  operator +  (const DYADIC&  x, const DYADIC& y);
-friend DYADIC  operator +  (const int      x, const DYADIC& y);
-friend DYADIC  operator +  (const DYADIC&  x, const int y);
-friend DYADIC  operator +  (const double   x, const DYADIC& y);
-friend DYADIC  operator +  (const DYADIC&  x, const double y);
-friend DYADIC  operator +  (const INTEGER& x, const DYADIC& y);
-friend DYADIC  operator +  (const DYADIC&  x, const INTEGER& y);
+	friend DYADIC  ADD  (const DYADIC&  x, const DYADIC& y, int p);
+	friend DYADIC  operator +  (const DYADIC&  x, const DYADIC& y);
+	friend DYADIC  operator +  (const int      x, const DYADIC& y);
+	friend DYADIC  operator +  (const DYADIC&  x, const int y);
+	friend DYADIC  operator +  (const double   x, const DYADIC& y);
+	friend DYADIC  operator +  (const DYADIC&  x, const double y);
+	friend DYADIC  operator +  (const INTEGER& x, const DYADIC& y);
+	friend DYADIC  operator +  (const DYADIC&  x, const INTEGER& y);
 
-friend DYADIC  SUB  (const DYADIC&  x, const DYADIC& y, int p);
-friend DYADIC  operator -  (const DYADIC&  x, const DYADIC& y);
-friend DYADIC  operator -  (const int      x, const DYADIC& y);
-friend DYADIC  operator -  (const DYADIC&  x, const int y);
-friend DYADIC  operator -  (const double   x, const DYADIC& y);
-friend DYADIC  operator -  (const DYADIC&  x, const double y);
-friend DYADIC  operator -  (const INTEGER& x, const DYADIC& y);
-friend DYADIC  operator -  (const DYADIC&  x, const INTEGER& y);
+	friend DYADIC  SUB  (const DYADIC&  x, const DYADIC& y, int p);
+	friend DYADIC  operator -  (const DYADIC&  x, const DYADIC& y);
+	friend DYADIC  operator -  (const int      x, const DYADIC& y);
+	friend DYADIC  operator -  (const DYADIC&  x, const int y);
+	friend DYADIC  operator -  (const double   x, const DYADIC& y);
+	friend DYADIC  operator -  (const DYADIC&  x, const double y);
+	friend DYADIC  operator -  (const INTEGER& x, const DYADIC& y);
+	friend DYADIC  operator -  (const DYADIC&  x, const INTEGER& y);
 
-friend DYADIC  operator -  (const DYADIC& x);
+	friend DYADIC  operator -  (const DYADIC& x);
 
-friend DYADIC  MULT (const DYADIC&  x, const DYADIC& y, int p);
-friend DYADIC  operator *  (const DYADIC&  x, const DYADIC& y);
-friend DYADIC  operator *  (const int      x, const DYADIC& y);
-friend DYADIC  operator *  (const DYADIC&  x, const int y);
-friend DYADIC  operator *  (const double   x, const DYADIC& y);
-friend DYADIC  operator *  (const DYADIC&  x, const double y);
-friend DYADIC  operator *  (const INTEGER& x, const DYADIC& y);
-friend DYADIC  operator *  (const DYADIC&  x, const INTEGER& y);
+	friend DYADIC  MULT (const DYADIC&  x, const DYADIC& y, int p);
+	friend DYADIC  operator *  (const DYADIC&  x, const DYADIC& y);
+	friend DYADIC  operator *  (const int      x, const DYADIC& y);
+	friend DYADIC  operator *  (const DYADIC&  x, const int y);
+	friend DYADIC  operator *  (const double   x, const DYADIC& y);
+	friend DYADIC  operator *  (const DYADIC&  x, const double y);
+	friend DYADIC  operator *  (const INTEGER& x, const DYADIC& y);
+	friend DYADIC  operator *  (const DYADIC&  x, const INTEGER& y);
 
-friend DYADIC  DIV  (const DYADIC&  x, const DYADIC& y, int p);
-friend DYADIC  operator /  (const DYADIC&  x, const DYADIC&  y);
-friend DYADIC  operator /  (const int      x, const DYADIC&  y);
-friend DYADIC  operator /  (const DYADIC&  x, const int      y);
-friend DYADIC  operator /  (const double   x, const DYADIC&  y);
-friend DYADIC  operator /  (const DYADIC&  x, const double   y);
-friend DYADIC  operator /  (const INTEGER& x, const DYADIC&  y);
-friend DYADIC  operator /  (const DYADIC&  x, const INTEGER& y);
+	friend DYADIC  DIV  (const DYADIC&  x, const DYADIC& y, int p);
+	friend DYADIC  operator /  (const DYADIC&  x, const DYADIC&  y);
+	friend DYADIC  operator /  (const int      x, const DYADIC&  y);
+	friend DYADIC  operator /  (const DYADIC&  x, const int      y);
+	friend DYADIC  operator /  (const double   x, const DYADIC&  y);
+	friend DYADIC  operator /  (const DYADIC&  x, const double   y);
+	friend DYADIC  operator /  (const INTEGER& x, const DYADIC&  y);
+	friend DYADIC  operator /  (const DYADIC&  x, const INTEGER& y);
 
-// Comparisons: --------------------------------
+	// Comparisons: --------------------------------
 
-friend bool    operator <  (const DYADIC&  x, const DYADIC&  y);
-friend bool    operator <  (const DYADIC&  x, const int      y);
-friend bool    operator <  (const int      x, const DYADIC&  y);
-friend bool    operator <  (const DYADIC&  x, const double   y);
-friend bool    operator <  (const double   x, const DYADIC&  y);
-friend bool    operator <  (const DYADIC&  x, const INTEGER& y);
-friend bool    operator <  (const INTEGER& x, const DYADIC&  y);
+	friend bool    operator <  (const DYADIC&  x, const DYADIC&  y);
+	friend bool    operator <  (const DYADIC&  x, const int      y);
+	friend bool    operator <  (const int      x, const DYADIC&  y);
+	friend bool    operator <  (const DYADIC&  x, const double   y);
+	friend bool    operator <  (const double   x, const DYADIC&  y);
+	friend bool    operator <  (const DYADIC&  x, const INTEGER& y);
+	friend bool    operator <  (const INTEGER& x, const DYADIC&  y);
 
+	friend bool    operator >  (const DYADIC&  x, const DYADIC&  y);
+	friend bool    operator >  (const DYADIC&  x, const int      y);
+	friend bool    operator >  (const int      x, const DYADIC&  y);
+	friend bool    operator >  (const DYADIC&  x, const double   y);
+	friend bool    operator >  (const double   x, const DYADIC&  y);
+	friend bool    operator >  (const DYADIC&  x, const INTEGER& y);
+	friend bool    operator >  (const INTEGER& x, const DYADIC&  y);
 
-friend bool    operator >  (const DYADIC&  x, const DYADIC&  y);
-friend bool    operator >  (const DYADIC&  x, const int      y);
-friend bool    operator >  (const int      x, const DYADIC&  y);
-friend bool    operator >  (const DYADIC&  x, const double   y);
-friend bool    operator >  (const double   x, const DYADIC&  y);
-friend bool    operator >  (const DYADIC&  x, const INTEGER& y);
-friend bool    operator >  (const INTEGER& x, const DYADIC&  y);
+	friend bool    operator <= (const DYADIC&  x, const DYADIC&  y);
+	friend bool    operator <= (const DYADIC&  x, const int      y);
+	friend bool    operator <= (const int      x, const DYADIC&  y);
+	friend bool    operator <= (const DYADIC&  x, const double   y);
+	friend bool    operator <= (const double   x, const DYADIC&  y);
+	friend bool    operator <= (const DYADIC&  x, const INTEGER& y);
+	friend bool    operator <= (const INTEGER& x, const DYADIC&  y);
 
+	friend bool    operator >= (const DYADIC&  x, const DYADIC&  y);
+	friend bool    operator >= (const DYADIC&  x, const int      y);
+	friend bool    operator >= (const int      x, const DYADIC&  y);
+	friend bool    operator >= (const DYADIC&  x, const double   y);
+	friend bool    operator >= (const double   x, const DYADIC&  y);
+	friend bool    operator >= (const DYADIC&  x, const INTEGER& y);
+	friend bool    operator >= (const INTEGER& x, const DYADIC&  y);
 
-friend bool    operator <= (const DYADIC&  x, const DYADIC&  y);
-friend bool    operator <= (const DYADIC&  x, const int      y);
-friend bool    operator <= (const int      x, const DYADIC&  y);
-friend bool    operator <= (const DYADIC&  x, const double   y);
-friend bool    operator <= (const double   x, const DYADIC&  y);
-friend bool    operator <= (const DYADIC&  x, const INTEGER& y);
-friend bool    operator <= (const INTEGER& x, const DYADIC&  y);
+	friend bool    operator == (const DYADIC&  x, const DYADIC&  y);
+	friend bool    operator == (const DYADIC&  x, const int      y);
+	friend bool    operator == (const int      x, const DYADIC&  y);
+	friend bool    operator == (const DYADIC&  x, const double   y);
+	friend bool    operator == (const double   x, const DYADIC&  y);
+	friend bool    operator == (const DYADIC&  x, const INTEGER& y);
+	friend bool    operator == (const INTEGER& x, const DYADIC&  y);
 
+	friend bool    operator != (const DYADIC&  x, const DYADIC&  y);
+	friend bool    operator != (const DYADIC&  x, const int      y);
+	friend bool    operator != (const int      x, const DYADIC&  y);
+	friend bool    operator != (const DYADIC&  x, const double   y);
+	friend bool    operator != (const double   x, const DYADIC&  y);
+	friend bool    operator != (const DYADIC&  x, const INTEGER& y);
+	friend bool    operator != (const INTEGER& x, const DYADIC&  y);
 
-friend bool    operator >= (const DYADIC&  x, const DYADIC&  y);
-friend bool    operator >= (const DYADIC&  x, const int      y);
-friend bool    operator >= (const int      x, const DYADIC&  y);
-friend bool    operator >= (const DYADIC&  x, const double   y);
-friend bool    operator >= (const double   x, const DYADIC&  y);
-friend bool    operator >= (const DYADIC&  x, const INTEGER& y);
-friend bool    operator >= (const INTEGER& x, const DYADIC&  y);
+	// Output: -------------------------------------
 
+	friend std::string  swrite      (const DYADIC& x, const int w);
 
-friend bool    operator == (const DYADIC&  x, const DYADIC&  y);
-friend bool    operator == (const DYADIC&  x, const int      y);
-friend bool    operator == (const int      x, const DYADIC&  y);
-friend bool    operator == (const DYADIC&  x, const double   y);
-friend bool    operator == (const double   x, const DYADIC&  y);
-friend bool    operator == (const DYADIC&  x, const INTEGER& y);
-friend bool    operator == (const INTEGER& x, const DYADIC&  y);
+	// miscellaneous: ------------------------------
 
+	friend int     size        (const DYADIC& x); 
+	friend DYADIC  abs         (const DYADIC& x); 
+	friend DYADIC  scale       (const DYADIC& x, const int k);
 
-friend bool    operator != (const DYADIC&  x, const DYADIC&  y);
-friend bool    operator != (const DYADIC&  x, const int      y);
-friend bool    operator != (const int      x, const DYADIC&  y);
-friend bool    operator != (const DYADIC&  x, const double   y);
-friend bool    operator != (const double   x, const DYADIC&  y);
-friend bool    operator != (const DYADIC&  x, const INTEGER& y);
-friend bool    operator != (const INTEGER& x, const DYADIC&  y);
+	// coexistence with other classes: -------------
 
-// Output: -------------------------------------
+	friend class REAL;
+	friend class INTEGER;
+	friend class RATIONAL;
 
-friend std::string  swrite      (const DYADIC& x, const int w);
+	friend DYADIC  approx      (const REAL& x, const int p);
 
-// miscellaneous: ------------------------------
+	INTEGER as_INTEGER() const;
 
-friend int     size        (const DYADIC& x); 
-friend DYADIC  abs         (const DYADIC& x); 
-friend DYADIC  scale       (const DYADIC& x, const int k);
+	// implementational issues: --------------------
 
-// coexistence with other classes: -------------
-
-friend class REAL;
-friend class INTEGER;
-friend class RATIONAL;
-
-friend DYADIC  approx      (const REAL& x, const int p);
-
-INTEGER as_INTEGER();
-
-// implementational issues: --------------------
-
-MP_type    value; 
+	MP_type    value; 
 
 
 private:
 
-DYADIC(MP_type  y);
-
+	DYADIC(MP_type  y);
 };
 
-class DYADIC_precision{
+class DYADIC_precision
+{
+	int precision;
 public:
-DYADIC_precision(int p)
-  {precision=iRRAM_DYADIC_precision;iRRAM_DYADIC_precision=p;}
-~DYADIC_precision()
-  {iRRAM_DYADIC_precision=precision;};
-private:
-int precision;
+	DYADIC_precision(int p)
+	{
+		precision = iRRAM_DYADIC_precision;
+		iRRAM_DYADIC_precision = p;
+	}
+	~DYADIC_precision() { iRRAM_DYADIC_precision = precision; }
 };
 
 } /* ! namespace iRRAM */

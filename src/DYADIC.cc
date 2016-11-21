@@ -40,9 +40,7 @@ DYADIC::DYADIC() {
    MP_int_to_mp(0,value);
 }
 
-DYADIC::DYADIC(MP_type  y) {
-  value=y;
-}
+DYADIC::DYADIC(MP_type y) : value(y) {}
 
 DYADIC::DYADIC(const int i) {
    MP_init(value);MP_int_to_mp(i,value);
@@ -61,7 +59,7 @@ DYADIC::DYADIC(const double x) {
 }
 
 DYADIC::~DYADIC() { 
-  MP_clear(value);
+  if (value) MP_clear(value);
 }
 
 DYADIC ADD (const DYADIC& x, const DYADIC& y, const int p) {
