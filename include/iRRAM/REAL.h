@@ -34,7 +34,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-class REAL 
+class REAL
 {
 	struct double_pair {
 	#ifdef _use_SSE2__
@@ -62,6 +62,7 @@ public:
 	REAL(const char         *s);
 	REAL(const DYADIC       &y);
 	REAL(const REAL         &y);          /* copy constructor */
+	REAL(      REAL        &&y) noexcept; /* move constructor */
 	REAL(      double        d);
 	REAL(const INTEGER      &y);
 	REAL(const RATIONAL     &y);
@@ -69,188 +70,184 @@ public:
 	// Copy/Move Assignment: -----------------------
 
 	REAL & operator = (const REAL& y);
+	REAL & operator = (REAL &&y) noexcept;
 
 	// Destructor: ---------------------------------
 
 	~REAL();
 
-// Standard Arithmetic: ------------------------
+	// Standard Arithmetic: ------------------------
 
-friend REAL   operator +  (const REAL   &x, const REAL   &y);
-friend REAL   operator +  (const REAL   &x,       int     n);
-friend REAL   operator +  (      int     n, const REAL   &x) { return x+n; }
-friend REAL   operator +  (const REAL   &x,       double  y);
-friend REAL   operator +  (      double  y, const REAL   &x) { return x+y; }
-friend REAL & operator += (      REAL   &x, const REAL   &y);
-friend REAL & operator += (      REAL   &x,       int     n) { return x=x+n; }
-friend REAL & operator += (      REAL   &x,       double  d) { return x=x+d; }
+	friend REAL   operator +  (const REAL   &x, const REAL   &y);
+	friend REAL   operator +  (const REAL   &x,       int     n);
+	friend REAL   operator +  (      int     n, const REAL   &x) { return x+n; }
+	friend REAL   operator +  (const REAL   &x,       double  y);
+	friend REAL   operator +  (      double  y, const REAL   &x) { return x+y; }
+	friend REAL & operator += (      REAL   &x, const REAL   &y);
+	friend REAL & operator += (      REAL   &x,       int     n) { return x=x+n; }
+	friend REAL & operator += (      REAL   &x,       double  d) { return x=x+d; }
 
-friend REAL   operator -  (const REAL   &x, const REAL   &y);
-friend REAL   operator -  (const REAL   &x,       int     n);
-friend REAL   operator -  (      int     n, const REAL   &x);
-/* not optimized yet, maybe MPFR contains "x-d" and "d-x"
-friend REAL   operator -  (const REAL   &x, const double  d);
-friend REAL   operator -  (const double  d, const REAL   &x);*/
-friend REAL   operator -  (const REAL   &x);
-friend REAL & operator -= (      REAL   &x, const REAL   &y) { return x=x-y; }
-friend REAL & operator -= (      REAL   &x,       int     n) { return x=x-n; }
+	friend REAL   operator -  (const REAL   &x, const REAL   &y);
+	friend REAL   operator -  (const REAL   &x,       int     n);
+	friend REAL   operator -  (      int     n, const REAL   &x);
+	/* not optimized yet, maybe MPFR contains "x-d" and "d-x"
+	friend REAL   operator -  (const REAL   &x, const double  d);
+	friend REAL   operator -  (const double  d, const REAL   &x);*/
+	friend REAL   operator -  (const REAL   &x);
+	friend REAL & operator -= (      REAL   &x, const REAL   &y) { return x=x-y; }
+	friend REAL & operator -= (      REAL   &x,       int     n) { return x=x-n; }
 
-friend REAL   operator *  (const REAL   &x, const REAL   &y);
-friend REAL   operator *  (const REAL   &x,       int     n);
-friend REAL   operator *  (      int     n, const REAL   &x) { return x*n; }
-/* not optimized yet, maybe MPFR contains "x*d" and "d*x"
-friend REAL   operator *  (const REAL   &x, const double  y);
-friend REAL   operator *  (const double  y, const REAL   &x);*/
-friend REAL & operator *= (      REAL   &x, const REAL   &y) { return x=x*y; }
-friend REAL & operator *= (      REAL   &x,       int     n);
+	friend REAL   operator *  (const REAL   &x, const REAL   &y);
+	friend REAL   operator *  (const REAL   &x,       int     n);
+	friend REAL   operator *  (      int     n, const REAL   &x) { return x*n; }
+	/* not optimized yet, maybe MPFR contains "x*d" and "d*x"
+	friend REAL   operator *  (const REAL   &x, const double  y);
+	friend REAL   operator *  (const double  y, const REAL   &x);*/
+	friend REAL & operator *= (      REAL   &x, const REAL   &y) { return x=x*y; }
+	friend REAL & operator *= (      REAL   &x,       int     n);
 
-friend REAL   operator /  (const REAL   &x, const REAL   &y);
-friend REAL   operator /  (const REAL   &x,       int     n);
-/* not optimized yet, maybe MPFR contains "x/d" and "d/x"
-friend REAL   operator /  (const REAL   &x,       double  y);
-friend REAL   operator /  (      double  y, const REAL   &x);*/
-friend REAL & operator /= (      REAL   &x, const REAL   &y) { return x=x/y; }
-friend REAL & operator /= (      REAL   &x,       int     n) { return x=x/n; }
-
-friend REAL   operator << (const REAL   &x,       int     n);
-friend REAL   operator >> (const REAL   &x,       int     n);
+	friend REAL   operator /  (const REAL   &x, const REAL   &y);
+	friend REAL   operator /  (const REAL   &x,       int     n);
+	/* not optimized yet, maybe MPFR contains "x/d" and "d/x"
+	friend REAL   operator /  (const REAL   &x,       double  y);
+	friend REAL   operator /  (      double  y, const REAL   &x);*/
+	friend REAL & operator /= (      REAL   &x, const REAL   &y) { return x=x/y; }
+	friend REAL & operator /= (      REAL   &x,       int     n) { return x=x/n; }
 
 
-friend REAL          sqrt        (const REAL &x);
+	friend REAL   sqrt  (const REAL &x);
+	friend REAL   square(const REAL &x);
+	friend REAL   scale (const REAL &x, const int k);
 
-friend REAL          square      (const REAL &x);
+	// Comparisons: --------------------------------
 
-friend REAL          scale       (const REAL &x, const int k);
-
-// Comparisons: --------------------------------
-
-friend LAZY_BOOLEAN  operator <  (const REAL &x, const REAL &y);
-friend LAZY_BOOLEAN  operator <= (const REAL &x, const REAL &y);
-friend LAZY_BOOLEAN  operator >  (const REAL &x, const REAL &y);
-friend LAZY_BOOLEAN  operator >= (const REAL &x, const REAL &y);
-friend LAZY_BOOLEAN  operator == (const REAL &x, const REAL &y);
-friend LAZY_BOOLEAN  operator != (const REAL &x, const REAL &y);
+	friend LAZY_BOOLEAN  operator <  (const REAL &x, const REAL &y);
+	friend LAZY_BOOLEAN  operator <= (const REAL &x, const REAL &y);
+	friend LAZY_BOOLEAN  operator >  (const REAL &x, const REAL &y);
+	friend LAZY_BOOLEAN  operator >= (const REAL &x, const REAL &y);
+	friend LAZY_BOOLEAN  operator == (const REAL &x, const REAL &y);
+	friend LAZY_BOOLEAN  operator != (const REAL &x, const REAL &y);
 
 
-friend LAZY_BOOLEAN  positive    (const REAL& x, const int k);
+	friend LAZY_BOOLEAN  positive    (const REAL& x, const int k);
 
-friend LAZY_BOOLEAN  bound       (const REAL& x, const int k);
+	friend LAZY_BOOLEAN  bound       (const REAL& x, const int k);
 
 	/* Conversions: */
 
-friend DYADIC        approx      (const REAL& x, const int p);
-friend REAL          round2      (const REAL& x);
-friend int           round       (const REAL& x);
+	friend DYADIC approx(const REAL& x, const int p);
+	friend REAL   round2(const REAL& x);
+	friend int    round (const REAL& x);
 
-	DYADIC        as_DYADIC   (const int p) const;
-	DYADIC        as_DYADIC   () const;
+	DYADIC  as_DYADIC (const int p) const;
+	DYADIC  as_DYADIC () const;
 
-	double        as_double   (const int p) const;
-	double        as_double   () const { return this->as_double(53); };
+	double  as_double (const int p) const;
+	double  as_double () const { return this->as_double(53); };
 
-	INTEGER       as_INTEGER  () const;
+	INTEGER as_INTEGER() const;
 
 
-// Output: -------------------------------------
+	// Output: -------------------------------------
 
 #define iRRAM_float_absolute 0
 #define iRRAM_float_relative 1
 #define iRRAM_float_show 2
-friend std::string   swrite      (const REAL& x, const int p, const int form);
+	friend std::string swrite    (const REAL& x, const int p, const float_form form);
 
-friend void          rwrite      (const REAL& x, const int w);
-friend void          rwritee     (const REAL& x, const int w);
-friend void          rshow       (const REAL& x, const int w);
+	friend void        rwrite    (const REAL& x, const int w);
+	friend void        rwritee   (const REAL& x, const int w);
+	friend void        rshow     (const REAL& x, const int w);
 
+	friend int         upperbound(const REAL& x);
+	friend int         size      (const REAL& x); 
+
+	friend REAL        abs       (const REAL& x);
+ 
 	void          rcheck      (int n=50) const;
 
-friend int           upperbound  (const REAL& x);
-friend int           size        (const REAL& x);
-
-friend REAL          abs         (const REAL& x);
- 
 
 // limit operators: ------------------------
 
-//friend REAL    limit      (REAL f(int, const REAL&),
-//                           const REAL& x);
+//friend REAL limit     (REAL f(int, const REAL&),
+//                       const REAL& x);
 
-friend REAL    limit      (REAL f(int, const REAL&, const REAL&),
-                           const REAL& x, 
-                           const REAL& y);
+friend REAL limit     (REAL f(int, const REAL&, const REAL&),
+                       const REAL& x,
+                       const REAL& y);
 
-friend REAL    limit      (REAL f(int));
+friend REAL limit     (REAL f(int));
 
-friend REAL    limit_hint (REAL f(int, const REAL&),
-                           int hint,
-                           const REAL& x);
+friend REAL limit_hint(REAL f(int, const REAL&),
+                       int hint,
+                       const REAL& x);
 
-friend REAL    limit_hint (REAL f(int, const REAL&, const REAL&),
-                           int hint,
-                           const REAL& x, 
-                           const REAL& y);
+friend REAL limit_hint(REAL f(int, const REAL&, const REAL&),
+                       int hint,
+                       const REAL& x,
+                       const REAL& y);
 
-friend REAL    limit_hint (REAL f(int),
-                           int hint);
+friend REAL limit_hint(REAL f(int),
+                       int hint);
 
-friend REAL    limit_lip  (REAL f(int, const REAL&),
-                           int lip,
-                           bool on_domain(const REAL&),
-                           const REAL& x);
+friend REAL limit_lip (REAL f(int, const REAL&),
+                       int lip,
+                       bool on_domain(const REAL&),
+                       const REAL& x);
 
-friend REAL    limit_lip  (REAL f(int, const REAL&),
-                           int lip(const REAL&),
-                           const REAL& x);
+friend REAL limit_lip (REAL f(int, const REAL&),
+                       int lip(const REAL&),
+                       const REAL& x);
 
-friend REAL    limit_lip   (REAL f(int, const REAL&, const REAL&),
-                           int lip,
-                           bool on_domain(const REAL&,const REAL&),
-                           const REAL& x,
-                           const REAL& y);
+friend REAL limit_lip (REAL f(int, const REAL&, const REAL&),
+                       int lip,
+                       bool on_domain(const REAL&,const REAL&),
+                       const REAL& x,
+                       const REAL& y);
 
-friend REAL    iterate     (REAL (*)(REAL&, REAL&, const REAL&),
-                           const REAL&, const REAL&, const REAL&);
+friend REAL iterate   (REAL (*)(REAL&, REAL&, const REAL&),
+                       const REAL&, const REAL&, const REAL&);
 
-friend REAL    iterate     (REAL (*)(REAL&, REAL&),
-                           const REAL&, const REAL&);
+friend REAL iterate   (REAL (*)(REAL&, REAL&),
+                       const REAL&, const REAL&);
 
-friend REAL    iteration   (void (*)(REAL&, REAL&,const int&),
-                           const REAL&, const REAL&,const int&);
+friend REAL iteration (void (*)(REAL&, REAL&,const int&),
+                       const REAL&, const REAL&,const int&);
 
 // reduced error propagation: ------------------------
 
-friend REAL    lipschitz  (REAL f(const REAL&),
-                           int lip,
-                           bool on_domain(const REAL&),
-                           const REAL& x);
+friend REAL lipschitz (REAL f(const REAL&),
+                       int lip,
+                       bool on_domain(const REAL&),
+                       const REAL& x);
 
-friend REAL    lipschitz  (REAL f(const REAL&),
-                           REAL lip_f(const REAL&),
-                           bool on_domain(const REAL&),
-                           const REAL& x);
+friend REAL lipschitz (REAL f(const REAL&),
+                       REAL lip_f(const REAL&),
+                       bool on_domain(const REAL&),
+                       const REAL& x);
 
-friend REAL    lipschitz  (REAL f(const REAL&,const REAL&),
-                           int lip,
-                           bool on_domain(const REAL&,const REAL&),
-                           const REAL& x,
-                           const REAL& y);
+friend REAL lipschitz (REAL f(const REAL&,const REAL&),
+                       int lip,
+                       bool on_domain(const REAL&,const REAL&),
+                       const REAL& x,
+                       const REAL& y);
 
-friend REAL    lipschitz  (REAL f(int, const REAL&),
-                           int lip,
-                           bool on_domain(int k,const REAL&),
-                           int k,
-                           const REAL& x);
+friend REAL lipschitz (REAL f(int, const REAL&),
+                       int lip,
+                       bool on_domain(int k,const REAL&),
+                       int k,
+                       const REAL& x);
 
-friend REAL    lipschitz  (REAL f(int, const REAL&,const REAL&),
-                           int lip,
-                           bool on_domain(int k,const REAL&,const REAL&),
-                           int k,
-                           const REAL& x,
-                           const REAL& y);
+friend REAL lipschitz (REAL f(int, const REAL&,const REAL&),
+                       int lip,
+                       bool on_domain(int k,const REAL&,const REAL&),
+                       int k,
+                       const REAL& x,
+                       const REAL& y);
 
-friend REAL    lipschitz (REAL f(const REAL&),
-                          REAL lip_f(const REAL&),
-                          const REAL& x);
+friend REAL lipschitz (REAL f(const REAL&),
+                       REAL lip_f(const REAL&),
+                       const REAL& x);
 
 // coexistence with other classes: -------------
 
@@ -322,327 +319,378 @@ std::string swrite(const REAL& x, const int p, const int form=iRRAM_float_absolu
 // inlined versions of most important functions:
 
 //"private" internal  constructor
-inline REAL::REAL(MP_type y,const sizetype errorinfo) 
+inline REAL::REAL(MP_type y, sizetype errorinfo) noexcept
+: value(y), error(errorinfo)
 {
-    value=y;
-    error=errorinfo;
     MP_getsize(value,vsize);
 }
 
 //"private" internal  constructor
 inline REAL::REAL(const double_pair& ydp) noexcept
-{
-    value=NULL;
-    dp = ydp;
-}
+: dp(ydp), value(nullptr) {}
 
 #ifdef _use_SSE2__
-inline REAL::REAL(const __m128d& y_sse)
-{
-    value=NULL;
-    dp.sse_data=y_sse;
-}
+inline REAL::REAL(const __m128d& y_sse) noexcept
+: dp(y_sse), value(nullptr) {}
 #endif
 
 inline REAL::~REAL() 
-{ 
-    if ( iRRAM_unlikely(value) ) { MP_clear(value); value=NULL;}
-}
-
-inline REAL::REAL()
 {
-    value=NULL;
-    dp.lower_pos=0.0;
-    dp.upper_neg=0.0;
-    if ( USE_HIGH_LEVEL ) mp_from_int(0);
-}
-
-inline REAL::REAL(const int i)
-{
-    value=NULL;
-    dp.lower_pos=i;
-    dp.upper_neg=-dp.lower_pos;
-    if ( USE_HIGH_LEVEL ) mp_from_int(i);
-}
-
-inline REAL::REAL(const double d)
-{
-    if ( !std::isfinite(d) ) throw iRRAM_Numerical_Exception(iRRAM_conversion_from_infinite);
-    value=NULL;
-    dp.lower_pos=d;
-    dp.upper_neg=-dp.lower_pos;
-    if ( USE_HIGH_LEVEL ) mp_from_double(d);
-}
-
-inline REAL::REAL(const REAL& y){
-    value=NULL;
-    dp=y.dp;
-    if ( iRRAM_unlikely(y.value) ) mp_copy_init(y);
-}
-
-inline REAL& REAL::mp_conv()const{
-    if (! value) (const_cast<REAL&>(*this)).mp_make_mp();
-    return const_cast<REAL&>(*this);
-}
-
-inline REAL& REAL::operator = (const REAL& y) {
-    if ( iRRAM_unlikely(value||y.value) ){
-	if ( value&&y.value ){
-		this->mp_copy(y);
-		return (*this);
+	if (iRRAM_unlikely(value)) {
+		MP_clear(value);
+		value = nullptr;
 	}
-	if ( y.value ){
-		if (ACTUAL_STACK.prec_step==0) this->mp_from_mp(y);
-		else this->mp_copy_init(y);
-		return (*this);
-	}
-	dp=y.dp;
-	mp_make_mp();
-	return (*this);
-    }
-    dp=y.dp;
-    return (*this);
 }
 
-inline REAL operator << (const REAL& x, int n) {
-    return scale(x,n);
-}
+inline REAL::REAL() : REAL(0) {}
 
-inline REAL operator >> (const REAL& x, int n) {
-    return scale(x,-n);
-}
-
-inline REAL operator + (const REAL& x, const REAL& y)
+inline REAL::REAL(int i) : dp((double)i,-(double)i), value(nullptr)
 {
-    if ( iRRAM_unlikely ( x.value||y.value ) )
-	 { return x.mp_conv().mp_addition(y.mp_conv()); }
+	if (iRRAM_unlikely(iRRAM_highlevel))
+		mp_from_int(i);
+}
+
+inline REAL::REAL(double d) : dp(d,-d), value(nullptr)
+{
+	if (!std::isfinite(d))
+		throw iRRAM_Numerical_Exception(iRRAM_conversion_from_infinite);
+	if (iRRAM_unlikely(iRRAM_highlevel))
+		mp_from_double(d);
+}
+
+inline REAL::REAL(const REAL& y) : dp(y.dp), value(nullptr)
+{
+	if (iRRAM_unlikely(y.value))
+		mp_copy_init(y);
+}
+
+inline REAL::REAL(REAL &&y) noexcept
+: dp(y.dp), value(y.value), error(y.error), vsize(y.vsize)
+{
+	y.value = nullptr;
+}
+
+inline REAL & REAL::mp_conv() const
+{
+	if (!value)
+		const_cast<REAL&>(*this).mp_make_mp();
+	return const_cast<REAL&>(*this);
+}
+
+inline REAL & REAL::operator=(const REAL & y)
+{
+	if (iRRAM_unlikely(value || y.value)) {
+		if (value && y.value) {
+			this->mp_copy(y);
+			return (*this);
+		}
+		if (y.value) {
+			if (ACTUAL_STACK.prec_step == 0)
+				this->mp_from_mp(y);
+			else
+				this->mp_copy_init(y);
+			return *this;
+		}
+		dp = y.dp;
+		mp_make_mp();
+		return *this;
+	}
+	dp = y.dp;
+	return *this;
+}
+
+inline void swap(REAL &a, REAL &b) noexcept
+{
+	using std::swap;
+	swap(a.value, b.value);
+	swap(a.dp   , b.dp);
+	swap(a.error, b.error);
+	swap(a.vsize, b.vsize);
+}
+
+/* TODO: what are iRRAM's semantics of REAL assignment?
+ * Take the highest MPFR precision if ACTUAL_STACK.prec_step > 0?
+inline REAL & REAL::operator=(REAL &&y) noexcept
+{
+	if (this == &y)
+		return *this;
+	if (iRRAM_unlikely(value||y.value)) {
+		if (value && y.value) {
+			swap(value, y.value);
+			vsize = y.vsize;
+			error = y.error;
+			return *this;
+		}
+		if (y.value) {
+			if (ACTUAL_STACK.prec_step == 0)
+				mp_from_mp(y);
+			else
+				
+		}
+	}
+	dp = y.dp;
+	return *this;
+}
+*/
+inline REAL & REAL::operator=(REAL &&y) noexcept
+{
+	using std::swap;
+	if (iRRAM_unlikely(y.value)) {
+		swap(value, y.value);
+		vsize = y.vsize;
+		error = y.error;
+	} else
+		dp = y.dp;
+	return *this;
+}
+
+inline REAL operator<<(const REAL& x, int n) { return scale(x, n); }
+inline REAL operator>>(const REAL& x, int n) { return scale(x,-n); }
+
+inline REAL operator+(const REAL& x, const REAL& y)
+{
+	if (iRRAM_unlikely(x.value||y.value))
+		return x.mp_conv().mp_addition(y.mp_conv());
 #ifdef _use_SSE2__
-    return REAL(_mm_add_pd(x.dp.sse_data,y.dp.sse_data));
+	return REAL(_mm_add_pd(x.dp.sse_data,y.dp.sse_data));
 #else
-    return REAL(REAL::double_pair(x.dp.lower_pos+y.dp.lower_pos,
-                                  x.dp.upper_neg+y.dp.upper_neg));
+	return REAL(REAL::double_pair(x.dp.lower_pos+y.dp.lower_pos,
+	                              x.dp.upper_neg+y.dp.upper_neg));
 #endif
 }
 
-inline REAL operator + (const REAL& x, int i)
+inline REAL operator+(const REAL& x, int i)
 {
-    if (iRRAM_unlikely( x.value ) )
-	{ return x.mp_addition(i); }
-    return REAL(REAL::double_pair(x.dp.lower_pos+i,
-                                  x.dp.upper_neg-i));
+	if (iRRAM_unlikely(x.value))
+		return x.mp_addition(i);
+	return REAL(REAL::double_pair(x.dp.lower_pos+i,
+	                              x.dp.upper_neg-i));
 }
 
-inline REAL operator + (const REAL& x, double d)
+inline REAL operator+(const REAL & x, double d)
 {
-    if (iRRAM_unlikely( x.value ) )
-	{ return x.mp_addition(d); }
-    return REAL(REAL::double_pair(x.dp.lower_pos+d,
-                                  x.dp.upper_neg-d));
+	if (iRRAM_unlikely(x.value))
+		return x.mp_addition(d);
+	return REAL(REAL::double_pair(x.dp.lower_pos + d, x.dp.upper_neg - d));
 }
 
-inline REAL& operator += (REAL& x,const REAL& y)
+inline REAL & operator+=(REAL & x, const REAL & y)
 {
-    if ( iRRAM_unlikely ( x.value||y.value ) )
-	 { x.mp_conv().mp_eqaddition(y.mp_conv()); return x;}
+	if (iRRAM_unlikely(x.value || y.value)) {
+		x.mp_conv().mp_eqaddition(y.mp_conv());
+		return x;
+	}
 #ifdef _use_SSE2__
-    x.dp.sse_data = _mm_add_pd(x.dp.sse_data,y.dp.sse_data);
+	x.dp.sse_data = _mm_add_pd(x.dp.sse_data, y.dp.sse_data);
 #else
-    x.dp.lower_pos+=y.dp.lower_pos;
-    x.dp.upper_neg+=y.dp.upper_neg;
+	x.dp.lower_pos += y.dp.lower_pos;
+	x.dp.upper_neg += y.dp.upper_neg;
 #endif
-    return x;
+	return x;
 }
 
-inline REAL operator - (const REAL& x, const REAL& y)
+inline REAL operator-(const REAL& x, const REAL& y)
 {
-    if ( iRRAM_unlikely ( x.value||y.value ) )
-	 { return x.mp_conv().mp_subtraction(y.mp_conv()); }
-    return REAL(REAL::double_pair(x.dp.lower_pos+y.dp.upper_neg,
-                                  x.dp.upper_neg+y.dp.lower_pos));
+	if (iRRAM_unlikely(x.value||y.value))
+		return x.mp_conv().mp_subtraction(y.mp_conv());
+	return REAL(REAL::double_pair(x.dp.lower_pos+y.dp.upper_neg,
+	                              x.dp.upper_neg+y.dp.lower_pos));
 }
 
 inline REAL operator - (const REAL& x, int n)
 {
-    if ( iRRAM_unlikely ( x.value ) )
-	 { return x.mp_subtraction(n); }
-    return REAL(REAL::double_pair(x.dp.lower_pos-n,
-                                  x.dp.upper_neg+n));
+	if (iRRAM_unlikely(x.value))
+		return x.mp_subtraction(n);
+	return REAL(REAL::double_pair(x.dp.lower_pos-n,
+	                              x.dp.upper_neg+n));
 }
 
 inline REAL operator - (int n, const REAL& x)
 {
-    if ( iRRAM_unlikely ( x.value ) )
-	 { return x.mp_invsubtraction(n); }
-    return REAL(REAL::double_pair(x.dp.upper_neg+n,
-                                  x.dp.lower_pos-n));
+	if (iRRAM_unlikely(x.value))
+		return x.mp_invsubtraction(n);
+	return REAL(REAL::double_pair(x.dp.upper_neg+n,
+	                              x.dp.lower_pos-n));
 }
 
 inline REAL operator - (const REAL& x)
 {
-    if ( iRRAM_unlikely ( x.value ) )
-	{ return x.mp_invsubtraction(int(0)); }
-    return REAL(REAL::double_pair(-x.dp.lower_pos,
-                                  -x.dp.upper_neg));
+	if (iRRAM_unlikely(value))
+		return mp_invsubtraction(int(0));
+	return REAL(REAL::double_pair(-dp.lower_pos,
+	                              -dp.upper_neg));
 }
 
 
 // inline double my_fmin(const double& x,const double& y)
 // { return  x<y?x:y ; }
 
-inline REAL operator * (const REAL& x, const REAL& y) 
+inline REAL operator*(const REAL & x, const REAL & y)
 {
-    if ( iRRAM_unlikely ( x.value||y.value ) )
-	 { return x.mp_conv().mp_multiplication(y.mp_conv()); }
-    REAL::double_pair z;
-    if (x.dp.lower_pos >= 0 && y.dp.lower_pos >= 0) {
-      z.lower_pos = x.dp.lower_pos * y.dp.lower_pos;
-      z.upper_neg = (-x.dp.upper_neg) * y.dp.upper_neg;
-    } else if (x.dp.upper_neg >= 0 && y.dp.upper_neg >= 0) {
-      z.lower_pos = x.dp.upper_neg * y.dp.upper_neg;
-      z.upper_neg = (-x.dp.lower_pos) * y.dp.lower_pos;
-    } else if (x.dp.upper_neg >= 0 && y.dp.lower_pos >= 0) {
-      z.lower_pos = x.dp.lower_pos * (-y.dp.upper_neg);
-      z.upper_neg = x.dp.upper_neg * y.dp.lower_pos;
-    } else if (x.dp.lower_pos >= 0 && y.dp.upper_neg >= 0 ) {
-      z.lower_pos = (-x.dp.upper_neg) * y.dp.lower_pos;
-      z.upper_neg = x.dp.lower_pos * y.dp.upper_neg;
-    } else {
-      z.lower_pos = fmin((-x.dp.upper_neg)*y.dp.lower_pos,x.dp.lower_pos*(-y.dp.upper_neg));
-      z.upper_neg = fmin((-x.dp.upper_neg)*y.dp.upper_neg,x.dp.lower_pos*(-y.dp.lower_pos));
-    }
-    return REAL(z);
+	if (iRRAM_unlikely(x.value || y.value))
+		return x.mp_conv().mp_multiplication(y.mp_conv());
+	REAL::double_pair z;
+	if (x.dp.lower_pos >= 0 && y.dp.lower_pos >= 0) {
+		z.lower_pos =   x.dp.lower_pos  * y.dp.lower_pos;
+		z.upper_neg = (-x.dp.upper_neg) * y.dp.upper_neg;
+	} else if (x.dp.upper_neg >= 0 && y.dp.upper_neg >= 0) {
+		z.lower_pos =   x.dp.upper_neg  * y.dp.upper_neg;
+		z.upper_neg = (-x.dp.lower_pos) * y.dp.lower_pos;
+	} else if (x.dp.upper_neg >= 0 && y.dp.lower_pos >= 0) {
+		z.lower_pos = x.dp.lower_pos * (-y.dp.upper_neg);
+		z.upper_neg = x.dp.upper_neg *   y.dp.lower_pos;
+	} else if (x.dp.lower_pos >= 0 && y.dp.upper_neg >= 0) {
+		z.lower_pos = (-x.dp.upper_neg) * y.dp.lower_pos;
+		z.upper_neg =   x.dp.lower_pos  * y.dp.upper_neg;
+	} else {
+		z.lower_pos = fmin((-x.dp.upper_neg) *   y.dp.lower_pos,
+		                     x.dp.lower_pos  * (-y.dp.upper_neg));
+		z.upper_neg = fmin((-x.dp.upper_neg) *   y.dp.upper_neg,
+		                     x.dp.lower_pos  * (-y.dp.lower_pos));
+	}
+	return REAL(z);
 }
 
 inline REAL operator * (const REAL& x, int n)
 {
-    if ( iRRAM_unlikely ( x.value) )
-	 { return x.mp_multiplication(n); }
-    REAL::double_pair z;
-    if ( n >= 0) {
-      z.lower_pos = x.dp.lower_pos * n;
-      z.upper_neg = x.dp.upper_neg * n;
-    } else {
-      z.lower_pos = (-x.dp.upper_neg) * n;
-      z.upper_neg = (-x.dp.lower_pos) * n;
-    }
-    return REAL(z);
+	if (iRRAM_unlikely(x.value))
+		return x.mp_multiplication(n);
+	REAL::double_pair z;
+	if (n >= 0) {
+		z.lower_pos = x.dp.lower_pos * n;
+		z.upper_neg = x.dp.upper_neg * n;
+	} else {
+		z.lower_pos = (-x.dp.upper_neg) * n;
+		z.upper_neg = (-x.dp.lower_pos) * n;
+	}
+	return REAL(z);
 }
 
 
-inline REAL& operator *= (REAL& x, int n){
-    if ( iRRAM_unlikely ( x.value) )
-	 { x=x.mp_multiplication(n); return x;}
-    if ( n >= 0) {
-      x.dp.lower_pos = x.dp.lower_pos * n;
-      x.dp.upper_neg = x.dp.upper_neg * n;
-    } else {
-      double  tmp    = (-x.dp.upper_neg) * n;
-      x.dp.upper_neg = (-x.dp.lower_pos) * n;
-      x.dp.lower_pos = tmp;
-    }
-    return x;
+inline REAL & operator*=(REAL & x, int n)
+{
+	if (iRRAM_unlikely(x.value)) {
+		x = x.mp_multiplication(n);
+		return x;
+	}
+	if (n >= 0) {
+		x.dp.lower_pos = x.dp.lower_pos * n;
+		x.dp.upper_neg = x.dp.upper_neg * n;
+	} else {
+		double tmp = (-x.dp.upper_neg) * n;
+		x.dp.upper_neg = (-x.dp.lower_pos) * n;
+		x.dp.lower_pos = tmp;
+	}
+	return x;
 }
 
-inline REAL operator / (const REAL& x, const REAL& y) {
-    if ( iRRAM_unlikely ( x.value||y.value ) )
-	 { return x.mp_conv().mp_division(y.mp_conv()); }
-    REAL::double_pair z;
-    if (y.dp.lower_pos > 0.0 ) {
-      if (x.dp.lower_pos > 0.0 ) {
-        z.lower_pos  = x.dp.lower_pos/(-y.dp.upper_neg);
-	z.upper_neg = x.dp.upper_neg/y.dp.lower_pos;
-      } else if (x.dp.upper_neg  > 0.0){
-        z.lower_pos  = x.dp.lower_pos/y.dp.lower_pos;
-	z.upper_neg = x.dp.upper_neg/(-y.dp.upper_neg);
-      } else {
-        z.lower_pos  = x.dp.lower_pos/y.dp.lower_pos;
-	z.upper_neg = x.dp.upper_neg/y.dp.lower_pos;
-      }
-    } else if (y.dp.upper_neg > 0.0) {
-      if (x.dp.lower_pos > 0.0 ) {
-        z.lower_pos  = x.dp.upper_neg/y.dp.upper_neg;
-	z.upper_neg = (-x.dp.lower_pos)/y.dp.lower_pos;
-      } else if (x.dp.upper_neg  > 0.0){
-        z.lower_pos  = (-x.dp.upper_neg)/y.dp.lower_pos;
-	z.upper_neg = x.dp.lower_pos/y.dp.upper_neg;
-      } else {
-        z.lower_pos  = x.dp.upper_neg/y.dp.upper_neg;
-	z.upper_neg = x.dp.lower_pos/y.dp.upper_neg;
-      }  
-    } else {
-        return x.mp_conv().mp_division(y.mp_conv()); // containing zero...
-      }
-    return REAL(z);
+inline REAL operator/(const REAL& x, const REAL& y)
+{
+	if (iRRAM_unlikely(x.value||y.value))
+		return x.mp_conv().mp_division(y.mp_conv());
+	REAL::double_pair z;
+	if (y.dp.lower_pos > 0.0) {
+		if (x.dp.lower_pos > 0.0) {
+			z.lower_pos = x.dp.lower_pos/(-y.dp.upper_neg);
+			z.upper_neg = x.dp.upper_neg/  y.dp.lower_pos;
+		} else if (x.dp.upper_neg  > 0.0){
+			z.lower_pos = x.dp.lower_pos/  y.dp.lower_pos;
+			z.upper_neg = x.dp.upper_neg/(-y.dp.upper_neg);
+		} else {
+			z.lower_pos = x.dp.lower_pos/  y.dp.lower_pos;
+			z.upper_neg = x.dp.upper_neg/  y.dp.lower_pos;
+		}
+	} else if (y.dp.upper_neg > 0.0) {
+		if (x.dp.lower_pos > 0.0 ) {
+			z.lower_pos =   x.dp.upper_neg /y.dp.upper_neg;
+			z.upper_neg = (-x.dp.lower_pos)/y.dp.lower_pos;
+		} else if (x.dp.upper_neg  > 0.0){
+			z.lower_pos = (-x.dp.upper_neg)/y.dp.lower_pos;
+			z.upper_neg =   x.dp.lower_pos /y.dp.upper_neg;
+		} else {
+			z.lower_pos = x.dp.upper_neg   /y.dp.upper_neg;
+			z.upper_neg = x.dp.lower_pos   /y.dp.upper_neg;
+		}
+	} else {
+		return x.mp_conv().mp_division(y.mp_conv()); // containing zero...
+	}
+	return REAL(z);
 }
 
 inline REAL operator / (const REAL& x, int n) {
-    if ( iRRAM_unlikely ( x.value ) )
-	 { return x.mp_division(n); }
-    REAL::double_pair z;
-    if (n > 0 ) {
-#ifdef _use_SSE2__
-        __m128d n_sse= _mm_set_pd1(double(n));
-        n_sse=_mm_div_pd(x.dp.sse_data,n_sse);
-	return REAL(n_sse);
-#else
-        z.lower_pos = x.dp.lower_pos/n,
-	z.upper_neg = x.dp.upper_neg/n;
-#endif
-    } else if (n < 0) {
-        z.lower_pos = (-x.dp.upper_neg)/n;
-	z.upper_neg = (-x.dp.lower_pos)/n;
-    } else {
-        return x.mp_conv().mp_division(0); // containing zero...
-    }
-    return REAL(z);
-}
-
-
-inline REAL square (const REAL& x) 
 {
-    if ( iRRAM_unlikely ( x.value ) )
-	 { return x.mp_square(); }
-    REAL::double_pair z;
-    if (x.dp.lower_pos >= 0 ) {
-      z.lower_pos = x.dp.lower_pos * x.dp.lower_pos;
-      z.upper_neg = (-x.dp.upper_neg) * x.dp.upper_neg;
-    } else if (x.dp.upper_neg >= 0 ) {
-      z.lower_pos = x.dp.upper_neg * x.dp.upper_neg;
-      z.upper_neg = (-x.dp.lower_pos) * x.dp.lower_pos;
-    } else if (x.dp.lower_pos<x.dp.upper_neg){
-      z.lower_pos = 0.0;
-      z.upper_neg = x.dp.lower_pos*(-x.dp.lower_pos);
-    } else {
-      z.lower_pos = 0.0;
-      z.upper_neg = (-x.dp.upper_neg)*x.dp.upper_neg;
-    }
-    return REAL(z);
+	if (iRRAM_unlikely(x.value))
+		return x.mp_division(n);
+	REAL::double_pair z;
+	if (n > 0) {
+#ifdef _use_SSE2__
+		__m128d n_sse = _mm_set_pd1(double(n));
+		n_sse = _mm_div_pd(x.dp.sse_data, n_sse);
+		return REAL(n_sse);
+#else
+		z.lower_pos = x.dp.lower_pos / n,
+		z.upper_neg = x.dp.upper_neg / n;
+#endif
+	} else if (n < 0) {
+		z.lower_pos = (-x.dp.upper_neg) / n;
+		z.upper_neg = (-x.dp.lower_pos) / n;
+	} else {
+		return x.mp_conv().mp_division(0); // containing zero...
+	}
+	return REAL(z);
 }
 
-inline LAZY_BOOLEAN operator < (const REAL &x, const REAL &y) {
-    if ( iRRAM_unlikely ( x.value||y.value ) )
-	 { return x.mp_conv().mp_less(y.mp_conv()); }
-    if ((-x.dp.upper_neg) < y.dp.lower_pos) return true;
-    if (x.dp.lower_pos > (-y.dp.upper_neg)) return false;
-    return LAZY_BOOLEAN::BOTTOM;
+
+inline REAL square(const REAL & x)
+{
+	if (iRRAM_unlikely(x.value)) {
+		return x.mp_square();
+	}
+	REAL::double_pair z;
+	if (x.dp.lower_pos >= 0) {
+		z.lower_pos =   x.dp.lower_pos  *   x.dp.lower_pos;
+		z.upper_neg = (-x.dp.upper_neg) *   x.dp.upper_neg;
+	} else if (x.dp.upper_neg >= 0) {
+		z.lower_pos =   x.dp.upper_neg  *   x.dp.upper_neg;
+		z.upper_neg = (-x.dp.lower_pos) *   x.dp.lower_pos;
+	} else if (x.dp.lower_pos < x.dp.upper_neg) {
+		z.lower_pos = 0.0;
+		z.upper_neg =   x.dp.lower_pos  * (-x.dp.lower_pos);
+	} else {
+		z.lower_pos = 0.0;
+		z.upper_neg = (-x.dp.upper_neg) *   x.dp.upper_neg;
+	}
+	return REAL(z);
 }
 
-inline LAZY_BOOLEAN operator <= (const REAL &x, const REAL &y) { return  (x<y); }
-inline LAZY_BOOLEAN operator >  (const REAL &x, const REAL &y) { return  (y<x); }
-inline LAZY_BOOLEAN operator >= (const REAL &x, const REAL &y) { return  (y<x); }
-inline LAZY_BOOLEAN operator == (const REAL &x, const REAL &y) { return  (y<x)&&(x<y) ; }
-inline LAZY_BOOLEAN operator != (const REAL &x, const REAL &y) { return  (y<x)||(x<y) ;}
+inline LAZY_BOOLEAN operator<(const REAL & x, const REAL & y)
+{
+	if (iRRAM_unlikely(x.value || y.value))
+		return x.mp_conv().mp_less(y.mp_conv());
+	if ((-x.dp.upper_neg) <   y.dp.lower_pos )
+		return true;
+	if (  x.dp.lower_pos  > (-y.dp.upper_neg))
+		return false;
+	return LAZY_BOOLEAN::BOTTOM;
+}
 
-inline REAL abs (const REAL& x){
-    if ( iRRAM_unlikely ( x.value ) )
-	 { return x.mp_absval(); }
-    if (x.dp.lower_pos > 0.0 )
-		return REAL(REAL::double_pair(x.dp.lower_pos,x.dp.upper_neg));
-    if (x.dp.upper_neg > 0.0 )
-		return REAL(REAL::double_pair(x.dp.upper_neg,x.dp.lower_pos));
-    if (x.dp.lower_pos > x.dp.upper_neg)
-		return REAL(REAL::double_pair(0.0,x.dp.upper_neg));
-    return REAL(REAL::double_pair(0.0,x.dp.lower_pos));
+inline LAZY_BOOLEAN operator<=(const REAL &x, const REAL &y) { return (x<y); }
+inline LAZY_BOOLEAN operator> (const REAL &x, const REAL &y) { return (y<x); }
+inline LAZY_BOOLEAN operator>=(const REAL &x, const REAL &y) { return (y<x); }
+inline LAZY_BOOLEAN operator==(const REAL &x, const REAL &y) { return (y<x)&&(x<y); }
+inline LAZY_BOOLEAN operator!=(const REAL &x, const REAL &y) { return (y<x)||(x<y); }
+
+inline REAL abs(const REAL & x)
+{
+	if (iRRAM_unlikely(x.value))
+		return x.mp_absval();
+	if (x.dp.lower_pos > 0.0)
+		return REAL(REAL::double_pair(x.dp.lower_pos, x.dp.upper_neg));
+	if (x.dp.upper_neg > 0.0)
+		return REAL(REAL::double_pair(x.dp.upper_neg, x.dp.lower_pos));
+	if (x.dp.lower_pos > x.dp.upper_neg)
+		return REAL(REAL::double_pair(0.0, x.dp.upper_neg));
+	return REAL(REAL::double_pair(0.0, x.dp.lower_pos));
 }
 
 // inline REAL intervall_join (const REAL& x,const REAL& y){
