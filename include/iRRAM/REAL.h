@@ -85,8 +85,9 @@ friend REAL & operator += (      REAL   &x,       double  d) { return x=x+d; }
 friend REAL   operator -  (const REAL   &x, const REAL   &y);
 friend REAL   operator -  (const REAL   &x,       int     n);
 friend REAL   operator -  (      int     n, const REAL   &x);
+/* not optimized yet, maybe MPFR contains "x-d" and "d-x"
 friend REAL   operator -  (const REAL   &x, const double  d);
-friend REAL   operator -  (const double  d, const REAL   &x);
+friend REAL   operator -  (const double  d, const REAL   &x);*/
 friend REAL   operator -  (const REAL   &x);
 friend REAL & operator -= (      REAL   &x, const REAL   &y) { return x=x-y; }
 friend REAL & operator -= (      REAL   &x,       int     n) { return x=x-n; }
@@ -94,15 +95,17 @@ friend REAL & operator -= (      REAL   &x,       int     n) { return x=x-n; }
 friend REAL   operator *  (const REAL   &x, const REAL   &y);
 friend REAL   operator *  (const REAL   &x,       int     n);
 friend REAL   operator *  (      int     n, const REAL   &x) { return x*n; }
+/* not optimized yet, maybe MPFR contains "x*d" and "d*x"
 friend REAL   operator *  (const REAL   &x, const double  y);
-friend REAL   operator *  (const double  y, const REAL   &x);
+friend REAL   operator *  (const double  y, const REAL   &x);*/
 friend REAL & operator *= (      REAL   &x, const REAL   &y) { return x=x*y; }
 friend REAL & operator *= (      REAL   &x,       int     n);
 
 friend REAL   operator /  (const REAL   &x, const REAL   &y);
 friend REAL   operator /  (const REAL   &x,       int     n);
+/* not optimized yet, maybe MPFR contains "x/d" and "d/x"
 friend REAL   operator /  (const REAL   &x,       double  y);
-friend REAL   operator /  (      double  y, const REAL   &x);
+friend REAL   operator /  (      double  y, const REAL   &x);*/
 friend REAL & operator /= (      REAL   &x, const REAL   &y) { return x=x/y; }
 friend REAL & operator /= (      REAL   &x,       int     n) { return x=x/n; }
 
@@ -118,65 +121,12 @@ friend REAL          scale       (const REAL &x, const int k);
 
 // Comparisons: --------------------------------
 
-friend LAZY_BOOLEAN  operator <  (const REAL&    x, const REAL&    y);
-friend LAZY_BOOLEAN  operator <  (const REAL&    x, const int      y);
-friend LAZY_BOOLEAN  operator <  (const REAL&    x, const double   y);
-friend LAZY_BOOLEAN  operator <  (const REAL&    x, const INTEGER& y);
-friend LAZY_BOOLEAN  operator <  (const REAL&    x, const DYADIC&  y);
-friend LAZY_BOOLEAN  operator <  (const int      x, const REAL&    y);
-friend LAZY_BOOLEAN  operator <  (const double   x, const REAL&    y);
-friend LAZY_BOOLEAN  operator <  (const INTEGER& x, const REAL&    y);
-friend LAZY_BOOLEAN  operator <  (const DYADIC&  x, const REAL&    y);
-
-friend LAZY_BOOLEAN  operator <= (const REAL&    x, const REAL&    y);
-friend LAZY_BOOLEAN  operator <= (const REAL&    x, const int      y);
-friend LAZY_BOOLEAN  operator <= (const REAL&    x, const double   y);
-friend LAZY_BOOLEAN  operator <= (const REAL&    x, const INTEGER& y);
-friend LAZY_BOOLEAN  operator <= (const REAL&    x, const DYADIC&  y);
-friend LAZY_BOOLEAN  operator <= (const int      x, const REAL&    y);
-friend LAZY_BOOLEAN  operator <= (const double   x, const REAL&    y);
-friend LAZY_BOOLEAN  operator <= (const INTEGER& x, const REAL&    y);
-friend LAZY_BOOLEAN  operator <= (const DYADIC&  x, const REAL&    y);
-
-friend LAZY_BOOLEAN  operator >  (const REAL&    x, const REAL&    y);
-friend LAZY_BOOLEAN  operator >  (const REAL&    x, const int      y);
-friend LAZY_BOOLEAN  operator >  (const REAL&    x, const double   y);
-friend LAZY_BOOLEAN  operator >  (const REAL&    x, const INTEGER& y);
-friend LAZY_BOOLEAN  operator >  (const REAL&    x, const DYADIC&  y);
-friend LAZY_BOOLEAN  operator >  (const int      x, const REAL&    y);
-friend LAZY_BOOLEAN  operator >  (const double   x, const REAL&    y);
-friend LAZY_BOOLEAN  operator >  (const INTEGER& x, const REAL&    y);
-friend LAZY_BOOLEAN  operator >  (const DYADIC&  x, const REAL&    y);
-
-friend LAZY_BOOLEAN  operator >= (const REAL&    x, const REAL&    y);
-friend LAZY_BOOLEAN  operator >= (const REAL&    x, const int      y);
-friend LAZY_BOOLEAN  operator >= (const REAL&    x, const double   y);
-friend LAZY_BOOLEAN  operator >= (const REAL&    x, const INTEGER& y);
-friend LAZY_BOOLEAN  operator >= (const REAL&    x, const DYADIC&  y);
-friend LAZY_BOOLEAN  operator >= (const int      x, const REAL&    y);
-friend LAZY_BOOLEAN  operator >= (const double   x, const REAL&    y);
-friend LAZY_BOOLEAN  operator >= (const INTEGER& x, const REAL&    y);
-friend LAZY_BOOLEAN  operator >= (const DYADIC&  x, const REAL&    y);
-
-friend LAZY_BOOLEAN  operator == (const REAL&    x, const REAL&    y);
-friend LAZY_BOOLEAN  operator == (const REAL&    x, const int      y);
-friend LAZY_BOOLEAN  operator == (const REAL&    x, const double   y);
-friend LAZY_BOOLEAN  operator == (const REAL&    x, const INTEGER& y);
-friend LAZY_BOOLEAN  operator == (const REAL&    x, const DYADIC&  y);
-friend LAZY_BOOLEAN  operator == (const int      x, const REAL&    y);
-friend LAZY_BOOLEAN  operator == (const double   x, const REAL&    y);
-friend LAZY_BOOLEAN  operator == (const INTEGER& x, const REAL&    y);
-friend LAZY_BOOLEAN  operator == (const DYADIC&  x, const REAL&    y);
-
-friend LAZY_BOOLEAN  operator != (const REAL&    x, const REAL&    y);
-friend LAZY_BOOLEAN  operator != (const REAL&    x, const int      y);
-friend LAZY_BOOLEAN  operator != (const REAL&    x, const double   y);
-friend LAZY_BOOLEAN  operator != (const REAL&    x, const INTEGER& y);
-friend LAZY_BOOLEAN  operator != (const REAL&    x, const DYADIC&  y);
-friend LAZY_BOOLEAN  operator != (const int      x, const REAL&    y);
-friend LAZY_BOOLEAN  operator != (const double   x, const REAL&    y);
-friend LAZY_BOOLEAN  operator != (const INTEGER& x, const REAL&    y);
-friend LAZY_BOOLEAN  operator != (const DYADIC&  x, const REAL&    y);
+friend LAZY_BOOLEAN  operator <  (const REAL &x, const REAL &y);
+friend LAZY_BOOLEAN  operator <= (const REAL &x, const REAL &y);
+friend LAZY_BOOLEAN  operator >  (const REAL &x, const REAL &y);
+friend LAZY_BOOLEAN  operator >= (const REAL &x, const REAL &y);
+friend LAZY_BOOLEAN  operator == (const REAL &x, const REAL &y);
+friend LAZY_BOOLEAN  operator != (const REAL &x, const REAL &y);
 
 
 friend LAZY_BOOLEAN  positive    (const REAL& x, const int k);
@@ -673,65 +623,11 @@ inline LAZY_BOOLEAN operator < (const REAL &x, const REAL &y) {
     return LAZY_BOOLEAN::BOTTOM;
 }
 
-
-inline LAZY_BOOLEAN operator <  (const REAL&	 x, const int	   y){ return  (x<REAL(y)); }
-inline LAZY_BOOLEAN operator <  (const REAL&	 x, const double   y){ return  (x<REAL(y)); }
-inline LAZY_BOOLEAN operator <  (const REAL&	 x, const INTEGER& y){ return  (x<REAL(y)); }
-inline LAZY_BOOLEAN operator <  (const REAL&	 x, const DYADIC&  y){ return  (x<REAL(y)); }
-inline LAZY_BOOLEAN operator <  (const int	 x, const REAL&    y){ return  (REAL(x)<y); }
-inline LAZY_BOOLEAN operator <  (const double   x, const REAL&    y){ return  (REAL(x)<y); }
-inline LAZY_BOOLEAN operator <  (const INTEGER& x, const REAL&    y){ return  (REAL(x)<y); }
-inline LAZY_BOOLEAN operator <  (const DYADIC&  x, const REAL&    y){ return  (REAL(x)<y); }
-
-inline LAZY_BOOLEAN operator <= (const REAL&    x, const REAL&    y){ return  (x<y); }
-inline LAZY_BOOLEAN operator <= (const REAL&	 x, const int	   y){ return  (x<=REAL(y)); }
-inline LAZY_BOOLEAN operator <= (const REAL&	 x, const double   y){ return  (x<=REAL(y)); }
-inline LAZY_BOOLEAN operator <= (const REAL&	 x, const INTEGER& y){ return  (x<=REAL(y)); }
-inline LAZY_BOOLEAN operator <= (const REAL&	 x, const DYADIC&  y){ return  (x<=REAL(y)); }
-inline LAZY_BOOLEAN operator <= (const int	 x, const REAL&    y){ return  (REAL(x)<=y); }
-inline LAZY_BOOLEAN operator <= (const double   x, const REAL&    y){ return  (REAL(x)<=y); }
-inline LAZY_BOOLEAN operator <= (const INTEGER& x, const REAL&    y){ return  (REAL(x)<=y); }
-inline LAZY_BOOLEAN operator <= (const DYADIC&  x, const REAL&    y){ return  (REAL(x)<=y); }
-
-inline LAZY_BOOLEAN operator >  (const REAL&    x, const REAL&    y){ return  (y<x); }
-inline LAZY_BOOLEAN operator >  (const REAL&	 x, const int	   y){ return  (x>REAL(y)); }
-inline LAZY_BOOLEAN operator >  (const REAL&	 x, const double   y){ return  (x>REAL(y)); }
-inline LAZY_BOOLEAN operator >  (const REAL&	 x, const INTEGER& y){ return  (x>REAL(y)); }
-inline LAZY_BOOLEAN operator >  (const REAL&	 x, const DYADIC&  y){ return  (x>REAL(y)); }
-inline LAZY_BOOLEAN operator >  (const int	 x, const REAL&    y){ return  (REAL(x)>y); }
-inline LAZY_BOOLEAN operator >  (const double   x, const REAL&    y){ return  (REAL(x)>y); }
-inline LAZY_BOOLEAN operator >  (const INTEGER& x, const REAL&    y){ return  (REAL(x)>y); }
-inline LAZY_BOOLEAN operator >  (const DYADIC&  x, const REAL&    y){ return  (REAL(x)>y); }
-
-inline LAZY_BOOLEAN operator >= (const REAL&    x, const REAL&    y){ return  (y<x); }
-inline LAZY_BOOLEAN operator >= (const REAL&	 x, const int	   y){ return  (x>=REAL(y)); }
-inline LAZY_BOOLEAN operator >= (const REAL&	 x, const double   y){ return  (x>=REAL(y)); }
-inline LAZY_BOOLEAN operator >= (const REAL&	 x, const INTEGER& y){ return  (x>=REAL(y)); }
-inline LAZY_BOOLEAN operator >= (const REAL&	 x, const DYADIC&  y){ return  (x>=REAL(y)); }
-inline LAZY_BOOLEAN operator >= (const int	 x, const REAL&    y){ return  (REAL(x)>=y); }
-inline LAZY_BOOLEAN operator >= (const double   x, const REAL&    y){ return  (REAL(x)>=y); }
-inline LAZY_BOOLEAN operator >= (const INTEGER& x, const REAL&    y){ return  (REAL(x)>=y); }
-inline LAZY_BOOLEAN operator >= (const DYADIC&  x, const REAL&    y){ return  (REAL(x)>=y); }
-
-inline LAZY_BOOLEAN operator == (const REAL&    x, const REAL&    y){ return  (y<x)&&(x<y) ; }
-inline LAZY_BOOLEAN operator == (const REAL&	 x, const int	   y){ return  (x==REAL(y)); }
-inline LAZY_BOOLEAN operator == (const REAL&	 x, const double   y){ return  (x==REAL(y)); }
-inline LAZY_BOOLEAN operator == (const REAL&	 x, const INTEGER& y){ return  (x==REAL(y)); }
-inline LAZY_BOOLEAN operator == (const REAL&	 x, const DYADIC&  y){ return  (x==REAL(y)); }
-inline LAZY_BOOLEAN operator == (const int	 x, const REAL&    y){ return  (REAL(x)==y); }
-inline LAZY_BOOLEAN operator == (const double   x, const REAL&    y){ return  (REAL(x)==y); }
-inline LAZY_BOOLEAN operator == (const INTEGER& x, const REAL&    y){ return  (REAL(x)==y); }
-inline LAZY_BOOLEAN operator == (const DYADIC&  x, const REAL&    y){ return  (REAL(x)==y); }
-
-inline LAZY_BOOLEAN operator != (const REAL&    x, const REAL&    y){ return  (y<x)||(x<y) ;}
-inline LAZY_BOOLEAN operator != (const REAL&	 x, const int	   y){ return  (x!=REAL(y)); }
-inline LAZY_BOOLEAN operator != (const REAL&	 x, const double   y){ return  (x!=REAL(y)); }
-inline LAZY_BOOLEAN operator != (const REAL&	 x, const INTEGER& y){ return  (x!=REAL(y)); }
-inline LAZY_BOOLEAN operator != (const REAL&	 x, const DYADIC&  y){ return  (x!=REAL(y)); }
-inline LAZY_BOOLEAN operator != (const int	 x, const REAL&    y){ return  (REAL(x)!=y); }
-inline LAZY_BOOLEAN operator != (const double   x, const REAL&    y){ return  (REAL(x)!=y); }
-inline LAZY_BOOLEAN operator != (const INTEGER& x, const REAL&    y){ return  (REAL(x)!=y); }
-inline LAZY_BOOLEAN operator != (const DYADIC&  x, const REAL&    y){ return  (REAL(x)!=y); }
+inline LAZY_BOOLEAN operator <= (const REAL &x, const REAL &y) { return  (x<y); }
+inline LAZY_BOOLEAN operator >  (const REAL &x, const REAL &y) { return  (y<x); }
+inline LAZY_BOOLEAN operator >= (const REAL &x, const REAL &y) { return  (y<x); }
+inline LAZY_BOOLEAN operator == (const REAL &x, const REAL &y) { return  (y<x)&&(x<y) ; }
+inline LAZY_BOOLEAN operator != (const REAL &x, const REAL &y) { return  (y<x)||(x<y) ;}
 
 inline REAL abs (const REAL& x){
     if ( iRRAM_unlikely ( x.value ) )
