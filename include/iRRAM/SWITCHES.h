@@ -43,6 +43,7 @@ MA 02111-1307, USA.
 #ifndef iRRAM_SWITCHES_H
 #define iRRAM_SWITCHES_H
 
+#include <cassert>
 #include <iRRAM/core.h>
 
 namespace iRRAM {
@@ -99,7 +100,7 @@ protected:
 		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 	}
 	stiff(int prec, bool abs) noexcept : saved(ACTUAL_STACK.prec_step)
-	{ set_prec_step(prec); }
+	{ assert(abs); set_prec_step(prec); }
 public:
 	explicit inline stiff(int n = 1) noexcept
 	: stiff(ACTUAL_STACK.prec_step + n, true) {}

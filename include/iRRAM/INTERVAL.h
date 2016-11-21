@@ -52,8 +52,8 @@ INTERVAL(const REAL& x) : low(x), upp(x) {}
 INTERVAL(const REAL& l, const REAL& r);
 
 //  Fast construction of an interval from an ordered(!) pair of reals
-INTERVAL(const REAL& l, const REAL& r, bool dummy) : low(l), upp(r) {}
-INTERVAL(REAL &&l, REAL &&r, bool dummy) : low(std::forward<REAL>(l)), upp(std::forward<REAL>(r)) {}
+INTERVAL(const REAL& l, const REAL& r, bool dummy) : low(l), upp(r) { (void)dummy; }
+INTERVAL(REAL &&l, REAL &&r, bool dummy) : low(std::forward<REAL>(l)), upp(std::forward<REAL>(r)) { (void)dummy; }
 
 
 // Standard Arithmetic: ------------------------
