@@ -22,47 +22,40 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
-#include <cmath>
-#include <cstdlib>
-#include <cstdarg>
-#include <cstring>
-
 #include <iRRAM/core.h>
 
 #if iRRAM_BACKEND_MPFR
-	#include "MPFR_ext.h"
+# include "MPFR_ext.h"
 #else
-	#error "Currently no further backends define!"
+# error "Currently no further backends defined!"
 #endif
 
 namespace iRRAM {
 
-INTEGER DYADIC::as_INTEGER()
+INTEGER DYADIC::as_INTEGER() const
 {
 	INTEGER z;
 	MP_mp_to_INTEGER(this->value,z.value);
 	return z;
 }
 
-//Conversion from INTEGER to smaller types
-INTEGER::operator int() const {;
-  return MP_INTEGER_to_int(value);
-}
+// Conversion from INTEGER to smaller types
+INTEGER::operator int() const { return MP_INTEGER_to_int(value); }
 
-//Conversions from REAL to DYADIC with absolute precision
-DYADIC REAL::as_DYADIC(const int p) const {
-  return approx(*this,p);
-}
+// Conversions from REAL to DYADIC with absolute precision
+DYADIC REAL::as_DYADIC(const int p) const { return approx(*this, p); }
 
-DYADIC REAL::as_DYADIC () const { return approx(*this,DYADIC::getprec());}
+DYADIC REAL::as_DYADIC() const { return approx(*this, DYADIC::getprec()); }
 
 
-//Conversion from REAL to double with a relative precision of p bits
-double REAL::as_double(const int p) const {
-  if ( bound(*this,-1150) ) return 0.0;
-  int s=size(*this);
-  DYADIC d=approx(*this,s-p-2);
-  return MP_mp_to_double(d.value);
+// Conversion from REAL to double with a relative precision of p bits
+double REAL::as_double(const int p) const
+{
+	if (bound(*this, -1150))
+		return 0.0;
+	int s = size(*this);
+	DYADIC d = approx(*this, s - p - 2);
+	return MP_mp_to_double(d.value);
 }
 
 } // namespace iRRAM
