@@ -199,6 +199,8 @@ RESULT limit_mv (RESULT f(int prec,
                           const ARGUMENT&),
                           const ARGUMENT& x)
 {
+  bool inlimit = ACTUAL_STACK.inlimit != 0;
+
   ITERATION_STACK SAVED_STACK;
   ACTUAL_STACK.inlimit+=1;
   ACTUAL_STACK.prec_step++;
@@ -214,7 +216,8 @@ RESULT limit_mv (RESULT f(int prec,
   int element_step=SAVED_STACK.data.prec_step;
   int firsttime=2;
 
-  if ( (ACTUAL_STACK.inlimit==0) && !iRRAM_thread_data_address->cache_i.get(choice)) iRRAM_thread_data_address->cache_i.put(choice);
+  if (!inlimit && !iRRAM_thread_data_address->cache_i.get(choice))
+    iRRAM_thread_data_address->cache_i.put(choice);
 
   x.geterror(x_error);
 
@@ -224,7 +227,8 @@ RESULT limit_mv (RESULT f(int prec,
    try {
     iRRAM_DEBUG2(2,"trying to compute limit_mv with precicion 2^(%d)...\n",element);
     limnew=f(element,&choice,x);
-    if ( SAVED_STACK.data.inlimit==0 ) iRRAM_thread_data_address->cache_i.modify(choice);
+    if (!inlimit)
+      iRRAM_thread_data_address->cache_i.modify(choice);
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
