@@ -101,23 +101,10 @@ struct ITERATION_DATA {
 	int prec_step;
 };
 
-struct ITERATION_STACK {
-	ITERATION_STACK() noexcept;
-	~ITERATION_STACK() noexcept;
-	ITERATION_DATA data;
-};
-
 
 extern __thread ITERATION_DATA ACTUAL_STACK;
 extern __thread bool iRRAM_highlevel; /* TODO: remove: iRRAM-timings revealed no performance loss */
 extern __thread bool inReiterate;
-
-inline ITERATION_STACK::ITERATION_STACK() noexcept : data(ACTUAL_STACK) {}
-inline ITERATION_STACK::~ITERATION_STACK() noexcept
-{
-	ACTUAL_STACK = this->data;
-	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-}
 
 /* helper for reduced overload visibility of binary operator declarations */
 template <typename Base,typename EquivBase,typename Compat,typename Ret = Base>
