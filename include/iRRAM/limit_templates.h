@@ -73,8 +73,8 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&),
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]
-    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[env.saved_step()-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
+    	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
                   << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
                   <<"), trying normal p-sequence\n";});
@@ -142,8 +142,8 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&,DISCRETE param),
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]
-    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[env.saved_step()-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
+    	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
                   << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
                   <<"), trying normal p-sequence\n";});
@@ -220,8 +220,8 @@ RESULT limit_mv (RESULT f(int prec,
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]
-    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[env.saved_step()-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
+    	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{fprintf(stderr,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
                    limnew_error.mantissa,limnew_error.exponent);});
        element_step=1;
@@ -384,9 +384,7 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
 {
   if ( on_domain(x,param) != true ) REITERATE(0);
 
-  ITERATION_STACK SAVED_STACK;
-
-  single_valued code;
+  limit_computation env(0);
   iRRAM_DEBUG1(2,"starting lipschitz_1p_1a ...\n");
 
   DISCRETE_ARGUMENT x_center;
@@ -396,12 +394,12 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
   bool try_it=true;
   x.to_formal_ball(x_center,x_error);
 
-  for (unsigned prec_step_add = 0; try_it; prec_step_add += 2) {
-    stiff code(prec_step_add);
+  while (try_it) {
     try { try_it=false;
         lip_result=f(x_center,param); }
     catch ( Iteration it)  { try_it=true;
-      iRRAM_DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to step %d...\n",ACTUAL_STACK.prec_step+2);
+      env.inc_step(2);
+      iRRAM_DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to step %d...\n",ACTUAL_STACK.prec_step);
     }
   }
 

@@ -61,9 +61,9 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]
-    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[env.saved_step()-1]
-    	&&  limnew_error.exponent > y_error.exponent -iRRAM_prec_array[env.saved_step()-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
+    	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)
+    	&&  limnew_error.exponent > y_error.exponent -env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{fprintf(stderr,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
                    limnew_error.mantissa,limnew_error.exponent);});
        element_step=1;
@@ -317,10 +317,8 @@ REAL lipschitz (REAL f(const REAL&),
   REAL x_new,lip_result,lip_bound;
   sizetype lip_error,lip_size,tmp_size,x_error;
 
-  ITERATION_STACK SAVED_STACK;
-
   {
-    single_valued code;
+    limit_computation env(0);
   iRRAM_DEBUG1(2,"starting lipschitz1b ...\n");
 
 // for the computation of the Lipschitz bound, we work with
@@ -339,9 +337,7 @@ REAL lipschitz (REAL f(const REAL&),
   try { try_it=false;
         lip_result=f(x_new); }
   catch ( Iteration it)  { try_it=true;
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+      env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     }
   }
@@ -372,8 +368,6 @@ REAL lipschitz (REAL f(const REAL&),
   x_new=x;
   x_new.geterror(x_error);
   sizetype_exact(x_new.error);
-  
-  ITERATION_STACK SAVED_STACK;
 
   {
     single_valued code;
@@ -811,7 +805,7 @@ REAL limit (const FUNCTION<REAL,int> & f )
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
                   << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
                   <<"), trying normal p-sequence\n";});

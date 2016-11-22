@@ -158,6 +158,7 @@ struct conditional_comparison_overloads {
 #include <iRRAM/STREAMS.h>
 #include <iRRAM/SWITCHES.h>
 #include <iRRAM/FUNCTION.h>
+#include <iRRAM/core.h>
 
 
 namespace iRRAM {

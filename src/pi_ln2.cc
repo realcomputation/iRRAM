@@ -49,11 +49,7 @@ REAL ln2()
 		REAL p = pi();
 		REAL ln2a;
 		{
-			ITERATION_STACK SAVED_STACK;
-			ACTUAL_STACK.prec_step += 1;
-			ACTUAL_STACK.actual_prec =
-			        iRRAM_prec_array[ACTUAL_STACK.prec_step];
-			iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+			stiff code;
 
 			ln2a = limit(ln2_approx);
 			ln2_time -= s1;
@@ -157,11 +153,7 @@ REAL pi()
 		unsigned int dummy;
 		double s1;
 		resources(s1, dummy);
-		ITERATION_STACK SAVED_STACK;
-		ACTUAL_STACK.prec_step += 1;
-		ACTUAL_STACK.actual_prec =
-		        iRRAM_prec_array[ACTUAL_STACK.prec_step];
-		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+		stiff code;
 
 		delete pi_val;
 		pi_val = new (REAL);

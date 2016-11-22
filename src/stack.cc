@@ -93,8 +93,6 @@ int module(REAL f(const REAL&),const REAL& x, int p){
 // We now try to find the smallest p_arg such that the evaluation of f(x+- 2^p_arg) 
 // is possible up to an error of at most  2^{p-1}
 
-  ITERATION_STACK SAVED_STACK;
-
 // To do this, we start with p_arg=p.
 // If this is successfull, we increase the value of p_arg until the first failure
 // It it is not, then we decrease until the first success...

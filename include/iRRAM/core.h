@@ -35,6 +35,7 @@ MA 02111-1307, USA.
 #include <iRRAM/lib.h>
 #include <iRRAM/version.h>
 #include <iRRAM/cache.h>
+#include <iRRAM/SWITCHES.h>
 
 namespace iRRAM {
 
@@ -389,11 +390,7 @@ auto iRRAM_exec(F f) -> decltype(f())
 {
 	iRRAM_thread_data_address = new iRRAM_thread_data_class;
 
-	ITERATION_STACK SAVED_STACK;
-
-	ACTUAL_STACK.prec_step = iRRAM_prec_start;
-	ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
-	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+	stiff code(iRRAM_prec_start, stiff::abs{});
 	fesetround(FE_DOWNWARD);
 	// set the correct rounding mode for REAL using double intervals):
 
@@ -436,9 +433,7 @@ auto iRRAM_exec(F f) -> decltype(f())
 		int prec_skip = 0;
 		do {
 			prec_skip++;
-			ACTUAL_STACK.prec_step += 4;
-			ACTUAL_STACK.actual_prec =
-			        iRRAM_prec_array[ACTUAL_STACK.prec_step];
+			code.inc_step(4);
 		} while ((ACTUAL_STACK.actual_prec > p_end) &&
 		         (prec_skip != iRRAM_prec_skip));
 

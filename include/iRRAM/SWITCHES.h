@@ -44,7 +44,6 @@ MA 02111-1307, USA.
 #define iRRAM_SWITCHES_H
 
 #include <cassert>
-#include <iRRAM/core.h>
 
 namespace iRRAM {
 
@@ -99,11 +98,13 @@ protected:
 		ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
 		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 	}
-	stiff(int prec, bool abs) noexcept : saved(ACTUAL_STACK.prec_step)
-	{ assert(abs); set_prec_step(prec); }
+
 public:
-	explicit inline stiff(int n = 1) noexcept
-	: stiff(ACTUAL_STACK.prec_step + n, true) {}
+	struct abs {};
+	struct rel {};
+
+	template <typename T=rel> explicit stiff(int=1, T=T{}) noexcept;
+
 	inline ~stiff() noexcept {
 		set_prec_step(saved);
 	}
@@ -111,20 +112,26 @@ public:
 	stiff operator=(const stiff &) = delete;
 
 	int saved_step() const noexcept { return saved; }
-	int saved_prec() const noexcept { return iRRAM_prec_array[saved]; }
-};
+	int saved_prec(int delta_step = 0) const noexcept { return iRRAM_prec_array[saved + delta_step]; }
 
-struct relaxed : public stiff {
-	relaxed() : stiff((ACTUAL_STACK.prec_step+1)/2, true) {}
-};
-
-struct limit_computation : public stiff, single_valued
-{
 	void inc_step(int n) const noexcept
 	{
 		set_prec_step(ACTUAL_STACK.prec_step + n);
 	}
 };
+
+template <> inline stiff::stiff(int abs_step, abs) noexcept
+: saved(ACTUAL_STACK.prec_step)
+{ set_prec_step(abs_step); }
+
+template <> inline stiff::stiff(int rel_step, rel) noexcept
+: stiff(ACTUAL_STACK.prec_step + rel_step, abs{}) {}
+
+struct relaxed : public stiff {
+	relaxed() : stiff((ACTUAL_STACK.prec_step+1)/2, abs{}) {}
+};
+
+struct limit_computation : public stiff, single_valued { using stiff::stiff; };
 
 } // namespace iRRAM
 
