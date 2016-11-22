@@ -52,18 +52,14 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&),
                            const ARGUMENT& x)
 
 {
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   RESULT lim,limnew;
   sizetype limnew_error,element_error;
   sizetype lim_error,x_error;
 
-  int element=SAVED_STACK.data.actual_prec;
-  int element_step=SAVED_STACK.data.prec_step;
+  int element=env.saved_prec();
+  int element_step=env.saved_step();
   int firsttime=2;
 
   x.geterror(x_error);
@@ -77,8 +73,8 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&),
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[SAVED_STACK.data.prec_step-1]
-    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[SAVED_STACK.data.prec_step-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]
+    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[env.saved_step()-1]) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
                   << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
                   <<"), trying normal p-sequence\n";});
@@ -95,7 +91,7 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&),
       iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       }
     firsttime=0;
-    if (element<=SAVED_STACK.data.actual_prec)break;
+    if (element<=env.saved_prec())break;
     element_step+=4;
     element=iRRAM_prec_array[element_step];
     }
@@ -125,18 +121,14 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&,DISCRETE param),
                            const ARGUMENT& x,DISCRETE param)
 
 {
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   RESULT lim,limnew;
   sizetype limnew_error,element_error;
   sizetype lim_error,x_error;
 
-  int element=SAVED_STACK.data.actual_prec;
-  int element_step=SAVED_STACK.data.prec_step;
+  int element=env.saved_prec();
+  int element_step=env.saved_step();
   int firsttime=2;
 
   x.geterror(x_error);
@@ -150,8 +142,8 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&,DISCRETE param),
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[SAVED_STACK.data.prec_step-1]
-    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[SAVED_STACK.data.prec_step-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]
+    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[env.saved_step()-1]) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
                   << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
                   <<"), trying normal p-sequence\n";});
@@ -168,7 +160,7 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&,DISCRETE param),
       iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       }
     firsttime=0;
-    if (element<=SAVED_STACK.data.actual_prec)break;
+    if (element<=env.saved_prec())break;
     element_step+=4;
     element=iRRAM_prec_array[element_step];
     }
@@ -201,19 +193,15 @@ RESULT limit_mv (RESULT f(int prec,
 {
   bool inlimit = ACTUAL_STACK.inlimit != 0;
 
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step++;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   RESULT lim,limnew;
   sizetype limnew_error,element_error;
   int choice=0;
   sizetype lim_error,x_error;
 
-  int element=SAVED_STACK.data.actual_prec;
-  int element_step=SAVED_STACK.data.prec_step;
+  int element=env.saved_prec();
+  int element_step=env.saved_step();
   int firsttime=2;
 
   if (!inlimit && !iRRAM_thread_data_address->cache_i.get(choice))
@@ -232,8 +220,8 @@ RESULT limit_mv (RESULT f(int prec,
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
-    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[SAVED_STACK.data.prec_step-1]
-    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[SAVED_STACK.data.prec_step-1]) {
+    if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[env.saved_step()-1]
+    	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[env.saved_step()-1]) {
     iRRAM_DEBUG0(2,{fprintf(stderr,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
                    limnew_error.mantissa,limnew_error.exponent);});
        element_step=1;
@@ -263,7 +251,7 @@ RESULT limit_mv (RESULT f(int prec,
       iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       }
     firsttime=0;
-    if (element<=SAVED_STACK.data.actual_prec)break;
+    if (element<=env.saved_prec())break;
     element_step+=4;
     element=iRRAM_prec_array[element_step];
     }
@@ -281,11 +269,7 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
 {
   if ( on_domain(x) != true ) REITERATE(0);
 
-  ITERATION_STACK SAVED_STACK;
-  ACTUAL_STACK.inlimit+=1;
-  ACTUAL_STACK.prec_step+=1;
-  ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+  limit_computation env;
 
   ARGUMENT x_new;
   RESULT lim;
@@ -301,11 +285,10 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
   while (1) {
      try{
       iRRAM_DEBUG2(2,"trying to compute limit_lip with precision %d...\n",ACTUAL_STACK.actual_prec);
-    lim=f(SAVED_STACK.data.actual_prec,x_new,param);
+    lim=f(env.saved_prec(),x_new,param);
     lim.geterror(lim_error);
-    if (lim_error.exponent > SAVED_STACK.data.actual_prec ) {
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+    if (lim_error.exponent > env.saved_prec()) {
+      env.inc_step(2);
       limit_debug2("limit_lip too imprecise");
 
    } else {
@@ -314,11 +297,10 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
       break;
     }}
     catch ( Iteration it){
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
+      env.inc_step(2);
       limit_debug2("limit_lip failed");
     } }
-  sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
+  sizetype_set(lim_error,1,env.saved_prec());
   lim.adderror(lim_error);
   sizetype_shift(lim_error,x_error,lip_value);
   lim.adderror(lim_error);
