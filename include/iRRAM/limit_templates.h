@@ -400,7 +400,7 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
             bool on_domain(const CONT_ARGUMENT&, const PARAM& param),
             const CONT_ARGUMENT& x, const PARAM& param )
 {
-  if ( on_domain(param,x) != true ) REITERATE(0);
+  if ( on_domain(x,param) != true ) REITERATE(0);
 
   ITERATION_STACK SAVED_STACK;
 
@@ -419,7 +419,7 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
     try { try_it=false;
         lip_result=f(x_center,param); }
     catch ( Iteration it)  { try_it=true;
-      iRRAM_DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec+2);
+      iRRAM_DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to step %d...\n",ACTUAL_STACK.prec_step+2);
     }
   }
 
