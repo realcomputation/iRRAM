@@ -1,7 +1,7 @@
 
 LDADD=$(top_builddir)/build/libiRRAM.la @LDADD@
 
-check_PROGRAMS = t_DYADIC t_INTEGER t_RATIONAL t_double_conv t_size t_string_conv t_FUNCTION
+check_PROGRAMS = t_DYADIC t_INTEGER t_RATIONAL t_double_conv t_size t_string_conv t_FUNCTION t_COMPLEX
 
 TESTS = $(check_PROGRAMS)
 
@@ -12,3 +12,4 @@ t_RATIONAL_SOURCES = t_RATIONAL.cc
 t_double_conv_SOURCES = t_double_conv.cc
 t_size_SOURCES = t_size.cc
 t_string_conv_SOURCES = t_string_conv.cc
+t_COMPLEX_SOURCES = t_COMPLEX.cc
