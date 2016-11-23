@@ -13,6 +13,10 @@ Authors and contributors are:
 - Shao Qi 
   assisted in the interval extensions on top of iRRAM
 
+- Franz Brausse <brausse@informatik.uni-trier.de>
+  polynomial IVP solving; build system updates; bug fixes; C++11 migration;
+  redundancy elimination; maintenance
+
 All communication should go to:
 
 Norbert Mueller                                            

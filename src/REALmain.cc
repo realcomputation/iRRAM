@@ -112,7 +112,7 @@ void show_statistics()
 
 } // namespace iRRAM
 
-extern "C" void iRRAM_initialize(int argc, char ** argv)
+extern "C" void iRRAM_initialize2(int *argc, char **argv)
 {
 	using namespace iRRAM;
 
@@ -120,20 +120,20 @@ extern "C" void iRRAM_initialize(int argc, char ** argv)
 	int iRRAM_prec_inc = -20;
 	double iRRAM_prec_factor = 1.25;
 
-	for (int i = 0; i < argc; i += 1) {
-		if (!strncmp(argv[i], "-d", 2)) {
+	for (int i = 1; i < *argc; i += 1) {
+		if (!strcmp(argv[i], "-d")) {
 			iRRAM_debug = 1;
 			iRRAM_DEBUG1(1, "Debugging Mode\n");
-		}
+		} else
 		if (!strncmp(argv[i], "--debug=", 8)) {
 			iRRAM_debug = atoi(&(argv[i][8]));
 			iRRAM_DEBUG2(1, "Debugging Level %d\n", iRRAM_debug);
-		}
+		} else
 		if (!strncmp(argv[i], "--prec_init=", 12)) {
 			iRRAM_starting_prec = atoi(&(argv[i][12]));
 			iRRAM_DEBUG2(1, "Initialising precision to 2^(%d)\n",
 			             iRRAM_starting_prec);
-		}
+		} else
 		if (!strncmp(argv[i], "--prec_inc=", 11)) {
 			int hi;
 			hi = atoi(&(argv[i][11]));
@@ -143,7 +143,7 @@ extern "C" void iRRAM_initialize(int argc, char ** argv)
 			        1,
 			        "Initialising precision increment to %d bits\n",
 			        -iRRAM_prec_inc);
-		}
+		} else
 		if (!strncmp(argv[i], "--prec_factor=", 14)) {
 			double hd;
 			hd = atof(&(argv[i][14]));
@@ -151,7 +151,7 @@ extern "C" void iRRAM_initialize(int argc, char ** argv)
 				iRRAM_prec_factor = hd;
 			iRRAM_DEBUG2(1, "Initialising precision factor to %f\n",
 			             iRRAM_prec_factor);
-		}
+		} else
 		if (!strncmp(argv[i], "--prec_skip=", 12)) {
 			int hi;
 			hi = atoi(&(argv[i][12]));
@@ -160,8 +160,7 @@ extern "C" void iRRAM_initialize(int argc, char ** argv)
 			iRRAM_DEBUG2(1, "Changed heuristic for precision "
 			                "changes to skip at most %d steps\n",
 			             iRRAM_prec_skip);
-		}
-
+		} else
 		if (!strncmp(argv[i], "--prec_start=", 13)) {
 			int hi;
 			hi = atoi(&(argv[i][13]));
@@ -170,20 +169,28 @@ extern "C" void iRRAM_initialize(int argc, char ** argv)
 			iRRAM_DEBUG2(1,
 			             "Changed inital precision step to %d \n",
 			             iRRAM_prec_start);
-		}
-
-		if (!strncmp(argv[i], "-h", 2) ||
-		    !strncmp(argv[i], "--help", 6)) {
-			cerr 	<< "Runtime parameters for the iRRAM library:\n"
-				<< "--prec_init=n   ["<<iRRAM_starting_prec<<"]  starting precision\n"
-				<< "--prec_inc=n    ["<<iRRAM_prec_inc<<"]  basic increment for precision changes\n"
-				<< "--prec_factor=x ["<<iRRAM_prec_factor<<"] basic factor for precision changes\n"
-				<< "--prec_skip=n   [5]    bound for precision increments skipped by heuristic\n"
-				<< "--prec_start=n   [1]   inital precision level\n"
-				<< "--debug=n       [1]    level of limits up which debugging should happen\n"
-				<< "-d                      debug mode, with level 1\n"
-				<< "-h / --help             this small help\n";
-		}
+		} else
+		if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+			fprintf(stderr,
+"Runtime parameters for the iRRAM library:\n"
+"--prec_init=n   [%d]   starting precision\n"
+"--prec_inc=n    [%d]   basic increment for precision changes\n"
+"--prec_factor=x [%g]  basic factor for precision changes\n"
+"--prec_skip=n   [5]     bound for precision increments skipped by heuristic\n"
+"--prec_start=n  [1]     initial precision level\n"
+"--debug=n       [1]     level of limits up to which debugging should happen\n"
+"-d                      debug mode, with level 1\n"
+"-h / --help             this help message\n",
+			        iRRAM_starting_prec,
+			        iRRAM_prec_inc,
+			        iRRAM_prec_factor);
+		} else
+			continue;
+		/* argument handled, remove from list */
+		for (int j = i+1; j < *argc; j++)
+			argv[j-1] = argv[j];
+		argv[--*argc] = NULL;
+		--i;
 	}
 	MP_initialize;
 
@@ -204,4 +211,11 @@ extern "C" void iRRAM_initialize(int argc, char ** argv)
 	}
 	if (iRRAM_debug)
 		cerr << "\n";
+}
+
+/* API compatibility with versions <= 2014.01 */
+extern "C" void iRRAM_initialize(int argc, char **argv)
+{
+	std::vector<char *> args(argv, argv+argc+1);
+	iRRAM_initialize2(&argc, &args[0]);
 }

@@ -60,7 +60,11 @@ Authors:  all by Norbert, except:
 # error "Currently no additional backend!"
 #endif
 
-extern "C" void iRRAM_initialize(int argc,char** argv);
+extern "C" void iRRAM_initialize(int argc, char **argv);
+
+/* like iRRAM_initialize(), but modifies its arguments as to remove parsed
+ * options pertaining iRRAM. */
+extern "C" void iRRAM_initialize2(int *argc, char **argv);
 
 namespace iRRAM{
 
