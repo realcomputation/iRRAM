@@ -112,90 +112,96 @@ void show_statistics()
 
 } // namespace iRRAM
 
-extern "C" void iRRAM_initialize(int argc,char **argv)
+extern "C" void iRRAM_initialize(int argc, char ** argv)
 {
 	using namespace iRRAM;
 
-int iRRAM_starting_prec=-50;
-int iRRAM_prec_inc=-20;
-double iRRAM_prec_factor=1.25;
+	int iRRAM_starting_prec = -50;
+	int iRRAM_prec_inc = -20;
+	double iRRAM_prec_factor = 1.25;
 
-for (int i=0;i<argc;i+=1)
-{
-if (!strncmp(argv[i],"-d",2)) 
-	{
-	iRRAM_debug=1;
-	iRRAM_DEBUG1(1,"Debugging Mode\n");
-	}
-if (!strncmp(argv[i],"--debug=",8)) 
-	{
-	iRRAM_debug=atoi(&(argv[i][8]));
-	iRRAM_DEBUG2(1,"Debugging Level %d\n",iRRAM_debug);
-	}
-if (!strncmp(argv[i],"--prec_init=",12)) 
-	{
-	iRRAM_starting_prec=atoi(&(argv[i][12]));
-	iRRAM_DEBUG2(1,"Initialising precision to 2^(%d)\n",iRRAM_starting_prec);
-	}
-if (!strncmp(argv[i],"--prec_inc=",11)) 
-	{
-	int hi;
-	hi=atoi(&(argv[i][11]));
-	if (hi>0) iRRAM_prec_inc=-hi;
-	iRRAM_DEBUG2(1,"Initialising precision increment to %d bits\n",-iRRAM_prec_inc);
-	}
-if (!strncmp(argv[i],"--prec_factor=",14)) 
-	{
-	double hd;
-	hd=atof(&(argv[i][14]));
-	if (hd>1.0) iRRAM_prec_factor=hd;
-	iRRAM_DEBUG2(1,"Initialising precision factor to %f\n",iRRAM_prec_factor);
-	}
-if (!strncmp(argv[i],"--prec_skip=",12)) 
-	{
-	int hi;
-	hi=atoi(&(argv[i][12]));
-	if (hi>0) iRRAM_prec_skip=hi;
-	iRRAM_DEBUG2(1,"Changed heuristic for precision changes to skip at most %d steps\n",iRRAM_prec_skip);
-	}
+	for (int i = 0; i < argc; i += 1) {
+		if (!strncmp(argv[i], "-d", 2)) {
+			iRRAM_debug = 1;
+			iRRAM_DEBUG1(1, "Debugging Mode\n");
+		}
+		if (!strncmp(argv[i], "--debug=", 8)) {
+			iRRAM_debug = atoi(&(argv[i][8]));
+			iRRAM_DEBUG2(1, "Debugging Level %d\n", iRRAM_debug);
+		}
+		if (!strncmp(argv[i], "--prec_init=", 12)) {
+			iRRAM_starting_prec = atoi(&(argv[i][12]));
+			iRRAM_DEBUG2(1, "Initialising precision to 2^(%d)\n",
+			             iRRAM_starting_prec);
+		}
+		if (!strncmp(argv[i], "--prec_inc=", 11)) {
+			int hi;
+			hi = atoi(&(argv[i][11]));
+			if (hi > 0)
+				iRRAM_prec_inc = -hi;
+			iRRAM_DEBUG2(
+			        1,
+			        "Initialising precision increment to %d bits\n",
+			        -iRRAM_prec_inc);
+		}
+		if (!strncmp(argv[i], "--prec_factor=", 14)) {
+			double hd;
+			hd = atof(&(argv[i][14]));
+			if (hd > 1.0)
+				iRRAM_prec_factor = hd;
+			iRRAM_DEBUG2(1, "Initialising precision factor to %f\n",
+			             iRRAM_prec_factor);
+		}
+		if (!strncmp(argv[i], "--prec_skip=", 12)) {
+			int hi;
+			hi = atoi(&(argv[i][12]));
+			if (hi > 0)
+				iRRAM_prec_skip = hi;
+			iRRAM_DEBUG2(1, "Changed heuristic for precision "
+			                "changes to skip at most %d steps\n",
+			             iRRAM_prec_skip);
+		}
 
-if (!strncmp(argv[i],"--prec_start=",13)) 
-	{
-	int hi;
-	hi=atoi(&(argv[i][13]));
-	if (hi>0) iRRAM_prec_start=hi;
-	iRRAM_DEBUG2(1,"Changed inital precision step to %d \n",iRRAM_prec_start);
-	}
+		if (!strncmp(argv[i], "--prec_start=", 13)) {
+			int hi;
+			hi = atoi(&(argv[i][13]));
+			if (hi > 0)
+				iRRAM_prec_start = hi;
+			iRRAM_DEBUG2(1,
+			             "Changed inital precision step to %d \n",
+			             iRRAM_prec_start);
+		}
 
-
-if (!strncmp(argv[i],"-h",2) || !strncmp(argv[i],"--help",6)) 
-	{
-	cerr 	<< "Runtime parameters for the iRRAM library:\n"
-		<< "--prec_init=n   ["<<iRRAM_starting_prec<<"]  starting precision\n"
-		<< "--prec_inc=n    ["<<iRRAM_prec_inc<<"]  basic increment for precision changes\n"
-		<< "--prec_factor=x ["<<iRRAM_prec_factor<<"] basic factor for precision changes\n"
-		<< "--prec_skip=n   [5]    bound for precision increments skipped by heuristic\n"
-		<< "--prec_start=n   [1]   inital precision level\n"
-		<< "--debug=n       [1]    level of limits up which debugging should happen\n"
-		<< "-d                      debug mode, with level 1\n"
-		<< "-h / --help             this small help\n";
+		if (!strncmp(argv[i], "-h", 2) ||
+		    !strncmp(argv[i], "--help", 6)) {
+			cerr 	<< "Runtime parameters for the iRRAM library:\n"
+				<< "--prec_init=n   ["<<iRRAM_starting_prec<<"]  starting precision\n"
+				<< "--prec_inc=n    ["<<iRRAM_prec_inc<<"]  basic increment for precision changes\n"
+				<< "--prec_factor=x ["<<iRRAM_prec_factor<<"] basic factor for precision changes\n"
+				<< "--prec_skip=n   [5]    bound for precision increments skipped by heuristic\n"
+				<< "--prec_start=n   [1]   inital precision level\n"
+				<< "--debug=n       [1]    level of limits up which debugging should happen\n"
+				<< "-d                      debug mode, with level 1\n"
+				<< "-h / --help             this small help\n";
+		}
 	}
+	MP_initialize;
+
+	iRRAM_prec_array[0] = 2100000000;
+	iRRAM_prec_array[1] = iRRAM_starting_prec;
+	int prec_inc = iRRAM_prec_inc;
+	double factor = std::sqrt(std::sqrt(iRRAM_prec_factor));
+	if (iRRAM_debug)
+		cerr << "Basic precision bounds: "
+		     << "double[1]";
+	for (int i = 2; i < iRRAM_prec_steps; i++) {
+		iRRAM_prec_array[i] = iRRAM_starting_prec + prec_inc;
+		prec_inc = int(prec_inc * factor) + iRRAM_prec_inc;
+		if (iRRAM_prec_array[i] >= iRRAM_prec_array[i - 1])
+			iRRAM_prec_array[i] = iRRAM_prec_array[i - 1];
+		else if (iRRAM_debug && ((i % 5 == 0) || (i < 10)))
+			cerr << " " << iRRAM_prec_array[i] << "[" << i << "]";
+	}
+	if (iRRAM_debug)
+		cerr << "\n";
 }
-MP_initialize;
-
-iRRAM_prec_array[0]=2100000000;
-iRRAM_prec_array[1]=iRRAM_starting_prec;
-int prec_inc=iRRAM_prec_inc;
-double factor=std::sqrt(std::sqrt(iRRAM_prec_factor));
-if (iRRAM_debug) cerr << "Basic precision bounds: " << "double[1]"; 
-for (int i=2;i<iRRAM_prec_steps;i++){
-	iRRAM_prec_array[i]=iRRAM_starting_prec+prec_inc;
-	prec_inc=int(prec_inc * factor)+iRRAM_prec_inc;
-	if (iRRAM_prec_array[i] >= iRRAM_prec_array[i-1])
-		iRRAM_prec_array[i]= iRRAM_prec_array[i-1];
-	else if (iRRAM_debug && ( (i%5==0) || (i<10) ) ) cerr << " " << iRRAM_prec_array[i]<< "["<<i<<"]"; 
-	}
-if (iRRAM_debug) cerr << "\n"; 
-
-}
-
