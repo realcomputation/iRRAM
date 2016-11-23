@@ -141,9 +141,8 @@ void orstream::reset()
 		return;                                                        \
 	}                                                                      \
 	if (ACTUAL_STACK.inlimit == 0) {                                       \
-		ACTUAL_STACK.inlimit++;                                        \
+		single_valued code;                                            \
 		x;                                                             \
-		ACTUAL_STACK.inlimit--;                                        \
 	} else {                                                               \
 		x;                                                             \
 	}
@@ -156,12 +155,11 @@ orstream & iRRAM_out(orstream * s, const PARAM & x)
 		return *s;
 	}
 	if ((ACTUAL_STACK.inlimit == 0) && s->_respect_iteration) {
-		ACTUAL_STACK.inlimit++;
+		single_valued code;
 		if ((++rstream::requests) > rstream::outputs) {
 			*(s->target) << x;
 			(rstream::outputs)++;
 		}
-		ACTUAL_STACK.inlimit--;
 	} else {
 		*(s->target) << x;
 	}
@@ -241,9 +239,7 @@ irstream::~irstream()
 		if (CACHE.get(VAR)) {                                          \
 			return *this;                                          \
 		}                                                              \
-		ACTUAL_STACK.inlimit++;                                        \
-		*target >> VAR;                                                \
-		ACTUAL_STACK.inlimit--;                                        \
+		{ single_valued code; *target >> VAR; }                        \
 		CACHE.put(VAR);                                                \
 	} else {                                                               \
 		*target >> VAR;                                                \
@@ -276,10 +272,7 @@ irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s,iRRAM_thread_data
 			VAR = DATA(s);                                         \
 			return *this;                                          \
 		}                                                              \
-		ACTUAL_STACK.inlimit++;                                        \
-		*target >> s;                                                  \
-		VAR = DATA(s);                                                 \
-		ACTUAL_STACK.inlimit--;                                        \
+		{ single_valued code; *target >> s; VAR = DATA(s); }           \
 		iRRAM_thread_data_address->cache_s.put(s);                     \
 	} else {                                                               \
 		*target >> s;                                                  \
@@ -301,9 +294,7 @@ irstream & irstream::operator>>(INTEGER & d) { iRRAM_in2(d, INTEGER); }
 		if (CACHE.get(VAR)) {                                          \
 			return VAR;                                            \
 		}                                                              \
-		ACTUAL_STACK.inlimit++;                                        \
-		STMNT;                                                         \
-		ACTUAL_STACK.inlimit--;                                        \
+		{ single_valued code; STMNT; }                                 \
 		CACHE.put(VAR);                                                \
 	} else {                                                               \
 		STMNT;                                                         \
