@@ -408,14 +408,19 @@ auto iRRAM_exec(F f) -> decltype(f())
 	using RESULT = decltype(f());
 	RESULT result;
 
+	ACTUAL_STACK.prec_policy = 1;
+	ACTUAL_STACK.inlimit = 0;
+	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+
 	while (true) {
 		iRRAM::cout.rewind();
 		for (int n = 0; n < max_active; n++)
 			cache_active->id[n]->rewind();
 		inReiterate = false;
-		ACTUAL_STACK.inlimit = 0;
 
-		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+		assert(ACTUAL_STACK.inlimit == 0);
+
+		assert(iRRAM_highlevel == (ACTUAL_STACK.prec_step > 1));
 
 		int p_end = 0;
 		try {
@@ -430,6 +435,8 @@ auto iRRAM_exec(F f) -> decltype(f())
 			throw;
 		}
 
+		assert(iRRAM_highlevel == (ACTUAL_STACK.prec_step > 1));
+
 		int prec_skip = 0;
 		do {
 			prec_skip++;
@@ -437,7 +444,7 @@ auto iRRAM_exec(F f) -> decltype(f())
 		} while ((ACTUAL_STACK.actual_prec > p_end) &&
 		         (prec_skip != iRRAM_prec_skip));
 
-		ACTUAL_STACK.inlimit = 0;
+		assert(ACTUAL_STACK.inlimit == 0);
 		if (iRRAM_unlikely(iRRAM_debug > 0)) {
 			show_statistics();
 			if (iRRAM_max_prec <= ACTUAL_STACK.prec_step)

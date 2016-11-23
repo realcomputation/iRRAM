@@ -38,9 +38,12 @@ namespace iRRAM {
 
 const char iRRAM_VERSION_rt[] = iRRAM_VERSION_ct;
 
-
-
-__thread ITERATION_DATA ACTUAL_STACK={-1,-1,-1,-1};
+__thread ITERATION_DATA ACTUAL_STACK = {
+	 1, /* prec_policy relative */
+	 0, /* !inlimit */
+	-1,
+	-1
+};
 __thread cachelist * cache_active=0;
 __thread int max_active=0;
 __thread iRRAM_thread_data_class *iRRAM_thread_data_address=0; 
