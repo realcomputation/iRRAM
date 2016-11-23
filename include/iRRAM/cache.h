@@ -43,9 +43,6 @@ class cachelist{public:
 iRRAM_cache_type* id[50];
 };
 
-extern __thread cachelist * cache_active;
-extern __thread int max_active;
-
 template <class DATA,void clearfct(void*)> class iRRAM_cache : public iRRAM_cache_type
 {
 public:
@@ -99,7 +96,7 @@ void activate(){
   size=1;
   data=new DATA[size];
   active=true;
-  cache_active->id[max_active++]=this;
+  state.cache_active->id[state.max_active++]=this;
   current=0;
   end=0;
 };
@@ -127,9 +124,6 @@ iRRAM_cache<std::ostream*,noclearfct> cache_os;
 iRRAM_cache<std::istream*,noclearfct> cache_is;
 
 };
-
-extern __thread iRRAM_thread_data_class *iRRAM_thread_data_address; 
-
 
 } // namespace iRRAM
 

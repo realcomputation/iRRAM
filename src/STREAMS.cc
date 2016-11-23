@@ -35,9 +35,6 @@ orstream clog(&std::clog, false);
 orstream cout;
 irstream cin;
 
-__thread long long rstream::requests = 0;
-__thread long long rstream::outputs = 0;
-
 orstream::orstream(std::ostream * s, bool respect_iteration)
 {
 	target = s;
@@ -56,7 +53,7 @@ orstream::orstream()
 }
 orstream::orstream(std::string s, std::ios::openmode mod)
 {
-	if (ACTUAL_STACK.inlimit > 0) {
+	if (state.ACTUAL_STACK.inlimit > 0) {
 		iRRAM_DEBUG1(2, "I/O-handler: Operation illegal in continuous "
 		                "section!\n");
 		return;
@@ -65,11 +62,11 @@ orstream::orstream(std::string s, std::ios::openmode mod)
 	real_w = 20;
 	real_f = float_form::absolute;
 
-	if (ACTUAL_STACK.inlimit == 0) {
-		if (iRRAM_thread_data_address->cache_os.get(target)) {
-			/*    iRRAM_thread_data_address->cache_ui.get(real_w);
-			    iRRAM_thread_data_address->cache_ui.get(real_f);
-			    iRRAM_thread_data_address->cache_b.get(_respect_iteration);*/
+	if (state.ACTUAL_STACK.inlimit == 0) {
+		if (state.thread_data_address->cache_os.get(target)) {
+			/*    state.thread_data_address->cache_ui.get(real_w);
+			    state.thread_data_address->cache_ui.get(real_f);
+			    state.thread_data_address->cache_b.get(_respect_iteration);*/
 			iRRAM_DEBUG1(2,
 			             "I/O-handler: Recreating output stream '"
 			                     << s << "'(" << real_w << ")\n");
@@ -78,10 +75,10 @@ orstream::orstream(std::string s, std::ios::openmode mod)
 		target = new std::ofstream(s.c_str(), mod);
 		iRRAM_DEBUG1(2, "I/O-handler: Creating new output stream '"
 		                        << s << "'\n");
-		iRRAM_thread_data_address->cache_os.put(target);
-		/*    iRRAM_thread_data_address->cache_ui.put(real_w);
-		    iRRAM_thread_data_address->cache_ui.put(real_f);
-		    iRRAM_thread_data_address->cache_b.put(_respect_iteration);*/
+		state.thread_data_address->cache_os.put(target);
+		/*    state.thread_data_address->cache_ui.put(real_w);
+		    state.thread_data_address->cache_ui.put(real_f);
+		    state.thread_data_address->cache_b.put(_respect_iteration);*/
 	} else {
 		target = new std::ofstream(s.c_str(), mod);
 		iRRAM_DEBUG1(2, "I/O-handler: Creating new output stream '"
@@ -98,19 +95,19 @@ irstream::irstream()
 
 irstream::irstream(std::string s, std::ios::openmode mod)
 {
-	if (ACTUAL_STACK.inlimit > 0) {
+	if (state.ACTUAL_STACK.inlimit > 0) {
 		iRRAM_DEBUG1(2, "I/O-handler: Operation illegal in continuous "
 		                "section!\n");
 		return;
 	}
-	if (ACTUAL_STACK.inlimit == 0) {
-		if (iRRAM_thread_data_address->cache_is.get(target)) {
+	if (state.ACTUAL_STACK.inlimit == 0) {
+		if (state.thread_data_address->cache_is.get(target)) {
 			return;
 		}
 		iRRAM_DEBUG1(2, "I/O-handler: Creating new input stream '"
 		                        << s << "'\n");
 		target = new std::ifstream(s.c_str(), mod);
-		iRRAM_thread_data_address->cache_is.put(target);
+		state.thread_data_address->cache_is.put(target);
 	} else {
 		iRRAM_DEBUG1(2, "I/O-handler: Creating new input stream '"
 		                        << s << "'\n");
@@ -122,25 +119,25 @@ irstream::irstream(std::string s, std::ios::openmode mod)
 
 
 
-void orstream::rewind() { requests = 0; }
+void orstream::rewind() { state.requests = 0; }
 
 void orstream::reset()
 {
-	requests = 0;
-	outputs = 0;
+	state.requests = 0;
+	state.outputs = 0;
 }
 
 #define iRRAM_outexec(x)                                                       \
-	if (inReiterate) {                                                     \
+	if (state.inReiterate) {                                               \
 		iRRAM_DEBUG1(2, "I/O-Handler: In iteration, so stream will "   \
 		                "be closed later.\n");                         \
 		return;                                                        \
 	}                                                                      \
-	if (ACTUAL_STACK.inlimit > 0) {                                        \
+	if (state.ACTUAL_STACK.inlimit > 0) {                                  \
 		iRRAM_DEBUG1(2, "illegal output in continuous section!\n");    \
 		return;                                                        \
 	}                                                                      \
-	if (ACTUAL_STACK.inlimit == 0) {                                       \
+	if (state.ACTUAL_STACK.inlimit == 0) {                                 \
 		single_valued code;                                            \
 		x;                                                             \
 	} else {                                                               \
@@ -150,24 +147,24 @@ void orstream::reset()
 template <class PARAM>
 orstream & iRRAM_out(orstream * s, const PARAM & x)
 {
-	if ((ACTUAL_STACK.inlimit > 0) && s->_respect_iteration) {
+	if ((state.ACTUAL_STACK.inlimit > 0) && s->_respect_iteration) {
 		iRRAM_DEBUG1(2, "illegal output in continuous section!\n");
 		return *s;
 	}
-	if ((ACTUAL_STACK.inlimit == 0) && s->_respect_iteration) {
+	if ((state.ACTUAL_STACK.inlimit == 0) && s->_respect_iteration) {
 		single_valued code;
-		if ((++rstream::requests) > rstream::outputs) {
-			*(s->target) << x;
-			(rstream::outputs)++;
+		if (++state.requests > state.outputs) {
+			*s->target << x;
+			state.outputs++;
 		}
 	} else {
-		*(s->target) << x;
+		*s->target << x;
 	}
 	return *s;
 }
 
 #define iRRAM_out2(x)                                                          \
-	if ((ACTUAL_STACK.inlimit > 0) && _respect_iteration) {                \
+	if ((state.ACTUAL_STACK.inlimit > 0) && _respect_iteration) {          \
 		iRRAM_DEBUG1(2, "I/O-handler: Illegal output in continuous "   \
 		                "section!\n");                                 \
 		return *this;                                                  \
@@ -207,35 +204,35 @@ orstream & orstream::operator<<(_SetRflags _f) { iRRAM_out2(real_f = _f._M_n); }
 
 orstream::~orstream()
 {
-	if ((++requests) > outputs) {
-		if ((target != &std::cout) && _respect_iteration) {
+	if (++state.requests > state.outputs) {
+		if (target != &std::cout && _respect_iteration) {
 			iRRAM_DEBUG1(2, "I/O-handler: Closing handler for "
 			                "output stream\n");
 			iRRAM_outexec(delete target; target = 0;);
 		}
-		outputs++;
+		state.outputs++;
 	}
 }
 
 irstream::~irstream()
 {
-	if ((++requests) > outputs) {
+	if (++state.requests > state.outputs) {
 		if (target != &std::cin) {
 			iRRAM_DEBUG1(2, "I/O-Handler: Closing handler for "
 			                "input stream\n");
 			iRRAM_outexec(delete target; target = 0;);
 		}
-		outputs++;
+		state.outputs++;
 	}
 }
 
 
 #define iRRAM_in(VAR, CACHE)                                                   \
-	if (ACTUAL_STACK.inlimit > 0) {                                        \
+	if (state.ACTUAL_STACK.inlimit > 0) {                                  \
 		iRRAM_DEBUG1(2, "illegal input in continuous section!\n");     \
 		return *this;                                                  \
 	}                                                                      \
-	if (ACTUAL_STACK.inlimit == 0) {                                       \
+	if (state.ACTUAL_STACK.inlimit == 0) {                                 \
 		if (CACHE.get(VAR)) {                                          \
 			return *this;                                          \
 		}                                                              \
@@ -247,33 +244,33 @@ irstream::~irstream()
 	return *this;
 
 
-irstream& irstream::operator>>(bool& b)            {iRRAM_in(b,iRRAM_thread_data_address->cache_b);}
-irstream& irstream::operator>>(short& i)           {iRRAM_in(i,iRRAM_thread_data_address->cache_sh);}
-irstream& irstream::operator>>(unsigned short& ui) {iRRAM_in(ui,iRRAM_thread_data_address->cache_ush);}
-irstream& irstream::operator>>(int& i)             {iRRAM_in(i,iRRAM_thread_data_address->cache_i);}
-irstream& irstream::operator>>(unsigned int& ui)   {iRRAM_in(ui,iRRAM_thread_data_address->cache_ui);}
-irstream& irstream::operator>>(long& l)            {iRRAM_in(l,iRRAM_thread_data_address->cache_l);}
-irstream& irstream::operator>>(unsigned long& ul)  {iRRAM_in(ul,iRRAM_thread_data_address->cache_ul);}
-irstream& irstream::operator>>(float& d)           {iRRAM_in(d,iRRAM_thread_data_address->cache_f);}
-irstream& irstream::operator>>(double& d)          {iRRAM_in(d,iRRAM_thread_data_address->cache_d);}
-irstream& irstream::operator>>(long long& ll)      {iRRAM_in(ll,iRRAM_thread_data_address->cache_ll);}
-irstream& irstream::operator>>(unsigned long long& ull) {iRRAM_in(ull,iRRAM_thread_data_address->cache_ull);}
-irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s,iRRAM_thread_data_address->cache_s);}
+irstream& irstream::operator>>(bool& b)            {iRRAM_in(b,state.thread_data_address->cache_b);}
+irstream& irstream::operator>>(short& i)           {iRRAM_in(i,state.thread_data_address->cache_sh);}
+irstream& irstream::operator>>(unsigned short& ui) {iRRAM_in(ui,state.thread_data_address->cache_ush);}
+irstream& irstream::operator>>(int& i)             {iRRAM_in(i,state.thread_data_address->cache_i);}
+irstream& irstream::operator>>(unsigned int& ui)   {iRRAM_in(ui,state.thread_data_address->cache_ui);}
+irstream& irstream::operator>>(long& l)            {iRRAM_in(l,state.thread_data_address->cache_l);}
+irstream& irstream::operator>>(unsigned long& ul)  {iRRAM_in(ul,state.thread_data_address->cache_ul);}
+irstream& irstream::operator>>(float& d)           {iRRAM_in(d,state.thread_data_address->cache_f);}
+irstream& irstream::operator>>(double& d)          {iRRAM_in(d,state.thread_data_address->cache_d);}
+irstream& irstream::operator>>(long long& ll)      {iRRAM_in(ll,state.thread_data_address->cache_ll);}
+irstream& irstream::operator>>(unsigned long long& ull) {iRRAM_in(ull,state.thread_data_address->cache_ull);}
+irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s,state.thread_data_address->cache_s);}
 
 #define iRRAM_in2(VAR, DATA)                                                   \
 	std::string s;                                                         \
-	if (ACTUAL_STACK.inlimit > 0) {                                        \
+	if (state.ACTUAL_STACK.inlimit > 0) {                                  \
 		iRRAM_DEBUG1(2, "I/O-handler: Illegal input in continuous "    \
 		                "section!\n");                                 \
 		return *this;                                                  \
 	}                                                                      \
-	if (ACTUAL_STACK.inlimit == 0) {                                       \
-		if (iRRAM_thread_data_address->cache_s.get(s)) {               \
+	if (state.ACTUAL_STACK.inlimit == 0) {                                 \
+		if (state.thread_data_address->cache_s.get(s)) {               \
 			VAR = DATA(s);                                         \
 			return *this;                                          \
 		}                                                              \
 		{ single_valued code; *target >> s; VAR = DATA(s); }           \
-		iRRAM_thread_data_address->cache_s.put(s);                     \
+		state.thread_data_address->cache_s.put(s);                     \
 	} else {                                                               \
 		*target >> s;                                                  \
 		VAR = DATA(s);                                                 \
@@ -285,12 +282,12 @@ irstream & irstream::operator>>(INTEGER & d) { iRRAM_in2(d, INTEGER); }
 // irstream&  irstream::operator>>(DYADIC& d){iRRAM_in2(d,DYADIC);}
 
 #define iRRAM_inexec(VAR, CACHE, STMNT)                                        \
-	if (ACTUAL_STACK.inlimit > 0) {                                        \
+	if (state.ACTUAL_STACK.inlimit > 0) {                                  \
 		iRRAM_DEBUG1(2, "I/O-handler: Illegal input in continuous "    \
 		                "section!\n");                                 \
 		return VAR;                                                    \
 	}                                                                      \
-	if (ACTUAL_STACK.inlimit == 0) {                                       \
+	if (state.ACTUAL_STACK.inlimit == 0) {                                 \
 		if (CACHE.get(VAR)) {                                          \
 			return VAR;                                            \
 		}                                                              \
@@ -304,84 +301,84 @@ irstream & irstream::operator>>(INTEGER & d) { iRRAM_in2(d, INTEGER); }
 bool orstream::eof()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = target->eof())
 }
 
 bool orstream::fail()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = target->fail())
 }
 
 bool orstream::good()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = target->good())
 }
 
 bool orstream::bad()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = target->bad())
 }
 
 bool operator!(orstream & x)
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = (x.target->fail()))
 }
 
 orstream::operator bool()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = !(target->fail()))
 }
 
 bool irstream::eof()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = target->eof())
 }
 
 bool irstream::fail()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = target->fail())
 }
 
 bool irstream::good()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = target->good())
 }
 
 bool irstream::bad()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = target->bad())
 }
 
 bool operator!(irstream & x)
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = (x.target->fail()))
 }
 
 irstream::operator bool()
 {
 	bool test = false;
-	iRRAM_inexec(test, iRRAM_thread_data_address->cache_b,
+	iRRAM_inexec(test, state.thread_data_address->cache_b,
 	             test = !(target->fail()))
 }
 

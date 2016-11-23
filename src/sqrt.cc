@@ -91,10 +91,10 @@ REAL sqrt(const REAL & x)
 	sizetype_sqrt(proderror, xsize);
 	sizetype_div(zerror, x.error, proderror);
 	sizetype_half(zerror, zerror);
-	if (ACTUAL_STACK.prec_policy == 0)
-		local_prec = max(ACTUAL_STACK.actual_prec, zerror.exponent);
+	if (state.ACTUAL_STACK.prec_policy == 0)
+		local_prec = max(state.ACTUAL_STACK.actual_prec, zerror.exponent);
 	else
-		local_prec = max(xsize.exponent + ACTUAL_STACK.actual_prec,
+		local_prec = max(xsize.exponent + state.ACTUAL_STACK.actual_prec,
 		                 zerror.exponent);
 	MP_init(zvalue);
 	MP_mv_sqrt(x.value, zvalue, local_prec);

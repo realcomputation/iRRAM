@@ -390,7 +390,7 @@ inline REAL::REAL() : REAL(0) {}
 
 inline REAL::REAL(int i) : dp((double)i,-(double)i), value(nullptr)
 {
-	if (iRRAM_unlikely(iRRAM_highlevel))
+	if (iRRAM_unlikely(state.highlevel))
 		mp_from_int(i);
 }
 
@@ -398,7 +398,7 @@ inline REAL::REAL(double d) : dp(d,-d), value(nullptr)
 {
 	if (!std::isfinite(d))
 		throw iRRAM_Numerical_Exception(iRRAM_conversion_from_infinite);
-	if (iRRAM_unlikely(iRRAM_highlevel))
+	if (iRRAM_unlikely(state.highlevel))
 		mp_from_double(d);
 }
 
@@ -429,7 +429,7 @@ inline REAL & REAL::operator=(const REAL & y)
 			return (*this);
 		}
 		if (y.value) {
-			if (ACTUAL_STACK.prec_step == 0)
+			if (state.ACTUAL_STACK.prec_step == 0)
 				this->mp_from_mp(y);
 			else
 				this->mp_copy_init(y);

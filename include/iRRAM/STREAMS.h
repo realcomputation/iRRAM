@@ -49,13 +49,7 @@ inline _SetRflags  setRflags(float_form n) {
   return x;
 }
 
-class rstream { 
-public:
-  static __thread long long requests;
-  static __thread long long outputs;
-  // the two counters are used to determine whether 
-  // output is actually produced.
-};
+class rstream {};
 
 class orstream :public rstream
 {

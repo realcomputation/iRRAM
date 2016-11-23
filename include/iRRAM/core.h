@@ -47,8 +47,6 @@ inline int max3(const int a,const int b,const int c)
 inline int max4(const int a,const int b,const int c,const int d)
    { return max(max(a,b),max(c,d)); }
 
-extern __thread int iRRAM_debug;
-extern __thread int iRRAM_infinite;
 extern void resources(double&,unsigned int&);
 extern double ln2_time;
 extern double pi_time;
@@ -56,14 +54,11 @@ void show_statistics();
 
 extern const int iRRAM_prec_steps;
 extern int iRRAM_prec_array[];
-extern __thread  int iRRAM_prec_skip;
-extern __thread  int iRRAM_max_prec;
-extern __thread  int iRRAM_prec_start;
 
 #ifndef NODEBUG
   #define iRRAM_DEBUG0(level,...)                                               \
 	do {                                                                    \
-		if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+(level))) {\
+		if (iRRAM_unlikely(state.debug>=state.ACTUAL_STACK.inlimit+(level))) {\
 			__VA_ARGS__;                                            \
 		}                                                               \
 	} while (0)
@@ -77,7 +72,7 @@ extern __thread  int iRRAM_prec_start;
 struct Iteration {int prec_diff; Iteration (int p){prec_diff=p;}; };
 
 // inline void REITERATE(int p_diff){inReiterate = true; throw Iteration(p_diff); }
-#define REITERATE(x)   {inReiterate = true;throw Iteration(x);};
+#define REITERATE(x)   {state.inReiterate = true;throw Iteration(x);};
 
 
 
@@ -388,82 +383,82 @@ inline void sizetype_div(sizetype& x,const sizetype& y,const sizetype& z)
 template <class F>
 auto iRRAM_exec(F f) -> decltype(f())
 {
-	iRRAM_thread_data_address = new iRRAM_thread_data_class;
+	state_t &st = state;
+	st.thread_data_address = new iRRAM_thread_data_class;
 
-	stiff code(iRRAM_prec_start, stiff::abs{});
+	stiff code(state.prec_start, stiff::abs{});
 	fesetround(FE_DOWNWARD);
 	// set the correct rounding mode for REAL using double intervals):
 
-	cache_active = new cachelist;
+	st.cache_active = new cachelist;
 
-	if (iRRAM_unlikely(iRRAM_debug > 0)) {
+	if (iRRAM_unlikely(state.debug > 0)) {
 		std::stringstream s;
 		s << std::this_thread::get_id();
 		cerr << "\niRRAM (version " << iRRAM_VERSION_rt << ", backend "
 		     << iRRAM_BACKENDS << ") thread "
 		     << s.str() << " starting...\n";
-		iRRAM_max_prec = ACTUAL_STACK.prec_step;
+		st.max_prec = st.ACTUAL_STACK.prec_step;
 	}
 
 	using RESULT = decltype(f());
 	RESULT result;
 
-	ACTUAL_STACK.prec_policy = 1;
-	ACTUAL_STACK.inlimit = 0;
-	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+	st.ACTUAL_STACK.prec_policy = 1;
+	st.ACTUAL_STACK.inlimit = 0;
+	st.highlevel = (st.ACTUAL_STACK.prec_step > 1);
 
 	while (true) {
 		iRRAM::cout.rewind();
-		for (int n = 0; n < max_active; n++)
-			cache_active->id[n]->rewind();
-		inReiterate = false;
+		for (int n = 0; n < st.max_active; n++)
+			state.cache_active->id[n]->rewind();
 
-		assert(ACTUAL_STACK.inlimit == 0);
-
-		assert(iRRAM_highlevel == (ACTUAL_STACK.prec_step > 1));
+		st.inReiterate = false;
+		assert(st.ACTUAL_STACK.inlimit == 0);
+		assert(st.highlevel == (st.ACTUAL_STACK.prec_step > 1));
 
 		int p_end = 0;
 		try {
 			result = f();
-			if (iRRAM_likely(!iRRAM_infinite))
+			if (iRRAM_likely(!st.infinite))
 				break;
 		} catch (const Iteration &it) {
-			p_end = ACTUAL_STACK.actual_prec + it.prec_diff;
+			p_end = st.ACTUAL_STACK.actual_prec + it.prec_diff;
 		} catch (const iRRAM_Numerical_Exception &exc) {
 			cerr << "iRRAM exception: " << iRRAM_error_msg[exc.type]
 			     << "\n";
 			throw;
 		}
 
-		assert(iRRAM_highlevel == (ACTUAL_STACK.prec_step > 1));
+		assert(st.highlevel == (st.ACTUAL_STACK.prec_step > 1));
 
 		int prec_skip = 0;
 		do {
 			prec_skip++;
 			code.inc_step(4);
-		} while ((ACTUAL_STACK.actual_prec > p_end) &&
-		         (prec_skip != iRRAM_prec_skip));
+		} while ((st.ACTUAL_STACK.actual_prec > p_end) &&
+		         (prec_skip != st.prec_skip));
 
-		assert(ACTUAL_STACK.inlimit == 0);
-		if (iRRAM_unlikely(iRRAM_debug > 0)) {
+		assert(st.ACTUAL_STACK.inlimit == 0);
+		if (iRRAM_unlikely(st.debug > 0)) {
 			show_statistics();
-			if (iRRAM_max_prec <= ACTUAL_STACK.prec_step)
-				iRRAM_max_prec = ACTUAL_STACK.prec_step;
+			if (st.max_prec <= st.ACTUAL_STACK.prec_step)
+				st.max_prec = st.ACTUAL_STACK.prec_step;
 			cerr << "increasing precision bound to "
-			     << ACTUAL_STACK.actual_prec << "["
-			     << ACTUAL_STACK.prec_step << "]\n";
+			     << st.ACTUAL_STACK.actual_prec << "["
+			     << st.ACTUAL_STACK.prec_step << "]\n";
 		}
 	}
 
 	iRRAM::cout.reset();
-	for (int n = 0; n < max_active; n++)
-		cache_active->id[n]->clear();
+	for (int n = 0; n < st.max_active; n++)
+		st.cache_active->id[n]->clear();
 
-	max_active = 0;
-	delete cache_active;
-	delete iRRAM_thread_data_address;
+	st.max_active = 0;
+	delete st.cache_active;
+	delete st.thread_data_address;
 
-	if (iRRAM_unlikely(iRRAM_debug > 0)) {
+	if (iRRAM_unlikely(st.debug > 0)) {
 		show_statistics();
 		cerr << "iRRAM ending \n";
 	}

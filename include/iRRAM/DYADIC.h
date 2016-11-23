@@ -27,12 +27,10 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-  extern __thread  int iRRAM_DYADIC_precision;
-
 class DYADIC : conditional_comparison_overloads<DYADIC>
 {
 public:
-	static int getprec() { return iRRAM_DYADIC_precision; };
+	static int getprec() { return state.DYADIC_precision; };
 
 	// Constructors: -------------------------------
 
@@ -59,11 +57,11 @@ public:
 	friend DYADIC MULT(const DYADIC& x, const DYADIC& y, int p);
 	friend DYADIC DIV (const DYADIC& x, const DYADIC& y, int p);
 
-	friend DYADIC operator+(const DYADIC& x, const DYADIC& y) { return ADD(x, y, iRRAM_DYADIC_precision); }
-	friend DYADIC operator-(const DYADIC& x, const DYADIC& y) { return SUB(x, y, iRRAM_DYADIC_precision); }
+	friend DYADIC operator+(const DYADIC& x, const DYADIC& y) { return ADD(x, y, state.DYADIC_precision); }
+	friend DYADIC operator-(const DYADIC& x, const DYADIC& y) { return SUB(x, y, state.DYADIC_precision); }
 	friend DYADIC operator-(const DYADIC& x) { return DYADIC()-x; }
-	friend DYADIC operator*(const DYADIC& x, const DYADIC& y) { return MULT(x, y, iRRAM_DYADIC_precision); }
-	friend DYADIC operator/(const DYADIC& x, const DYADIC& y) { return DIV(x, y, iRRAM_DYADIC_precision); }
+	friend DYADIC operator*(const DYADIC& x, const DYADIC& y) { return MULT(x, y, state.DYADIC_precision); }
+	friend DYADIC operator/(const DYADIC& x, const DYADIC& y) { return DIV(x, y, state.DYADIC_precision); }
 
 	template <typename A,typename B> friend enable_if_compat<DYADIC,A,B> operator+(const A &a, const B &b) { return a+DYADIC(b); }
 	template <typename A,typename B> friend enable_if_compat<DYADIC,A,B> operator+(const B &b, const A &a) { return a+b; }
@@ -121,10 +119,10 @@ class DYADIC_precision
 public:
 	DYADIC_precision(int p)
 	{
-		precision = iRRAM_DYADIC_precision;
-		iRRAM_DYADIC_precision = p;
+		precision = state.DYADIC_precision;
+		state.DYADIC_precision = p;
 	}
-	~DYADIC_precision() { iRRAM_DYADIC_precision = precision; }
+	~DYADIC_precision() { state.DYADIC_precision = precision; }
 };
 
 } /* ! namespace iRRAM */

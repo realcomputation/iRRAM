@@ -105,10 +105,45 @@ struct ITERATION_DATA {
 	int prec_step;
 };
 
+class cachelist;
+class iRRAM_thread_data_class;
+class REAL;
+struct state_t {
+	int debug = 0;
+	int infinite = 0;
+	int prec_skip = 5;
+	int max_prec = 1;
+	int prec_start = 1;
+	bool highlevel = false; /* TODO: remove: iRRAM-timings revealed no performance loss */
+	/* The following boolean "inReiterate" is used to distinguish voluntary
+	 * deletions of rstreams from deletions initiated by iterations.
+	 * The latter should be ignored, as stream operations using this stream
+	 * might continue in later iterations! */
+	bool inReiterate = false;
+	int DYADIC_precision = -60;
+	cachelist *cache_active = nullptr;
+	int max_active = 0;
+	iRRAM_thread_data_class *thread_data_address = nullptr;
 
-extern __thread ITERATION_DATA ACTUAL_STACK;
-extern __thread bool iRRAM_highlevel; /* TODO: remove: iRRAM-timings revealed no performance loss */
-extern __thread bool inReiterate;
+	REAL *ln2_val = nullptr;
+	int   ln2_err = 0;
+	REAL *pi_val = nullptr;
+	int   pi_err = 0;
+
+	// the two counters are used to determine whether output is actually
+	// produced
+	long long requests = 0;
+	long long outputs  = 0;
+
+	ITERATION_DATA ACTUAL_STACK{
+		 1, /* prec_policy relative */
+		 0, /* !inlimit */
+		-1,
+		-1,
+	};
+};
+
+extern __thread state_t state;
 
 /* helper for reduced overload visibility of binary operator declarations */
 template <typename Base,typename EquivBase,typename Compat,typename Ret = Base>

@@ -57,8 +57,8 @@ extern const int iRRAM_prec_steps;
 // obsoletes continous_begin(), continous_end
 struct single_valued
 {
-	inline  single_valued() noexcept { ACTUAL_STACK.inlimit++; }
-	inline ~single_valued() noexcept { --ACTUAL_STACK.inlimit; }
+	inline  single_valued() noexcept { state.ACTUAL_STACK.inlimit++; }
+	inline ~single_valued() noexcept { --state.ACTUAL_STACK.inlimit; }
 };
 
 
@@ -73,11 +73,11 @@ class precision_mode
 	int saved;
 public:
 	inline precision_mode(int policy) noexcept
-	: saved(ACTUAL_STACK.prec_policy)
+	: saved(state.ACTUAL_STACK.prec_policy)
 	{
-		ACTUAL_STACK.prec_policy = policy;
+		state.ACTUAL_STACK.prec_policy = policy;
 	}
-	inline ~precision_mode() noexcept { ACTUAL_STACK.prec_policy = saved; }
+	inline ~precision_mode() noexcept { state.ACTUAL_STACK.prec_policy = saved; }
 };
 
 // temporary increase of the working precision
@@ -94,9 +94,9 @@ protected:
 	{
 		if (n<1) n=1;
 		if (iRRAM_prec_steps <= n) n = iRRAM_prec_steps-1;
-		ACTUAL_STACK.prec_step = n;
-		ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
-		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+		state.ACTUAL_STACK.prec_step = n;
+		state.ACTUAL_STACK.actual_prec = iRRAM_prec_array[state.ACTUAL_STACK.prec_step];
+		state.highlevel = (state.ACTUAL_STACK.prec_step > 1);
 	}
 
 public:
@@ -116,19 +116,19 @@ public:
 
 	void inc_step(int n) const noexcept
 	{
-		set_prec_step(ACTUAL_STACK.prec_step + n);
+		set_prec_step(state.ACTUAL_STACK.prec_step + n);
 	}
 };
 
 template <> inline stiff::stiff(int abs_step, abs) noexcept
-: saved(ACTUAL_STACK.prec_step)
+: saved(state.ACTUAL_STACK.prec_step)
 { set_prec_step(abs_step); }
 
 template <> inline stiff::stiff(int rel_step, rel) noexcept
-: stiff(ACTUAL_STACK.prec_step + rel_step, abs{}) {}
+: stiff(state.ACTUAL_STACK.prec_step + rel_step, abs{}) {}
 
 struct relaxed : public stiff {
-	relaxed() : stiff((ACTUAL_STACK.prec_step+1)/2, abs{}) {}
+	relaxed() : stiff((state.ACTUAL_STACK.prec_step+1)/2, abs{}) {}
 };
 
 struct limit_computation : public stiff, single_valued { using stiff::stiff; };

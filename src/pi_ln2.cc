@@ -36,13 +36,9 @@ static REAL ln2_approx(int prec)
 
 REAL ln2()
 {
-
-	static __thread REAL * ln2_val;
-	static __thread int ln2_err = 0;
-
-	if (ln2_err == 0)
-		ln2_val = new (REAL);
-	if (ln2_err > ACTUAL_STACK.actual_prec || ln2_err == 0) {
+	if (state.ln2_err == 0)
+		state.ln2_val = new REAL;
+	if (state.ln2_err > state.ACTUAL_STACK.actual_prec || state.ln2_err == 0) {
 		unsigned int dummy;
 		double s1;
 		resources(s1, dummy);
@@ -55,16 +51,16 @@ REAL ln2()
 			ln2_time -= s1;
 			resources(s1, dummy);
 			ln2_time += s1;
-			delete ln2_val;
-			ln2_val = new (REAL);
-			(*ln2_val) = p * ln2a;
+			delete state.ln2_val;
+			state.ln2_val = new REAL;
+			*state.ln2_val = p * ln2a;
 			sizetype error;
-			ln2_val->geterror(error);
-			ln2_err = error.mantissa;
-			ln2_err = ACTUAL_STACK.actual_prec;
+			state.ln2_val->geterror(error);
+			state.ln2_err = error.mantissa;
+			state.ln2_err = state.ACTUAL_STACK.actual_prec;
 		}
 	}
-	return (*ln2_val);
+	return *state.ln2_val;
 }
 
 /*****************************************************************/
@@ -72,9 +68,6 @@ REAL ln2()
 /*   Usage: pi()                                                 */
 /*   Application: range reduction, ...                           */
 /*****************************************************************/
-
-__thread REAL * pi_val;
-__thread int pi_err = 0;
 
 #if 0 /* unused */
 static REAL pi_approx_MACHIN(int prec)
@@ -145,9 +138,9 @@ static REAL pi_inv_approx_BORWEIN(int prec)
 
 REAL pi()
 {
-	if (pi_err == 0)
-		pi_val = new (REAL);
-	if (pi_err > ACTUAL_STACK.actual_prec || pi_err == 0) {
+	if (state.pi_err == 0)
+		state.pi_val = new REAL;
+	if (state.pi_err > state.ACTUAL_STACK.actual_prec || state.pi_err == 0) {
 		//   pi_val = limit(pi_approx_MACHIN);
 		//   pi_val = limit(pi_approx_AGM);
 		unsigned int dummy;
@@ -155,19 +148,19 @@ REAL pi()
 		resources(s1, dummy);
 		stiff code;
 
-		delete pi_val;
-		pi_val = new (REAL);
-		(*pi_val) = 1 / limit(pi_inv_approx_BORWEIN);
+		delete state.pi_val;
+		state.pi_val = new REAL;
+		*state.pi_val = 1 / limit(pi_inv_approx_BORWEIN);
 		pi_time -= s1;
 		resources(s1, dummy);
 		pi_time += s1;
 
 		sizetype error;
-		pi_val->geterror(error);
-		pi_err = error.mantissa;
-		pi_err = ACTUAL_STACK.actual_prec;
+		state.pi_val->geterror(error);
+		state.pi_err = error.mantissa;
+		state.pi_err = state.ACTUAL_STACK.actual_prec;
 	}
-	return (*pi_val);
+	return *state.pi_val;
 }
 
 } // namespace iRRAM

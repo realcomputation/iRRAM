@@ -29,7 +29,6 @@ MA 02111-1307, USA.
 
 #include <iRRAM/core.h>
 
-
 namespace iRRAM {
 
 //*************************************************************************************
@@ -38,30 +37,10 @@ namespace iRRAM {
 
 const char iRRAM_VERSION_rt[] = iRRAM_VERSION_ct;
 
-__thread ITERATION_DATA ACTUAL_STACK = {
-	 1, /* prec_policy relative */
-	 0, /* !inlimit */
-	-1,
-	-1
-};
-__thread cachelist * cache_active=0;
-__thread int max_active=0;
-__thread iRRAM_thread_data_class *iRRAM_thread_data_address=0; 
-__thread bool iRRAM_highlevel=false;
-__thread int iRRAM_DYADIC_precision=-60;
 // __thread bool iRRAM_COMPARE_exact=true; /* unused */
 // __thread int iRRAM_COMPARE_precision=-60; /* unused */
 
-/*
-The following boolean "inReiterate" is used to distinguish voluntary 
-deletions of rstreams from deletions initiated by iterations. 
-The latter should be ignored, as stream operations using this stream
-might continue in later iterations!
-*/
-__thread bool inReiterate=false;
-
-
-
+__thread state_t state;
 
 /*****************************************/
 // module function (will be a template later...)
@@ -75,7 +54,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
 //  2^{p-1} from d, hence |f(x)-f(z)|<=2^p
 
   int result;
-  if ( (ACTUAL_STACK.inlimit==0) && iRRAM_thread_data_address->cache_i.get(result)) return result;
+  if ( (state.ACTUAL_STACK.inlimit==0) && state.thread_data_address->cache_i.get(result)) return result;
 
   DYADIC d;
   REAL x_copy=x;
@@ -107,7 +86,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
     x_copy.seterror(argerror);
     x_copy.adderror(testerror);
     bool fail = false;
-  if ( iRRAM_unlikely(iRRAM_debug > 0 ) ) {
+  if ( iRRAM_unlikely(state.debug > 0 ) ) {
    sizetype x_error;
    x_copy.geterror(x_error);
   iRRAM_DEBUG2(1,"Testing module: 1*2^%d + %d*2^%d\n",p_arg,argerror.mantissa,argerror.exponent);
@@ -116,7 +95,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   try { 
       single_valued code;
       REAL z=f(x_copy);
-      if ( iRRAM_unlikely(iRRAM_debug > 0 ) ) {
+      if ( iRRAM_unlikely(state.debug > 0 ) ) {
         sizetype z_error;
         z.geterror(z_error);
         iRRAM_DEBUG2(1,"Module yields result %d*2^%d\n",z_error.mantissa,z_error.exponent);
@@ -150,7 +129,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   }
   
   result=argerror.exponent;
-  if ( ACTUAL_STACK.inlimit==0 ) iRRAM_thread_data_address->cache_i.put(result);
+  if ( state.ACTUAL_STACK.inlimit==0 ) state.thread_data_address->cache_i.put(result);
   return result;
 
 }
