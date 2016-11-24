@@ -135,7 +135,7 @@ AS_CASE([$host],
 	[*-mingw*],[
 	dnl Use ANSI printf modifiers in mingw32.
 	dnl See <http://sourceforge.net/p/mingw-w64/wiki2/gnu%20printf/>
-	AM_CPPFLAGS="$AM_CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1"
+	AM_CPPFLAGS="$AM_CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1 -DPSAPI_VERSION=1"
 
 	dnl Do not use dynamic linking on Windows
 	#AM_LDFLAGS="-all-static $AM_LDFLAGS"
@@ -148,9 +148,13 @@ AS_CASE([$host],
 #endif]])
 
 	save_LIBS=$LIBS
-	LIBS=
-	AC_SEARCH_LIBS([GetProcessMemoryInfo],[psapi kernel32],,
-		[AC_MSG_ERROR([unable to find library containing GetProcessMemoryInfo().])])
+	LIBS=-lpsapi
+	AC_CHECK_DECL([GetProcessMemoryInfo(HANDLE,PPROCESS_MEMORY_COUNTERS,DWORD)],,
+	  [AC_MSG_ERROR([unable to find library containing GetProcessMemoryInfo().])],
+	  [[
+#include <windows.h>
+#include <psapi.h>
+	  ]])
 	LIBS_INST="$LIBS_INST $LIBS"
 	LIBS="$LDADD $save_LIBS $LIBS_INST"
 
