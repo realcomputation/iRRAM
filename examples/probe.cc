@@ -1,17 +1,18 @@
-#include "iRRAM.h"
+#include <iRRAM.h>
 
 #include <sys/time.h>
-#include <sys/resource.h>
 #include <unistd.h>
 
 using namespace iRRAM;
 
 using std::string;
 
-double cputime(){
- struct rusage r;
- getrusage (RUSAGE_SELF,&r);
- return r.ru_utime.tv_sec+0.000001*r.ru_utime.tv_usec;
+double cputime()
+{
+	double t;
+	unsigned m;
+	resources(t, m);
+	return t;
 }
 
 

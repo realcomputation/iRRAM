@@ -1,9 +1,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
-#include "iRRAM.h"
-#include "iRRAM/core.h"
-#include "iRRAM/lib.h" /* iRRAM_ABSOLUTE, iRRAM_RELATIVE */
+#include <iRRAM.h>
+#include <iRRAM/core.h>
+#include <iRRAM/lib.h> /* iRRAM_ABSOLUTE, iRRAM_RELATIVE */
 
 using namespace iRRAM;
 
@@ -200,15 +200,15 @@ void compute(){
 
 */
 #include <sys/time.h>
-#include <sys/resource.h>
 #include <unistd.h>
 
 
 double cputime()
 {
-	struct rusage r;
-	getrusage(RUSAGE_SELF, &r);
-	return r.ru_utime.tv_sec + 0.000001 * r.ru_utime.tv_usec;
+	double t;
+	unsigned m;
+	resources(t, m);
+	return t;
 }
 
 
