@@ -44,6 +44,9 @@ namespace iRRAM {
 
 iRRAM_TLS state_t state;
 
+iRRAM_thread_data_class::iRRAM_thread_data_class() = default;
+iRRAM_thread_data_class::~iRRAM_thread_data_class() = default;
+
 /*****************************************/
 // module function (will be a template later...)
 

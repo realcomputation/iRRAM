@@ -26,12 +26,41 @@ MA 02111-1307, USA.
 #define iRRAM_CACHE_H
 
 #include <string>
+#include <vector>
 
 namespace iRRAM {
 
-inline void noclearfct(void*){}
-inline void MPclear(void* x){MP_clear(*(MP_type*)(x));}
-inline void MPIclear(void* x){MP_int_clear(*(MP_int_type*)(x));}
+template <typename T,void (*clearfct)(T &)>
+struct wrap_type {
+	T v;
+	wrap_type() noexcept(noexcept(T())) : v(T()) {}
+	wrap_type(const T &v) noexcept(noexcept(T(v))) : v(v) {}
+	wrap_type(wrap_type &&o) noexcept(noexcept(std::swap(v, o.v))) : wrap_type() { using std::swap; swap(v, o.v); }
+	~wrap_type() noexcept { clearfct(v); }
+	wrap_type & operator=(const T &_v) noexcept(noexcept(const_cast<T &>(_v)=_v)) { v = _v; return *this; }
+	wrap_type & operator=(wrap_type o) noexcept(noexcept(std::swap(v, o.v))) { using std::swap; swap(v, o.v); return *this; }
+	operator T() noexcept { return v; }
+};
+
+template <typename T> struct get_type {
+	typedef T type;
+};
+
+template <> struct get_type<bool> {
+	static void clear(bool &){}
+	typedef wrap_type<bool,clear> type;
+};
+
+template <> struct get_type<MP_type> {
+	static void clear(MP_type &t){ if(t) MP_clear(t); }
+	typedef wrap_type<MP_type,clear> type;
+};
+
+template <> struct get_type<MP_int_type> {
+	static void clear(MP_int_type &t){ if (t) MP_int_clear(t); }
+	typedef wrap_type<MP_int_type,clear> type;
+};
+
 
 class iRRAM_cache_type{
 public:
@@ -43,32 +72,21 @@ class cachelist{public:
 iRRAM_cache_type* id[50];
 };
 
-template <class DATA,void clearfct(void*)> class iRRAM_cache : public iRRAM_cache_type
+template <class DATA> class iRRAM_cache : public iRRAM_cache_type
 {
 public:
-DATA *data;
-unsigned int current,end,size;
-bool active;
-
-iRRAM_cache() noexcept {active=false;data=NULL;size=0;end=0;current=0;};
+std::vector<typename get_type<DATA>::type> data;
+unsigned int current = 0;
+bool active = false;
 
 void put(const DATA& x){
   if (iRRAM_unlikely(!active)){activate();}
-  if ( iRRAM_unlikely(end>=size)){
-    if ( iRRAM_unlikely(size> 1000000000) ) 
-       throw iRRAM_Numerical_Exception(iRRAM_cacheerror_test);
-    DATA* temp=data;
-    data=new DATA[2*size];
-    for (unsigned int i=0; i< size;i++) data[i]=temp[i];
-    size=2*size;
-    delete []temp;
-  }
-  data[end++]=x;
+  data.emplace_back(x);
   current++;
 };
 
 bool get(DATA& x) noexcept(noexcept(x=x)) {
-  if (current>=end)return false;
+  if (current>=data.size())return false;
     x=data[current++];
   return true; 
 }
@@ -82,46 +100,40 @@ void rewind() noexcept {
 };
 
 void clear(){
-  if (clearfct!=noclearfct) {
-    for (current=0;current<end; current++) clearfct(&(data[current]));
-  }
-  delete []data;
+  data.clear();
   active=false;
-  size=0;
   current=0;
-  end=0;
 };
 
 void activate(){
-  size=1;
-  data=new DATA[size];
+  data.clear();
   active=true;
   state.cache_active->id[state.max_active++]=this;
   current=0;
-  end=0;
 };
 
 };
 
 class iRRAM_thread_data_class { public:
-
-iRRAM_cache<bool,noclearfct> cache_b;
-iRRAM_cache<short,noclearfct> cache_sh;
-iRRAM_cache<unsigned short,noclearfct> cache_ush;
-iRRAM_cache<int,noclearfct> cache_i;
-iRRAM_cache<long,noclearfct> cache_l;
-iRRAM_cache<unsigned long,noclearfct> cache_ul;
-iRRAM_cache<double,noclearfct> cache_d;
-iRRAM_cache<long long,noclearfct> cache_ll;
-iRRAM_cache<unsigned int,noclearfct> cache_ui;
-iRRAM_cache<unsigned long long,noclearfct> cache_ull;
-iRRAM_cache<std::string,noclearfct> cache_s;
-iRRAM_cache<float,noclearfct> cache_f;
-iRRAM_cache<void*,noclearfct> cache_v;
-iRRAM_cache<MP_type,MPclear> cache_mp;
-iRRAM_cache<MP_int_type,MPIclear> cache_mpi;
-iRRAM_cache<std::ostream*,noclearfct> cache_os;
-iRRAM_cache<std::istream*,noclearfct> cache_is;
+iRRAM_thread_data_class();
+~iRRAM_thread_data_class();
+iRRAM_cache<bool> cache_b;
+iRRAM_cache<short> cache_sh;
+iRRAM_cache<unsigned short> cache_ush;
+iRRAM_cache<int> cache_i;
+iRRAM_cache<long> cache_l;
+iRRAM_cache<unsigned long> cache_ul;
+iRRAM_cache<double> cache_d;
+iRRAM_cache<long long> cache_ll;
+iRRAM_cache<unsigned int> cache_ui;
+iRRAM_cache<unsigned long long> cache_ull;
+iRRAM_cache<std::string> cache_s;
+iRRAM_cache<float> cache_f;
+iRRAM_cache<void*> cache_v;
+iRRAM_cache<MP_type> cache_mp;
+iRRAM_cache<MP_int_type> cache_mpi;
+iRRAM_cache<std::ostream*> cache_os;
+iRRAM_cache<std::istream*> cache_is;
 
 };
 
