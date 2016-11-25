@@ -73,7 +73,8 @@ void resources(double& time, unsigned int& memory){
 
 
 const int iRRAM_prec_steps=512;
-int iRRAM_prec_array[iRRAM_prec_steps];
+static int _iRRAM_prec_array[iRRAM_prec_steps];
+const int *const iRRAM_prec_array = _iRRAM_prec_array;
 
 void show_statistics()
 {
@@ -187,18 +188,18 @@ extern "C" void iRRAM_initialize2(int *argc, char **argv)
 	}
 	MP_initialize;
 
-	iRRAM_prec_array[0] = 2100000000;
-	iRRAM_prec_array[1] = iRRAM_starting_prec;
+	_iRRAM_prec_array[0] = 2100000000;
+	_iRRAM_prec_array[1] = iRRAM_starting_prec;
 	int prec_inc = iRRAM_prec_inc;
 	double factor = std::sqrt(std::sqrt(iRRAM_prec_factor));
 	if (state.debug)
 		cerr << "Basic precision bounds: "
 		     << "double[1]";
 	for (int i = 2; i < iRRAM_prec_steps; i++) {
-		iRRAM_prec_array[i] = iRRAM_starting_prec + prec_inc;
+		_iRRAM_prec_array[i] = iRRAM_starting_prec + prec_inc;
 		prec_inc = int(prec_inc * factor) + iRRAM_prec_inc;
-		if (iRRAM_prec_array[i] >= iRRAM_prec_array[i - 1])
-			iRRAM_prec_array[i] = iRRAM_prec_array[i - 1];
+		if (_iRRAM_prec_array[i] >= _iRRAM_prec_array[i - 1])
+			_iRRAM_prec_array[i] = _iRRAM_prec_array[i - 1];
 		else if (state.debug && ((i % 5 == 0) || (i < 10)))
 			cerr << " " << iRRAM_prec_array[i] << "[" << i << "]";
 	}

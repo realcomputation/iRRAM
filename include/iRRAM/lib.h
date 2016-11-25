@@ -77,7 +77,7 @@ class LAZY_BOOLEAN;
 class REAL;
 class COMPLEX;
 
-extern char * iRRAM_error_msg[];
+extern const char *const *const iRRAM_error_msg;
 struct iRRAM_Numerical_Exception {
 	iRRAM_Numerical_Exception(const int msg) noexcept : type(msg) {}
 	// private:

@@ -145,7 +145,7 @@ void orstream::reset()
 	}
 
 template <class PARAM>
-orstream & iRRAM_out(orstream * s, const PARAM & x)
+static orstream & iRRAM_out(orstream * s, const PARAM & x)
 {
 	if ((state.ACTUAL_STACK.inlimit > 0) && s->_respect_iteration) {
 		iRRAM_DEBUG1(2, "illegal output in continuous section!\n");

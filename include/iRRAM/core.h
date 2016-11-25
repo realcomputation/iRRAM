@@ -53,7 +53,7 @@ extern double pi_time;
 void show_statistics();
 
 extern const int iRRAM_prec_steps;
-extern int iRRAM_prec_array[];
+extern const int *const iRRAM_prec_array;
 
 #ifndef NODEBUG
   #define iRRAM_DEBUG0(level,...)                                               \

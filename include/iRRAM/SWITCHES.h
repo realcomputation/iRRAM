@@ -47,7 +47,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-extern int iRRAM_prec_array[];
+extern const int *const iRRAM_prec_array;
 extern const int iRRAM_prec_steps;
 
 // explicit declaration of single_valued behaviour of a code section despite multi-valued operations
