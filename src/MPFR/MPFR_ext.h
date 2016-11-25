@@ -91,7 +91,7 @@ void ext_mpfr_duplicate_wo_init(ext_mpfr_type z1,ext_mpfr_type z2);
 void ext_mpfr_sqrt(ext_mpfr_type z1,ext_mpfr_type z,int p);
 void ext_mpfr_shift(ext_mpfr_type z1,ext_mpfr_type z,int p);
 
-inline void ext_mpfr_remove_trailing_zeroes (mpfr_t x)
+iRRAM_STATIC inline void ext_mpfr_remove_trailing_zeroes (mpfr_t x)
 {
    unsigned int xn = MPFR_MSW_INDEX(x);
    unsigned int i;
@@ -118,7 +118,7 @@ if ( MPFR_NOTZERO(z) ) return MPFR_EXP(z);
 else return GMP_min;
 }
 
-inline void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s)
+iRRAM_STATIC inline void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s)
 {
   int zn=MPFR_MSW_INDEX(z);
   if ( MPFR_NOTZERO(z) ) {
