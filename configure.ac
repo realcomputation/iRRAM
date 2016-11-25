@@ -76,6 +76,8 @@ AM_CFLAGS="$AM_CFLAGS $CFLAGS"
 AM_CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
 CFLAGS=$save_CFLAGS
 CXXFLAGS=$save_CXXFLAGS
+AS_IF([test -z "$CFLAGS"],[CFLAGS="-g -O2"])
+AS_IF([test -z "$CXXFLAGS"],[CXXFLAGS="-g -O2"])
 
 dnl ----------------------------------------------------------------------------
 dnl check thread-local support
