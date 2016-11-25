@@ -14,7 +14,7 @@ void compute(){
   REAL   xr= 0;
   double xd= 0;
   for (int i=1;i<=count;i++ ) {
-    if (i%(count/100)==0)
+    if (i%(count/100+1)==0)
     cout << xr.as_double()    <<" "
          << xd            <<" "
 	 << xr.as_double()-xd <<" "
