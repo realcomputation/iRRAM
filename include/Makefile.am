@@ -4,6 +4,7 @@ include_HEADERS = \
 no_base_includedir = @includedir@/iRRAM
 
 no_base_include_HEADERS = \
+	iRRAM/sizetype.hh \
 	iRRAM/lib.h \
 	iRRAM/COMPLEX.h \
 	iRRAM/FUNCTION.h \

@@ -37,6 +37,7 @@ Authors:  all by Norbert, except:
 #define iRRAM_LIB_H
 
 #include <string>
+#include <cstdint>
 
 #if defined(__GNUC__) || defined(__clang__) || defined(__builtin_expect)
 /* Don't need to check version of compilers, they all support __builtin_expect()
@@ -68,6 +69,16 @@ extern "C" void iRRAM_initialize2(int *argc, char **argv);
 
 namespace iRRAM{
 
+template <typename M,typename E>
+struct generic_sizetype {
+	typedef M mantissa_t;
+	typedef E exponent_t;
+	M mantissa;
+	E exponent;
+};
+
+typedef generic_sizetype<unsigned int,int> sizetype;
+
 // forward declaration of some classes
 
 class INTEGER;
@@ -86,16 +97,6 @@ struct iRRAM_Numerical_Exception {
 #define ERRORDEFINE(x, y) x,
 enum iRRAM_exception_list {
 #include <iRRAM/errno.h>
-};
-#undef ERRORDEFINE
-
-
-typedef unsigned int SIZETYPEMANTISSA;
-typedef          int SIZETYPEEXPONENT;
-
-struct sizetype {
-	SIZETYPEMANTISSA mantissa;
-	SIZETYPEEXPONENT exponent;
 };
 
 struct ITERATION_DATA {
