@@ -11,7 +11,7 @@ CXX         = @CXX@
 CXXCPP      = @CXXCPP@
 CXXFLAGS    = @CXXFLAGS@
 LDFLAGS     = -Xlinker -rpath -Xlinker @libdir@
-LDLIBS      = -L@libdir@ -liRRAM @LIBS_INST@
+LDLIBS      = -L@libdir@ -liRRAM @LIBS_INST@ -lm
 
 EXAMPLES_BIN = \
 	euler e_example swanseatest-2 itsyst itsyst2 itsyst3 factorial \
@@ -23,6 +23,8 @@ EXAMPLES_BIN = \
         lambov analytic fileio algebraic-BFMS thread_test test-MPFR-iRRAM timings-MPFR-iRRAM
 
 all: $(EXAMPLES_BIN)
+
+thread_test: CXXFLAGS += -pthread
 
 maintainer-clean: distclean
 
