@@ -125,7 +125,7 @@ inline void sizetype_normalize( sizetype& e) {
   }
 }
 
-inline sizetype & sizetype_normalize(sizetype&& e)
+inline sizetype sizetype_normalize(sizetype &&e)
 {
 	sizetype_normalize(e);
 	return e;
