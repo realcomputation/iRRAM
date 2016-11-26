@@ -29,13 +29,15 @@ MA 02111-1307, USA.
 
 #include <iRRAM/core.h>
 
-namespace iRRAM {
-
 //*************************************************************************************
 // runtime identification of the iRRAM version, cf. iRRAM_version.h
 //*************************************************************************************
 
-const char iRRAM_VERSION_rt[] = iRRAM_VERSION_ct;
+extern "C" {
+const char *iRRAM_VERSION_rt = iRRAM_VERSION_ct;
+}
+
+namespace iRRAM {
 
 // __thread bool iRRAM_COMPARE_exact=true; /* unused */
 // __thread int iRRAM_COMPARE_precision=-60; /* unused */
