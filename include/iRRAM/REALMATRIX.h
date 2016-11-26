@@ -112,6 +112,7 @@ unsigned int    maxrow,maxcolumn;
 void adderror (sizetype error);
 void seterror (sizetype error);
 void geterror (sizetype& error) const;
+sizetype geterror() const { sizetype t; geterror(t); return t; }
 };
 
 REALMATRIX eye     (unsigned int rows);

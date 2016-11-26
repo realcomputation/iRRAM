@@ -42,15 +42,13 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
   limit_computation env;
 
   REAL lim,limnew;
-  sizetype limnew_error,element_error;
-  sizetype lim_error,x_error,y_error;
+  sizetype limnew_error, lim_error;
 
   int element=env.saved_prec();
   int element_step=env.saved_step();
   int firsttime=2;
 
-  x.geterror(x_error);
-  y.geterror(y_error);
+  int xy_error_exp = max(x.geterror().exponent, y.geterror().exponent);
 
   limit_debug("starting limit_gen2");
 
@@ -58,14 +56,11 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
    try {
     iRRAM_DEBUG2(2,"trying to compute limit_gen2 with precision %d...\n",element);
     limnew=f(element,x,y);
-    element_error = sizetype_power2(element);
-    limnew.geterror(limnew_error);
-    limnew_error += element_error;
+    limnew_error = sizetype_add_power2(limnew.geterror(), element);
     if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
-    	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)
-    	&&  limnew_error.exponent > y_error.exponent -env.saved_prec(-1)) {
-    iRRAM_DEBUG0(2,{fprintf(stderr,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
-                   limnew_error.mantissa,limnew_error.exponent);});
+    	&&  limnew_error.exponent > xy_error_exp -env.saved_prec(-1)) {
+    iRRAM_DEBUG2(2,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
+                   limnew_error.mantissa,limnew_error.exponent);
        element_step=1;
        element=4+iRRAM_prec_array[element_step];
        firsttime=1;
@@ -99,8 +94,8 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
       }}
   }
   lim.seterror(lim_error);
-  iRRAM_DEBUG0(2,{fprintf(stderr,"end of limit_gen2 with error %d*2^(%d)\n",
-                   lim_error.mantissa,lim_error.exponent);});
+  iRRAM_DEBUG2(2,"end of limit_gen2 with error %d*2^(%d)\n",
+                 lim_error.mantissa,lim_error.exponent);
   return lim;
 }
 
@@ -110,7 +105,6 @@ REAL limit (REAL f(int))
   limit_computation env;
 
   REAL lim;
-  sizetype lim_error;
 
   limit_debug("starting limit_0");
 
@@ -124,11 +118,9 @@ REAL limit (REAL f(int))
       env.inc_step(2);
       limit_debug2("limit_0 failed");
    }}
-  lim_error = sizetype_power2(env.saved_prec());
-  lim.adderror(lim_error);
-  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
-            fprintf(stderr,"end of limit_0 with error %d*2^(%d)\n",
-              lim_error.mantissa,lim_error.exponent);});
+  lim.adderror(sizetype_power2(env.saved_prec()));
+  iRRAM_DEBUG2(2,"end of limit_0 with error %d*2^(%d)\n",
+                 lim.error.mantissa,lim.error.exponent);
   return lim;
 }
 
@@ -142,10 +134,11 @@ REAL limit_lip (REAL f(int,const REAL&),
   limit_computation env;
 
   REAL x_new,lim;
-  sizetype lim_error,x_error;
+  sizetype x_error;
 
   x_new=x;
   x_new.geterror(x_error);
+  assert(x_new.value);
   sizetype_exact(x_new.error);
 
   limit_debug("starting limit_lip1");
@@ -166,15 +159,11 @@ REAL limit_lip (REAL f(int,const REAL&),
       env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",state.ACTUAL_STACK.actual_prec);
     } }
-  lim_error = sizetype_power2(env.saved_prec());
-  lim.adderror(lim_error);
-  lim_error = x_error << lip_value;
-  lim.adderror(lim_error);
-  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
-            fprintf(stderr,"end of limit_lip1 with error %d*2^(%d)\n",
-              lim_error.mantissa,lim_error.exponent);
-            fprintf(stderr,"  error of argument: %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);});
+  lim.adderror(sizetype_add_power2(x_error << lip_value, env.saved_prec()));
+  iRRAM_DEBUG2(2,"end of limit_lip1 with error %d*2^(%d)\n"
+                 "  error of argument: %d*2^(%d)\n",
+                 lim.error.mantissa,lim.error.exponent,
+                 x_error.mantissa,x_error.exponent);
   return lim;
 }
 
@@ -191,10 +180,11 @@ REAL limit_lip (REAL f(int,const REAL&),
   limit_computation env;
   REAL x_new;
   REAL lim;
-  sizetype lim_error,x_error;
+  sizetype x_error;
 
   x_new=x;
   x_new.geterror(x_error);
+  assert(x_new.value);
   sizetype_exact(x_new.error);
 
   limit_debug("starting limit_lip1");
@@ -215,15 +205,11 @@ REAL limit_lip (REAL f(int,const REAL&),
       env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",state.ACTUAL_STACK.actual_prec);
     } }
-  lim_error = sizetype_power2(env.saved_prec());
-  lim.adderror(lim_error);
-  lim_error = x_error << lip_value;
-  lim.adderror(lim_error);
-  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
-            fprintf(stderr,"end of limit_lip1 with error %d*2^(%d)\n",
-              lim_error.mantissa,lim_error.exponent);
-            fprintf(stderr,"  error of argument: %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);});
+  lim.adderror(sizetype_add_power2(x_error << lip_value, env.saved_prec()));
+  iRRAM_DEBUG2(2,"end of limit_lip1 with error %d*2^(%d)\n"
+                 "  error of argument: %d*2^(%d)\n",
+                 lim.error.mantissa,lim.error.exponent,
+                 x_error.mantissa,x_error.exponent);
   return lim;
 }
 
@@ -238,10 +224,10 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
   limit_computation env;
 
   REAL x_new,y_new,lim;
-  sizetype lim_error,x_error,y_error;
+  sizetype x_error,y_error;
 
-  x_new=x; x_new.geterror(x_error);  sizetype_exact(x_new.error);
-  y_new=y; y_new.geterror(y_error);  sizetype_exact(y_new.error);
+  x_new=x; x_new.geterror(x_error); assert(x_new.value); sizetype_exact(x_new.error);
+  y_new=y; y_new.geterror(y_error); assert(y_new.value); sizetype_exact(y_new.error);
 
   limit_debug("starting limit_lip2");
 
@@ -261,19 +247,13 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
       env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",state.ACTUAL_STACK.actual_prec);
     }}
-  lim_error = sizetype_power2(env.saved_prec());
-  lim.adderror(lim_error);
-  lim_error = x_error << lip;
-  lim.adderror(lim_error);
-  lim_error = y_error << lip;
-  lim.adderror(lim_error);
-  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
-            fprintf(stderr,"end of limit_lip2 with error %d*2^(%d)\n",
-              lim_error.mantissa,lim_error.exponent);
-            fprintf(stderr,"  error of argument 1: %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);
-            fprintf(stderr,"  error of argument 2: %d*2^(%d)\n",
-              y_error.mantissa,y_error.exponent);});
+  lim.adderror(sizetype_add_power2((x_error + y_error) << lip, env.saved_prec()));
+  iRRAM_DEBUG2(2,"end of limit_lip2 with error %d*2^(%d)\n"
+                 "  error of argument 1: %d*2^(%d)\n"
+                 "  error of argument 2: %d*2^(%d)\n",
+                 lim.error.mantissa,lim.error.exponent,
+                 x_error.mantissa,x_error.exponent,
+                 y_error.mantissa,y_error.exponent);
   return lim;
 }
 
@@ -285,10 +265,11 @@ REAL lipschitz (REAL f(const REAL&),
   if ( on_domain(x) != true ) REITERATE(0);
 
   REAL x_new,lip_result;
-  sizetype lip_error,x_error;
+  sizetype x_error;
 
   x_new=x;
   x_new.geterror(x_error);
+  assert(x_new.value);
   sizetype_exact(x_new.error);
   {
     single_valued code;
@@ -297,13 +278,11 @@ REAL lipschitz (REAL f(const REAL&),
   iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
-  lip_error = x_error << lip;
-  lip_result.adderror(lip_error);
-  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
-            fprintf(stderr,"end of lipschitz_1 with error %d*2^(%d)\n",
-              lip_error.mantissa,lip_error.exponent);
-            fprintf(stderr,"  for argument with error %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);});
+  lip_result.adderror(x_error << lip);
+  iRRAM_DEBUG2(2,"end of lipschitz_1 with error %d*2^(%d)\n"
+                 "  for argument with error %d*2^(%d)\n",
+                 lip_result.error.mantissa,lip_result.error.exponent,
+                 x_error.mantissa,x_error.exponent);
   return lip_result;
 }
 
@@ -315,7 +294,7 @@ REAL lipschitz (REAL f(const REAL&),
   if ( on_domain(x) != true ) REITERATE(0);
 
   REAL x_new,lip_result,lip_bound;
-  sizetype lip_error,lip_size,tmp_size,x_error;
+  sizetype x_error;
 
   {
     limit_computation env(0);
@@ -329,6 +308,7 @@ REAL lipschitz (REAL f(const REAL&),
   }
   x_new=x;
   x_new.geterror(x_error);
+  assert(x_new.value);
   sizetype_exact(x_new.error);
 
 
@@ -345,16 +325,11 @@ REAL lipschitz (REAL f(const REAL&),
   
   iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
-  lip_bound.getsize(lip_size);
-  lip_bound.geterror(tmp_size);
-  lip_size += tmp_size;
-  lip_error = lip_size * x_error;
-  lip_result.adderror(lip_error);
-  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
-            fprintf(stderr,"end of lipschitz_1b with error %d*2^(%d)\n",
-              lip_error.mantissa,lip_error.exponent);
-            fprintf(stderr,"  for argument with error %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);});
+  lip_result.adderror((lip_bound.getsize() + lip_bound.geterror()) * x_error);
+  iRRAM_DEBUG2(2,"end of lipschitz_1b with error %d*2^(%d)\n"
+                 "  for argument with error %d*2^(%d)\n",
+                 lip_result.error.mantissa,lip_result.error.exponent,
+                 x_error.mantissa,x_error.exponent);
   return lip_result;
 }
 
@@ -363,10 +338,11 @@ REAL lipschitz (REAL f(const REAL&),
             const REAL& x)
 {
   REAL x_new,lip_result,lip_bound;
-  sizetype lip_error,lip_size,tmp_size,x_error;
+  sizetype x_error;
 
   x_new=x;
   x_new.geterror(x_error);
+  assert(x_new.value);
   sizetype_exact(x_new.error);
 
   {
@@ -383,16 +359,11 @@ REAL lipschitz (REAL f(const REAL&),
   iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
-  lip_bound.getsize(lip_size);
-  lip_bound.geterror(tmp_size);
-  lip_size += tmp_size;
-  lip_error = lip_size * x_error;
-  lip_result.adderror(lip_error);
-  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
-            fprintf(stderr,"end of lipschitz_1a with error %d*2^(%d)\n",
-              lip_error.mantissa,lip_error.exponent);
-            fprintf(stderr,"  for argument with error %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);});
+  lip_result.adderror((lip_bound.getsize() + lip_bound.geterror()) * x_error);
+  iRRAM_DEBUG2(2,"end of lipschitz_1a with error %d*2^(%d)\n"
+                 "  for argument with error %d*2^(%d)\n",
+                 lip_result.error.mantissa,lip_result.error.exponent,
+                 x_error.mantissa,x_error.exponent);
   return lip_result;
 }
 
@@ -404,10 +375,11 @@ REAL lipschitz (REAL f(int, const REAL&),
 {
   if ( on_domain(k,x) != true ) REITERATE(0);
   REAL x_new,lip_result;
-  sizetype lip_error,x_error;
+  sizetype x_error;
 
   x_new=x;
   x_new.geterror(x_error);
+  assert(x_new.value);
   sizetype_exact(x_new.error);
   {
     single_valued code;
@@ -416,13 +388,11 @@ REAL lipschitz (REAL f(int, const REAL&),
   iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
-  lip_error = x_error << lip;
-  lip_result.adderror(lip_error);
-  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
-            fprintf(stderr,"end of lipschitz_1 with error %d*2^(%d)\n",
-              lip_error.mantissa,lip_error.exponent);
-            fprintf(stderr,"  error of argument: %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);});
+  lip_result.adderror(x_error << lip);
+  iRRAM_DEBUG2(2,"end of lipschitz_1 with error %d*2^(%d)\n"
+                 "  error of argument: %d*2^(%d)\n",
+                 lip_result.error.mantissa,lip_result.error.exponent,
+                 x_error.mantissa,x_error.exponent);
   return lip_result;
 }
 
@@ -434,13 +404,15 @@ REAL lipschitz (REAL f(const REAL&, const REAL&),
 {
   if ( on_domain(x,y) != true ) REITERATE(0);
   REAL x_new,y_new,lip_result;
-  sizetype lip_error,x_error,y_error;
+  sizetype x_error,y_error;
 
   x_new=x;
   x_new.geterror(x_error);
+  assert(x_new.value);
   sizetype_exact(x_new.error);
   y_new=y;
   y_new.geterror(y_error);
+  assert(y_new.value);
   sizetype_exact(y_new.error);
   {
     single_valued code;
@@ -449,17 +421,13 @@ REAL lipschitz (REAL f(const REAL&, const REAL&),
   iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
-  lip_error = x_error << lip;
-  lip_result.adderror(lip_error);
-  lip_error = y_error << lip;
-  lip_result.adderror(lip_error);
-  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
-            fprintf(stderr,"end of lipschitz_2 with error %d*2^(%d)\n",
-              lip_error.mantissa,lip_error.exponent);
-            fprintf(stderr,"  error of argument x: %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);
-            fprintf(stderr,"  error of argument y: %d*2^(%d)\n",
-              y_error.mantissa,y_error.exponent);});
+  lip_result.adderror((x_error + y_error) << lip);
+  iRRAM_DEBUG2(2,"end of lipschitz_2 with error %d*2^(%d)\n"
+                 "  error of argument x: %d*2^(%d)\n"
+                 "  error of argument y: %d*2^(%d)\n",
+                 lip_result.error.mantissa,lip_result.error.exponent,
+                 x_error.mantissa,x_error.exponent,
+                 y_error.mantissa,y_error.exponent);
   return lip_result;
 }
 
@@ -472,13 +440,15 @@ REAL lipschitz (REAL f(int, const REAL&, const REAL&),
 {
   if ( on_domain(k,x,y) != true ) REITERATE(0);
   REAL x_new,y_new,lip_result;
-  sizetype x_error,y_error,lip_error;
+  sizetype x_error,y_error;
 
   x_new=x;
   x_new.geterror(x_error);
+  assert(x_new.value);
   sizetype_exact(x_new.error);
   y_new=y;
   y_new.geterror(y_error);
+  assert(y_new.value);
   sizetype_exact(y_new.error);
   x_new.geterror(x_error);
   {
@@ -488,17 +458,14 @@ REAL lipschitz (REAL f(int, const REAL&, const REAL&),
   iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
-  lip_error = x_error << lip;
-  lip_result.adderror(lip_error);
-  lip_error = y_error << lip;
-  lip_result.adderror(lip_error);
-  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
-            fprintf(stderr,"end of lipschitz_2 with error %d*2^(%d)\n",
-              lip_error.mantissa,lip_error.exponent);
-            fprintf(stderr,"  error of argument x: %d*2^(%d)\n",
-              x_error.mantissa,x_error.exponent);
-            fprintf(stderr,"  error of argument y: %d*2^(%d)\n",
-              y_error.mantissa,y_error.exponent);});
+  lip_result.adderror(x_error << lip);
+  lip_result.adderror(y_error << lip);
+  iRRAM_DEBUG2(2,"end of lipschitz_2 with error %d*2^(%d)\n"
+                 "  error of argument x: %d*2^(%d)\n"
+                 "  error of argument y: %d*2^(%d)\n",
+                 lip_result.error.mantissa,lip_result.error.exponent,
+                 x_error.mantissa,x_error.exponent,
+                 y_error.mantissa,y_error.exponent);
   return lip_result;
 }
 
@@ -509,13 +476,12 @@ REAL limit_hint    (REAL f(int, const REAL&),
   limit_computation env;
 
   REAL lim,limnew;
-  sizetype limnew_error,element_error;
+  sizetype limnew_error;
   sizetype lim_error;
   int hintcopy=hint;
   int success=0;
 
-  x.geterror(element_error);
-  int element=max(element_error.exponent,env.saved_prec());
+  int element=max(x.geterror().exponent,env.saved_prec());
 
   iRRAM_DEBUG1(2,"starting limit_hint1...\n");
 
@@ -523,9 +489,7 @@ REAL limit_hint    (REAL f(int, const REAL&),
     try {
     iRRAM_DEBUG2(2,"trying to compute limit_hint1 with precicion 2^(%d)...\n",element);
     limnew=f(element,x);
-    element_error = sizetype_power2(element);
-    limnew.geterror(limnew_error);
-    limnew_error += element_error;
+    limnew_error = sizetype_add_power2(limnew.geterror(), element);
     if ( (! success) || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
       lim_error=limnew_error;
@@ -548,8 +512,8 @@ REAL limit_hint    (REAL f(int, const REAL&),
     REITERATE(0);
   }
   lim.seterror(lim_error);
-  iRRAM_DEBUG0(2,{fprintf(stderr,"end of limit_hint1 with error %d*2^(%d)\n",
-                   lim_error.mantissa,lim_error.exponent);});
+  iRRAM_DEBUG2(2,"end of limit_hint1 with error %d*2^(%d)\n",
+               lim_error.mantissa,lim_error.exponent);
   return lim;
 }
 
@@ -561,13 +525,12 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
   limit_computation env;
 
   REAL lim,limnew;
-  sizetype limnew_error,element_error;
+  sizetype limnew_error;
   sizetype lim_error;
   int hintcopy=hint;
   int success=0;
 
-  x.geterror(element_error);
-  int element=max(element_error.exponent,env.saved_prec());
+  int element=max(x.geterror().exponent,env.saved_prec());
 
   limit_debug("starting limit_hint1");
 
@@ -575,9 +538,7 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
     try {
     iRRAM_DEBUG2(2,"trying to compute limit_hint1 with precicion 2^(%d)...\n",element);
     limnew=f(element,x,y);
-    element_error = sizetype_power2(element);
-    limnew.geterror(limnew_error);
-    limnew_error += element_error;
+    limnew_error = sizetype_add_power2(limnew.geterror(), element);
     if ( (! success) || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
       lim_error=limnew_error;
@@ -600,8 +561,8 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
     REITERATE(0);
   }
   lim.seterror(lim_error);
-  iRRAM_DEBUG0(2,{fprintf(stderr,"end of limit_hint1 with error %d*2^(%d)\n",
-                   lim_error.mantissa,lim_error.exponent);});
+  iRRAM_DEBUG2(2,"end of limit_hint1 with error %d*2^(%d)\n",
+                 lim_error.mantissa,lim_error.exponent);
   return lim;
 }
 
@@ -644,12 +605,10 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
     }}
   sizetype_exact(lim_error);
   lim.adderror(lim_error);
-  x.geterror(lim_error);
-  lim_error = lim_error << lip;
-  lim.adderror(lim_error);
-  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
-            fprintf(stderr,"end of limit_matrix_lip1 with error %d*2^(%d)\n",
-                lim_error.mantissa,lim_error.exponent);});
+  lim.adderror(x.geterror() << lip);
+  iRRAM_DEBUG0(2,{sizetype lim_error = lim.geterror();
+                  fprintf(stderr, "end of limit_matrix_lip1 with error %d*2^(%d)\n",
+                                  lim_error.mantissa,lim_error.exponent);});
 
   return lim;
 }
@@ -753,8 +712,8 @@ REAL iteration (void f(REAL&,REAL&,const int& param),
       }
       diff.getsize(diff_size);
       if (diff_size.exponent > env.saved_prec()) {
-        iRRAM_DEBUG0(2,{ fprintf(stderr,"iteration with error %d*2^(%d)\n",
-              diff_size.mantissa,diff_size.exponent);});
+        iRRAM_DEBUG2(2,"iteration with error %d*2^(%d)\n",
+                       diff_size.mantissa,diff_size.exponent);
       if (diff_size.exponent >= diff_old_size.exponent)
         env.inc_step(2);
       iRRAM_DEBUG2(2,"iteration result too imprecise, trying a new iteration with %d...\n",state.ACTUAL_STACK.actual_prec);
@@ -771,8 +730,8 @@ REAL iteration (void f(REAL&,REAL&,const int& param),
       lc=scale(lc+rc,-1);
       lc.adderror(diff_size_h);
       lc.geterror(error);
-  iRRAM_DEBUG0(2,{ fprintf(stderr,"end of iteration with error %d*2^(%d)\n",
-              error.mantissa,error.exponent);});
+  iRRAM_DEBUG2(2,"end of iteration with error %d*2^(%d)\n",
+                 error.mantissa,error.exponent);
   return lc;
 }
 
@@ -789,7 +748,7 @@ REAL limit (const FUNCTION<REAL,int> & f )
   limit_computation env;
 
   REAL lim,limnew;
-  sizetype limnew_error,element_error;
+  sizetype limnew_error;
   sizetype lim_error;
 
   int element=env.saved_prec();
@@ -802,9 +761,7 @@ REAL limit (const FUNCTION<REAL,int> & f )
     try {
     iRRAM_DEBUG2(2,"trying to compute limit_FUNCTION with precicion 2^(%d)...\n",element);
     limnew=f(element);
-    element_error = sizetype_power2(element);
-    limnew.geterror(limnew_error);
-    limnew_error += element_error;
+    limnew_error = sizetype_add_power2(limnew.geterror(), element);
     if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
                   << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
@@ -842,8 +799,8 @@ REAL limit (const FUNCTION<REAL,int> & f )
       }}
   }
   lim.seterror(lim_error);
-  iRRAM_DEBUG0(2,{cerr<<"end of limit_FUNCTION with error "
-                << lim_error.mantissa <<"*2^("<< lim_error.exponent<<")\n";});
+  iRRAM_DEBUG2(2,"end of limit_FUNCTION with error %u*2^(%u)\n",
+                 lim_error.mantissa, lim_error.exponent);
   return lim;
 }
 

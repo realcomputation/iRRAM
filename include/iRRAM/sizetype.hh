@@ -260,6 +260,13 @@ inline void sizetype_add(sizetype& x,const sizetype& y,const sizetype& z)
   sizetype_normalize(x);
 }
 
+inline sizetype sizetype_add_power2(sizetype x, int exp) // TODO: better implementation possible
+{
+	sizetype r;
+	sizetype_add(r, x, sizetype_power2(exp));
+	return r;
+}
+
 // x = y + z **************************************************
 // Add y and z yielding x
 // The resulting value may be a bit larger than the exact value,

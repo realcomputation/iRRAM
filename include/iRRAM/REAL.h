@@ -316,7 +316,9 @@ public:
 	void         adderror           (sizetype  error);
 	void         seterror           (sizetype  error);
 	void         geterror           (sizetype &error) const;
+	sizetype     geterror           ()                const { sizetype t; geterror(t); return t; }
 	void         getsize            (sizetype &error) const;
+	sizetype     getsize            ()                const { sizetype t; getsize(t); return t; }
 	void         to_formal_ball     (DYADIC &, sizetype &error) const;
 
 friend REAL intervall_join (const REAL& x,const REAL& y);
