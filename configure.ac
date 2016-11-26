@@ -324,14 +324,8 @@ for j in $iRRAM_src; do
 	AC_CONFIG_LINKS(build/$j:$srcdir/src/$j)
 done
 
-MPFR_src="MPFR_ext.c mpfr_extension.cc MPFR_ext.h"
-
 for be in $BACKENDS; do
-	be_src=${be}_src
-	be_src=`eval echo \\\$${be_src}`
-	for i in ${be_src}; do
-		AC_CONFIG_LINKS(build/$i:$srcdir/src/$be/$i)
-	done
+	AC_CONFIG_LINKS(build/$be:$srcdir/src/$be)
 done
 
 AC_CONFIG_FILES([build/Makefile])

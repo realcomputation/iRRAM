@@ -4,7 +4,7 @@
 #include <iRRAM/core.h>
 
 #if iRRAM_BACKEND_MPFR
-# include "MPFR_ext.h"
+# include "MPFR/MPFR_ext.h"
 #else
 # error "Currently no additional backend!"
 #endif

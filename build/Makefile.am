@@ -28,11 +28,11 @@ main_sources = \
 	GMP_rat_ext.c
 
 mpfr_sources = \
-	MPFR_ext.c \
-	mpfr_extension.cc
+	MPFR/MPFR_ext.c \
+	MPFR/mpfr_extension.cc
 
 mpfr_headers = \
-	MPFR_ext.h
+	MPFR/MPFR_ext.h
 
 DISTCLEANFILES = @iRRAM_src@
 
@@ -42,5 +42,5 @@ libiRRAM_la_SOURCES  = $(main_sources)
 
 if WITH_BACKEND_MPFR
 libiRRAM_la_SOURCES += $(mpfr_sources)
-DISTCLEANFILES      += $(mpfr_sources) $(mpfr_headers)
+DISTCLEANFILES      += MPFR
 endif
