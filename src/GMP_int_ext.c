@@ -39,9 +39,9 @@ MA 02111-1307, USA.
 /* Variables for counting free space                                      */
 /**************************************************************************/
 
-__thread int_gmp_type gmp_FreeVarsi[MaxFreeVars];
-__thread int gmp_FreeVarCounti=0L;
-__thread int int_gmp_var_count=0;
+iRRAM_TLS int_gmp_type gmp_FreeVarsi[MaxFreeVars];
+iRRAM_TLS int gmp_FreeVarCounti=0L;
+iRRAM_TLS int int_gmp_var_count=0;
 
 
 /**************************************************************************/

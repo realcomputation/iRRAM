@@ -1,12 +1,12 @@
 #include "MPFR_ext.h"
 
 
-__thread int ext_mpfr_var_count=0;
+iRRAM_TLS int ext_mpfr_var_count=0;
 
 #define MaxFreeVars 1000
-__thread ext_mpfr_type mpfr_FreeVars[MaxFreeVars];
-__thread int mpfr_FreeVarCount=0L;
+iRRAM_TLS ext_mpfr_type mpfr_FreeVars[MaxFreeVars];
+iRRAM_TLS int mpfr_FreeVarCount=0L;
 
-__thread int mpfr_TotalAllocVarCount=0;
-__thread int mpfr_TotalFreedVarCount=0;
+iRRAM_TLS int mpfr_TotalAllocVarCount=0;
+iRRAM_TLS int mpfr_TotalFreedVarCount=0;
 

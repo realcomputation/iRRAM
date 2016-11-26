@@ -37,6 +37,9 @@ Changelog: (initial version by Tom van Diessen)
 #include <string.h>
 
 #include <gmp.h>
+
+#include <iRRAM/version.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -52,9 +55,9 @@ typedef struct {unsigned int body;} int_gmp_sizetype;
 
 /********** counting vars **********/
 #define MaxFreeVars 1000
-extern __thread int_gmp_type gmp_FreeVarsi[MaxFreeVars];
-extern __thread int gmp_FreeVarCounti;
-extern __thread int int_gmp_var_count;
+extern iRRAM_TLS int_gmp_type gmp_FreeVarsi[MaxFreeVars];
+extern iRRAM_TLS int gmp_FreeVarCounti;
+extern iRRAM_TLS int int_gmp_var_count;
 
 
 /********** initialization function **********/
@@ -151,9 +154,9 @@ typedef mpq_ptr rat_gmp_type;
 
 /********** counting vars **********/
 #define rat_MaxFreeVars 1000
-extern __thread int rat_gmp_var_count;
-extern __thread rat_gmp_type rat_gmp_FreeVarsi[rat_MaxFreeVars];
-extern __thread int rat_gmp_FreeVarCount;
+extern iRRAM_TLS int rat_gmp_var_count;
+extern iRRAM_TLS rat_gmp_type rat_gmp_FreeVarsi[rat_MaxFreeVars];
+extern iRRAM_TLS int rat_gmp_FreeVarCount;
 
 /********** initialization function **********/
 

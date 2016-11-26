@@ -2,17 +2,25 @@
 #ifndef iRRAM_VERSION_H
 #define iRRAM_VERSION_H
 
-namespace iRRAM {
+#define iRRAM_TLS		@iRRAM_TLS@
+#define iRRAM_TLS_STD		@iRRAM_TLS_STD@
+
+#if !defined(__cplusplus) && iRRAM_TLS_STD && !defined(thread_local)
+# define thread_local _Thread_local
+#endif
+
 #define iRRAM_VERSION_ct	"@iRRAM_VERSION@"
 #define iRRAM_BACKENDS		"@iRRAM_BACKENDS@"
 #define iRRAM_BACKEND_MPFR	@iRRAM_BACKEND_MPFR@
 
 #ifdef __cplusplus
-# define iRRAM_C_SPEC		"C"
-#else
-# define iRRAM_C_SPEC
+extern "C" {
 #endif
 
-extern iRRAM_C_SPEC const char *iRRAM_VERSION_rt;
+extern const char *iRRAM_VERSION_rt;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

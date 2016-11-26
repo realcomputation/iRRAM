@@ -4,12 +4,12 @@ prefix      = @prefix@
 exec_prefix = @exec_prefix@
 
 CC          = @CC@
-CFLAGS      = @CFLAGS@ @PTHREAD_CFLAGS@
+CFLAGS      = @CFLAGS@
 CPP         = @CPP@
 CPPFLAGS    = @CPPFLAGS_INST@ -I@includedir@
 CXX         = @CXX@
 CXXCPP      = @CXXCPP@
-CXXFLAGS    = @CXXFLAGS@ @PTHREAD_CFLAGS@
+CXXFLAGS    = @CXXFLAGS@
 LDFLAGS     = -Xlinker -rpath -Xlinker @libdir@
 LDLIBS      = -L@libdir@ -liRRAM @LIBS_INST@
 

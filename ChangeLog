@@ -1,3 +1,7 @@
+Nov 2016
+  fb:
+    made use/type of thread-local storage configurable via --{en,dis}able-tls=
+
 Jan 2013
   Many major changes: 
     Removal of all backends with exception of MPFR

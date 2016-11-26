@@ -45,13 +45,18 @@ dnl Profiling
 AC_ARG_ENABLE([profiling],
 	[AS_HELP_STRING([--enable-profiling],[build with profiler support @<:@default=no@:>@])])
 
+dnl Threading
+dnl missing: lang, pthread, win
+AC_ARG_ENABLE([tls],
+  [AS_HELP_STRING([[--disable-tls[=ARG]]],
+    [select thread-local storage support @<:@default: enable if supported, possible: yes, no, KEYWORD@:>@])],,[enable_tls=detect])
+
 AM_INIT_AUTOMAKE([nostdinc -Wall subdir-objects])
 AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])
 
 dnl Checks for programs.
 AC_PROG_MAKE_SET
-AC_PROG_CXX
 AM_PROG_AR
 
 LT_INIT([win32-dll])
@@ -65,11 +70,47 @@ save_CXXFLAGS=$CXXFLAGS
 CFLAGS=
 CXXFLAGS=
 AC_PROG_CC_C99
+AC_PROG_CXX
 AX_CXX_COMPILE_STDCXX([11],[noext])
 AM_CFLAGS="$AM_CFLAGS $CFLAGS"
 AM_CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
 CFLAGS=$save_CFLAGS
 CXXFLAGS=$save_CXXFLAGS
+
+dnl ----------------------------------------------------------------------------
+dnl check thread-local support
+dnl ----------------------------------------------------------------------------
+tls=
+AS_CASE(["$enable_tls"],
+  [no],[],
+  [detect|yes],[
+    save_CFLAGS=$CFLAGS
+    save_CXXFLAGS=$CXXFLAGS
+    save_LIBS=$LIBS
+
+    CFLAGS="$AM_CFLAGS $CFLAGS"
+    CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
+    LIBS="$LDADD $LIBS"
+
+    IRRAM_TLS
+
+    CFLAGS=$save_CFLAGS
+    CXXFLAGS=$save_CXXFLAGS
+    LIBS=$save_LIBS
+
+    tls=$irram_tls
+  ],
+  [tls=$enable_tls])
+AS_IF([test "$tls" = thread_local],[tls_std=1],[tls_std=0])
+
+AS_IF([test -z "$tls"],
+  [AS_CASE([x$enable_tls],
+     [xyes],[AC_MSG_ERROR([TLS requested, but could not detect any supported thread-local storage class specifier])],
+     [xdetect],[AC_MSG_WARN([could not detect any supported thread-local storage class specifier; disabling thread support])])],
+  [AC_MSG_NOTICE([using $tls as thread-local storage class specifier])])
+AC_SUBST([iRRAM_TLS],[$tls])
+AC_SUBST([iRRAM_TLS_STD],[$tls_std])
+
 
 dnl ----------------------------------------------------------------------------
 dnl check profiling support
@@ -178,10 +219,7 @@ CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
 LDFLAGS="$AM_LDFLAGS $LDFLAGS"
 
 AC_SEARCH_LIBS([sin],[m],[AS_CASE([$ac_cv_search_sin],["none required"],[],[LIBS_INST="$ac_cv_search_sin"])])
-AX_PTHREAD([
-	LIBS_INST="${PTHREAD_LIBS} ${LIBS_INST}"
-	AM_CFLAGS="$AM_CFLAGS $PTHREAD_CFLAGS"
-	AM_CXXFLAGS="$AM_CXXFLAGS $PTHREAD_CFLAGS"],[AC_MSG_ERROR([need pthread support])])
+
 LIBS="$LDADD $LIBS_INST"
 
 AS_BOX([Checking GMP headers/lib...])
@@ -309,4 +347,5 @@ CXXFLAGS: $AM_CXXFLAGS $CXXFLAGS
 LDFLAGS : $AM_LDFLAGS $LDFLAGS
 shared  : $enable_shared
 static  : $enable_static
+TLS     : $tls
 ])

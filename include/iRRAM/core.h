@@ -28,7 +28,7 @@ MA 02111-1307, USA.
 #include <cstdio>
 #include <vector>
 #include <cfenv>
-#include <thread>
+//#include <thread>
 #include <algorithm>	/* std::min, std::max */
 #include <sstream>
 
@@ -393,11 +393,12 @@ auto iRRAM_exec(F f) -> decltype(f())
 	st.cache_active = new cachelist;
 
 	if (iRRAM_unlikely(state.debug > 0)) {
-		std::stringstream s;
-		s << std::this_thread::get_id();
-		cerr << "\niRRAM (version " << iRRAM_VERSION_rt << ", backend "
-		     << iRRAM_BACKENDS << ") thread "
-		     << s.str() << " starting...\n";
+//		std::stringstream s;
+//		s << std::this_thread::get_id();
+		cerr << "\niRRAM (version " << iRRAM_VERSION_rt
+		     << ", backend " << iRRAM_BACKENDS << ")"
+//		     << " thread " << s.str()
+		     << " starting...\n";
 		st.max_prec = st.ACTUAL_STACK.prec_step;
 	}
 

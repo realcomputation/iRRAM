@@ -38,9 +38,9 @@ MA 02111-1307, USA.
 
 
 #define rat_MaxFreeVars 1000
-__thread rat_gmp_type rat_gmp_FreeVarsi[rat_MaxFreeVars];
-__thread int rat_gmp_FreeVarCount=0L;
-__thread int rat_gmp_var_count=0;
+iRRAM_TLS rat_gmp_type rat_gmp_FreeVarsi[rat_MaxFreeVars];
+iRRAM_TLS int rat_gmp_FreeVarCount=0L;
+iRRAM_TLS int rat_gmp_var_count=0;
 
 
 

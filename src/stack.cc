@@ -39,10 +39,10 @@ const char *iRRAM_VERSION_rt = iRRAM_VERSION_ct;
 
 namespace iRRAM {
 
-// __thread bool iRRAM_COMPARE_exact=true; /* unused */
-// __thread int iRRAM_COMPARE_precision=-60; /* unused */
+// iRRAM_TLS bool iRRAM_COMPARE_exact=true; /* unused */
+// iRRAM_TLS int iRRAM_COMPARE_precision=-60; /* unused */
 
-__thread state_t state;
+iRRAM_TLS state_t state;
 
 /*****************************************/
 // module function (will be a template later...)

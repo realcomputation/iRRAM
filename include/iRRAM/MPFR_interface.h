@@ -257,12 +257,12 @@ typedef __mpfr_struct  * ext_mpfr_type;
 typedef struct {unsigned int mantissa; int exponent; } ext_mpfr_sizetype;
 typedef mpz_ptr  int_mpfr_type;
 
-extern __thread int ext_mpfr_var_count;
+extern iRRAM_TLS int ext_mpfr_var_count;
 #define MaxFreeVars 1000
-extern __thread ext_mpfr_type mpfr_FreeVars[];
-extern __thread int mpfr_FreeVarCount;
-extern __thread int mpfr_TotalAllocVarCount;
-extern __thread int mpfr_TotalFreedVarCount;
+extern iRRAM_TLS ext_mpfr_type mpfr_FreeVars[];
+extern iRRAM_TLS int mpfr_FreeVarCount;
+extern iRRAM_TLS int mpfr_TotalAllocVarCount;
+extern iRRAM_TLS int mpfr_TotalFreedVarCount;
 
 #define MPFR_PREC(x) ((x)->_mpfr_prec)
 #define MPFR_SIZE(x) ((MPFR_PREC(x)-1)/BITS_PER_MP_LIMB+1)

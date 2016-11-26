@@ -143,7 +143,7 @@ struct state_t {
 	};
 };
 
-extern __thread state_t state;
+extern iRRAM_TLS state_t state;
 
 /* helper for reduced overload visibility of binary operator declarations */
 template <typename Base,typename EquivBase,typename Compat,typename Ret = Base>
