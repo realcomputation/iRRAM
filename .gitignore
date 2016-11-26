@@ -22,19 +22,4 @@ Makefile
 /m4/ltversion.m4
 /m4/lt~obsolete.m4
 
-/tests/*.log
-/tests/*.o
-/tests/*.trs
-/tests/.libs/
-/tests/.deps/
-
-/build/*.cc
-/build/*.c
-/build/*.h
-/build/*.o
-/build/*.lo
-/build/libiRRAM.la
-/build/.deps/
-/build/.libs/
-
 /iRRAM_VERSION

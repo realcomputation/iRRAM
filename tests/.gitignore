@@ -1,3 +1,9 @@
+/*.log
+/*.o
+/*.trs
+/.deps/
+/.libs/
+
 t_DYADIC
 t_FUNCTION
 t_INTEGER

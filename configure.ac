@@ -310,25 +310,9 @@ dnl These are always set automatically
 
 AC_SUBST(EXTRAEXAMPLES)
 
-iRRAM_src="REALS.cc REALmain.cc REALLIB.cc \
-limits.cc errno.cc convert.cc stack.cc STREAMS.cc \
-DYADIC.cc COMPLEX.cc RATIONAL.cc LAZY_BOOLEAN.cc \
-sqrt.cc exp_log.cc sin_cos.cc pi_ln2.cc \
-REALMATRIX.cc SPARSEREALMATRIX.cc INTERVAL.cc \
-GMP_int_ext.c GMP_rat_ext.c"
-AC_SUBST(iRRAM_src)
-
 MAKEFILES=""
 
-for j in $iRRAM_src; do
-	AC_CONFIG_LINKS(build/$j:$srcdir/src/$j)
-done
-
-for be in $BACKENDS; do
-	AC_CONFIG_LINKS(build/$be:$srcdir/src/$be)
-done
-
-AC_CONFIG_FILES([build/Makefile])
+AC_CONFIG_FILES([src/Makefile])
 AC_CONFIG_FILES([iRRAM_VERSION include/iRRAM/version.h])
 AC_CONFIG_FILES([Makefile include/Makefile tests/Makefile examples/Makefile doc/Makefile])
 AC_OUTPUT

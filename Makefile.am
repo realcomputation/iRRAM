@@ -4,7 +4,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = doc include build tests
+SUBDIRS = doc include src tests
 
 .PHONY: examples
 

@@ -1,5 +1,5 @@
 
-LDADD=$(top_builddir)/build/libiRRAM.la @LDADD@
+LDADD = $(top_builddir)/src/libiRRAM.la @LDADD@
 
 check_PROGRAMS = t_DYADIC t_INTEGER t_RATIONAL t_double_conv t_size t_string_conv t_FUNCTION t_COMPLEX
 

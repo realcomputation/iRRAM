@@ -1,9 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 # echo -e "\n***  Compiling iRRAM with MPFR multiple precision package as backend ***\n"
 
-srcdir = @srcdir@
-VPATH = ../src
-
 main_sources = \
 	REALS.cc \
 	REALmain.cc \
@@ -34,13 +31,10 @@ mpfr_sources = \
 mpfr_headers = \
 	MPFR/MPFR_ext.h
 
-DISTCLEANFILES = @iRRAM_src@
-
 lib_LTLIBRARIES      = libiRRAM.la
 libiRRAM_la_LDFLAGS  = -version-info @iRRAM_shared_version@ -no-undefined $(AM_LDFLAGS)
 libiRRAM_la_SOURCES  = $(main_sources)
 
 if WITH_BACKEND_MPFR
 libiRRAM_la_SOURCES += $(mpfr_sources)
-DISTCLEANFILES      += MPFR
 endif

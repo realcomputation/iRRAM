@@ -1,0 +1,5 @@
+/*.o
+/*.lo
+/libiRRAM.la
+/.deps/
+/.libs/
