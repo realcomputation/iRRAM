@@ -92,6 +92,7 @@ public:
 }
 
 namespace iRRAM {
+
 inline unsigned int scale(const unsigned int w,const int p) {return ((p<=GUARD_BITS)?(w>>p):0); }
 
 // sizetype_normalize(e) **********************************************
@@ -148,6 +149,19 @@ inline void sizetype_inc(sizetype& x,const sizetype& y)
             scale(y.mantissa,(x.exponent-y.exponent)) +1 ;
   }
   sizetype_normalize(x);
+}
+
+// x += y **************************************************
+// Increment x by y
+// Arguments x and y must differ!
+// The resulting value may be a bit larger than the exact value,
+// The resulting value may never be smaller than the exact value
+// ********************************************************************
+
+inline sizetype & operator+=(sizetype &x, const sizetype &y)
+{
+	sizetype_inc(x, y);
+	return x;
 }
 
 // sizetype_add_one(x,y) **************************************************
@@ -241,6 +255,19 @@ inline void sizetype_add(sizetype& x,const sizetype& y,const sizetype& z)
   sizetype_normalize(x);
 }
 
+// x = y + z **************************************************
+// Add y and z yielding x
+// The resulting value may be a bit larger than the exact value,
+// The resulting value may never be smaller than the exact value
+// ********************************************************************
+
+inline sizetype operator+(const sizetype& y,const sizetype& z)
+{
+  sizetype x;
+  sizetype_add(x,y,z);
+  return x;
+}
+
 
 inline void sizetype_copy(sizetype& x,const sizetype& y)
 {
@@ -271,6 +298,20 @@ inline void sizetype_shift(sizetype& x,const sizetype& y,const int s)
   }
 }
 
+// x = y << s **************************************************
+// Shift y and s yielding x
+// Arguments x,y may be identical!
+// The resulting value may be a bit larger than the exact value,
+// The resulting value may never be smaller than the exact value
+// *************************************************************
+
+inline sizetype operator<<(const sizetype &y, const int s)
+{
+	sizetype x;
+	sizetype_shift(x, y, s);
+	return x;
+}
+
 // sizetype_mult(x,y,z) **************************************************
 // Multiply y and z yielding x
 // Argument x must be different from y and z!
@@ -290,6 +331,19 @@ inline void sizetype_mult(sizetype& x,const sizetype& y,const sizetype& z)
   sizetype_normalize(x);
 }
 
+// x = y * z ***************************************************
+// Multiply y and z
+// The resulting value may be a bit larger than the exact value,
+// The resulting value may never be smaller than the exact value
+// *************************************************************
+
+inline sizetype operator*(const sizetype &y, const sizetype &z)
+{
+	sizetype x;
+	sizetype_mult(x, y, z);
+	return x;
+}
+
 // sizetype_max(x,y,z) **************************************************
 // Compute maximum of y and z in x
 // Arguments x,y, and z may all be identical!
@@ -303,6 +357,20 @@ inline void sizetype_max(sizetype& x,const sizetype& y,const sizetype& z)
   } else {
     if (scale(y.mantissa,z.exponent-y.exponent)>=z.mantissa) x=y; else x=z;
   }
+}
+
+// x = max(y, z) **************************************************
+// Compute maximum of y and z in x
+// Arguments x,y, and z may all be identical!
+// The resulting value is exactly the maximum
+// ****************************************************************
+
+inline sizetype max(const sizetype &y, const sizetype &z)
+{
+	if (y.exponent > z.exponent)
+		return scale(z.mantissa, y.exponent-z.exponent) >= y.mantissa ? z : y;
+	else
+		return scale(y.mantissa, z.exponent-y.exponent) >= z.mantissa ? y : z;
 }
 
 // sizetype_set(x,m,e) **************************************************
