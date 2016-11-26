@@ -137,9 +137,9 @@ REAL iterate(REAL f(REAL &, REAL &), REAL const & a_0, REAL const & b_0)
 	//} while (! bound(e,ACTUAL_STACK.actual_prec));
 	a.geterror(a_error);
 	e.geterror(e_error);
-	sizetype_inc(a_error, e_error);
+	a_error += e_error;
 	e.getsize(e_error);
-	sizetype_inc(a_error, e_error);
+	a_error += e_error;
 	a.seterror(a_error);
 	return a;
 }

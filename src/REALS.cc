@@ -46,7 +46,7 @@ void REAL::mp_make_mp()
 		if (!value)
 			MP_init(value);
 		MP_double_to_mp(dp.lower_pos, value);
-		sizetype_set(error, 1, MP_min);
+		error = sizetype_normalize({1, MP_min});
 	} else {
 		// now we know that it is not a point interval:
 		MP_init(value);
@@ -73,7 +73,7 @@ void REAL::mp_make_mp()
 		// is 2^30
 		// So we have that the interval (dp.lower,dp.upper) is a subset
 		// of the interval (cvalue - m*2^(e+29),cvalue + m*2^(e+29))
-		sizetype_set(error, m, e - 29);
+		error = sizetype_normalize({m, e - 29});
 	}
 	MP_getsize(value, vsize);
 }
@@ -153,7 +153,7 @@ REAL REAL::mp_addition(const int n) const
 		local_prec = max(this->error.exponent, state.ACTUAL_STACK.actual_prec);
 	else {
 		sizetype ysize;
-		sizetype_set(ysize, n > 0 ? n : -n, 0);
+		ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 		local_prec = max(this->vsize.exponent, ysize.exponent);
 		local_prec = max(this->error.exponent,
 		                 local_prec - 50 + state.ACTUAL_STACK.actual_prec);
@@ -179,10 +179,10 @@ REAL & REAL::mp_eqaddition(const REAL & y)
 	MP_init(zvalue);
 	MP_mv_add(this->value, y.value, zvalue, local_prec);
 
-	sizetype_inc(this->error, y.error);
+	this->error += y.error;
 	sizetype_inc_one(this->error, local_prec);
 
-	/*  sizetype_set(zerror,1,local_prec);
+	/*  zerror = sizetype_normalize({1,local_prec});
 	  sizetype_inc2(this->error,y.error,zerror);*/
 
 	MP_clear(this->value);
@@ -213,7 +213,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 	case float_form::absolute: {
 		sizetype psize;
 		int p = -10 * (width - 8) / 3;
-		sizetype_set(psize, 1, p);
+		psize = sizetype_normalize({1, p});
 		int s = MP_size(x.value);
 		int mantissa =
 		        (int)((s - x.error.exponent - GUARD_BITS) * .30103);
@@ -260,7 +260,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 			// cache as the first run!
 		}
 		sizetype psize;
-		sizetype_set(psize, 1, p);
+		psize = sizetype_normalize({1, p});
 		int s = MP_size(x.value);
 		int mantissa =
 		        (int)((s - x.error.exponent - GUARD_BITS) * .30103);
@@ -323,7 +323,7 @@ REAL REAL::mp_subtraction(const REAL & y) const
 	sizetype_add_wo_norm(zerror, this->error, y.error);
 	sizetype_inc_one(zerror, local_prec);
 	/*
-	  sizetype_set(zerror,1,local_prec);
+	  zerror = sizetype_normalize({1,local_prec});
 	  sizetype_inc2(zerror,this->error,y.error);
 	*/
 	return REAL(zvalue, zerror);
@@ -339,7 +339,7 @@ REAL REAL::mp_subtraction(const int n) const
 		        max(this->error.exponent, state.ACTUAL_STACK.actual_prec);
 	else {
 		sizetype ysize;
-		sizetype_set(ysize, n > 0 ? n : -n, 0);
+		ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 		local_prec = max(this->vsize.exponent, ysize.exponent);
 		local_prec = max(this->error.exponent,
 		                 local_prec - 50 + state.ACTUAL_STACK.actual_prec);
@@ -360,7 +360,7 @@ REAL REAL::mp_invsubtraction(const int n) const
 	else {
 		sizetype xsize, ysize;
 		MP_getsize(this->value, xsize);
-		sizetype_set(ysize, n > 0 ? n : -n, 0);
+		ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 		local_prec = max(xsize.exponent, ysize.exponent);
 		local_prec = max(this->error.exponent,
 		                 local_prec - 50 + state.ACTUAL_STACK.actual_prec);
@@ -376,10 +376,10 @@ REAL REAL::mp_multiplication(const REAL & y) const
 	MP_type zvalue;
 	sizetype zerror, proderror, sumerror;
 	int local_prec;
-	sizetype_mult(zerror, this->vsize, y.error);
+	zerror = this->vsize * y.error;
 	sizetype_add_wo_norm(sumerror, y.vsize, y.error);
-	sizetype_mult(proderror, sumerror, this->error);
-	sizetype_inc(zerror, proderror);
+	proderror = sumerror * this->error;
+	zerror += proderror;
 	if (state.ACTUAL_STACK.prec_policy == 0)
 		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
 	else
@@ -397,8 +397,8 @@ REAL REAL::mp_multiplication(const int n) const
 	MP_type zvalue;
 	sizetype zerror, ysize;
 	int local_prec;
-	sizetype_set(ysize, n > 0 ? n : -n, 0);
-	sizetype_mult(zerror, ysize, this->error);
+	ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
+	zerror = ysize * this->error;
 
 	if (state.ACTUAL_STACK.prec_policy == 0)
 		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
@@ -425,13 +425,13 @@ REAL REAL::mp_division(const REAL & y) const
 		             y.vsize.mantissa, y.vsize.exponent);
 		REITERATE(0);
 	}
-	sizetype_mult(h1, this->vsize, y.error);
-	sizetype_mult(h2, y.vsize, this->error);
-	sizetype_inc(h1, h2);
+	h1 = this->vsize * y.error;
+	h2 = y.vsize * this->error;
+	h1 += h2;
 	h3 = y.vsize;
 	sizetype_dec(h3);
 	sizetype_dec(h3, y.error);
-	sizetype_mult(h2, h3, y.vsize);
+	h2 = h3 * y.vsize;
 	sizetype_div(zerror, h1, h2);
 	if (state.ACTUAL_STACK.prec_policy == 0)
 		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
@@ -450,7 +450,7 @@ REAL REAL::mp_division(const int n) const
 	MP_type zvalue;
 	sizetype zerror, ysize;
 	int local_prec;
-	sizetype_set(ysize, n > 0 ? n : -n, 0);
+	ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 	sizetype_div(zerror, this->error, ysize);
 	if (state.ACTUAL_STACK.prec_policy == 0)
 		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
@@ -477,11 +477,11 @@ REAL REAL::mp_square() const
 	MP_type zvalue;
 	sizetype zerror, proderror;
 	int local_prec;
-	sizetype_mult(zerror, this->vsize, this->error);
-	sizetype_mult(proderror, this->vsize, this->error);
-	sizetype_inc(zerror, proderror);
-	sizetype_mult(proderror, this->error, this->error);
-	sizetype_inc(zerror, proderror);
+	zerror = this->vsize * this->error;
+	proderror = this->vsize * this->error;
+	zerror += proderror;
+	proderror = this->error * this->error;
+	zerror += proderror;
 	if (state.ACTUAL_STACK.prec_policy == 0)
 		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
 	else
@@ -559,7 +559,7 @@ REAL scale(const REAL & x, int n)
 	MP_init(zvalue);
 	MP_shift(x.value, zvalue, n);
 	x.geterror(zerror);
-	sizetype_shift(zerror, zerror, n);
+	zerror = zerror << n;
 	return REAL(zvalue, zerror);
 }
 
@@ -603,7 +603,7 @@ LAZY_BOOLEAN positive(const REAL & x, int k)
 	}
 	bool erg;
 	sizetype ksize;
-	sizetype_set(ksize, 1, k);
+	ksize = sizetype_normalize({1, k});
 	if (sizetype_less(ksize, x.error) && sizetype_less(x.vsize, x.error)) {
 		iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) in test on "
 		                "positive\n",

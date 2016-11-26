@@ -79,12 +79,12 @@ REAL sqrt(const REAL & x)
 	sizetype zerror, xsize, proderror;
 	int local_prec;
 	x.getsize(xsize);
-	sizetype_shift(zerror, x.error, 2);
+	zerror = x.error << 2;
 	if (sizetype_less(xsize, zerror)) {
 		MP_init(zvalue);
 		MP_int_to_mp(0, zvalue);
 		sizetype_sqrt(zerror, x.error);
-		sizetype_shift(zerror, zerror, 1);
+		zerror = zerror << 1;
 		return REAL(zvalue, zerror);
 	}
 	sizetype_dec(xsize, x.error);

@@ -259,7 +259,7 @@ void REALMATRIX::geterror (sizetype& error) const
   for (i=0;i<(*this).maxcolumn;i++) 
   for (j=0;j<(*this).maxrow;j++) {
       ELEMENT((*this),i,j).geterror(lerror);
-      sizetype_max(error,error,lerror);
+      error = max(error, lerror);
   }
 }
 

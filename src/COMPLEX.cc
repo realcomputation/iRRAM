@@ -48,7 +48,7 @@ void COMPLEX::geterror (sizetype& error) const
   sizetype lerror;
   this->_real.geterror(error);
   this->_imag.geterror(lerror);
-  sizetype_max(error,error,lerror);
+  error = max(error, lerror);
 }
 
 

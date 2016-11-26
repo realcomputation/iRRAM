@@ -418,7 +418,7 @@ void SPARSEREALMATRIX::geterror (sizetype& error) const
         t=1;
       } else {
         ptr->value.geterror(lerror);
-        sizetype_max(error,error,lerror);
+        error = max(error, lerror);
         ptr=ptr->nextcol;
       }
     } 

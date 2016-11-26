@@ -70,9 +70,9 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&),
     try {
     iRRAM_DEBUG2(2,"trying to compute limit_gen1 with precicion 2^(%d)...\n",element);
     limnew=f(element,x);
-    sizetype_set(element_error,1,element);
+    element_error = sizetype_normalize({1,element});
     limnew.geterror(limnew_error);
-    sizetype_inc(limnew_error,element_error);
+    limnew_error += element_error;
     if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
     	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
@@ -139,9 +139,9 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&,DISCRETE param),
    try {
     iRRAM_DEBUG2(2,"trying to compute limit_gen1 with precicion 2^(%d)...\n",element);
     limnew=f(element,x,param);
-    sizetype_set(element_error,1,element);
+    element_error = sizetype_normalize({1,element});
     limnew.geterror(limnew_error);
-    sizetype_inc(limnew_error,element_error);
+    limnew_error += element_error;
     if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
     	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
@@ -217,9 +217,9 @@ RESULT limit_mv (RESULT f(int prec,
     limnew=f(element,&choice,x);
     if (!inlimit)
       state.thread_data_address->cache_i.modify(choice);
-    sizetype_set(element_error,1,element);
+    element_error = sizetype_normalize({1,element});
     limnew.geterror(limnew_error);
-    sizetype_inc(limnew_error,element_error);
+    limnew_error += element_error;
     if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
     	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)) {
     iRRAM_DEBUG0(2,{fprintf(stderr,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
@@ -300,9 +300,9 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
       env.inc_step(2);
       limit_debug2("limit_lip failed");
     } }
-  sizetype_set(lim_error,1,env.saved_prec());
+  lim_error = sizetype_normalize({1,env.saved_prec()});
   lim.adderror(lim_error);
-  sizetype_shift(lim_error,x_error,lip_value);
+  lim_error = x_error << lip_value;
   lim.adderror(lim_error);
   iRRAM_DEBUG0(2,{lim.geterror(lim_error);
             fprintf(stderr,"end of limit_lip with error %d*2^(%d)\n",
@@ -365,8 +365,8 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
 //              lip_result.error.mantissa, lip_result.error.exponent);
 //   lip_size=lip_bound.vsize;
 //   lip_bound.geterror(tmp_size);
-//   sizetype_inc(lip_size,tmp_size);
-//   sizetype_mult(lip_error,lip_size,x_error);
+//   lip_size += tmp_size;
+//   lip_error = lip_size * x_error;
 //   lip_result.adderror(lip_error);
 //   iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
 //             fprintf(stderr,"end of lipschitz_1b with error %d*2^(%d)\n",
@@ -405,7 +405,7 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
 
   iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
-  sizetype_shift(lip_error,x_error,lip);
+  lip_error = x_error << lip;
   lip_result.adderror(lip_error);
   iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
             fprintf(stderr,"end of lipschitz_1p_1a with error %d*2^(%d)\n",

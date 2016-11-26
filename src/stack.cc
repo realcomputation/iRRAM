@@ -68,7 +68,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   sizetype argerror,testerror;
   
   x_copy.geterror(argerror);
-  sizetype_set(testerror,1,argerror.exponent);
+  testerror = sizetype_normalize({1,argerror.exponent});
   x_copy.adderror(testerror);
   {
     single_valued code;
@@ -87,7 +87,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   bool try_it=true;
 
   while (try_it) {
-    sizetype_set(testerror,1,p_arg);
+    testerror = sizetype_normalize({1,p_arg});
     x_copy.seterror(argerror);
     x_copy.adderror(testerror);
     bool fail = false;
@@ -125,8 +125,8 @@ int module(REAL f(const REAL&),const REAL& x, int p){
     }
   iRRAM_DEBUG2(1,"Modules resulting in p_arg=%d\n",p_arg);
   
-  sizetype_set(testerror,1,p_arg);
-  sizetype_inc(argerror,testerror);
+  testerror = sizetype_normalize({1,p_arg});
+  argerror += testerror;
 
   while (argerror.mantissa>1) {
     argerror.mantissa=argerror.mantissa>>1;
