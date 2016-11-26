@@ -58,7 +58,7 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
    try {
     iRRAM_DEBUG2(2,"trying to compute limit_gen2 with precision %d...\n",element);
     limnew=f(element,x,y);
-    element_error = sizetype_normalize({1,element});
+    element_error = sizetype_power2(element);
     limnew.geterror(limnew_error);
     limnew_error += element_error;
     if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
@@ -124,7 +124,7 @@ REAL limit (REAL f(int))
       env.inc_step(2);
       limit_debug2("limit_0 failed");
    }}
-  lim_error = sizetype_normalize({1,env.saved_prec()});
+  lim_error = sizetype_power2(env.saved_prec());
   lim.adderror(lim_error);
   iRRAM_DEBUG0(2,{lim.geterror(lim_error);
             fprintf(stderr,"end of limit_0 with error %d*2^(%d)\n",
@@ -166,7 +166,7 @@ REAL limit_lip (REAL f(int,const REAL&),
       env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",state.ACTUAL_STACK.actual_prec);
     } }
-  lim_error = sizetype_normalize({1,env.saved_prec()});
+  lim_error = sizetype_power2(env.saved_prec());
   lim.adderror(lim_error);
   lim_error = x_error << lip_value;
   lim.adderror(lim_error);
@@ -215,7 +215,7 @@ REAL limit_lip (REAL f(int,const REAL&),
       env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",state.ACTUAL_STACK.actual_prec);
     } }
-  lim_error = sizetype_normalize({1,env.saved_prec()});
+  lim_error = sizetype_power2(env.saved_prec());
   lim.adderror(lim_error);
   lim_error = x_error << lip_value;
   lim.adderror(lim_error);
@@ -261,7 +261,7 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
       env.inc_step(2);
       iRRAM_DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",state.ACTUAL_STACK.actual_prec);
     }}
-  lim_error = sizetype_normalize({1,env.saved_prec()});
+  lim_error = sizetype_power2(env.saved_prec());
   lim.adderror(lim_error);
   lim_error = x_error << lip;
   lim.adderror(lim_error);
@@ -523,7 +523,7 @@ REAL limit_hint    (REAL f(int, const REAL&),
     try {
     iRRAM_DEBUG2(2,"trying to compute limit_hint1 with precicion 2^(%d)...\n",element);
     limnew=f(element,x);
-    element_error = sizetype_normalize({1,element});
+    element_error = sizetype_power2(element);
     limnew.geterror(limnew_error);
     limnew_error += element_error;
     if ( (! success) || sizetype_less(limnew_error,lim_error) ) {
@@ -575,7 +575,7 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
     try {
     iRRAM_DEBUG2(2,"trying to compute limit_hint1 with precicion 2^(%d)...\n",element);
     limnew=f(element,x,y);
-    element_error = sizetype_normalize({1,element});
+    element_error = sizetype_power2(element);
     limnew.geterror(limnew_error);
     limnew_error += element_error;
     if ( (! success) || sizetype_less(limnew_error,lim_error) ) {
@@ -802,7 +802,7 @@ REAL limit (const FUNCTION<REAL,int> & f )
     try {
     iRRAM_DEBUG2(2,"trying to compute limit_FUNCTION with precicion 2^(%d)...\n",element);
     limnew=f(element);
-    element_error = sizetype_normalize({1,element});
+    element_error = sizetype_power2(element);
     limnew.geterror(limnew_error);
     limnew_error += element_error;
     if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)) {

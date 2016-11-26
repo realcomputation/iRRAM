@@ -46,7 +46,7 @@ void REAL::mp_make_mp()
 		if (!value)
 			MP_init(value);
 		MP_double_to_mp(dp.lower_pos, value);
-		error = sizetype_normalize({1, MP_min});
+		error = sizetype_power2(MP_min);
 	} else {
 		// now we know that it is not a point interval:
 		MP_init(value);
@@ -182,7 +182,7 @@ REAL & REAL::mp_eqaddition(const REAL & y)
 	this->error += y.error;
 	sizetype_inc_one(this->error, local_prec);
 
-	/*  zerror = sizetype_normalize({1,local_prec});
+	/*  zerror = sizetype_power2(local_prec);
 	  sizetype_inc2(this->error,y.error,zerror);*/
 
 	MP_clear(this->value);
@@ -213,7 +213,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 	case float_form::absolute: {
 		sizetype psize;
 		int p = -10 * (width - 8) / 3;
-		psize = sizetype_normalize({1, p});
+		psize = sizetype_power2(p);
 		int s = MP_size(x.value);
 		int mantissa =
 		        (int)((s - x.error.exponent - GUARD_BITS) * .30103);
@@ -260,7 +260,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 			// cache as the first run!
 		}
 		sizetype psize;
-		psize = sizetype_normalize({1, p});
+		psize = sizetype_power2(p);
 		int s = MP_size(x.value);
 		int mantissa =
 		        (int)((s - x.error.exponent - GUARD_BITS) * .30103);
@@ -323,7 +323,7 @@ REAL REAL::mp_subtraction(const REAL & y) const
 	sizetype_add_wo_norm(zerror, this->error, y.error);
 	sizetype_inc_one(zerror, local_prec);
 	/*
-	  zerror = sizetype_normalize({1,local_prec});
+	  zerror = sizetype_power2(local_prec);
 	  sizetype_inc2(zerror,this->error,y.error);
 	*/
 	return REAL(zvalue, zerror);
@@ -603,7 +603,7 @@ LAZY_BOOLEAN positive(const REAL & x, int k)
 	}
 	bool erg;
 	sizetype ksize;
-	ksize = sizetype_normalize({1, k});
+	ksize = sizetype_power2(k);
 	if (sizetype_less(ksize, x.error) && sizetype_less(x.vsize, x.error)) {
 		iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) in test on "
 		                "positive\n",

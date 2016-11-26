@@ -131,6 +131,11 @@ inline sizetype & sizetype_normalize(sizetype&& e)
 	return e;
 }
 
+inline sizetype sizetype_power2(int exp)
+{
+	return sizetype_normalize({1, exp});
+}
+
 // sizetype_inc(x,y) **************************************************
 // Increment x by y
 // Arguments x and y must differ!
