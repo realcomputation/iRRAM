@@ -90,8 +90,8 @@ friend RATIONAL  operator /  (int       x,       RATIONAL  y);
 friend RATIONAL& operator /= (RATIONAL& x, const RATIONAL& y);
 friend RATIONAL& operator /= (RATIONAL& x,       int       y);
 
-friend RATIONAL	 scale  	 (const RATIONAL& x, const int k);
-friend RATIONAL	 abs		 (const RATIONAL& x);
+friend RATIONAL scale        (RATIONAL x, const int k);
+friend RATIONAL abs          (RATIONAL x);
 
 friend INTEGER  numerator	 (const RATIONAL& x);
 friend INTEGER  denominator	 (const RATIONAL& x);

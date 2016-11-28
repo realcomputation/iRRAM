@@ -82,8 +82,7 @@ RATIONAL::RATIONAL(int i) {
 }
 
 RATIONAL::RATIONAL(const RATIONAL& y){
-  MP_rat_init(value);
-  MP_rat_duplicate_wo_init(y.value, value);
+  MP_rat_duplicate_w_init(y.value, value);
 }
 
 
@@ -147,31 +146,30 @@ int sign(const RATIONAL& x)
 
 #ifdef MP_shift
 
-RATIONAL scale(const RATIONAL& x, int n)
+RATIONAL scale(RATIONAL x, int n)
 {
-	MP_rat_type zvalue;
-	MP_rat_init(zvalue);
-	MP_rat_shift(x.value,zvalue,n);
-	return zvalue;
+	MP_rat_shift(x.value,x.value,n);
+	return x;
 }
 
 #else
 
-RATIONAL scale(const RATIONAL& x, int n)
+RATIONAL scale(RATIONAL x, int n)
 {
 	if (n==0) return x;
-	if (n==1) return 2*x;
+	if (n==1) { x *= 2; return x; }
 	RATIONAL y=1;
 	RATIONAL xc=2;
 	if (n<0) {xc=y/2;n=-n;}
-	if (n==1) return xc*x;
+	if (n==1) { xc *= x; return xc; }
 	for (int k=n;k>0;k=k/2)
 	{
 		if (k%2==1) y*=xc;
 		if (k==1) break;
 		xc*=xc;
 	}
-	return y*x;
+	y *= x;
+	return y;
 }
 
 #endif
@@ -260,11 +258,10 @@ RATIONAL& operator /= (RATIONAL& x, const int n)
 // Absolute value: |x|
 //****************************************************************************************
 
-RATIONAL abs (const RATIONAL& x){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  MP_rat_abs(x.value,zvalue);
-  return zvalue;
+RATIONAL abs(RATIONAL x)
+{
+	MP_rat_abs(x.value,x.value);
+	return x;
 }
 
 INTEGER denominator (const RATIONAL& x){
