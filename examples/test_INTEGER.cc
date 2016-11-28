@@ -14,7 +14,7 @@ INTEGER b(x);
 INTEGER c(y+0);
 INTEGER d(c);
 
-int n=d;
+int n=(int)d;
 if (d != y ) printf("Error 1 in INTEGER part\n");
 if (n != y ) printf("Error 2 in INTEGER part\n");
 

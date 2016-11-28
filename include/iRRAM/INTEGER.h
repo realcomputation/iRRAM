@@ -132,7 +132,7 @@ friend int sign(const INTEGER& x);
 friend std::string    swrite  (const INTEGER& x, const int w);
 friend std::string    swrite  (const INTEGER& x);
 
-operator int()  const ;
+explicit operator int()  const ;
 
 
 /****** Private ******/
