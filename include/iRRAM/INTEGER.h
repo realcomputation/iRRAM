@@ -41,7 +41,7 @@ INTEGER(MP_int_type y);
 
 INTEGER();
 INTEGER(const int i);
-INTEGER(const std::string s);
+INTEGER(const std::string &s);
 INTEGER(const char* s);
 INTEGER(const INTEGER& y); 
 INTEGER(const double d);
@@ -253,7 +253,7 @@ inline INTEGER::INTEGER(const char* s){
   MP_string_to_INTEGER(s,value,10);
 }
 
-inline INTEGER::INTEGER(const std::string s){
+inline INTEGER::INTEGER(const std::string &s){
   MP_int_init(value);
   MP_string_to_INTEGER(s.c_str(),value,10);
 }

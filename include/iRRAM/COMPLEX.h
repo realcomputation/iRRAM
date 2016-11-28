@@ -33,20 +33,7 @@ public:
 
 // Constructors: -------------------------------
 
-COMPLEX();
-COMPLEX(const int       real_part);
-COMPLEX(const double    real_part);
-COMPLEX(const INTEGER&  real_part);
-COMPLEX(const DYADIC&   real_part);
-COMPLEX(const RATIONAL& real_part);
-COMPLEX(const REAL&     real_part);
-
-COMPLEX(const REAL& real_part, const REAL& imag_part);
-COMPLEX(const COMPLEX& z); 
-
-// Copy Constructor: ---------------------------
-
-COMPLEX&   operator = (const COMPLEX& y);
+COMPLEX(REAL real_part=0, REAL imag_part=0);
 
 // Standard Arithmetic: ------------------------
 

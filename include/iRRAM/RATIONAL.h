@@ -29,6 +29,7 @@ namespace iRRAM {
 
 class RATIONAL
 {
+	RATIONAL(MP_rat_type y) : value(y) {}
 public:
 
 friend class INTEGER;
@@ -37,24 +38,21 @@ friend class REAL;
 
 /****** Constructors ******/
 
-RATIONAL(MP_rat_type y);
-
-RATIONAL();
-RATIONAL(const int i);
-RATIONAL(const double d);
+RATIONAL(int i=0);
+RATIONAL(double d);
 RATIONAL(const char* s);
 RATIONAL(const INTEGER& y);
 //RATIONAL(const DYADIC& y); 
-RATIONAL(const RATIONAL& y); 
+RATIONAL(const RATIONAL& y);
+RATIONAL(RATIONAL &&y) : value(y.value) { y.value = nullptr; }
 
-RATIONAL(const int i, const int j);
+RATIONAL(int i, int j);
 RATIONAL(const INTEGER& x, const INTEGER& y);
 
 /****** Copy constructor ******/
 
-RATIONAL& operator = (const RATIONAL& y);
-RATIONAL& operator = (const INTEGER& y);
-RATIONAL& operator = (const int y);
+RATIONAL & operator=(RATIONAL y);
+RATIONAL & operator=(int y);
 
 /****** Destructor ******/
 
@@ -64,24 +62,16 @@ RATIONAL& operator = (const int y);
 
 friend RATIONAL  operator +  (const RATIONAL& x, const RATIONAL& y);
 friend RATIONAL  operator +  (const RATIONAL& x, const int	 y);
-friend RATIONAL  operator +  (const RATIONAL& x, const INTEGER&  y);
 friend RATIONAL  operator +  (const int       x, const RATIONAL& y);
-friend RATIONAL  operator +  (const INTEGER&  x, const RATIONAL& y);
 
 friend RATIONAL& operator += (      RATIONAL& x, const RATIONAL& y);
-friend RATIONAL& operator += (      RATIONAL& x, const INTEGER&  y);
-friend RATIONAL& operator += (      RATIONAL& x, const int	 y);
 
 
 friend RATIONAL  operator -  (const RATIONAL& x, const RATIONAL& y);
 friend RATIONAL  operator -  (const RATIONAL& x, const int	 y);
-friend RATIONAL  operator -  (const RATIONAL& x, const INTEGER&  y);
 friend RATIONAL  operator -  (const int       x, const RATIONAL& y);
-friend RATIONAL  operator -  (const INTEGER&  x, const RATIONAL& y);
 
 friend RATIONAL& operator -= (      RATIONAL& x, const RATIONAL& y);
-friend RATIONAL& operator -= (      RATIONAL& x, const INTEGER&  y);
-friend RATIONAL& operator -= (      RATIONAL& x, const int	 y);
 
 friend RATIONAL  operator -  (const RATIONAL& x);
 
@@ -159,7 +149,6 @@ friend std::string    swrite          (const RATIONAL& x, const int w);
 private:
 
 MP_rat_type value;
-RATIONAL(MP_int_type y);
 };
 
 } /* ! namespace iRRAM */

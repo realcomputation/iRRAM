@@ -26,17 +26,10 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-INTERVAL::INTERVAL()
-{
-  low=0;
-  upp=0;
-}
+INTERVAL::INTERVAL() : low(0), upp(0) {}
 
 INTERVAL::INTERVAL(const REAL& x, const REAL& y)
-{
-  low=minimum(x,y);
-  upp=maximum(x,y);
-}
+: low(minimum(x,y)), upp(maximum(x,y)) {}
 
 INTERVAL operator + (const INTERVAL & x, const INTERVAL & y){
 	return INTERVAL( x.low+y.low, x.upp+y.upp, true);

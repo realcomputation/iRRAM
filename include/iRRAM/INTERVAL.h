@@ -42,22 +42,21 @@ public:
 
 // value: point interval [0,0]
 INTERVAL();
-INTERVAL(const INTERVAL &x) : low(x.low), upp(x.upp) {}
-INTERVAL(INTERVAL &&x) noexcept : low(std::move(x.low)), upp(std::move(x.upp)) {}
+INTERVAL(const INTERVAL &x) = default;
+INTERVAL(INTERVAL &&x) noexcept = default;
 
 // value: point interval [x,x]
 INTERVAL(const REAL& x) : low(x), upp(x) {}
 
-// value: interval [ min(l,r), max(l,r) ]
-INTERVAL(const REAL& l, const REAL& r);
+// value: interval [ min(x,y), max(x,y) ]
+INTERVAL(const REAL& x, const REAL& y);
 
 //  Fast construction of an interval from an ordered(!) pair of reals
-INTERVAL(const REAL& l, const REAL& r, bool dummy) : low(l), upp(r) { (void)dummy; }
-INTERVAL(REAL &&l, REAL &&r, bool dummy) : low(std::forward<REAL>(l)), upp(std::forward<REAL>(r)) { (void)dummy; }
+INTERVAL(REAL l, REAL r, bool) : low(std::move(l)), upp(std::move(r)) {}
 
 
 // Standard Arithmetic: ------------------------
-INTERVAL & operator=(const INTERVAL &x) { low = x.low; upp = x.upp; return *this; }
+INTERVAL & operator=(const INTERVAL &x) = default;
 INTERVAL & operator=(INTERVAL &&x) noexcept { low = std::move(x.low); upp = std::move(x.upp); return *this; }
 
 friend INTERVAL  operator +  (const INTERVAL& x, const INTERVAL& y);

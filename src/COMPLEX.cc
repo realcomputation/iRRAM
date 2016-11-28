@@ -23,58 +23,11 @@ MA 02111-1307, USA.
 */
 #include <iRRAM/core.h>
 
+using std::move;
+
 namespace iRRAM {
 
-COMPLEX::COMPLEX()
-{}
-
-COMPLEX::COMPLEX(const int x)
-{
-  _real = x;
-}
-
-COMPLEX::COMPLEX(const double x)
-{
-  _real = x;
-}
-
-COMPLEX::COMPLEX(const INTEGER& x)
-{
-  _real = x;
-}
-
-COMPLEX::COMPLEX(const DYADIC& x)
-{
-  _real = x;
-}
-
-COMPLEX::COMPLEX(const RATIONAL& x)
-{
-  _real = x;
-}
-
-COMPLEX::COMPLEX(const REAL& x)
-{
-  _real = x;
-}
-
-COMPLEX::COMPLEX(const REAL& x, const REAL& y)
-{
-  _real = x;
-  _imag = y;
-}
-
-COMPLEX::COMPLEX(const COMPLEX& z)
-{
-  _real = z._real;
-  _imag = z._imag;
-}
-
-COMPLEX& COMPLEX::operator = (const COMPLEX& z) {
-  _real=z._real;
-  _imag=z._imag;
-  return(*this);
-}
+COMPLEX::COMPLEX(REAL x, REAL y) : _real(move(x)), _imag(move(y)) {}
 
 
 

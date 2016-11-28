@@ -39,7 +39,7 @@ struct wrap_type {
 	~wrap_type() noexcept { clearfct(v); }
 	wrap_type & operator=(const T &_v) noexcept(noexcept(const_cast<T &>(_v)=_v)) { v = _v; return *this; }
 	wrap_type & operator=(wrap_type o) noexcept(noexcept(std::swap(v, o.v))) { using std::swap; swap(v, o.v); return *this; }
-	operator T() noexcept { return v; }
+	operator T() const noexcept { return v; }
 };
 
 template <typename T> struct get_type {

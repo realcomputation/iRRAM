@@ -41,34 +41,21 @@ Changelog: (initial version by Tom, all modifications by Norbert)
 
 namespace iRRAM {
 
-#define maxsint 2147483647
-#define maxint 2*(maxsint-1) //****** must be unsigned ******
-
-
 //****************************************************************************************
 // CONSTRUCTORS
 // IMPORTANT: Objects MUST be initialized before being used.
 //****************************************************************************************
 
-inline RATIONAL::RATIONAL(MP_rat_type y){
-  value = y;
-}
-
 //****************************************************************************************
 // Constructing RATIONAL from scratch
 //****************************************************************************************
-
-RATIONAL::RATIONAL(){
-  MP_rat_init(value);
-  MP_int_to_RATIONAL(0,value);
-}
 
 RATIONAL::RATIONAL(const INTEGER& i,const INTEGER& j){
   MP_rat_init(value);
   MP_INTINTEGER_to_RATIONAL(i.value,j.value,value);
 }
 
-RATIONAL::RATIONAL(const int i, const int j){
+RATIONAL::RATIONAL(int i, int j){
   MP_rat_init(value);
   if ( j >= 0) {
 	MP_intint_to_RATIONAL(i,(unsigned int)(j),value);
@@ -84,7 +71,7 @@ RATIONAL::RATIONAL(const INTEGER& i){
   MP_INTEGER_to_RATIONAL(i.value,value);
 }
 
-RATIONAL::RATIONAL(const int i) {
+RATIONAL::RATIONAL(int i) {
   MP_rat_init(value);
   MP_int_to_RATIONAL(i,value);
 }
@@ -99,7 +86,7 @@ RATIONAL::RATIONAL(const RATIONAL& y){
 // Constructing RATIONAL from double, the result is NOT rounded
 //****************************************************************************************
 
-RATIONAL::RATIONAL(const double d){
+RATIONAL::RATIONAL(double d){
   MP_rat_init(value);
   MP_double_to_RATIONAL(d,value);
 }
@@ -113,21 +100,19 @@ RATIONAL::RATIONAL(const char* s){
   MP_string_to_RATIONAL(s,value);
 }
 
-//****************************************************************************************
-// Copy constructor
-// Types on both sides must be RATIONAL, left side must already be initialized.
-//****************************************************************************************
+//******************************************************************************
+// Copy assignment
+// left side (this) is already initialized
+//******************************************************************************
 
-RATIONAL& RATIONAL::operator = (const RATIONAL& y){
-  MP_rat_duplicate_wo_init(y.value, value);
-  return (*this);
+RATIONAL & RATIONAL::operator=(RATIONAL y)
+{
+	using std::swap;
+	swap(value, y.value);
+	return *this;
 }
 
-RATIONAL& RATIONAL::operator = (const INTEGER& y){
-  return (*this)=RATIONAL(y);
-}
-
-RATIONAL& RATIONAL::operator = (const int y){
+RATIONAL& RATIONAL::operator = (int y){
   MP_int_to_RATIONAL(y,value);
   return (*this);
 }
@@ -138,7 +123,7 @@ RATIONAL& RATIONAL::operator = (const int y){
 //******************************************************************/
 
 RATIONAL::~RATIONAL(){
-  MP_rat_clear(value);
+  if (value) MP_rat_clear(value);
 }
 
 //****************************************************************************************
@@ -198,9 +183,6 @@ RATIONAL operator + (const RATIONAL& x, const RATIONAL& y){
   return zvalue;
 }
 
-RATIONAL operator + (const RATIONAL& x, const INTEGER&  y) {return x+RATIONAL(y); }
-RATIONAL operator + (const INTEGER&  x, const RATIONAL& y) {return RATIONAL(x)+y; }
-
 RATIONAL operator + (const RATIONAL& x, const int y){
   MP_rat_type zvalue;
   MP_rat_init(zvalue);
@@ -223,9 +205,6 @@ RATIONAL& operator += (RATIONAL& x, const RATIONAL& y)
   return x;
 }
 
-RATIONAL& operator += (RATIONAL& x, const INTEGER& n){ return x+=RATIONAL(n);}
-RATIONAL& operator += (RATIONAL& x, const int n){ return x+=RATIONAL(n);}
-
 //****************************************************************************************
 // Subtraction: returns x - y
 // Simple infix difference of 2 RATIONAL-objects
@@ -237,9 +216,6 @@ RATIONAL operator - (const RATIONAL& x, const RATIONAL& y){
   MP_rat_sub(x.value,y.value,zvalue);
   return zvalue;
 }
-
-RATIONAL operator - (const RATIONAL& x, const INTEGER&  y){ return x-RATIONAL(y);}
-RATIONAL operator - (const INTEGER&  x, const RATIONAL& y){ return RATIONAL(x)-y;}
 
 RATIONAL operator - (const RATIONAL& x, int y){
   MP_rat_type zvalue;
@@ -255,9 +231,6 @@ RATIONAL& operator -= (RATIONAL& x, const RATIONAL& y){
   MP_rat_sub(x.value,y.value,x.value);
   return x;
 }
-
-RATIONAL& operator -= (RATIONAL& x, const INTEGER& n){ return x-=RATIONAL(n);}
-RATIONAL& operator -= (RATIONAL& x, const int n){ return x-=RATIONAL(n);}
 
 //****************************************************************************************
 // Negative: returns -x
