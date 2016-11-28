@@ -3,6 +3,7 @@
 RATIONAL.cc -- routines for RATIONAL data type
  
 Copyright (C) 2001-2003 Norbert Mueller, Tom van Diessen
+Copyright     2016      Franz Brausse
  
 This file is part of the iRRAM Library.
  
@@ -24,7 +25,11 @@ MA 02111-1307, USA.
 
 
 /*
-Changelog: (initial version by Tom, all modifications by Norbert)
+Changelog: (initial version by Tom, all modifications by Norbert and Franz)
+
+  2016-11-28  Remove explicit casts from INTEGER (use constructor instead)
+              Allow for copy-elision / moves
+              Optimize operator+=(RATIONAL,int) and operator-(RATIONAL)
 
   2003-08-29  Addition of functions x+i, x-i, x*i, x/i and i+x etc
               for i of simple type "int"
@@ -173,31 +178,8 @@ RATIONAL scale(const RATIONAL& x, int n)
 
 
 //*********************************************************************/
-// Addition: returns x + y
+// Addition
 //**********************************************************************/
-
-RATIONAL operator + (const RATIONAL& x, const RATIONAL& y){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  MP_rat_add(x.value,y.value,zvalue);
-  return zvalue;
-}
-
-RATIONAL operator + (const RATIONAL& x, const int y){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  if(y<0) MP_rat_sub_ui(x.value,-y,zvalue);
-  else MP_rat_add_ui(x.value,y,zvalue);
-  return zvalue;
-}
-
-RATIONAL operator + (const int x, const RATIONAL& y){ return y+x; }
-
-//****************************************************************************************
-// Addition: returns x += y
-// Simple infix addition of 2 RATIONAL-objects using left-hand argument 
-// as second right-hand argument
-//****************************************************************************************
 
 RATIONAL& operator += (RATIONAL& x, const RATIONAL& y)
 {
@@ -205,106 +187,61 @@ RATIONAL& operator += (RATIONAL& x, const RATIONAL& y)
   return x;
 }
 
-//****************************************************************************************
-// Subtraction: returns x - y
-// Simple infix difference of 2 RATIONAL-objects
-//****************************************************************************************
-
-RATIONAL operator - (const RATIONAL& x, const RATIONAL& y){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  MP_rat_sub(x.value,y.value,zvalue);
-  return zvalue;
+RATIONAL & operator+=(RATIONAL &x, int y)
+{
+	MP_rat_add_si(x.value, y, x.value);
+	return x;
 }
 
-RATIONAL operator - (const RATIONAL& x, int y){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  if(y<0) MP_rat_add_ui(x.value,-y,zvalue);
-  else MP_rat_sub_ui(x.value,y,zvalue);
-  return zvalue;
-}
+//******************************************************************************
+// Subtraction
+//******************************************************************************
 
-RATIONAL operator - (const int x, const RATIONAL& y){ return -(y-x); }
+RATIONAL operator-(int x, RATIONAL y)
+{
+	MP_rat_neg(y.value, y.value);
+	y += x;
+	return y;
+}
 
 RATIONAL& operator -= (RATIONAL& x, const RATIONAL& y){
   MP_rat_sub(x.value,y.value,x.value);
   return x;
 }
 
-//****************************************************************************************
-// Negative: returns -x
-// changes sign of RATIONAL
-//****************************************************************************************
+//******************************************************************************
+// Negation
+//******************************************************************************
 
-RATIONAL operator - (const RATIONAL& x){
-  MP_rat_type zvalue;
-  RATIONAL y=RATIONAL(0);
-  MP_rat_init(zvalue);
-  MP_rat_sub(y.value,x.value,zvalue);
-  return zvalue;
+RATIONAL operator-(RATIONAL x)
+{
+	MP_rat_neg(x.value, x.value);
+	return x;
 }
 
-//****************************************************************************************
-// Multiplication: returns x * y
-//****************************************************************************************
-
-RATIONAL operator * (const RATIONAL& x, const RATIONAL& y){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  MP_rat_mul(x.value,y.value,zvalue);
-  return zvalue;
-}
-
-RATIONAL operator * (const RATIONAL& x, const INTEGER&  y){ return x*RATIONAL(y);}
-RATIONAL operator * (const INTEGER&  x, const RATIONAL& y){ return RATIONAL(x)*y;}
-
-RATIONAL operator * (const RATIONAL& x, const int y){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  MP_rat_mul_si(x.value,y,zvalue);
-  return zvalue;
-}
-
-RATIONAL operator * (const int      x, const RATIONAL& y){ return y*x;}
+//******************************************************************************
+// Multiplication
+//******************************************************************************
 
 RATIONAL& operator *= (RATIONAL& x, const RATIONAL& y){
   MP_rat_mul(x.value,y.value,x.value);
   return x;
 }
 
-RATIONAL& operator *= (RATIONAL& x, const INTEGER& n){ return x*=RATIONAL(n);}
-RATIONAL& operator *= (RATIONAL& x, const int n){ return x*=RATIONAL(n);}
-
-
-//****************************************************************************************
-// Division: returns x / y
-// Simple infix division of 2 RATIONAL-objects
-//****************************************************************************************
-
-RATIONAL operator / (const RATIONAL& x, const RATIONAL& y)
+RATIONAL & operator*=(RATIONAL &x, const int n)
 {
-	MP_rat_type zvalue;
-	MP_rat_init(zvalue);
-	MP_rat_div(x.value,y.value,zvalue);
-	return zvalue;
+	MP_rat_mul_si(x.value, n, x.value);
+	return x;
 }
 
-RATIONAL operator / (const RATIONAL& x, const INTEGER&  y){ return x/RATIONAL(y);}
-RATIONAL operator / (const INTEGER&  x, const RATIONAL& y){ return RATIONAL(x)/y;}
+//******************************************************************************
+// Division
+//******************************************************************************
 
-RATIONAL operator / (const RATIONAL& x, int y){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  MP_rat_div_si(x.value,y,zvalue);
-  return zvalue;
-}
-
-RATIONAL operator / (int x, const RATIONAL& y){
-  MP_rat_type zvalue;
-  MP_rat_init(zvalue);
-  MP_rat_si_div(x,y.value,zvalue);
-  return zvalue;
+RATIONAL operator / (int x, RATIONAL y)
+{
+  MP_rat_si_div(x,y.value,y.value);
+  return y;
 }
 
 RATIONAL& operator /= (RATIONAL& x, const RATIONAL& y){
@@ -312,8 +249,11 @@ RATIONAL& operator /= (RATIONAL& x, const RATIONAL& y){
   return x;
 }
 
-RATIONAL& operator /= (RATIONAL& x, const INTEGER& n){ return x/=RATIONAL(n);}
-RATIONAL& operator /= (RATIONAL& x, const int n){ return x/=RATIONAL(n);}
+RATIONAL& operator /= (RATIONAL& x, const int n)
+{
+	MP_rat_div_si(x.value,n,x.value);
+	return x;
+}
 
 
 //****************************************************************************************
@@ -342,48 +282,13 @@ INTEGER numerator (const RATIONAL& x){
 }
 
 //****************************************************************************************
-// Less than: x < y
+// Comparators
 // returns boolean value 1 if x<y, 0 otherwise
 //****************************************************************************************
 
 bool operator < (const RATIONAL& x, const RATIONAL& y){
   return (MP_rat_compare(x.value,y.value) < 0 );
 }
-bool operator < (const RATIONAL& x, const INTEGER&  y){ return x<RATIONAL(y);}
-bool operator < (const RATIONAL& x, const int       y){ return x<RATIONAL(y);}
-bool operator < (const INTEGER&  x, const RATIONAL& y){ return RATIONAL(x)<y;}
-bool operator < (const int       x, const RATIONAL& y){ return RATIONAL(x)<y;}
-
-//****************************************************************************************
-// Less or equal than: x <= y
-// returns boolean value 1 if x<=y, 0 otherwise
-//****************************************************************************************
-bool operator <= (const RATIONAL& x, const RATIONAL& y){ return !(y<x); }
-bool operator <= (const RATIONAL& x, const INTEGER&  y){ return !(y<x); }
-bool operator <= (const RATIONAL& x, const int       y){ return !(y<x); }
-bool operator <= (const INTEGER&  x, const RATIONAL& y){ return !(y<x); }
-bool operator <= (const int       x, const RATIONAL& y){ return !(y<x); }
-
-//****************************************************************************************
-// Greater than: x > y
-// returns boolean value 1 if x>y, 0 otherwise
-//****************************************************************************************
-bool operator > (const RATIONAL& x, const RATIONAL& y){ return (y<x); }
-bool operator > (const RATIONAL& x, const INTEGER&  y){ return (y<x); }
-bool operator > (const RATIONAL& x, const int       y){ return (y<x); }
-bool operator > (const INTEGER&  x, const RATIONAL& y){ return (y<x); }
-bool operator > (const int       x, const RATIONAL& y){ return (y<x); }
-
-
-//****************************************************************************************
-// Greater or equal than: x >= y
-// returns boolean value 1 if x>=y, 0 otherwise
-//****************************************************************************************
-bool operator >= (const RATIONAL& x, const RATIONAL& y){ return !(x<y); }
-bool operator >= (const RATIONAL& x, const INTEGER&  y){ return !(x<y); }
-bool operator >= (const RATIONAL& x, const int       y){ return !(x<y); }
-bool operator >= (const INTEGER&  x, const RATIONAL& y){ return !(x<y); }
-bool operator >= (const int       x, const RATIONAL& y){ return !(x<y); }
 
 //****************************************************************************************
 // Equal to: x == y
@@ -393,21 +298,6 @@ bool operator >= (const int       x, const RATIONAL& y){ return !(x<y); }
 bool operator == (const RATIONAL& x, const RATIONAL& y){
   return (MP_rat_equal(x.value,y.value));
 }
-bool operator == (const RATIONAL& x, const INTEGER&  y){ return x==RATIONAL(y);}
-bool operator == (const RATIONAL& x, const int       y){ return x==RATIONAL(y);}
-bool operator == (const INTEGER&  x, const RATIONAL& y){ return y==RATIONAL(x);}
-bool operator == (const int       x, const RATIONAL& y){ return y==RATIONAL(x);}
-
-//****************************************************************************************
-// Not equal to: x != y
-// returns boolean value 1 if x!=y, 0 otherwise
-//****************************************************************************************
-
-bool operator != (const RATIONAL& x, const RATIONAL& y){ return !(x==y); }
-bool operator != (const RATIONAL& x, const INTEGER&  y){ return !(x==y); }
-bool operator != (const RATIONAL& x, const int       y){ return !(x==y); }
-bool operator != (const INTEGER& y, const RATIONAL& x ){ return !(y==x); }
-bool operator != (const int      y, const RATIONAL& x ){ return !(y==x); }
 
 
 //*****************************************************************************

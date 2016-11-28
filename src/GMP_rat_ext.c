@@ -43,6 +43,21 @@ iRRAM_TLS int rat_gmp_FreeVarCount=0L;
 iRRAM_TLS int rat_gmp_var_count=0;
 
 
+void rat_gmp_add_si(const rat_gmp_type z1, int z2, rat_gmp_type z)
+{
+	int_gmp_type src_num = mpq_numref(z1);
+	int_gmp_type src_den = mpq_denref(z1);
+	int_gmp_type tgt_num = mpq_numref(z);
+	int_gmp_type tgt_den = mpq_denref(z);
+	int_gmp_type temp = int_gmp_init();
+
+	mpz_set(tgt_den, src_den);
+	mpz_mul_si(temp, src_den, z2);
+	mpz_add(tgt_num, temp, src_num);
+
+	mpq_canonicalize(z);
+	int_gmp_free(temp);
+}
 
 
 /*****************************************************************************/

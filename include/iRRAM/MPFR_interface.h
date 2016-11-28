@@ -169,12 +169,14 @@ MA 02111-1307, USA.
 #define MP_rat_sub(z1,z2,z) rat_gmp_sub(z1,z2,z)
 #define MP_rat_mul(z1,z2,z) rat_gmp_mul(z1,z2,z)
 #define MP_rat_div(z1,z2,z) rat_gmp_div(z1,z2,z) 
+#define MP_rat_add_si(z1,z2,z) rat_gmp_add_si(z1,z2,z)
 #define MP_rat_add_ui(z1,z2,z) rat_gmp_add_ui(z1,z2,z)
 #define MP_rat_sub_ui(z1,z2,z) rat_gmp_sub_ui(z1,z2,z)
 #define MP_rat_mul_si(z1,z2,z) rat_gmp_mul_si(z1,z2,z)
 #define MP_rat_div_si(z1,z2,z) rat_gmp_div_si(z1,z2,z)
 #define MP_rat_si_div(z1,z2,z) rat_gmp_si_div(z1,z2,z)
 #define MP_rat_abs(z1,z)       rat_gmp_abs(z1,z)
+#define MP_rat_neg(z1,z)       rat_gmp_neg(z1,z)
 
 
 /* Additional integer/rational arithmetic */

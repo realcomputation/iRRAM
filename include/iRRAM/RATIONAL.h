@@ -3,6 +3,7 @@
 iRRAM_RATIONAL.h -- declaration of the interface to rational numbers for the iRRAM library
  
 Copyright (C) 2005 Norbert Mueller
+Copyright     2016 Franz Brausse
  
 This file is part of the iRRAM Library.
  
@@ -29,7 +30,10 @@ namespace iRRAM {
 
 class RATIONAL
 {
+	/****** Private ******/
+	MP_rat_type value;
 	RATIONAL(MP_rat_type y) : value(y) {}
+
 public:
 
 friend class INTEGER;
@@ -60,40 +64,31 @@ RATIONAL & operator=(int y);
 
 /****** Standard arithmetic ******/
 
-friend RATIONAL  operator +  (const RATIONAL& x, const RATIONAL& y);
-friend RATIONAL  operator +  (const RATIONAL& x, const int	 y);
-friend RATIONAL  operator +  (const int       x, const RATIONAL& y);
+friend RATIONAL  operator +  (RATIONAL  x, const RATIONAL& y) { x += y; return x; }
+friend RATIONAL  operator +  (RATIONAL  x,       int       y) { x += y; return x; }
+friend RATIONAL  operator +  (int       x,       RATIONAL  y) { y += x; return y; }
+friend RATIONAL& operator += (RATIONAL& x, const RATIONAL& y);
+friend RATIONAL& operator += (RATIONAL& x,       int       y);
 
-friend RATIONAL& operator += (      RATIONAL& x, const RATIONAL& y);
+friend RATIONAL  operator -  (RATIONAL  x, const RATIONAL& y) { x -= y; return x; }
+friend RATIONAL  operator -  (RATIONAL  x,       int       y) { x += -y; return x; }
+friend RATIONAL  operator -  (int       x,       RATIONAL  y);
+friend RATIONAL& operator -= (RATIONAL& x, const RATIONAL& y);
+friend RATIONAL& operator -= (RATIONAL& x,       int       y) { x += -y; return x; }
 
+friend RATIONAL  operator -  (RATIONAL  x);
 
-friend RATIONAL  operator -  (const RATIONAL& x, const RATIONAL& y);
-friend RATIONAL  operator -  (const RATIONAL& x, const int	 y);
-friend RATIONAL  operator -  (const int       x, const RATIONAL& y);
+friend RATIONAL  operator *  (RATIONAL  x, const RATIONAL& y) { x *= y; return x; }
+friend RATIONAL  operator *  (RATIONAL  x,       int       y) { x *= y; return x; }
+friend RATIONAL  operator *  (int       x,       RATIONAL  y) { y *= x; return y; }
+friend RATIONAL& operator *= (RATIONAL& x, const RATIONAL& y);
+friend RATIONAL& operator *= (RATIONAL& x,       int       y);
 
-friend RATIONAL& operator -= (      RATIONAL& x, const RATIONAL& y);
-
-friend RATIONAL  operator -  (const RATIONAL& x);
-
-friend RATIONAL  operator *  (const RATIONAL& x, const RATIONAL& y);
-friend RATIONAL  operator *  (const RATIONAL& x, const int	 y);
-friend RATIONAL  operator *  (const RATIONAL& x, const INTEGER&  y);
-friend RATIONAL  operator *  (const int       x, const RATIONAL& y);
-friend RATIONAL  operator *  (const INTEGER&  x, const RATIONAL& y);
-
-friend RATIONAL& operator *= (      RATIONAL& x, const RATIONAL& y);
-friend RATIONAL& operator *= (      RATIONAL& x, const INTEGER&  y);
-friend RATIONAL& operator *= (      RATIONAL& x, const int	 y);
-
-friend RATIONAL  operator /  (const RATIONAL& x, const RATIONAL& y);
-friend RATIONAL  operator /  (const RATIONAL& x, const int	 y);
-friend RATIONAL  operator /  (const RATIONAL& x, const INTEGER&  y);
-friend RATIONAL  operator /  (const int       x, const RATIONAL& y);
-friend RATIONAL  operator /  (const INTEGER&  x, const RATIONAL& y);
-
-friend RATIONAL& operator /= (      RATIONAL& x, const RATIONAL& y);
-friend RATIONAL& operator /= (      RATIONAL& x, const INTEGER&  y);
-friend RATIONAL& operator /= (      RATIONAL& x, const int	 y);
+friend RATIONAL  operator /  (RATIONAL  x, const RATIONAL& y) { x /= y; return x; }
+friend RATIONAL  operator /  (RATIONAL  x, const int       y) { x /= y; return x; }
+friend RATIONAL  operator /  (int       x,       RATIONAL  y);
+friend RATIONAL& operator /= (RATIONAL& x, const RATIONAL& y);
+friend RATIONAL& operator /= (RATIONAL& x,       int       y);
 
 friend RATIONAL	 scale  	 (const RATIONAL& x, const int k);
 friend RATIONAL	 abs		 (const RATIONAL& x);
@@ -104,51 +99,17 @@ friend int 	sign	 	 (const RATIONAL& x);
 
 /****** Comparisons ******/
 
-friend bool 	operator <      (const RATIONAL& x, const RATIONAL& y);
-friend bool 	operator <      (const RATIONAL& x, const INTEGER&  y);
-friend bool 	operator <      (const INTEGER&  x, const RATIONAL&  y);
-friend bool 	operator <      (const RATIONAL& x, const int       y);
-friend bool 	operator <      (const int       x, const RATIONAL& y);
-
-friend bool 	operator <=     (const RATIONAL& x, const RATIONAL& y);
-friend bool 	operator <=     (const RATIONAL& x, const INTEGER&  y);
-friend bool 	operator <=     (const INTEGER&  x, const RATIONAL&  y);
-friend bool 	operator <=     (const RATIONAL& x, const int       y);
-friend bool 	operator <=     (const int       x, const RATIONAL& y);
-
-friend bool 	operator >      (const RATIONAL& x, const RATIONAL& y);
-friend bool 	operator >      (const RATIONAL& x, const INTEGER&  y);
-friend bool 	operator >      (const INTEGER&  x, const RATIONAL&  y);
-friend bool 	operator >      (const RATIONAL& x, const int       y);
-friend bool 	operator >      (const int       x, const RATIONAL& y);
-
-friend bool 	operator >=     (const RATIONAL& x, const RATIONAL& y);
-friend bool 	operator >=     (const RATIONAL& x, const INTEGER&  y);
-friend bool 	operator >=     (const INTEGER&  x, const RATIONAL&  y);
-friend bool 	operator >=     (const RATIONAL& x, const int       y);
-friend bool 	operator >=     (const int       x, const RATIONAL& y);
-
-friend bool 	operator ==     (const RATIONAL& x, const RATIONAL& y);
-friend bool 	operator ==     (const RATIONAL& x, const INTEGER&  y);
-friend bool 	operator ==     (const INTEGER&  x, const RATIONAL&  y);
-friend bool 	operator ==     (const RATIONAL& x, const int       y);
-friend bool 	operator ==     (const int       x, const RATIONAL& y);
-
-friend bool 	operator !=     (const RATIONAL& x, const RATIONAL& y);
-friend bool 	operator !=     (const RATIONAL& x, const INTEGER&  y);
-friend bool 	operator !=     (const INTEGER&  x, const RATIONAL&  y);
-friend bool 	operator !=     (const RATIONAL& x, const int       y);
-friend bool 	operator !=     (const int       x, const RATIONAL& y);
+friend bool operator< (const RATIONAL& x, const RATIONAL& y);
+friend bool operator<=(const RATIONAL& x, const RATIONAL& y) { return !(y< x); }
+friend bool operator> (const RATIONAL& x, const RATIONAL& y) { return   y< x ; }
+friend bool operator>=(const RATIONAL& x, const RATIONAL& y) { return !(x< y); }
+friend bool operator==(const RATIONAL& x, const RATIONAL& y);
+friend bool operator!=(const RATIONAL& x, const RATIONAL& y) { return !(x==y); }
 
 /****** String conversion ******/
 
 friend std::string    swrite          (const RATIONAL& x);
 friend std::string    swrite          (const RATIONAL& x, const int w);
-
-/****** Private ******/
-private:
-
-MP_rat_type value;
 };
 
 } /* ! namespace iRRAM */

@@ -195,12 +195,14 @@ static inline void rat_gmp_add(const rat_gmp_type z1, const rat_gmp_type z2, rat
 static inline void rat_gmp_sub(const rat_gmp_type z1, const rat_gmp_type z2, rat_gmp_type z){mpq_sub(z,z1,z2);}
 static inline void rat_gmp_mul(const rat_gmp_type z1, const rat_gmp_type z2, rat_gmp_type z){mpq_mul(z,z1,z2);}
 static inline void rat_gmp_div(const rat_gmp_type z1, const rat_gmp_type z2, rat_gmp_type z){mpq_div(z,z1,z2);}
+void rat_gmp_add_si(const rat_gmp_type z1, int z2, rat_gmp_type z);
 void rat_gmp_add_ui(const rat_gmp_type z1, const unsigned int z2, rat_gmp_type z);
 void rat_gmp_sub_ui(const rat_gmp_type z1, const unsigned int z2, rat_gmp_type z);
 void rat_gmp_mul_si(const rat_gmp_type z1, const int z2, rat_gmp_type z);
 void rat_gmp_div_si(const rat_gmp_type z1, const int z2, rat_gmp_type z);
 void rat_gmp_si_div(const int z1, const rat_gmp_type z2, rat_gmp_type z);
 static inline void rat_gmp_abs(const rat_gmp_type z1, rat_gmp_type z){mpq_abs(z,z1);}
+static inline void rat_gmp_neg(const rat_gmp_type z1, rat_gmp_type z){mpq_neg(z,z1);}
 
 
 /********** more MP rational functions *********/
