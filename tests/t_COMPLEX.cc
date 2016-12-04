@@ -7,7 +7,7 @@ using namespace iRRAM;
 
 static bool run_sqrt(COMPLEX z)
 {
-	return imag(sqrt(z)) < 0;
+	return (bool)(imag(sqrt(z)) < 0);
 }
 
 static bool test_sqrt()
@@ -28,7 +28,7 @@ static bool test_sqrt()
 	printf("got lt1: %d\n", lt1);
 
 	/* force increase of precision */
-	bool inc_prec = REAL(1) - (REAL(1) - (REAL(1) >> 1000)) > 0;
+	bool inc_prec = (bool)(REAL(1) - (REAL(1) - (REAL(1) >> 1000)) > 0);
 	assert(inc_prec);
 
 	bool lt4 = run_sqrt(z);

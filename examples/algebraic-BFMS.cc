@@ -126,7 +126,7 @@ ALGEBRAIC sqrt (const ALGEBRAIC& x){
 }
 
 bool  zerotest (const ALGEBRAIC& x){
-  if (x.deg == 0) return abs(x.val) == 0 ;
+  if (x.deg == 0) return (bool)(abs(x.val) == 0);
   switch ( choose (abs(x.val) > 0 , true ) ) {
   case 1: 
 	break;

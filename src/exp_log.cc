@@ -170,7 +170,7 @@ static REAL log_approx(int prec, const REAL & z)
 	return log_agm_approx(prec, z);
 }
 
-static bool log_domain(const REAL & x) { return x > REAL(1); }
+static bool log_domain(const REAL & x) { return (bool)(x > 1); }
 
 REAL log(const REAL & x)
 {

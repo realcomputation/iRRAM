@@ -53,7 +53,7 @@ friend int choose(const LAZY_BOOLEAN& x1,
                   const LAZY_BOOLEAN& x5,
                   const LAZY_BOOLEAN& x6 );
 
-operator bool() const;
+explicit operator bool() const;
 friend int check (const LAZY_BOOLEAN& x);
 
 friend REAL maximum ( const REAL& x, const REAL& y);

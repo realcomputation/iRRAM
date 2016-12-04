@@ -25,7 +25,7 @@ static REAL ln2_approx(int prec)
 		a = scale(c / (a + b), 1);
 		b = sqrt(c);
 		d = a - b;
-		end = bound(d, -2 * N);
+		end = (bool)bound(d, -2 * N);
 	} while (!end);
 	sizetype error;
 	d.getsize(error);
