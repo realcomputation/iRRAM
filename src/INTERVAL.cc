@@ -31,12 +31,18 @@ INTERVAL::INTERVAL() : low(0), upp(0) {}
 INTERVAL::INTERVAL(const REAL& x, const REAL& y)
 : low(minimum(x,y)), upp(maximum(x,y)) {}
 
-INTERVAL operator + (const INTERVAL & x, const INTERVAL & y){
-	return INTERVAL( x.low+y.low, x.upp+y.upp, true);
+INTERVAL & operator += (INTERVAL &x, const INTERVAL &y)
+{
+	x.low += y.low;
+	x.upp += y.upp;
+	return x;
 }
 
-INTERVAL operator - (const INTERVAL  & x, const INTERVAL  & y){
-	return INTERVAL( x.low-y.upp, x.upp-y.low, true);
+INTERVAL & operator -= (INTERVAL &x, const INTERVAL &y)
+{
+	x.low -= y.upp;
+	x.upp -= y.low;
+	return x;
 }
 
 INTERVAL operator - (const INTERVAL  & x){
@@ -85,7 +91,7 @@ INTERVAL operator * (const INTERVAL  & x, const INTERVAL  & y)
 }
 
 INTERVAL operator / (const INTERVAL  & x, const INTERVAL  & y){
-  if ( y.low< REAL(0) && REAL(0) < y.upp ) {
+  if ( y.low < 0 && 0 < y.upp ) {
     throw iRRAM_Numerical_Exception(iRRAM_interval_divide_by_zero);
   }
   return  INTERVAL(1/y.low,1/y.upp)*x;
@@ -113,16 +119,16 @@ return maximum(abs(x.upp),abs(x.low));
 }
 
 REAL mig(const INTERVAL& x){
-return maximum(REAL(0),x.low)-minimum(REAL(0),x.upp);
+return maximum(0,x.low)-minimum(0,x.upp);
 }
 
 INTERVAL fabs(const INTERVAL& x){
-return INTERVAL(maximum(x.low,REAL(0))-minimum(x.upp,REAL(0)),
+return INTERVAL(maximum(x.low,0)-minimum(x.upp,0),
                 maximum(abs(x.low),abs(x.upp)), true);
 }
 
 INTERVAL square(const INTERVAL& x){
-return INTERVAL(x.low*maximum(x.low,REAL(0)) + x.upp*minimum(x.upp,REAL(0)),
+return INTERVAL(x.low*maximum(x.low,0) + x.upp*minimum(x.upp,0),
                 square(maximum(abs(x.low),abs(x.upp))), true);
 }
 

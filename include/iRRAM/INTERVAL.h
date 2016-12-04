@@ -57,13 +57,13 @@ INTERVAL(REAL l, REAL r, bool) : low(std::move(l)), upp(std::move(r)) {}
 
 // Standard Arithmetic: ------------------------
 INTERVAL & operator=(const INTERVAL &x) = default;
-INTERVAL & operator=(INTERVAL &&x) noexcept { low = std::move(x.low); upp = std::move(x.upp); return *this; }
+INTERVAL & operator=(INTERVAL &&x) noexcept = default;
 
-friend INTERVAL  operator +  (const INTERVAL& x, const INTERVAL& y);
-friend INTERVAL& operator += (      INTERVAL& x, const INTERVAL& y) { return x=x+y; }
+friend INTERVAL  operator +  (      INTERVAL  x, const INTERVAL& y) { x += y; return x; }
+friend INTERVAL& operator += (      INTERVAL& x, const INTERVAL& y);
 
-friend INTERVAL  operator -  (const INTERVAL& x, const INTERVAL& y);
-friend INTERVAL& operator -= (      INTERVAL& x, const INTERVAL& y) { return x=x-y; }
+friend INTERVAL  operator -  (      INTERVAL  x, const INTERVAL& y) { x += y; return x; }
+friend INTERVAL& operator -= (      INTERVAL& x, const INTERVAL& y);
 friend INTERVAL  operator -  (const INTERVAL& x);
 
 friend INTERVAL  operator *  (const INTERVAL& x, const INTERVAL& y);
