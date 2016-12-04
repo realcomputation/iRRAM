@@ -1,6 +1,34 @@
-Nov 2016
-  fb:
-    made use/type of thread-local storage configurable via --{en,dis}able-tls=
+2015-2016 fb:
+  * made use/type of thread-local storage configurable via --{en,dis}able-tls=
+  * removed build/ directoy + support out-of-tree builds
+  * sizetype has standard C++ operators +,* and << defined; these round upwards
+  * LAZY_BOOLEAN's operator bool() is explicit now (side-effects more visible),
+    as is INTEGER's operator int() as it's losing information; no more implicit
+    conversion from const char * or std::string to REAL (there will be more
+    representations of REALs soon, then those will be counter-intuitive)
+  * optimized INTERVAL multiplication by lazily comparing endpoints to zero
+  * code deduplication:
+    * consolidated multi-stage limit operators into 2 variants of
+      limit(R (*f)(C...), C...) where C is a parameter-pack of either
+      discontinuous or mixed/continuous types; discrete advice can now be
+      curryed into f
+    * several optimizations regarding copying of temporaries and arithmetical
+      operators
+    * iRRAM_exec is a template taking an arbitrary functional object
+  * multi-thread support:
+    * no explicit dependency on (p)threads anymore -> allow builds on Windows
+    * gather (most of) iRRAM's state into one TLS variable -> tiny speedup
+  * SWITCHES are the preferred means of manipulating iRRAM's state now
+    * introduce 'relaxed' and 'limit_computation'
+    * removed precision_policy(int)
+  * bug fixes:
+    * examples/harmonic.cc: div-by-zero
+    * lipschitz_1p_1a: on_domain parameter order
+    * limit_mv: caching of multi-value choice parameter
+    * RATIONAL: comparison operator declarations
+    * RATIONAL: infinite loop in operator=(int)
+  * code cosmetics: CR LF -> LF; indentation; etc.
+    * hide more internal symbols (more explicitely to come later)
 
 Jan 2013
   Many major changes: 
