@@ -60,6 +60,7 @@ friend REAL arg (const COMPLEX& z);
 void adderror (sizetype error);
 void seterror (sizetype error);
 void geterror (sizetype& error) const;
+sizetype geterror() const { sizetype r; geterror(r); return r; }
 REAL _real,_imag;
 };
 

@@ -3,6 +3,7 @@
 iRRAM_limit_templates.h -- template definitions file for the limit operators of the iRRAM library
  
 Copyright (C) 2005 Norbert Mueller
+Copyright     2016 Franz Brausse
  
 This file is part of the iRRAM Library.
  
@@ -26,6 +27,79 @@ MA 02111-1307, USA.
 
 #include <iRRAM/core.h>
 
+/* Note
+ * ~~~~
+ * There fundamentally are two different variants of limit(), one taking *only*
+ * parameters representing discrete values and one for the mixed/only-continuous
+ * case. Continuity of a type is determined through specializations of the type
+ * trait
+ *
+ *     template <typename T> struct is_continuous;
+ *
+ * providing a static `bool value` as defined in <iRRAM/lib.h>.
+ *
+ * Which one is called when invoking `limit(f,args...)` is not determined by the
+ * actual parameter types of f but by the types of args...
+ * This is deliberate and consistent with how iRRAM works - i.e. allowing
+ * implicit conversions from the types of smaller domain to those with larger
+ * domain. Usually there is no need to explicitely specify the template types.
+ *
+ * Example:
+ *
+ *     REAL f(int prec, const REAL &x);
+ *     REAL y = limit(f, 42)
+ *
+ * will *not* invoke the continuous variant since a REAL will be constructed
+ * from the given int using REAL's implicit converting constructor while limit()
+ * is being executed. That REAL's precision therefore is controlled by limit()
+ * and being adjusted as to f's and limit's requirements to yield a precise
+ * enough result.
+ *
+ * This behaviour is desirable as the non-continuous parameter version of
+ * limit() is more efficient.
+ *
+ * Regarding the same example but calling
+ *
+ *     REAL x = 42; // or a complicated computation
+ *     REAL y = limit(f, x);
+ *
+ * explains the necessity for the second version. It will use the continuous
+ * version as the precision of the result of f(p,x) typically will depend on the
+ * precision of x and not just on p. Therefore the continuous variant of limit()
+ * provisions for reiterations outside of the limit() call to enable increased
+ * precision of x itself.
+ *
+ * For a continuous parameter pack T (as determined by `any_continuous<T...>`) a
+ * function
+ *
+ *     int geterror_exp(const T &...)
+ *
+ * needs to be provided which defaults to returning the maximum error exponent
+ * as determined by
+ *
+ *     int geterror_exp(const Ti &t)
+ *
+ * the default implementation of which is
+ *
+ *     return geterror(t).exponent;
+ *
+ * but may be specialized according to the type's characteristics. In the future
+ * it is possible that the continuous variant of limit() will use more
+ * fine-grained error information than just the exponent, so it may be helpful
+ * to additionally provide
+ *
+ *     sizetype geterror(const Ti &)
+ *
+ * for all continuous types Ti used as limit() parameters. Additionally,
+ * declarations of
+ *
+ *     void     seterror(R &, sizetype)
+ *     sizetype geterror(const R &)
+ *
+ * for result type R must be provided for both of the limit() variants. For
+ * iRRAM's types REAL, *REALMATRIX and COMPLEX implementations are available.
+ */
+
 namespace iRRAM {
 
 inline void limit_debug(const char* c){
@@ -47,142 +121,167 @@ inline void limit_debug2(const char* c){
       }
 }
 
-template <class ARGUMENT, class RESULT>
-RESULT limit (RESULT f(int prec,const ARGUMENT&),
-                           const ARGUMENT& x)
+template <typename C,typename... ContArgs>
+int      geterror_exp(const C &, const ContArgs &...);
 
+template <typename S>
+int geterror_exp(const S &x)
 {
-  limit_computation env;
-
-  RESULT lim,limnew;
-  sizetype limnew_error,element_error;
-  sizetype lim_error,x_error;
-
-  int element=env.saved_prec();
-  int element_step=env.saved_step();
-  int firsttime=2;
-
-  x.geterror(x_error);
-
-  limit_debug("starting limit_gen1");
-
-  while (1) {
-    try {
-    iRRAM_DEBUG2(2,"trying to compute limit_gen1 with precicion 2^(%d)...\n",element);
-    limnew=f(element,x);
-    element_error = sizetype_power2(element);
-    limnew.geterror(limnew_error);
-    limnew_error += element_error;
-    if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
-    	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)) {
-    iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
-                  << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
-                  <<"), trying normal p-sequence\n";});
-       element_step=1;
-       element=4+iRRAM_prec_array[element_step];
-       firsttime=1;
-    }
-    if ( firsttime != 0 || sizetype_less(limnew_error,lim_error) ) {
-      lim=limnew;
-      lim_error=limnew_error;
-      iRRAM_DEBUG2(2,"getting result with error %d*2^(%d)\n",
-               lim_error.mantissa, lim_error.exponent);
-      } else {
-      iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
-      }
-    firsttime=0;
-    if (element<=env.saved_prec())break;
-    element_step+=4;
-    element=iRRAM_prec_array[element_step];
-    }
-    catch ( Iteration it) {
-      if ( firsttime==0) {
-      iRRAM_DEBUG1(2,"computation failed, using best success\n");
-      break;
-      } else
-      if ( firsttime==2) {
-      iRRAM_DEBUG1(2,"computation failed, trying normal p-sequence\n");
-      element_step=1;
-      element=4+iRRAM_prec_array[element_step];
-      firsttime=1;
-      } else {
-      iRRAM_DEBUG1(1,"computation of limit_gen1 failed totally\n");
-      REITERATE(0);
-      }}
-  }
-  lim.seterror(lim_error);
-  iRRAM_DEBUG0(2,{cerr<<"end of limit_gen1 with error "
-                << lim_error.mantissa <<"*2^("<< lim_error.exponent<<")\n";});
-  return lim;
+	return geterror(x).exponent;
 }
 
-template <class ARGUMENT, class DISCRETE, class RESULT>
-RESULT limit (RESULT f(int prec,const ARGUMENT&,DISCRETE param),
-                           const ARGUMENT& x,DISCRETE param)
-
+template <typename S,typename T,typename... ContArgs>
+typename std::enable_if<is_continuous<S>::value &&
+                        any_continuous<T,ContArgs...>::value,int>::type
+geterror_exp(const S &x, const T &y, const ContArgs &... z)
 {
-  limit_computation env;
+	return max(geterror_exp(x), geterror_exp(y, z...));
+}
 
-  RESULT lim,limnew;
-  sizetype limnew_error,element_error;
-  sizetype lim_error,x_error;
+template <typename S,typename T,typename... ContArgs>
+typename std::enable_if<is_continuous<S>::value &&
+                        !any_continuous<T,ContArgs...>::value,int>::type
+geterror_exp(const S &x, const T &, const ContArgs &...)
+{
+	return geterror_exp(x);
+}
 
-  int element=env.saved_prec();
-  int element_step=env.saved_step();
-  int firsttime=2;
+template <typename S,typename T,typename... ContArgs>
+typename std::enable_if<!is_continuous<S>::value,int>::type
+geterror_exp(const S &, const T &y, const ContArgs &... z)
+{
+	static_assert(any_continuous<T,ContArgs...>::value,
+	              "geterror_exp() is only applicable to continuous types");
+	return geterror_exp(y, z...);
+}
 
-  x.geterror(x_error);
+inline sizetype geterror(const REAL &r) { return r.geterror(); }
+inline void     seterror(REAL &r, const sizetype &err) { r.seterror(err); }
 
-  limit_debug("starting limit_gen1");
+inline sizetype geterror(const COMPLEX &r) { return r.geterror(); }
+inline void     seterror(COMPLEX &r, const sizetype &err) { r.seterror(err); }
 
-  while (1) {
-   try {
-    iRRAM_DEBUG2(2,"trying to compute limit_gen1 with precicion 2^(%d)...\n",element);
-    limnew=f(element,x,param);
-    element_error = sizetype_power2(element);
-    limnew.geterror(limnew_error);
-    limnew_error += element_error;
-    if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
-    	&&  limnew_error.exponent > x_error.exponent -env.saved_prec(-1)) {
-    iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
-                  << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
-                  <<"), trying normal p-sequence\n";});
-       element_step=1;
-       element=4+iRRAM_prec_array[element_step];
-       firsttime=1;
-    }
-    if ( firsttime  != 0 || sizetype_less(limnew_error,lim_error) ) {
-      lim=limnew;
-      lim_error=limnew_error;
-      iRRAM_DEBUG2(2,"getting result with error %d*2^(%d)\n",
-               lim_error.mantissa, lim_error.exponent);
-      } else {
-      iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
-      }
-    firsttime=0;
-    if (element<=env.saved_prec())break;
-    element_step+=4;
-    element=iRRAM_prec_array[element_step];
-    }
-    catch ( Iteration it) {
-      if ( firsttime==0) {
-      iRRAM_DEBUG1(2,"computation failed, using best success\n");
-      break;
-      } else
-      if ( firsttime==2) {
-      iRRAM_DEBUG1(2,"computation failed, trying normal p-sequence\n");
-      element_step=1;
-      element=4+iRRAM_prec_array[element_step];
-      firsttime=1;
-      } else {
-      iRRAM_DEBUG1(1,"computation of limit_gen1 failed totally\n");
-      REITERATE(0);
-      }}
-  }
-  lim.seterror(lim_error);
-  iRRAM_DEBUG0(2,{fprintf(stderr,"end of limit_gen1 with error %d*2^(%d)\n",
-                   lim_error.mantissa,lim_error.exponent);});
-  return lim;
+inline sizetype geterror(const REALMATRIX &r) { return r.geterror(); }
+inline void     seterror(REALMATRIX &r, const sizetype &err) { r.seterror(err); }
+
+inline sizetype geterror(const SPARSEREALMATRIX &r) { return r.geterror(); }
+inline void     seterror(SPARSEREALMATRIX &r, const sizetype &err) { r.seterror(err); }
+
+/* F must be the signature
+ *    Result (int prec, const C &, const ContArgs &...)
+ * Requires for Result and ContArgs functions
+ *  - int geterror_exp(const C &, const ContArgs &...)
+ *    (usually it's enough to specialize the single-argument versions of
+ *     geterror_exp(const C &) and geterror_exp(const ContArgs &)... or to
+ *     overload geterror(const C &) and geterror(const ContArgs &)...;
+ *     then the maximum-norm is used on the vector of all continuous parameters)
+ *  - sizetype geterror(const Result &)
+ *  - void seterror(Result &, const sizetype &)
+ */
+template <typename F,typename... ContArgs>
+auto limit(F f, const ContArgs &... cont_args)
+-> typename std::enable_if<any_continuous<ContArgs...>::value,
+                           decltype(f(0,cont_args...))>::type
+{
+	using Result = decltype(f(0,cont_args...));
+
+	limit_computation env;
+
+	Result lim, limnew;
+	sizetype limnew_error, lim_error;
+	int args_error_exp;
+
+	int element      = env.saved_prec();
+	int element_step = env.saved_step();
+	int firsttime    = 2;
+
+	args_error_exp = geterror_exp(cont_args...);
+
+	limit_debug("starting general limit_gen1");
+
+	while (1) {
+		try {
+			iRRAM_DEBUG2(2,"trying to compute general limit_gen1 "
+			               "with precicion 2^(%d)...\n", element);
+			limnew = f(element,cont_args...);
+			limnew_error = sizetype_add_power2(geterror(limnew), element);
+			if (firsttime == 2)
+				if (limnew_error.exponent > env.saved_prec(-1)
+				    && limnew_error.exponent > args_error_exp - env.saved_prec(-1)) {
+					iRRAM_DEBUG2(2,"computation not precise enough (%d*2^%d), "
+						"trying normal p-sequence\n",
+						limnew_error.mantissa,
+						limnew_error.exponent);
+					element_step = 1;
+					element = 4+iRRAM_prec_array[element_step];
+					firsttime = 1;
+				}
+			if (firsttime != 0 ||
+			    sizetype_less(limnew_error,lim_error)) {
+				lim = limnew;
+				lim_error = limnew_error;
+				iRRAM_DEBUG2(2,"getting result with error %d*2^(%d)\n",
+				               lim_error.mantissa, lim_error.exponent);
+			} else {
+				iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
+			}
+			firsttime = 0;
+			if (element <= env.saved_prec())
+				break;
+			element_step += 4;
+			element = iRRAM_prec_array[element_step];
+		} catch (const Iteration &it) {
+			if (firsttime == 0) {
+				iRRAM_DEBUG1(2,"computation failed, using best success\n");
+				break;
+			} else if (firsttime == 2) {
+				iRRAM_DEBUG1(2,"computation failed, trying normal p-sequence\n");
+				element_step = 1;
+				element = 4+iRRAM_prec_array[element_step];
+				firsttime = 1;
+			} else {
+				iRRAM_DEBUG1(1,"computation of general limit_gen1 failed totally\n");
+				REITERATE(0);
+			}
+		}
+	}
+	seterror(lim, lim_error);
+	iRRAM_DEBUG2(2,"end of general limit_gen1 with error %d*2^(%d)\n",
+	             lim_error.mantissa, lim_error.exponent);
+	return lim;
+}
+
+template <typename F,typename... DiscArgs>
+auto limit(F f, const DiscArgs &... disc_args)
+-> typename std::enable_if<!any_continuous<DiscArgs...>::value,
+                           decltype(f(0,disc_args...))>::type
+{
+	using Result = decltype(f(0,disc_args...));
+
+	limit_computation env;
+
+	Result lim;
+	sizetype lim_error;
+
+	limit_debug("starting general limit_0");
+
+	while (1) {
+		try {
+			iRRAM_DEBUG2(2,"trying to compute general limit_0 with precision %d...\n",state.ACTUAL_STACK.actual_prec);
+			lim = f(env.saved_prec(), disc_args...);
+			lim_error = geterror(lim);
+			iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n", lim_error.mantissa, lim_error.exponent);
+			break;
+		} catch (const Iteration &it) {
+			env.inc_step(2);
+			limit_debug2("general limit_0 failed");
+		}
+	}
+	lim_error = sizetype_add_power2(lim_error, env.saved_prec());
+	seterror(lim, lim_error);
+	iRRAM_DEBUG2(2,"end of limit_0 with error %d*2^(%d)\n",
+	               lim_error.mantissa,lim_error.exponent);
+	return lim;
 }
 
 template <class ARGUMENT, class RESULT>

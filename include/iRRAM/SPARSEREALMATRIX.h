@@ -127,6 +127,7 @@ unsigned int    maxrow,maxcolumn,filled;
 void adderror (sizetype error);
 void seterror (sizetype error);
 void geterror (sizetype& error) const;
+sizetype geterror() const { sizetype r; geterror(r); return r; }
 };
 
 } // namespace iRRAM

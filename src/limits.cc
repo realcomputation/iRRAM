@@ -35,94 +35,6 @@ Changelog: (initial version by Norbert)
 
 namespace iRRAM {
 
-REAL limit         (REAL f(int, const REAL&, const REAL&),
-                           const REAL& x,
-                           const REAL& y)
-{
-  limit_computation env;
-
-  REAL lim,limnew;
-  sizetype limnew_error, lim_error;
-
-  int element=env.saved_prec();
-  int element_step=env.saved_step();
-  int firsttime=2;
-
-  int xy_error_exp = max(x.geterror().exponent, y.geterror().exponent);
-
-  limit_debug("starting limit_gen2");
-
-  while (1) {
-   try {
-    iRRAM_DEBUG2(2,"trying to compute limit_gen2 with precision %d...\n",element);
-    limnew=f(element,x,y);
-    limnew_error = sizetype_add_power2(limnew.geterror(), element);
-    if (firsttime ==2 ) if ( limnew_error.exponent > env.saved_prec(-1)
-    	&&  limnew_error.exponent > xy_error_exp -env.saved_prec(-1)) {
-    iRRAM_DEBUG2(2,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
-                   limnew_error.mantissa,limnew_error.exponent);
-       element_step=1;
-       element=4+iRRAM_prec_array[element_step];
-       firsttime=1;
-    }
-    if ( firsttime != 0 || sizetype_less(limnew_error,lim_error) ){
-      lim=limnew;
-      lim_error=limnew_error;
-      iRRAM_DEBUG2(2,"getting result with error %d*2^(%d)\n",
-                   lim_error.mantissa,lim_error.exponent);
-      } else {
-      iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
-      }
-    firsttime=0;
-    if (element<=env.saved_prec())break;
-    element_step+=4;
-    element=iRRAM_prec_array[element_step];
-    }
-    catch ( Iteration it)  {
-      if ( firsttime==0) {
-      iRRAM_DEBUG1(2,"computation failed, using best success\n");
-      break;
-      } else
-      if ( firsttime==2) {
-      iRRAM_DEBUG1(2,"computation failed, trying normal p-sequence\n");
-      element_step=1;
-      element=4+iRRAM_prec_array[element_step];
-      firsttime=1;
-      } else {
-      iRRAM_DEBUG1(1,"computation of limit_gen1 failed totally\n");
-      REITERATE(0);
-      }}
-  }
-  lim.seterror(lim_error);
-  iRRAM_DEBUG2(2,"end of limit_gen2 with error %d*2^(%d)\n",
-                 lim_error.mantissa,lim_error.exponent);
-  return lim;
-}
-
-
-REAL limit (REAL f(int))
-{
-  limit_computation env;
-
-  REAL lim;
-
-  limit_debug("starting limit_0");
-
-  while (1) {
-   try {
-    iRRAM_DEBUG2(2,"trying to compute limit_0 with precision %d...\n",state.ACTUAL_STACK.actual_prec);
-    lim=f(env.saved_prec());
-    iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n", lim.error.mantissa, lim.error.exponent);
-    break;
-  } catch (const Iteration &it) {
-      env.inc_step(2);
-      limit_debug2("limit_0 failed");
-   }}
-  lim.adderror(sizetype_power2(env.saved_prec()));
-  iRRAM_DEBUG2(2,"end of limit_0 with error %d*2^(%d)\n",
-                 lim.error.mantissa,lim.error.exponent);
-  return lim;
-}
 
 REAL limit_lip (REAL f(int,const REAL&),
             int lip_value,
@@ -811,19 +723,18 @@ template COMPLEX limit_mv<COMPLEX,COMPLEX>
 template REALMATRIX limit_mv<REALMATRIX,REALMATRIX>
     (REALMATRIX (*)(int, int *, REALMATRIX const &), REALMATRIX const &);
 
-// Instantiation of templates for single-valued limits, one parameter:
+// Instantiation of templates for single-valued limits:
 
-template REALMATRIX limit <REALMATRIX,REALMATRIX>
-    (REALMATRIX (*)(int, REALMATRIX const &), REALMATRIX const &);
+template REAL limit(REAL (*)(int, REAL const &), REAL const &);
 
-template REAL limit <REAL,REAL>
-    (REAL (*)(int, REAL const &), REAL const &);
+template REAL limit(REAL (*)(int, const REAL &, const REAL &), const REAL &, const REAL &);
 
-template COMPLEX limit <COMPLEX,COMPLEX>
-    (COMPLEX (*)(int, COMPLEX const &), COMPLEX const &);
+template COMPLEX limit(COMPLEX (*)(int, const COMPLEX &), COMPLEX const &);
 
-// Instantiation of templates for single-valued limits, one parameter + int:
-template REAL limit <REAL,int,REAL>
-    (REAL (*)(int, REAL const &, int param), REAL const &,int param);
+template REALMATRIX limit(REALMATRIX (*)(int, const REALMATRIX &), const REALMATRIX &);
+
+template REAL       limit(REAL (*f)(int));
+
+template REAL       limit(REAL (*)(int, const REAL &, int), const REAL &, const int &);
 
 } // namespace iRRAM

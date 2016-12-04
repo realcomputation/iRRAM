@@ -171,6 +171,45 @@ struct conditional_comparison_overloads {
 	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator!=(const B &b, const A &a) { return Base(b)!=a; }
 };
 
+template <typename...> struct disjunction : public std::false_type {};
+
+template <typename C,typename... D> struct disjunction<C,D...> {
+	static constexpr bool value = C::value || disjunction<D...>::value;
+};
+
+template <typename T> struct negation {
+	static constexpr bool value = !T::value;
+};
+
+template <typename... T>
+using conjunction = negation<disjunction<negation<T>...>>;
+
+template <typename C> struct is_continuous : public std::false_type {};
+template <typename C> struct is_continuous<C &> {
+	static constexpr bool value = is_continuous<C>::value;
+};
+template <typename C> struct is_continuous<const C &> {
+	static constexpr bool value = is_continuous<C>::value;
+};
+template <typename C> struct is_continuous<C &&> {
+	static constexpr bool value = is_continuous<C>::value;
+};
+
+class REAL;
+class REALMATRIX;
+class SPARSEREALMATRIX;
+class COMPLEX;
+class INTERVAL;
+template <typename R,typename... Args> class FUNCTION;
+template <> struct is_continuous<REAL> : public std::true_type {};
+template <> struct is_continuous<REALMATRIX> : public std::true_type {};
+template <> struct is_continuous<SPARSEREALMATRIX> : public std::true_type {};
+template <> struct is_continuous<COMPLEX> : public std::true_type {};
+template <> struct is_continuous<INTERVAL> : public std::true_type {};
+template <typename... Args> struct is_continuous<FUNCTION<REAL,Args...>> : public std::true_type {};
+
+template <typename... T> using any_continuous = disjunction<is_continuous<T>...>;
+
 } // namespace iRRAM
 
 #include <iRRAM/LAZYBOOLEAN.h>
@@ -298,14 +337,37 @@ template <class ARGUMENT, class RESULT>
 RESULT limit_mv          (RESULT f(int prec, int * choice, const ARGUMENT &),
                           const ARGUMENT & x);
 
-template <class ARGUMENT, class RESULT>
-RESULT limit             (RESULT f(int prec, const ARGUMENT &),
-                          const ARGUMENT & x);
+template <typename F,typename... ContArgs>
+auto limit(F f, const ContArgs &... cont_args)
+-> typename std::enable_if<any_continuous<ContArgs...>::value,
+                           decltype(f(0,cont_args...))>::type;
 
-template <class ARGUMENT, class DISCRETE, class RESULT>
-RESULT limit             (RESULT f(int prec, const ARGUMENT &, DISCRETE),
-                          const ARGUMENT & x,
-                          DISCRETE param);
+template <typename F,typename... DiscArgs>
+auto limit(F f, const DiscArgs &... disc_args)
+-> typename std::enable_if<!any_continuous<DiscArgs...>::value,
+                           decltype(f(0,disc_args...))>::type;
+
+extern template REAL       limit(REAL (*f)(int));
+
+//********************************************************************************
+// general limit operator for FUNCTION objects on REAL numbers
+//
+// REAL limit ( FUNCTION<REAL,int> f )
+// if FUNCTION f defines a normed Cauchy sequence, i.e. |f(i)-x|<= 2^{i}
+// then limit(f) returns x
+//********************************************************************************
+REAL       limit(FUNCTION<REAL,int> f);
+
+extern template REAL       limit(REAL (*f)(int,const REAL &),
+                                 const REAL &);
+extern template REAL       limit(REAL (*f)(int,const REAL &,const REAL &),
+                                 const REAL &, const REAL &);
+extern template REAL       limit(REAL (*)(int, const REAL &, int),
+                                 const REAL &, const int &);
+extern template COMPLEX    limit(COMPLEX (*)(int, COMPLEX const &),
+                                 const COMPLEX &);
+extern template REALMATRIX limit(REALMATRIX (*)(int, REALMATRIX const &),
+                                 const REALMATRIX &);
 
 } // namespace iRRAM
 

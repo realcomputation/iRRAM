@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <iRRAM/core.h>
+#include <iRRAM/lib.h>
 
 #if iRRAM_BACKEND_MPFR
 # include "MPFR/MPFR_ext.h"

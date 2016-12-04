@@ -211,15 +211,6 @@ public:
 
 // limit operators: ------------------------
 
-//friend REAL limit     (REAL f(int, const REAL&),
-//                       const REAL& x);
-
-friend REAL limit     (REAL f(int, const REAL&, const REAL&),
-                       const REAL& x,
-                       const REAL& y);
-
-friend REAL limit     (REAL f(int));
-
 friend REAL limit_hint(REAL f(int, const REAL&),
                        int hint,
                        const REAL& x);
