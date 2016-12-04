@@ -32,7 +32,7 @@ REAL root(const REAL & x, int n) { return limit(root_approx, x, n); }
 #ifdef OLDSQRT
 #ifdef MP_mv_sqrt
 
-REAL MP_sqrt_approx(int prec, const REAL & x)
+static REAL MP_sqrt_approx(int prec, const REAL & x)
 {
 	DYADIC xd = approx(x, prec - 1);
 	MP_mv_sqrt(xd.value, xd.value, prec - 1);
@@ -42,7 +42,7 @@ REAL MP_sqrt_approx(int prec, const REAL & x)
 
 #else
 
-REAL gen_sqrt_approx(int k, const REAL & x)
+static REAL gen_sqrt_approx(int k, const REAL & x)
 {
 	REAL a = 1, b = x / a;
 	do {
@@ -55,7 +55,7 @@ REAL gen_sqrt_approx(int k, const REAL & x)
 
 #endif
 
-REAL sqrt_approx(int prec, const REAL & x)
+static REAL sqrt_approx(int prec, const REAL & x)
 {
 	if (bound(x, 2 * prec))
 		return 0;
@@ -105,7 +105,7 @@ REAL sqrt(const REAL & x)
 
 #else
 
-REAL gen_sqrt_approx(int k, const REAL & x)
+static REAL gen_sqrt_approx(int k, const REAL & x)
 {
 	REAL a = 1, b = x / a;
 	do {
@@ -116,7 +116,7 @@ REAL gen_sqrt_approx(int k, const REAL & x)
 }
 #define SQRT_APPROX gen_sqrt_approx
 
-REAL sqrt_approx(int prec, const REAL & x)
+static REAL sqrt_approx(int prec, const REAL & x)
 {
 	if (bound(x, 2 * prec))
 		return 0;
