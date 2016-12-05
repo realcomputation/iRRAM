@@ -27,7 +27,38 @@ MA 02111-1307, USA.
 
 #include <iRRAM/core.h>
 
-/* Note
+/* Limit operations
+ * ~~~~~~~~~~~~~~~~
+ * These functions compute the mathematical limit y of sequences f_p of
+ * continuous objects, optionally depending on discrete or continuous arguments
+ * x satisfying
+ *
+ *     forall integers p : |f_p(x)-y| < 2**p
+ *
+ * in the iRRAM limit for x, f_p and y. In the first case, x is discrete and
+ * therefore exact, the errors introduced stem from imprecision of the
+ * computation f_p itself, which is unbounded. Since f_p is executed within
+ * iRRAM, its mathematical operations are exact within 2**q, where q is the
+ * current working precision, however the objects operated upon are imprecise
+ * intervals and therefore f_p introduces additional errors. To reduce their
+ * effect, the current working precision q is successively increased, starting
+ * at the initial P when limit was invoked (env.saved_prec()), whenever f_q
+ * could not be computed. If at some point the computation f_q succeeds, it
+ * has computed y up to 2**q < 2**p. The error 2**p is added to y's error to
+ * ensure correctness.
+ *
+ * If x is not exact, |f_p(x)-y| generally is larger than 2**p. This additional
+ * error cannot get arbitrarily small when increasing p, therefore a different
+ * scheme is employed: when computing f_P(x) failed and also f_{p_0}(x) failed
+ * (where p_0 is the lowest precision available in iRRAM), the limit cannot be
+ * computed with the current precision of x and therefore a reiteration is done.
+ * If f_P(x) succeeded but the resulting error + 2**P is larger than 2**P[-1]
+ * and is larger than x's error - 2**P[-1], and p is set to p_0 for the
+ * potential next iteration. If y's error already is smaller than 2**P, the
+ * iteration succeeded. Otherwise the result is deemed too imprecise and the
+ * computation is repeated with p increased by 4 precision steps.
+ *
+ * Note
  * ~~~~
  * There fundamentally are two different variants of limit(), one taking *only*
  * parameters representing discrete values and one for the mixed/only-continuous
