@@ -26,14 +26,19 @@ MA 02111-1307, USA.
 #include <cstdarg>
 #include <cstring>
 
-#include <iRRAM/core.h>
+#include <iRRAM/REAL.h>
+#include <iRRAM/sizetype.hh>
+#include <iRRAM/cache.h>
+#include <iRRAM/SWITCHES.h>
+#include <iRRAM/DYADIC.h>
+#include <iRRAM/INTEGER.h>
+#include <iRRAM/RATIONAL.h>
 
 #if iRRAM_BACKEND_MPFR
 # include "MPFR/MPFR_ext.h"
 #else
 # error "Currently no further backends defined!"
 #endif
-
 
 namespace iRRAM {
 
@@ -470,8 +475,6 @@ void rwritee(const REAL & x, const int w) { cout << swrite(x, w, float_form::rel
 void rshow(const REAL & x, const int w)   { cout << swrite(x, w, float_form::show); }
 
 
-void precision_policy(int policy) noexcept { state.ACTUAL_STACK.prec_policy = policy; }
-
 REAL REAL::mp_square() const
 {
 	MP_type zvalue;
@@ -881,6 +884,226 @@ REAL::REAL(const INTEGER & y)
 	MP_INTEGER_to_mp(y.value, value);
 	sizetype_exact(error);
 	MP_getsize(value, vsize);
+}
+
+REAL strtoREAL(const char* s, char** endptr){
+  stiff code;
+  int exp=0;
+  int sign=1;
+  REAL y;
+  REAL ten=10;
+  *endptr=const_cast<char*> (s);
+
+  while ( **endptr == '0' ) *endptr+=1;
+
+  if ( **endptr == '-' ) {sign=-1;*endptr+=1;}
+  else if ( **endptr == '+' ) {sign=1;*endptr+=1;}
+
+  while ( **endptr >= '0' &&  **endptr <= '9' ) {
+  y=ten*y + REAL(sign*(**endptr-'0')); *endptr+=1;}
+
+  if ( **endptr == '.' ) *endptr+=1;
+
+  while ( **endptr >= '0' &&  **endptr <= '9' ) {
+  y=ten*y + REAL(sign*(**endptr-'0')); exp-=1;*endptr+=1;}
+
+  if ( **endptr == 'E' || **endptr == 'e'  ) {
+  *endptr+=1;exp+=strtol(*endptr,endptr,10); }
+
+  if (exp !=0) y*=power(ten,exp);
+
+  return y;
+}
+
+REAL atoREAL(const char* s){
+  char*dummy;
+  return strtoREAL(s,&dummy);
+}
+
+
+REAL modulo (const REAL& x, const REAL& y){
+   return x-round2(x/y)*y;
+}
+
+REAL power(const REAL& x, const REAL& y) {
+  return exp(log(x)*y);
+}
+
+
+REAL power(const REAL& x, int n) {
+   if (n==0) return 1;
+   if (n==1) return x;
+   if (n==2) return square(x);
+//   stiff_begin();
+   REAL y=1;
+   REAL xc=x;
+   if (n<0) {xc=y/x;n=-n;}
+   if (n==1) {
+//     stiff_end();
+     return xc;
+   }
+   for (int k=n;k>0;k=k/2) { 
+     if (k%2==1) y*=xc;
+     if ( k ==1) break;
+     xc=square(xc);}
+//   stiff_end();
+   return y; 
+}
+
+// maximum without using of internal representation of LAZY_BOOLEAN
+// REAL maximum (const REAL& x, const REAL& y){
+//    single_valued code;
+//    LAZY_BOOLEAN larger = ( x > y );
+//    switch ( choose ( larger, !larger, TRUE ) ){
+//    case 1: return x;
+//    case 2: return y;
+//    case 3: return (x+y+abs(x-y))/2;
+//    }
+// };
+
+// maximum, using of internal representation of LAZY_BOOLEAN
+REAL maximum (const REAL& x, const REAL& y){
+   LAZY_BOOLEAN larger;
+   {
+     single_valued code;
+     larger = ( x > y );
+   }
+   if ( larger.value == true  ) return x;
+   if ( larger.value == false ) return y;
+   return (x+y+abs(x-y))/2;
+}
+
+// minimum, using of internal representation of LAZY_BOOLEAN
+REAL minimum (const REAL& x, const REAL& y){
+   LAZY_BOOLEAN larger;
+   {
+     single_valued code;
+     larger = ( x > y );
+   }
+   if ( larger.value  == true  ) return y;
+   if ( larger.value  == false ) return x;
+   return (x+y-abs(x-y))/2;
+}
+
+//********************************************************************************
+// Absolute value of vector in Euclidean space
+//********************************************************************************
+
+REAL abs(const std::vector<REAL>& x)
+{
+	unsigned int n=x.size();
+	REAL sqrsum=0;
+	for (unsigned i=0;i<n;i++) {
+		sqrsum += square(x[i]);
+	}
+	return sqrt(sqrsum);
+}
+
+// Conversions from REAL to DYADIC with absolute precision
+DYADIC REAL::as_DYADIC(const int p) const { return approx(*this, p); }
+
+DYADIC REAL::as_DYADIC() const { return approx(*this, DYADIC::getprec()); }
+
+// Conversion from REAL to double with a relative precision of p bits
+double REAL::as_double(const int p) const
+{
+	if (bound(*this, -1150))
+		return 0.0;
+	int s = size(*this);
+	DYADIC d = approx(*this, s - p - 2);
+	return MP_mp_to_double(d.value);
+}
+
+/*****************************************/
+// module function (will be a template later...)
+
+int module(REAL f(const REAL&),const REAL& x, int p){
+// Semantics: If m=module(f,x,p), then
+//    |x-z| <=2^m implies  |f(x)-f(z)| <= 2^p 
+
+// If we are able to approximate f(x) by a DYADIC number d with an error of <=2^{p-1},
+// then for any z in the argument interval of x, f(z) must differ by at most 
+//  2^{p-1} from d, hence |f(x)-f(z)|<=2^p
+
+  int result;
+  if ( (state.ACTUAL_STACK.inlimit==0) && state.thread_data_address->cache_i.get(result)) return result;
+
+  DYADIC d;
+  REAL x_copy=x;
+
+  
+  sizetype argerror,testerror;
+  
+  x_copy.geterror(argerror);
+  testerror = sizetype_power2(argerror.exponent);
+  x_copy.adderror(testerror);
+  {
+    single_valued code;
+    d=approx(f(x_copy),p-1); 
+  }
+// At this line, we are sure that x_copy (and so also x) is precise enough to allow 
+// the computation of f(x), even with a slightly increased error of the argument.
+
+// We now try to find the smallest p_arg such that the evaluation of f(x+- 2^p_arg) 
+// is possible up to an error of at most  2^{p-1}
+
+// To do this, we start with p_arg=p.
+// If this is successfull, we increase the value of p_arg until the first failure
+// It it is not, then we decrease until the first success...
+  int direction=0,p_arg=p;
+  bool try_it=true;
+
+  while (try_it) {
+    testerror = sizetype_power2(p_arg);
+    x_copy.seterror(argerror);
+    x_copy.adderror(testerror);
+    bool fail = false;
+  if ( iRRAM_unlikely(state.debug > 0 ) ) {
+   sizetype x_error;
+   x_copy.geterror(x_error);
+  iRRAM_DEBUG2(1,"Testing module: 1*2^%d + %d*2^%d\n",p_arg,argerror.mantissa,argerror.exponent);
+  iRRAM_DEBUG2(1,"argument error: %d*2^%d\n",x_error.mantissa,x_error.exponent);
+  }
+  try { 
+      single_valued code;
+      REAL z=f(x_copy);
+      if ( iRRAM_unlikely(state.debug > 0 ) ) {
+        sizetype z_error;
+        z.geterror(z_error);
+        iRRAM_DEBUG2(1,"Module yields result %d*2^%d\n",z_error.mantissa,z_error.exponent);
+      }
+      d=approx(z,p-1); 
+	}
+    catch ( Iteration it)  { fail=true; }
+    switch ( direction ) {
+      case 0:;
+        if ( fail ) direction=-1; else direction=1;
+	p_arg+=direction;
+      break;
+      case 1:;
+        if ( fail ) { try_it=false; p_arg -=direction; }
+	else { p_arg += direction; };
+      break;
+      case -1:;
+        if ( fail ) { p_arg +=direction; }
+	else { try_it=false; };
+      break;    
+    }
+    }
+  iRRAM_DEBUG2(1,"Modules resulting in p_arg=%d\n",p_arg);
+  
+  testerror = sizetype_power2(p_arg);
+  argerror += testerror;
+
+  while (argerror.mantissa>1) {
+    argerror.mantissa=argerror.mantissa>>1;
+    argerror.exponent+=1;
+  }
+  
+  result=argerror.exponent;
+  if ( state.ACTUAL_STACK.inlimit==0 ) state.thread_data_address->cache_i.put(result);
+  return result;
+
 }
 
 } // namespace iRRAM

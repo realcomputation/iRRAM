@@ -28,9 +28,9 @@ MA 02111-1307, USA.
 #ifndef iRRAM_LAZYBOOLEAN_H
 #define iRRAM_LAZYBOOLEAN_H
 
-namespace iRRAM {
+#include <iRRAM/core.h>
 
-class INTERVAL;
+namespace iRRAM {
 
 /*! \ingroup types */
 class LAZY_BOOLEAN

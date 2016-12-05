@@ -32,6 +32,8 @@ MA 02111-1307, USA.
 #ifndef iRRAM_INTERVAL_H
 #define iRRAM_INTERVAL_H
 
+#include <iRRAM/REAL.h>
+
 namespace iRRAM {
 
 /*! \ingroup types */

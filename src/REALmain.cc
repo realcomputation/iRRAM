@@ -26,7 +26,7 @@ MA 02111-1307, USA.
 #include <cstdlib>
 #include <cstdarg>
 #include <cstring>
-
+#include <vector>
 
 #include <iRRAM/core.h>
 

@@ -31,7 +31,11 @@ Changelog: (initial version by Norbert)
              moving from longjump to exception as iteration mechanism
 
 */
+
 #include <iRRAM/limit_templates.h>
+#include <iRRAM/COMPLEX.h>
+#include <iRRAM/REALMATRIX.h>
+#include <iRRAM/FUNCTION.h>
 
 namespace iRRAM {
 

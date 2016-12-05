@@ -25,7 +25,11 @@ MA 02111-1307, USA.
 #ifndef iRRAM_REALMATRIX_H
 #define iRRAM_REALMATRIX_H
 
+#include <iRRAM/REAL.h>
+
 namespace iRRAM {
+
+class SPARSEREALMATRIX;
 
 /*! \ingroup types */
 class REALMATRIX
@@ -116,6 +120,11 @@ void geterror (sizetype& error) const;
 sizetype geterror() const { sizetype t; geterror(t); return t; }
 };
 
+/*! \relates REALMATRIX */
+inline sizetype geterror(const REALMATRIX &r) { return r.geterror(); }
+/*! \relates REALMATRIX */
+inline void     seterror(REALMATRIX &r, const sizetype &err) { r.seterror(err); }
+
 REALMATRIX eye     (unsigned int rows);
 REALMATRIX zeroes  (unsigned int rows,
                            unsigned int columns);
@@ -132,6 +141,21 @@ REALMATRIX limit_lip (REALMATRIX f(int, const REALMATRIX&),
                            int lip,
                            bool on_domain(const REALMATRIX&),
                            const REALMATRIX& x);
+
+/****************************************************************************/
+//  matrix functions
+/****************************************************************************/
+
+/*! \addtogroup maths
+ * @{ */
+REALMATRIX exp    (const REALMATRIX& x);
+//! @}
+
+REALMATRIX steady_state (const REALMATRIX& x);
+
+REALMATRIX steady_state (const SPARSEREALMATRIX& x);
+REALMATRIX equilib (const SPARSEREALMATRIX& x);
+void equilib_del (SPARSEREALMATRIX& x,REALMATRIX& z);
 
 } // namespace iRRAM
 

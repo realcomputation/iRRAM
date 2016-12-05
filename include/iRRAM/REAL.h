@@ -26,6 +26,11 @@ MA 02111-1307, USA.
 #define iRRAM_REAL_H
 
 #include <cmath>
+#include <vector>
+
+#include <iRRAM/helper-templates.hh>
+#include <iRRAM/LAZYBOOLEAN.h>
+#include <iRRAM/INTEGER.h>
 
 #ifdef __SSE2__at_the_moment_not_used_due_to_alignment_problems_in_gcc_4_3
 #include <emmintrin.h>
@@ -33,16 +38,6 @@ MA 02111-1307, USA.
 #endif
 
 namespace iRRAM {
-
-enum struct float_form : int {
-	absolute,
-	relative,
-	show,
-};
-
-#define iRRAM_float_absolute ::iRRAM::float_form::absolute
-#define iRRAM_float_relative ::iRRAM::float_form::relative
-#define iRRAM_float_show     ::iRRAM::float_form::show
 
 /*! \ingroup types */
 class REAL final : conditional_comparison_overloads<REAL,LAZY_BOOLEAN>
@@ -181,8 +176,6 @@ public:
 	/* Conversions: */
 
 	friend DYADIC approx(const REAL& x, const int p);
-	friend REAL   round2(const REAL& x);
-	friend int    round (const REAL& x);
 
 	DYADIC  as_DYADIC (const int p) const;
 	DYADIC  as_DYADIC () const;
@@ -310,6 +303,101 @@ private:
 	REAL         mp_intervall_join  (const REAL   &y) const;
 	LAZY_BOOLEAN mp_less            (const REAL   &y) const;
 };
+
+/*! \relates REAL */
+inline sizetype geterror(const REAL &r) { return r.geterror(); }
+/*! \relates REAL */
+inline void     seterror(REAL &r, const sizetype &err) { r.seterror(err); }
+
+// for the sake of proving computational adequacy:
+// if q=module(f,x,p), then |z-x|<2^q => |f(z)-f(x)| < 2^p
+//! \related REAL
+int module(REAL (*f)(const REAL&),const REAL& x, int p);
+
+REAL strtoREAL(const char* s, char** endptr);
+REAL atoREAL(const char* s);
+
+inline REAL round2(const REAL& x) { return REAL(x.as_INTEGER()); }
+inline int  round (const REAL& x) { return int (x.as_INTEGER()); }
+
+/****************************************************************************/
+// arithmetic functions
+/****************************************************************************/
+/*! \addtogroup maths
+ * @{ */
+REAL power   (const REAL& x, const REAL& y);
+REAL power   (const REAL& x, int n);
+REAL modulo  (const REAL& x, const REAL& y);
+REAL maximum (const REAL& x, const REAL& y);
+REAL minimum (const REAL& x, const REAL& y);
+
+/****************************************************************************/
+// roots
+/****************************************************************************/
+REAL sqrt    (const REAL& x);
+REAL root    (const REAL& x,int n);
+
+/*! \addtogroup trigonometry
+ * @{ */
+/****************************************************************************/
+// trigonometric functions
+/****************************************************************************/
+REAL sin     (const REAL& x);
+REAL cos     (const REAL& x);
+REAL tan     (const REAL& x);
+REAL cotan   (const REAL& x);
+REAL sec     (const REAL& x);
+REAL cosec   (const REAL& x);
+
+/****************************************************************************/
+// inverse trigonometric functions
+/****************************************************************************/
+REAL atan    (const REAL& x);
+REAL asin    (const REAL& x);
+REAL acos    (const REAL& x);
+REAL acotan  (const REAL& x);
+REAL asec    (const REAL& x);
+REAL acosec  (const REAL& x);
+
+/****************************************************************************/
+//hyperbolic functions
+/****************************************************************************/
+REAL sinh    (const REAL& x);
+REAL cosh    (const REAL& x);
+REAL tanh    (const REAL& x);
+REAL coth    (const REAL& x);
+REAL sech    (const REAL& x);
+REAL cosech  (const REAL& x);
+
+/****************************************************************************/
+// inverse hyperbolic functions 
+/****************************************************************************/
+REAL asinh   (const REAL& x);
+REAL acosh   (const REAL& x);
+REAL atanh   (const REAL& x);
+REAL acoth   (const REAL& x);
+REAL asech   (const REAL& x);
+REAL acosech (const REAL& x);
+//! @}
+
+/****************************************************************************/
+// exponentiation + logarithm
+/****************************************************************************/
+REAL exp     (const REAL& x);
+REAL log     (const REAL& x);
+
+/****************************************************************************/
+// special constants values
+/****************************************************************************/
+REAL pi      ();   // = 3.141592653...
+REAL euler   ();   // = 2.718281828...
+REAL ln2     ();   // = 0.693147180...
+
+/****************************************************************************/
+//  a few vector functions
+/****************************************************************************/
+REAL abs    (const std::vector<REAL>& x);
+//! @}
 
 void rwrite (const REAL& x, const int w);
 void rwritee(const REAL& x, const int w);

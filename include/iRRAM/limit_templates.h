@@ -26,6 +26,10 @@ MA 02111-1307, USA.
 #define iRRAM_LIMIT_TEMPLATES_H
 
 #include <iRRAM/core.h>
+#include <iRRAM/helper-templates.hh>
+#include <iRRAM/sizetype.hh>
+#include <iRRAM/SWITCHES.h>
+#include <iRRAM/cache.h>
 
 /*!
  * \defgroup limits Limit operations
@@ -194,26 +198,6 @@ geterror_exp(const S &, const T &y, const ContArgs &... z)
 	              "geterror_exp() is only applicable to continuous types");
 	return geterror_exp(y, z...);
 }
-
-/*! \relates REAL */
-inline sizetype geterror(const REAL &r) { return r.geterror(); }
-/*! \relates REAL */
-inline void     seterror(REAL &r, const sizetype &err) { r.seterror(err); }
-
-/*! \relates COMPLEX */
-inline sizetype geterror(const COMPLEX &r) { return r.geterror(); }
-/*! \relates COMPLEX */
-inline void     seterror(COMPLEX &r, const sizetype &err) { r.seterror(err); }
-
-/*! \relates REALMATRIX */
-inline sizetype geterror(const REALMATRIX &r) { return r.geterror(); }
-/*! \relates REALMATRIX */
-inline void     seterror(REALMATRIX &r, const sizetype &err) { r.seterror(err); }
-
-/*! \relates SPARSEREALMATRIX */
-inline sizetype geterror(const SPARSEREALMATRIX &r) { return r.geterror(); }
-/*! \relates SPARSEREALMATRIX */
-inline void     seterror(SPARSEREALMATRIX &r, const sizetype &err) { r.seterror(err); }
 
 /*! \addtogroup limits
  * @{ */
@@ -571,6 +555,39 @@ RESULT lipschitz_1p_1a (RESULT (*f)(const DISCRETE_ARGUMENT&, const PARAM& param
   return lip_result;
 }
 
+//********************************************************************************
+// general limit operator for FUNCTION objects on REAL numbers
+//
+// REAL limit ( FUNCTION<REAL,int> f )
+// if FUNCTION f defines a normed Cauchy sequence, i.e. |f(i)-x|<= 2^{i}
+// then limit(f) returns x
+//********************************************************************************
+REAL limit(FUNCTION<REAL,int> f);
+
+REAL limit_hint(REAL (*f)(int, const REAL &),
+                int hint, const REAL &x);
+REAL limit_hint(REAL (*f)(int, const REAL &, const REAL &),
+                int hint, const REAL &x, const REAL &y);
+REAL iteration (void (*f)(REAL &, REAL &, const int &param),
+                const REAL &l, const REAL &r, const int &param);
+REAL limit     (const FUNCTION<REAL,int> &f);
+
+/****************************************************************************/
+// extern templates for limit operators
+/****************************************************************************/
+
+extern template REAL       limit(REAL (*f)(int));
+
+extern template REAL       limit(REAL (*f)(int,const REAL &),
+                                 const REAL &);
+extern template REAL       limit(REAL (*f)(int,const REAL &,const REAL &),
+                                 const REAL &, const REAL &);
+extern template REAL       limit(REAL (*)(int, const REAL &, int),
+                                 const REAL &, const int &);
+extern template COMPLEX    limit(COMPLEX (*)(int, COMPLEX const &),
+                                 const COMPLEX &);
+extern template REALMATRIX limit(REALMATRIX (*)(int, REALMATRIX const &),
+                                 const REALMATRIX &);
 //! @} /* end group limits */
 
 } /* ! namespace iRRAM */

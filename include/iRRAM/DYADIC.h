@@ -25,6 +25,8 @@ MA 02111-1307, USA.
 #ifndef iRRAM_DYADIC_H
 #define iRRAM_DYADIC_H
 
+#include <iRRAM/helper-templates.hh>
+
 namespace iRRAM {
 
 /*! \ingroup types */

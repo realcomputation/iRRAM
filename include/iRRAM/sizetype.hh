@@ -26,6 +26,9 @@
 #define SIZETYPE_HH
 
 #include <limits>
+#include <cmath>
+
+#include <iRRAM/core.h>
 
 namespace iRRAM {
 

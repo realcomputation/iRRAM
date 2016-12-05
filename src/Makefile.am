@@ -4,10 +4,8 @@
 main_sources = \
 	REALS.cc \
 	REALmain.cc \
-	REALLIB.cc \
 	limits.cc \
 	errno.cc \
-	convert.cc \
 	stack.cc \
 	STREAMS.cc \
 	DYADIC.cc \

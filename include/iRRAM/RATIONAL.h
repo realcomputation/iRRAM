@@ -26,6 +26,8 @@ MA 02111-1307, USA.
 #ifndef iRRAM_RATIONAL_H
 #define iRRAM_RATIONAL_H
 
+#include <iRRAM/core.h>
+
 namespace iRRAM {
 
 /*! \ingroup types */

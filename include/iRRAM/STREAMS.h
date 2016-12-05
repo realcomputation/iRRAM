@@ -33,6 +33,16 @@ MA 02111-1307, USA.
 
 namespace iRRAM { 
 
+enum struct float_form : int {
+	absolute,
+	relative,
+	show,
+};
+
+#define iRRAM_float_absolute ::iRRAM::float_form::absolute
+#define iRRAM_float_relative ::iRRAM::float_form::relative
+#define iRRAM_float_show     ::iRRAM::float_form::show
+
 struct _SetRwidth { int _M_n; };
 
 inline _SetRwidth  setRwidth(int __n) {

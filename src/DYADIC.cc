@@ -25,12 +25,13 @@ MA 02111-1307, USA.
 #include <cstdlib>
 #include <cstdarg>
 
-#include <iRRAM/core.h>
+#include <iRRAM/DYADIC.h>
+#include <iRRAM/INTEGER.h>
 
 #if iRRAM_BACKEND_MPFR
-	#include "MPFR/MPFR_ext.h"
+# include "MPFR/MPFR_ext.h"
 #else
-	#error "Currently no further backends defined!"
+# error "Currently no further backends defined!"
 #endif
 
 namespace iRRAM {
@@ -147,6 +148,13 @@ DYADIC abs (const DYADIC& x) {
   MP_init(zvalue);
   MP_abs(x.value,zvalue);
   return zvalue;
+}
+
+INTEGER DYADIC::as_INTEGER() const
+{
+	INTEGER z;
+	MP_mp_to_INTEGER(this->value,z.value);
+	return z;
 }
 
 } // namespace iRRAM

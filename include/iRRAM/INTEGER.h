@@ -551,6 +551,9 @@ inline std::string swrite(const INTEGER& x){
      return result;
 }
 
+// Conversion from INTEGER to smaller types
+inline INTEGER::operator int() const { return MP_INTEGER_to_int(value); }
+
 } /* ! namespace iRRAM */
 
 #endif /* ! iRRAM_INTEGER_H */

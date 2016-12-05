@@ -1,7 +1,11 @@
+
 #include <cstdio>
 #include <cstdlib>
 
-#include <iRRAM/core.h>
+#include <iRRAM/REAL.h>
+#include <iRRAM/SWITCHES.h>
+#include <iRRAM/INTEGER.h>
+#include <iRRAM/limit_templates.h>
 
 namespace iRRAM {
 
@@ -126,7 +130,7 @@ static REAL log_taylor_approx(int prec, const REAL & x0)
 }
 
 
-REAL iterate(REAL f(REAL &, REAL &), REAL const & a_0, REAL const & b_0)
+static REAL iterate(REAL f(REAL &, REAL &), REAL const & a_0, REAL const & b_0)
 {
 	REAL a = a_0, b = b_0, e;
 	sizetype a_error, e_error;

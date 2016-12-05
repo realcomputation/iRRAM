@@ -23,10 +23,16 @@ MA 02111-1307, USA.
 */
 
 
-#include <iRRAM/core.h>
-
 #include <fstream>
 #include <iostream>
+
+#include <iRRAM/STREAMS.h>
+#include <iRRAM/cache.h>
+#include <iRRAM/SWITCHES.h>
+#include <iRRAM/REAL.h>
+#include <iRRAM/DYADIC.h>
+#include <iRRAM/INTEGER.h>
+#include <iRRAM/RATIONAL.h>
 
 namespace iRRAM {
 

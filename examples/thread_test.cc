@@ -1,8 +1,9 @@
 
-#include "iRRAM/core.h"
 #include <unistd.h>
 #include <thread>
 #include <future>
+
+#include <iRRAM/lib.h>
 
 using namespace iRRAM;
 

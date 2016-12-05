@@ -25,6 +25,10 @@ MA 02111-1307, USA.
 #ifndef iRRAM_COMPLEX_H
 #define iRRAM_COMPLEX_H
 
+#include <iRRAM/core.h>
+#include <iRRAM/REAL.h>
+#include <iRRAM/limit_templates.h>
+
 namespace iRRAM {
 
 /*! \ingroup types */
@@ -64,6 +68,11 @@ void geterror (sizetype& error) const;
 sizetype geterror() const { sizetype r; geterror(r); return r; }
 REAL _real,_imag;
 };
+
+/*! \relates COMPLEX */
+inline sizetype geterror(const COMPLEX &r) { return r.geterror(); }
+/*! \relates COMPLEX */
+inline void     seterror(COMPLEX &r, const sizetype &err) { r.seterror(err); }
 
 /****************************************************************************/
 // complex functions

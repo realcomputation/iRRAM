@@ -42,7 +42,8 @@ Changelog: (initial version by Tom, all modifications by Norbert and Franz)
 #include <cstdarg>
 #include <cstring>
 
-#include <iRRAM/core.h>
+#include <iRRAM/RATIONAL.h>
+#include <iRRAM/INTEGER.h>
 
 namespace iRRAM {
 

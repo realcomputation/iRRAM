@@ -25,7 +25,8 @@ MA 02111-1307, USA.
 #include <cstdlib>
 #include <cstring>
 
-#include <iRRAM/core.h>
+#include <iRRAM/LAZYBOOLEAN.h>
+#include <iRRAM/cache.h>
 
 namespace iRRAM {
 

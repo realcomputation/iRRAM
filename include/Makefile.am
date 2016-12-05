@@ -23,6 +23,8 @@ no_base_include_HEADERS = \
 	iRRAM/limit_templates.h\
 	iRRAM/version.h \
 	iRRAM/core.h \
+	iRRAM/common.h \
+	iRRAM/helper-templates.hh \
 	iRRAM/GMP_intrat.h \
 	iRRAM/MPFR_interface.h \
 	iRRAM/mpfr_extension.h

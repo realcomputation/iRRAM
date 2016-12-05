@@ -72,12 +72,17 @@ struct single_valued
 };
 
 
+#define iRRAM_ABSOLUTE 0
+#define iRRAM_RELATIVE 1
 /*! \brief Switch the precision policy to absolute or relative precision.
  *
- * precision_mode code(0)  --> work with error control based on absolute precision
- * precision_mode code(1)  --> work with error control based on relative precision
+ * `precision_mode code(` \ref iRRAM_ABSOLUTE `)` -> work with error control based on absolute precision
  *
- * obsoletes `precision_policy()` */
+ * `precision_mode code(` \ref iRRAM_RELATIVE `)` -> work with error control based on relative precision
+ *
+ * \sa iRRAM_ABSOLUTE
+ * \sa iRRAM_RELATIVE
+ */
 class precision_mode
 {
 	int saved;

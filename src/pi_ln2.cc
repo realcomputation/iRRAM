@@ -1,7 +1,9 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <iRRAM/core.h>
+#include <iRRAM/REAL.h>
+#include <iRRAM/SWITCHES.h>
+#include <iRRAM/limit_templates.h>
 
 namespace iRRAM {
 

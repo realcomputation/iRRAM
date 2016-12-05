@@ -26,6 +26,8 @@ MA 02111-1307, USA.
 #ifndef iRRAM_SPARSEREALMATRIX_H
 #define iRRAM_SPARSEREALMATRIX_H
 
+#include <iRRAM/REAL.h>
+
 namespace iRRAM {
 
 class SPM_ELEMENT
@@ -130,6 +132,11 @@ void seterror (sizetype error);
 void geterror (sizetype& error) const;
 sizetype geterror() const { sizetype r; geterror(r); return r; }
 };
+
+/*! \relates SPARSEREALMATRIX */
+inline sizetype geterror(const SPARSEREALMATRIX &r) { return r.geterror(); }
+/*! \relates SPARSEREALMATRIX */
+inline void     seterror(SPARSEREALMATRIX &r, const sizetype &err) { r.seterror(err); }
 
 } // namespace iRRAM
 
