@@ -35,6 +35,8 @@ Changelog: (initial version by Norbert)
 
 namespace iRRAM {
 
+/*! \addtogroup limits
+ * @{ */
 
 REAL limit_lip (REAL (*f)(int,const REAL&),
             int lip_value,
@@ -715,6 +717,8 @@ REAL limit (const FUNCTION<REAL,int> & f )
                  lim_error.mantissa, lim_error.exponent);
   return lim;
 }
+
+//! @}
 
 // Instantiation of templates for multi-valued limits:
 template COMPLEX limit_mv<COMPLEX,COMPLEX>

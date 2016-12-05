@@ -27,6 +27,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
+/*! \ingroup types */
 class INTEGER 
 {
 public:
@@ -457,7 +458,7 @@ inline INTEGER operator % (const INTEGER& x, const INTEGER& y){
 // Square-root: returns SQRT(x)
 // Returns the truncated square-root of the given argument
 //****************************************************************************************
-
+/*! \ingroup maths */
 inline INTEGER sqrt (const INTEGER& x)
 {
 	MP_int_type zvalue;
@@ -472,7 +473,7 @@ inline INTEGER sqrt (const INTEGER& x)
 // 1. argument: INTEGER
 // return value: INTEGER
 //****************************************************************************************
-
+/*! \ingroup maths */
 inline INTEGER abs (const INTEGER& x)
 {
   MP_int_type zvalue;

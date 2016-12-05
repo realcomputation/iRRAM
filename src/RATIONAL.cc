@@ -134,6 +134,7 @@ RATIONAL::~RATIONAL(){
 // Returns the sign of RATIONAL objects (-1/0/1): 
 // sign(i)= -1, iff i<0,   sign(i)=1 iff i>0,  and sign(0)=0
 //****************************************************************************************
+/*! \ingroup maths */
 int sign(const RATIONAL& x)
 {
   return MP_rat_sign(x.value);
@@ -258,6 +259,7 @@ RATIONAL& operator /= (RATIONAL& x, const int n)
 // Absolute value: |x|
 //****************************************************************************************
 
+/*! \ingroup maths */
 RATIONAL abs(RATIONAL x)
 {
 	MP_rat_abs(x.value,x.value);

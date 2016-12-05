@@ -32,6 +32,7 @@ namespace iRRAM {
 
 class INTERVAL;
 
+/*! \ingroup types */
 class LAZY_BOOLEAN
 {
 

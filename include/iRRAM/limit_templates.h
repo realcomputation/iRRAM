@@ -27,39 +27,46 @@ MA 02111-1307, USA.
 
 #include <iRRAM/core.h>
 
-/* Limit operations
- * ~~~~~~~~~~~~~~~~
- * These functions compute the mathematical limit y of sequences f_p of
- * continuous objects, optionally depending on discrete or continuous arguments
- * x satisfying
+/*!
+ * \defgroup limits Limit operations
+ * \ingroup maths
  *
- *     forall integers p : |f_p(x)-y| < 2**p
+ * Limit operations
+ * ================
+ * These functions compute the mathematical limit \f$y\f$ of sequences \f$f_p\f$
+ * of continuous objects, optionally depending on discrete or continuous
+ * arguments \f$x\f$ satisfying
  *
- * in the iRRAM limit for x, f_p and y. In the first case, x is discrete and
- * therefore exact, the errors introduced stem from imprecision of the
- * computation f_p itself, which is unbounded. Since f_p is executed within
- * iRRAM, its mathematical operations are exact within 2**q, where q is the
- * current working precision, however the objects operated upon are imprecise
- * intervals and therefore f_p introduces additional errors. To reduce their
- * effect, the current working precision q is successively increased, starting
- * at the initial P when limit was invoked (env.saved_prec()), whenever f_q
- * could not be computed. If at some point the computation f_q succeeds, it
- * has computed y up to 2**q < 2**p. The error 2**p is added to y's error to
- * ensure correctness.
+ *     \f[\forall p\in\mathbb{Z} : \Vert f_p(x)-y\Vert_\infty < 2^p\f]
  *
- * If x is not exact, |f_p(x)-y| generally is larger than 2**p. This additional
- * error cannot get arbitrarily small when increasing p, therefore a different
- * scheme is employed: when computing f_P(x) failed and also f_{p_0}(x) failed
- * (where p_0 is the lowest precision available in iRRAM), the limit cannot be
- * computed with the current precision of x and therefore a reiteration is done.
- * If f_P(x) succeeded but the resulting error + 2**P is larger than 2**P[-1]
- * and is larger than x's error - 2**P[-1], and p is set to p_0 for the
- * potential next iteration. If y's error already is smaller than 2**P, the
- * iteration succeeded. Otherwise the result is deemed too imprecise and the
- * computation is repeated with p increased by 4 precision steps.
+ * in the iRRAM limit for \f$x, f_p\f$ and \f$y\f$. In the first case, \f$x\f$
+ * is discrete and therefore exact, the errors introduced stem from imprecision
+ * of the computation \f$f_p\f$ itself, which is unbounded. Since \f$f_p\f$ is
+ * executed within iRRAM, its mathematical operations are exact within
+ * \f$2^q\f$, where \f$q\f$ is the current working precision, however the
+ * objects operated upon are imprecise intervals and therefore \f$f_p\f$
+ * introduces additional errors. To reduce their effect, the current working
+ * precision \f$q\f$ is successively increased, starting at the initial \f$P\f$
+ * when limit was invoked (`env.saved_prec()`), whenever \f$f_q\f$ could not be
+ * computed. If at some point the computation \f$f_q\f$ succeeds, it has
+ * computed \f$y\f$ up to \f$2^q < 2^p\f$. The error \f$2^p\f$ is added to
+ * \f$y\f$'s error to ensure correctness.
+ *
+ * If \f$x\f$ is not exact, \f$|f_p(x)-y|\f$ generally is larger than \f$2^p\f$.
+ * This additional error cannot get arbitrarily small when increasing \f$p\f$,
+ * therefore a different scheme is employed: when computing \f$f_P(x)\f$ failed
+ * and also \f$f_{p_0}(x)\f$ failed (where \f$p_0\f$ is the lowest precision
+ * available in iRRAM), the limit cannot be computed with the current precision
+ * of \f$x\f$ and therefore a reiteration is done.
+ * If \f$f_P(x)\f$ succeeded but the resulting error \f${}+ 2^P\f$ is larger
+ * than \f$2^{P[-1]}\f$ and is larger than \f$x\f$'s error \f${}- 2^{P[-1]}\f$,
+ * then \f$p\f$ is set to \f$p_0\f$ for the potential next iteration. If
+ * \f$y\f$'s error already is smaller than \f$2^P\f$, the iteration succeeded.
+ * Otherwise the result is deemed too imprecise and the computation is repeated
+ * with \f$p\f$ increased by 4 precision steps.
  *
  * Note
- * ~~~~
+ * ----
  * There fundamentally are two different variants of limit(), one taking *only*
  * parameters representing discrete values and one for the mixed/only-continuous
  * case. Continuity of a type is determined through specializations of the type
@@ -133,6 +140,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
+/*! \ingroup debug */
 inline void limit_debug(const char* c){
   if ( iRRAM_unlikely(state.debug > 0) ){
     if (state.debug >=state.ACTUAL_STACK.inlimit + 2 )
@@ -142,6 +150,7 @@ inline void limit_debug(const char* c){
   }
 }
 
+/*! \ingroup debug */
 inline void limit_debug2(const char* c){
       if ( iRRAM_unlikely(state.debug > 0) ) {
 	    if (state.debug >=state.ACTUAL_STACK.inlimit + 2 )
@@ -186,21 +195,30 @@ geterror_exp(const S &, const T &y, const ContArgs &... z)
 	return geterror_exp(y, z...);
 }
 
+/*! \relates REAL */
 inline sizetype geterror(const REAL &r) { return r.geterror(); }
+/*! \relates REAL */
 inline void     seterror(REAL &r, const sizetype &err) { r.seterror(err); }
 
+/*! \relates COMPLEX */
 inline sizetype geterror(const COMPLEX &r) { return r.geterror(); }
+/*! \relates COMPLEX */
 inline void     seterror(COMPLEX &r, const sizetype &err) { r.seterror(err); }
 
+/*! \relates REALMATRIX */
 inline sizetype geterror(const REALMATRIX &r) { return r.geterror(); }
+/*! \relates REALMATRIX */
 inline void     seterror(REALMATRIX &r, const sizetype &err) { r.seterror(err); }
 
+/*! \relates SPARSEREALMATRIX */
 inline sizetype geterror(const SPARSEREALMATRIX &r) { return r.geterror(); }
+/*! \relates SPARSEREALMATRIX */
 inline void     seterror(SPARSEREALMATRIX &r, const sizetype &err) { r.seterror(err); }
 
-/* F must be the signature
- *    Result (int prec, const C &, const ContArgs &...)
- * Requires for Result and ContArgs functions
+/*! \addtogroup limits
+ * @{ */
+
+/* Requires for Result and ContArgs functions
  *  - int geterror_exp(const C &, const ContArgs &...)
  *    (usually it's enough to specialize the single-argument versions of
  *     geterror_exp(const C &) and geterror_exp(const ContArgs &)... or to
@@ -208,6 +226,14 @@ inline void     seterror(SPARSEREALMATRIX &r, const sizetype &err) { r.seterror(
  *     then the maximum-norm is used on the vector of all continuous parameters)
  *  - sizetype geterror(const Result &)
  *  - void seterror(Result &, const sizetype &)
+ */
+/*!
+ * \brief Continuous variant of the limit operator.
+ *
+ * \param[in] f functional object of signature
+ *              `Result (int prec, const ContArgs &...)`
+ * \param[in] cont_args the mixed- or continuous arguments to be passed when
+ *                      invoking f
  */
 template <typename F,typename... ContArgs>
 auto limit(F f, const ContArgs &... cont_args)
@@ -545,6 +571,7 @@ RESULT lipschitz_1p_1a (RESULT (*f)(const DISCRETE_ARGUMENT&, const PARAM& param
   return lip_result;
 }
 
+//! @} /* end group limits */
 
 } /* ! namespace iRRAM */
 

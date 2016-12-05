@@ -44,6 +44,7 @@ enum struct float_form : int {
 #define iRRAM_float_relative ::iRRAM::float_form::relative
 #define iRRAM_float_show     ::iRRAM::float_form::show
 
+/*! \ingroup types */
 class REAL final : conditional_comparison_overloads<REAL,LAZY_BOOLEAN>
 {
 	struct double_pair {
@@ -172,7 +173,6 @@ public:
 	friend LAZY_BOOLEAN  operator >= (const REAL &x, const REAL &y);
 	friend LAZY_BOOLEAN  operator == (const REAL &x, const REAL &y);
 	friend LAZY_BOOLEAN  operator != (const REAL &x, const REAL &y);
-
 
 	friend LAZY_BOOLEAN  positive    (const REAL& x, const int k);
 

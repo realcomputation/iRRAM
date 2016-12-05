@@ -740,6 +740,7 @@ LAZY_BOOLEAN bound(const REAL & x, const int k)
 }
 
 
+/*! \ingroup debug */
 void REAL::rcheck(int n) const
 {
 	if (!value) {

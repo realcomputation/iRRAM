@@ -38,6 +38,7 @@ SPM_ELEMENT* nextrow;
 };
 
 
+/*! \ingroup types */
 class SPARSEREALMATRIX
 {
 public:

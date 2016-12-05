@@ -33,6 +33,22 @@ Authors:  all by Norbert, except:
 
 */
 
+
+/*!
+ * \defgroup types Data Types
+ * \brief Discrete and continuous data types.
+ */
+
+/*!
+ * \defgroup maths Mathematical functions
+ */
+
+/*!
+ * \defgroup debug Debug
+ */
+
+
+
 #ifndef iRRAM_LIB_H
 #define iRRAM_LIB_H
 
@@ -231,6 +247,7 @@ namespace iRRAM {
 
 #define iRRAM_ABSOLUTE 0
 #define iRRAM_RELATIVE 1
+/*! \deprecated use precision_mode instead. */
 void precision_policy(int policy) noexcept;
 
 REAL strtoREAL(const char* s, char** endptr);
@@ -238,7 +255,11 @@ REAL atoREAL(const char* s);
 
 // for the sake of proving computational adequacy:
 // if q=module(f,x,p), then |z-x|<2^q => |f(z)-f(x)| < 2^p
+//! \related REAL
 int module(REAL f(const REAL&),const REAL& x, int p);
+
+/*! \addtogroup maths
+ * @{ */
 
 /****************************************************************************/
 // arithmetic functions
@@ -255,6 +276,8 @@ REAL minimum (const REAL& x, const REAL& y);
 REAL sqrt    (const REAL& x);
 REAL root    (const REAL& x,int n);
 
+/*! \addtogroup trigonometry
+ * @{ */
 /****************************************************************************/
 // trigonometric functions
 /****************************************************************************/
@@ -295,6 +318,8 @@ REAL acoth   (const REAL& x);
 REAL asech   (const REAL& x);
 REAL acosech (const REAL& x);
 
+//! @}
+
 /****************************************************************************/
 // exponentiation + logarithm
 /****************************************************************************/
@@ -317,6 +342,8 @@ REAL abs    (const std::vector<REAL>& x);
 //  matrix functions
 /****************************************************************************/
 REALMATRIX exp    (const REALMATRIX& x);
+
+//! @}
 
 REALMATRIX steady_state (const REALMATRIX& x);
 

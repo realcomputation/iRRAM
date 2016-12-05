@@ -27,6 +27,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
+/*! \ingroup types */
 class REALMATRIX
 {
 public:

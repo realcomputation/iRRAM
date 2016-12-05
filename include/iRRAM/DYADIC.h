@@ -27,6 +27,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
+/*! \ingroup types */
 class DYADIC : conditional_comparison_overloads<DYADIC>
 {
 public:
@@ -113,6 +114,7 @@ private:
 	DYADIC(MP_type  y);
 };
 
+/*! \ingroup switches */
 class DYADIC_precision
 {
 	int precision;

@@ -27,6 +27,7 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
+/*! \ingroup types */
 class COMPLEX
 {
 public:
@@ -68,6 +69,8 @@ REAL _real,_imag;
 // complex functions
 /****************************************************************************/
 
+/*! \addtogroup maths
+ * @{ */
 COMPLEX  sqrt(const COMPLEX& z);
 // defined for any complex number:
 
@@ -85,6 +88,8 @@ COMPLEX exp(const COMPLEX& z);
 /* trigonometric functions  */
 /****************************/
 
+/*! \addtogroup trigonometry
+ * @{ */
 COMPLEX sin(const COMPLEX& z);
 COMPLEX cos(const COMPLEX& z);
 COMPLEX tan(const COMPLEX& z);
@@ -113,6 +118,8 @@ COMPLEX acoth(const COMPLEX& z);
 COMPLEX asech(const COMPLEX& z);
 COMPLEX acosech(const COMPLEX& z);
 
+//! @}
+//! @}
 
 } // namespace iRRAM
 

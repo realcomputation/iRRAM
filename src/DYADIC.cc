@@ -141,6 +141,7 @@ int size (const DYADIC& x) {
   return s;
 }
 
+/*! \ingroup maths */
 DYADIC abs (const DYADIC& x) {
   MP_type zvalue;
   MP_init(zvalue);
