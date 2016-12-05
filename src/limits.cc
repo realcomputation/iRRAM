@@ -36,9 +36,9 @@ Changelog: (initial version by Norbert)
 namespace iRRAM {
 
 
-REAL limit_lip (REAL f(int,const REAL&),
+REAL limit_lip (REAL (*f)(int,const REAL&),
             int lip_value,
-	    bool on_domain(const REAL&),
+	    bool (*on_domain)(const REAL&),
             const REAL& x)
 {
   if ( on_domain(x) != true ) REITERATE(0);
@@ -79,8 +79,8 @@ REAL limit_lip (REAL f(int,const REAL&),
   return lim;
 }
 
-REAL limit_lip (REAL f(int,const REAL&),
-            int lip_bound(const REAL&),
+REAL limit_lip (REAL (*f)(int,const REAL&),
+            int (*lip_bound)(const REAL&),
             const REAL& x)
 {
   int lip_value;
@@ -125,9 +125,9 @@ REAL limit_lip (REAL f(int,const REAL&),
   return lim;
 }
 
-REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
+REAL limit_lip     (REAL (*f)(int, const REAL&, const REAL&),
          int lip,
-         bool on_domain(const REAL&,const REAL&),
+         bool (*on_domain)(const REAL&,const REAL&),
          const REAL& x,
          const REAL& y)
 {
@@ -169,9 +169,9 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
   return lim;
 }
 
-REAL lipschitz (REAL f(const REAL&),
+REAL lipschitz (REAL (*f)(const REAL&),
             int lip,
-	    bool on_domain(const REAL&),
+	    bool (*on_domain)(const REAL&),
             const REAL& x)
 {
   if ( on_domain(x) != true ) REITERATE(0);
@@ -198,9 +198,9 @@ REAL lipschitz (REAL f(const REAL&),
   return lip_result;
 }
 
-REAL lipschitz (REAL f(const REAL&),
-            REAL lip_f(const REAL&),
-	    bool on_domain(const REAL&),
+REAL lipschitz (REAL (*f)(const REAL&),
+            REAL (*lip_f)(const REAL&),
+	    bool (*on_domain)(const REAL&),
             const REAL& x)
 {
   if ( on_domain(x) != true ) REITERATE(0);
@@ -245,8 +245,8 @@ REAL lipschitz (REAL f(const REAL&),
   return lip_result;
 }
 
-REAL lipschitz (REAL f(const REAL&),
-            REAL lip_f(const REAL&),
+REAL lipschitz (REAL (*f)(const REAL&),
+            REAL (*lip_f)(const REAL&),
             const REAL& x)
 {
   REAL x_new,lip_result,lip_bound;
@@ -279,9 +279,9 @@ REAL lipschitz (REAL f(const REAL&),
   return lip_result;
 }
 
-REAL lipschitz (REAL f(int, const REAL&),
+REAL lipschitz (REAL (*f)(int, const REAL&),
             int lip,
-	    bool on_domain(int k,const REAL&),
+	    bool (*on_domain)(int k,const REAL&),
             int k,
             const REAL& x)
 {
@@ -308,9 +308,9 @@ REAL lipschitz (REAL f(int, const REAL&),
   return lip_result;
 }
 
-REAL lipschitz (REAL f(const REAL&, const REAL&),
+REAL lipschitz (REAL (*f)(const REAL&, const REAL&),
             int lip,
-	    bool on_domain(const REAL&,const REAL&),
+	    bool (*on_domain)(const REAL&,const REAL&),
             const REAL& x,
             const REAL& y)
 {
@@ -343,9 +343,9 @@ REAL lipschitz (REAL f(const REAL&, const REAL&),
   return lip_result;
 }
 
-REAL lipschitz (REAL f(int, const REAL&, const REAL&),
+REAL lipschitz (REAL (*f)(int, const REAL&, const REAL&),
             int lip,
-	    bool on_domain(int k,const REAL&,const REAL&),
+	    bool (*on_domain)(int k,const REAL&,const REAL&),
             int k,
             const REAL& x,
             const REAL& y)
@@ -381,7 +381,7 @@ REAL lipschitz (REAL f(int, const REAL&, const REAL&),
   return lip_result;
 }
 
-REAL limit_hint    (REAL f(int, const REAL&),
+REAL limit_hint    (REAL (*f)(int, const REAL&),
                     int hint,
                     const REAL& x)
 {
@@ -430,7 +430,7 @@ REAL limit_hint    (REAL f(int, const REAL&),
 }
 
 
-REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
+REAL limit_hint    (REAL (*f)(int, const REAL&, const REAL&),
                     int hint,
                     const REAL& x, const REAL&y)
 {
@@ -479,9 +479,9 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
 }
 
 
-REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
+REALMATRIX limit_lip (REALMATRIX (*f)(int,const REALMATRIX&),
             int lip,
-	    bool on_domain(const REALMATRIX&),
+	    bool (*on_domain)(const REALMATRIX&),
             const REALMATRIX& x)
 {
   if ( on_domain(x) != true ) REITERATE(0);
@@ -588,7 +588,7 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
 // }
 
 
-REAL iteration (void f(REAL&,REAL&,const int& param),
+REAL iteration (void (*f)(REAL&,REAL&,const int& param),
             const REAL& l,const REAL& r,const int& param)
 {
   limit_computation env; //int((upperbound(rc-lc)-50)*1);

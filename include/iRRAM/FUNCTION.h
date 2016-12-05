@@ -42,7 +42,7 @@ public:
 	FUNCTIONAL_object() {}
 	virtual ~FUNCTIONAL_object() {}
 
-	virtual RESULT eval(const PARAM &... z) {(void)sizeof...(z); RESULT r; return r;}
+	virtual RESULT eval(const PARAM &...) {RESULT r; return r;}
 };
 
 template<class RESULT,class... PARAM>
@@ -68,7 +68,7 @@ public:
 		const RESULT &value
 	) {_value=value;}
 
-	RESULT eval(const PARAM&...z) {(void)sizeof...(z); return _value;};
+	RESULT eval(const PARAM&...) {return _value;}
 };
 
 //********************************************************************************

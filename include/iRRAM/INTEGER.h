@@ -144,7 +144,7 @@ MP_int_type value;
 
 inline INTEGER::~INTEGER(){  MP_int_clear(value);}
 
-inline INTEGER::INTEGER::INTEGER(MP_int_type y){ value = y; ;}
+inline INTEGER::INTEGER(MP_int_type y){ value = y; ;}
 
 inline INTEGER::INTEGER(const int i){
 	MP_int_init(value);

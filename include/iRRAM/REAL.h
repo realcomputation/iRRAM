@@ -187,41 +187,23 @@ public:
 	DYADIC  as_DYADIC (const int p) const;
 	DYADIC  as_DYADIC () const;
 
-	double  as_double (const int p) const;
-	double  as_double () const { return this->as_double(53); };
+	double  as_double (const int p = 53) const;
 
 	INTEGER as_INTEGER() const;
-
 
 	// Output: -------------------------------------
 
 	friend std::string swrite    (const REAL& x, const int p, const float_form form);
 
-	friend void        rwrite    (const REAL& x, const int w);
-	friend void        rwritee   (const REAL& x, const int w);
-	friend void        rshow     (const REAL& x, const int w);
-
 	friend int         upperbound(const REAL& x);
 	friend int         size      (const REAL& x); 
 
 	friend REAL        abs       (const REAL& x);
- 
+
 	void          rcheck      (int n=50) const;
 
 
 // limit operators: ------------------------
-
-friend REAL limit_hint(REAL f(int, const REAL&),
-                       int hint,
-                       const REAL& x);
-
-friend REAL limit_hint(REAL f(int, const REAL&, const REAL&),
-                       int hint,
-                       const REAL& x,
-                       const REAL& y);
-
-friend REAL limit_hint(REAL f(int),
-                       int hint);
 
 friend REAL limit_lip (REAL f(int, const REAL&),
                        int lip,
@@ -237,15 +219,6 @@ friend REAL limit_lip (REAL f(int, const REAL&, const REAL&),
                        bool on_domain(const REAL&,const REAL&),
                        const REAL& x,
                        const REAL& y);
-
-friend REAL iterate   (REAL (*)(REAL&, REAL&, const REAL&),
-                       const REAL&, const REAL&, const REAL&);
-
-friend REAL iterate   (REAL (*)(REAL&, REAL&),
-                       const REAL&, const REAL&);
-
-friend REAL iteration (void (*)(REAL&, REAL&,const int&),
-                       const REAL&, const REAL&,const int&);
 
 // reduced error propagation: ------------------------
 
@@ -282,18 +255,6 @@ friend REAL lipschitz (REAL f(const REAL&),
                        REAL lip_f(const REAL&),
                        const REAL& x);
 
-// coexistence with other classes: -------------
-
-friend class REALMATRIX;
-friend class SPARSEREALMATRIX;
-//friend class INTEGER;
-//friend class DYADIC;
-//friend class RATIONAL;
-
-// for the sake of proving computational adequacy:
-// if q=module(f,x,p), then |z-x|<2^q => |f(z)-f(x)| < 2^p
-friend int module(REAL f(const REAL&),const REAL& x, int p);
-
 friend void swap(REAL &, REAL &) noexcept;
 
 // implementational issues: --------------------
@@ -312,7 +273,7 @@ public:
 	sizetype     getsize            ()                const { sizetype t; getsize(t); return t; }
 	void         to_formal_ball     (DYADIC &, sizetype &error) const;
 
-friend REAL intervall_join (const REAL& x,const REAL& y);
+//	friend REAL intervall_join (const REAL& x,const REAL& y);
 
 // internal use:
 private:
@@ -349,6 +310,10 @@ private:
 	REAL         mp_intervall_join  (const REAL   &y) const;
 	LAZY_BOOLEAN mp_less            (const REAL   &y) const;
 };
+
+void rwrite (const REAL& x, const int w);
+void rwritee(const REAL& x, const int w);
+void rshow  (const REAL& x, const int w);
 
 std::string swrite(const REAL & x, const int p,
                    const float_form form = float_form::absolute);

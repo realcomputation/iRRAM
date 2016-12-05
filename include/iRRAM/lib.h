@@ -236,6 +236,9 @@ void precision_policy(int policy) noexcept;
 REAL strtoREAL(const char* s, char** endptr);
 REAL atoREAL(const char* s);
 
+// for the sake of proving computational adequacy:
+// if q=module(f,x,p), then |z-x|<2^q => |f(z)-f(x)| < 2^p
+int module(REAL f(const REAL&),const REAL& x, int p);
 
 /****************************************************************************/
 // arithmetic functions

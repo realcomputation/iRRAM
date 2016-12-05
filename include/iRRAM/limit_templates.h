@@ -316,10 +316,10 @@ auto limit(F f, const DiscArgs &... disc_args)
 }
 
 template <class ARGUMENT, class RESULT>
-RESULT limit_mv (RESULT f(int prec,
-                          int* choice,
-                          const ARGUMENT&),
-                          const ARGUMENT& x)
+RESULT limit_mv (RESULT (*f)(int prec,
+                             int* choice,
+                             const ARGUMENT&),
+                 const ARGUMENT& x)
 {
   bool inlimit = state.ACTUAL_STACK.inlimit != 0;
 
@@ -392,9 +392,9 @@ RESULT limit_mv (RESULT f(int prec,
 }
 
 template <class ARGUMENT, class DISCRETE, class RESULT>
-RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
+RESULT  limit_lip (RESULT  (*f)(int,const ARGUMENT&,DISCRETE param),
             int lip_value,
-	    bool on_domain(const ARGUMENT&),
+	    bool (*on_domain)(const ARGUMENT&),
             const ARGUMENT& x,DISCRETE param)
 {
   if ( on_domain(x) != true ) REITERATE(0);
@@ -507,9 +507,9 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
 // }
 
 template <class CONT_ARGUMENT, class DISCRETE_ARGUMENT, class RESULT, class PARAM>
-RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
+RESULT lipschitz_1p_1a (RESULT (*f)(const DISCRETE_ARGUMENT&, const PARAM& param),
             int lip,
-            bool on_domain(const CONT_ARGUMENT&, const PARAM& param),
+            bool (*on_domain)(const CONT_ARGUMENT&, const PARAM& param),
             const CONT_ARGUMENT& x, const PARAM& param )
 {
   if ( on_domain(x,param) != true ) REITERATE(0);
