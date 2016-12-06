@@ -33,11 +33,11 @@ int main(int argc, char ** argv)
 	cout << "Starting an example with two threads...\n";
 
 	std::future<double> t_1 =
-	        std::async(std::launch::async, &iRRAM_exec<double()>, []{
+	        std::async(std::launch::async, &iRRAM::exec<double()>, []{
 	        	return compute({"0.3456789", 345678});
 	        });
 	std::future<double> t_2 =
-	        std::async(std::launch::async, &iRRAM_exec<double()>, []{
+	        std::async(std::launch::async, &iRRAM::exec<double()>, []{
 	        	return compute({"0.9876543", 987654});
 	        });
 

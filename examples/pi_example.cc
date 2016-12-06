@@ -1,4 +1,5 @@
-#include "iRRAM/lib.h"
+
+#include <iRRAM.h>
 
 using namespace iRRAM;
 
@@ -12,9 +13,8 @@ REAL maxapprox(int prec, const REAL & x, const REAL & y)
 
 REAL max(const REAL & x, const REAL & y) { return limit(maxapprox, x, y); }
 
-int iRRAM_compute()
+void compute()
 {
-
 	cout << "Small test program showing some features...\n";
 
 	REAL x1(3.14159);
@@ -25,12 +25,4 @@ int iRRAM_compute()
 	cout << x1 << "\n";
 	cout << x2 << "\n";
 	cout << max(x3, x2) << "\n\n";
-
-	return 0;
-}
-
-int main(int argc, char ** argv)
-{
-	iRRAM_initialize(argc, argv);
-	return iRRAM_exec(iRRAM_compute);
 }

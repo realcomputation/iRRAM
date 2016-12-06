@@ -38,7 +38,7 @@ inline void mpfr_wrapper(DYADIC_function f, mpfr_ptr r, mpfr_srcptr u,int p){
   DYADIC arg,res;
   mpfr_set_prec(arg.value,mpfr_get_prec(u));
   mpfr_set(arg.value,u,__gmp_default_rounding_mode);
-  res = iRRAM_exec([&](){return f(arg,p);});
+  res = exec(f,arg,p);
   mpfr_set_prec(r,mpfr_get_prec(res.value));
   mpfr_set(r,res.value,__gmp_default_rounding_mode);
 }

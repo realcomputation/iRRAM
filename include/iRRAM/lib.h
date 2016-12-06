@@ -77,8 +77,8 @@ namespace iRRAM {
 /*****************************************/
 // iRRAM_exec template
 
-template <class F>
-auto iRRAM_exec(F f) -> decltype(f())
+template <typename F, typename... Args>
+auto exec(F f, const Args &... args) -> decltype(f(args...))
 {
 	state_t &st = state;
 	st.thread_data_address = new iRRAM_thread_data_class;
@@ -99,7 +99,7 @@ auto iRRAM_exec(F f) -> decltype(f())
 		st.max_prec = st.ACTUAL_STACK.prec_step;
 	}
 
-	using RESULT = decltype(f());
+	using RESULT = decltype(f(args...));
 	RESULT result;
 
 	st.ACTUAL_STACK.prec_policy = 1;
@@ -117,7 +117,7 @@ auto iRRAM_exec(F f) -> decltype(f())
 
 		int p_end = 0;
 		try {
-			result = f();
+			result = f(args...);
 			if (iRRAM_likely(!st.infinite))
 				break;
 		} catch (const Iteration &it) {

@@ -1,5 +1,6 @@
 #include <iostream>
-#include <iRRAM/core.h>
+#include <vector>
+#include <iRRAM/lib.h>
 
 
 using namespace std;
@@ -13,7 +14,7 @@ int main(int argc, char* argv[])
 {
   iRRAM_initialize(argc, argv);
     
-  return iRRAM_exec([&]{return initialize(argc, argv);});
+  return iRRAM::exec(initialize, argc, argv);
 }
 
 
@@ -24,8 +25,8 @@ int initialize(int argc, char* argv[])
   const int N          = 10;
   const int M          = N + 2 * iterations;
   
-  REAL g0[N + 1], nu[M + 1];
-  REAL bin[N + 1][N + 1];
+  vector<REAL> g0(N + 1), nu(M + 1);
+  vector<vector<REAL>> bin(N + 1, vector<REAL>(N + 1));
   
   g0[1]  = REAL("-1.527632997036301454035890310240");
   g0[2]  = REAL("0.104815194787303733216742613801");
@@ -58,7 +59,7 @@ int initialize(int argc, char* argv[])
   }
   
 
-  iterate(nu, N, iterations);
+  iterate(&nu[0], N, iterations);
   
   return 0;
 }
@@ -71,12 +72,12 @@ void iterate(REAL nu[], const int N, const int iterations)
   REAL prec  = REAL("1E-1");;
   int  oprec = 1;
   
-  REAL rho[M], mu[M];
+  vector<REAL> rho(M), mu(M);
   iRRAM::cerr << M << " Groesse\n";
-  REAL bin[M][M];
+  vector<vector<REAL>> bin(M, vector<REAL>(M));
   iRRAM::cerr << M << " Groesse\n";
   
-  REAL eta[M][M];
+  vector<vector<REAL>> eta(M, vector<REAL>(M));
 
   
   iRRAM::cerr << M << " Groesse\n";

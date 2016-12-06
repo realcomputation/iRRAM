@@ -1,5 +1,5 @@
-#include "iRRAM/lib.h"
-#include "iRRAM/core.h"
+
+#include <iRRAM/lib.h>
 
 using namespace iRRAM;
 
@@ -18,5 +18,5 @@ int iRRAM_compute(const int & argc, char ** const & argv)
 int main(int argc, char ** argv)
 {
 	iRRAM_initialize(argc, argv);
-	return iRRAM_exec([&](){return iRRAM_compute(argc, argv);});
+	return iRRAM::exec(iRRAM_compute, argc, argv);
 }

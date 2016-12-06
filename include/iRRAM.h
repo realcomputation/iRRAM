@@ -34,7 +34,7 @@ void compute(void);
 int main(int argc, char **argv)
 {
 	iRRAM_initialize2(&argc, argv);
-	return iRRAM::iRRAM_exec([]{compute(); return 0;});
+	return iRRAM::exec([]{compute(); return 0;});
 }
 
 #endif

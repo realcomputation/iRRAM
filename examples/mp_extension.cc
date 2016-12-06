@@ -16,10 +16,10 @@ DYADIC d=2.0,d2;
 int p=-10;
 
 auto compute = [&](){return compute_cos(d,p);};
-d2=iRRAM_exec(compute);
+d2=iRRAM::exec(compute);
 
 cout << setRwidth(100);
-cout << iRRAM_exec(compute)<<"\n";
+cout << iRRAM::exec(compute)<<"\n";
 
 }
 

@@ -46,7 +46,7 @@ printf ("double: %f ms  (%d tries in %f s)\n",1000*(s2-s1)/(count-1),count-1,s2-
 
 s1=cputime();s2=s1;count=1;
 while (s2-s1 < 1 ) {
-   for (int i=0;i<count;i++) d2=iRRAM_exec([&d](){return iRRAM_function(d);});
+   for (int i=0;i<count;i++) d2=iRRAM::exec(iRRAM_function, d);
    s2=cputime();
    count=2*count;
 }

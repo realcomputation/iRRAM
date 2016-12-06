@@ -28,7 +28,7 @@ int main(int argc, char ** argv)
 
 	string out[2];
 
-	iRRAM_exec([&](){return iRRAM_compute(in,out);});
+	iRRAM::exec(iRRAM_compute, &in[0], &out[0]);
 
 	printf("%s %s %s %s\n", in[0].c_str(), in[1].c_str(), out[0].c_str(),
 	       out[1].c_str());
