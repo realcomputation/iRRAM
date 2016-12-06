@@ -28,7 +28,7 @@ MA 02111-1307, USA.
 #include <cstring>
 #include <vector>
 
-#include <iRRAM/core.h>
+#include <iRRAM/lib.h>
 
 
 namespace iRRAM {
@@ -105,6 +105,16 @@ void show_statistics()
 }
 
 } // namespace iRRAM
+
+extern "C" int iRRAM_exec(void (*f)(void *), void *data)
+{
+	using namespace iRRAM;
+	try {
+		return exec([f,data](){ f(data); return iRRAM_success; });
+	} catch (const iRRAM_Numerical_Exception &ex) {
+		return ex.type;
+	}
+}
 
 extern "C" void iRRAM_initialize2(int *argc, char **argv)
 {

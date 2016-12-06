@@ -42,6 +42,8 @@ enum iRRAM_exception_list {
 };
 #undef ERRORDEFINE
 
+int iRRAM_exec(void (*)(void *), void *);
+
 #ifdef __cplusplus
 }
 #endif
