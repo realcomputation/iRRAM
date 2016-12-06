@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['scale',['scale',['../classi_r_r_a_m_1_1_d_y_a_d_i_c.html#a9f27d7ab0cfbeb6e117c68383ad4dbac',1,'iRRAM::DYADIC::scale()'],['../classi_r_r_a_m_1_1_i_n_t_e_g_e_r.html#aacf7534e4f3e6d33214dddc7f16ff62a',1,'iRRAM::INTEGER::scale()'],['../classi_r_r_a_m_1_1_r_a_t_i_o_n_a_l.html#afb2b559184424456ba2d7973e0e78278',1,'iRRAM::RATIONAL::scale()'],['../classi_r_r_a_m_1_1_r_e_a_l.html#a6f5d0bd1d7cb05b6d1d23b4c51861371',1,'iRRAM::REAL::scale()']]],
+  ['sign',['sign',['../classi_r_r_a_m_1_1_i_n_t_e_g_e_r.html#a5fb4078c9569147ae01221aabaa6fd67',1,'iRRAM::INTEGER::sign()'],['../classi_r_r_a_m_1_1_r_a_t_i_o_n_a_l.html#a41a08eee3faa9e72aa234a93438d0626',1,'iRRAM::RATIONAL::sign()']]],
+  ['sin',['sin',['../classi_r_r_a_m_1_1_i_n_t_e_r_v_a_l.html#a35ee1a757ddfb10dff98a83d31dbb041',1,'iRRAM::INTERVAL']]],
+  ['size',['size',['../classi_r_r_a_m_1_1_d_y_a_d_i_c.html#a7f6cbe8a76928d4a55b44a69b3e5533e',1,'iRRAM::DYADIC::size()'],['../classi_r_r_a_m_1_1_i_n_t_e_g_e_r.html#a158a716a3840c07d2561718ae820c4f4',1,'iRRAM::INTEGER::size()'],['../classi_r_r_a_m_1_1_r_e_a_l.html#a114722c519cbd98d63791f48d2b082df',1,'iRRAM::REAL::size()']]],
+  ['solve',['solve',['../classi_r_r_a_m_1_1_r_e_a_l_m_a_t_r_i_x.html#afefbacd2747d6e98c89102f1983b6e44',1,'iRRAM::REALMATRIX::solve()'],['../classi_r_r_a_m_1_1_s_p_a_r_s_e_r_e_a_l_m_a_t_r_i_x.html#ab7de011589121ed597ae96aad358af94',1,'iRRAM::SPARSEREALMATRIX::solve()']]],
+  ['sparse_5feye',['sparse_eye',['../classi_r_r_a_m_1_1_s_p_a_r_s_e_r_e_a_l_m_a_t_r_i_x.html#abfb524ad16c1c01b59b7f00c1e27087c',1,'iRRAM::SPARSEREALMATRIX']]],
+  ['sparse_5fget_5fptr',['sparse_get_ptr',['../classi_r_r_a_m_1_1_s_p_a_r_s_e_r_e_a_l_m_a_t_r_i_x.html#a3d5ee35ca7c91758b836aa436b99460e',1,'iRRAM::SPARSEREALMATRIX']]],
+  ['sparse_5fones',['sparse_ones',['../classi_r_r_a_m_1_1_s_p_a_r_s_e_r_e_a_l_m_a_t_r_i_x.html#a30aa459c77b25b3ce4e8687ad8005684',1,'iRRAM::SPARSEREALMATRIX']]],
+  ['sparse_5fset',['sparse_set',['../classi_r_r_a_m_1_1_s_p_a_r_s_e_r_e_a_l_m_a_t_r_i_x.html#a43aed470f1d1e8fdbf54087e69752ab0',1,'iRRAM::SPARSEREALMATRIX']]],
+  ['sparse_5funset',['sparse_unset',['../classi_r_r_a_m_1_1_s_p_a_r_s_e_r_e_a_l_m_a_t_r_i_x.html#a438e60b5c59ea306c4ea7d47dc327fe0',1,'iRRAM::SPARSEREALMATRIX']]],
+  ['sparse_5fzeroes',['sparse_zeroes',['../classi_r_r_a_m_1_1_s_p_a_r_s_e_r_e_a_l_m_a_t_r_i_x.html#a8a170eec1515505339c8179bd1f59bd9',1,'iRRAM::SPARSEREALMATRIX']]],
+  ['sqrt',['sqrt',['../classi_r_r_a_m_1_1_i_n_t_e_g_e_r.html#a0046fe9bad3d6be145a747edfd8f1c17',1,'iRRAM::INTEGER::sqrt()'],['../classi_r_r_a_m_1_1_r_e_a_l.html#a0064956df768b4b7e0b0415fb6a5dbd0',1,'iRRAM::REAL::sqrt()']]],
+  ['square',['square',['../classi_r_r_a_m_1_1_i_n_t_e_r_v_a_l.html#a50e449b0c0862f0d873648c1c16d98ae',1,'iRRAM::INTERVAL::square()'],['../classi_r_r_a_m_1_1_r_e_a_l.html#ae6ab8fbfb41c8100d7f7a2a8308e3c85',1,'iRRAM::REAL::square()']]],
+  ['sub',['SUB',['../classi_r_r_a_m_1_1_d_y_a_d_i_c.html#accb88316bd7797abde5f038570c2e5ea',1,'iRRAM::DYADIC']]],
+  ['subset',['subset',['../classi_r_r_a_m_1_1_i_n_t_e_r_v_a_l.html#a4a55f878b6f36f0c81488933816b9630',1,'iRRAM::INTERVAL']]],
+  ['sup',['sup',['../classi_r_r_a_m_1_1_i_n_t_e_r_v_a_l.html#a643a20202a494bb01ed98d65ee1d4123',1,'iRRAM::INTERVAL']]],
+  ['superset',['superset',['../classi_r_r_a_m_1_1_i_n_t_e_r_v_a_l.html#adb2f35a213cca8726c48d52ad5f50e0a',1,'iRRAM::INTERVAL']]],
+  ['swap',['swap',['../classi_r_r_a_m_1_1_r_e_a_l.html#aeb1ecbf861115a98a5d1af49f45ed371',1,'iRRAM::REAL']]],
+  ['swrite',['swrite',['../classi_r_r_a_m_1_1_d_y_a_d_i_c.html#a3fcb893563c5d74a80238717cd32ecf3',1,'iRRAM::DYADIC::swrite()'],['../classi_r_r_a_m_1_1_i_n_t_e_g_e_r.html#a947a564bc736f1c7d2757052789fcefa',1,'iRRAM::INTEGER::swrite()'],['../classi_r_r_a_m_1_1_i_n_t_e_g_e_r.html#ac8a40c9ae067d4aab44b64ad8cba76ee',1,'iRRAM::INTEGER::swrite()'],['../classi_r_r_a_m_1_1_r_a_t_i_o_n_a_l.html#a45772cae16003fccdebe2f06c66c376d',1,'iRRAM::RATIONAL::swrite()'],['../classi_r_r_a_m_1_1_r_a_t_i_o_n_a_l.html#ad1ec2dbcb17cb331fb728dfba490b4c6',1,'iRRAM::RATIONAL::swrite()'],['../classi_r_r_a_m_1_1_r_e_a_l.html#abebd48c4ff515f80371f03b166c07515',1,'iRRAM::REAL::swrite()']]]
+];
