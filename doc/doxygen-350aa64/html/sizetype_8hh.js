@@ -1,6 +1,6 @@
 var sizetype_8hh =
 [
-    [ "numeric_limits<::iRRAM::generic_sizetype< M, E > >", "structstd_1_1numeric__limits_3_1_1i_r_r_a_m_1_1generic__sizetype_3_01_m_00_01_e_01_4_01_4.html", null ],
+    [ "numeric_limits<::iRRAM::generic_sizetype< M, E > >", "structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html", null ],
     [ "SIZETYPEEXPONENT", "sizetype_8hh.html#a367487620953ace00b690c79b4ebee6f", null ],
     [ "SIZETYPEMANTISSA", "sizetype_8hh.html#ae716fee691d9a033873294dd6cb24bab", null ],
     [ "max", "sizetype_8hh.html#af31afae8cae5726b2d22e755969ea413", null ],

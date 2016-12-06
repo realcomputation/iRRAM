@@ -1,0 +1,19 @@
+<map id="src/REALS.cc" name="src/REALS.cc">
+<area shape="rect" id="node5" href="$REAL_8h.html" title="iRRAM/REAL.h" alt="" coords="611,80,726,107"/>
+<area shape="rect" id="node24" href="$INTEGER_8h.html" title="iRRAM/INTEGER.h" alt="" coords="245,155,385,181"/>
+<area shape="rect" id="node31" href="$sizetype_8hh.html" title="iRRAM/sizetype.hh" alt="" coords="949,80,1085,107"/>
+<area shape="rect" id="node33" href="$cache_8h.html" title="iRRAM/cache.h" alt="" coords="265,80,379,107"/>
+<area shape="rect" id="node34" href="$SWITCHES_8h.html" title="iRRAM/SWITCHES.h" alt="" coords="1251,80,1403,107"/>
+<area shape="rect" id="node36" href="$DYADIC_8h.html" title="iRRAM/DYADIC.h" alt="" coords="455,80,587,107"/>
+<area shape="rect" id="node37" href="$RATIONAL_8h.html" title="iRRAM/RATIONAL.h" alt="" coords="1198,155,1345,181"/>
+<area shape="rect" id="node38" href="$MPFR__ext_8h.html" title="MPFR/MPFR_ext.h" alt="" coords="1390,304,1529,331"/>
+<area shape="rect" id="node8" href="$helper-templates_8hh.html" title="iRRAM/helper&#45;templates.hh" alt="" coords="409,155,592,181"/>
+<area shape="rect" id="node23" href="$LAZYBOOLEAN_8h.html" title="iRRAM/LAZYBOOLEAN.h" alt="" coords="785,155,963,181"/>
+<area shape="rect" id="node25" href="$STREAMS_8h.html" title="iRRAM/STREAMS.h" alt="" coords="616,155,761,181"/>
+<area shape="rect" id="node10" href="$core_8h.html" title="iRRAM/core.h" alt="" coords="959,229,1064,256"/>
+<area shape="rect" id="node13" href="$common_8h.html" title="iRRAM/common.h" alt="" coords="1082,304,1213,331"/>
+<area shape="rect" id="node14" href="$version_8h.html" title="iRRAM/version.h" alt="" coords="1089,528,1211,555"/>
+<area shape="rect" id="node15" href="$MPFR__interface_8h.html" title="iRRAM/MPFR_interface.h" alt="" coords="1191,379,1365,405"/>
+<area shape="rect" id="node22" href="$errno_8h.html" title="iRRAM/errno.h" alt="" coords="1003,379,1113,405"/>
+<area shape="rect" id="node17" href="$GMP__intrat_8h.html" title="iRRAM/GMP_intrat.h" alt="" coords="1191,453,1338,480"/>
+</map>

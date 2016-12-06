@@ -1,0 +1,17 @@
+<map id="include/iRRAM/COMPLEX.h" name="include/iRRAM/COMPLEX.h">
+<area shape="rect" id="node2" href="$core_8h.html" title="iRRAM/core.h" alt="" coords="254,304,359,331"/>
+<area shape="rect" id="node15" href="$REAL_8h.html" title="iRRAM/REAL.h" alt="" coords="509,155,624,181"/>
+<area shape="rect" id="node28" href="$limit__templates_8h.html" title="iRRAM/limit_templates.h" alt="" coords="617,80,785,107"/>
+<area shape="rect" id="node5" href="$common_8h.html" title="iRRAM/common.h" alt="" coords="368,379,499,405"/>
+<area shape="rect" id="node6" href="$version_8h.html" title="iRRAM/version.h" alt="" coords="188,603,311,629"/>
+<area shape="rect" id="node7" href="$MPFR__interface_8h.html" title="iRRAM/MPFR_interface.h" alt="" coords="346,453,521,480"/>
+<area shape="rect" id="node14" href="$errno_8h.html" title="iRRAM/errno.h" alt="" coords="545,453,655,480"/>
+<area shape="rect" id="node9" href="$GMP__intrat_8h.html" title="iRRAM/GMP_intrat.h" alt="" coords="360,528,507,555"/>
+<area shape="rect" id="node18" href="$helper-templates_8hh.html" title="iRRAM/helper&#45;templates.hh" alt="" coords="23,229,206,256"/>
+<area shape="rect" id="node20" href="$LAZYBOOLEAN_8h.html" title="iRRAM/LAZYBOOLEAN.h" alt="" coords="282,229,459,256"/>
+<area shape="rect" id="node21" href="$INTEGER_8h.html" title="iRRAM/INTEGER.h" alt="" coords="483,229,623,256"/>
+<area shape="rect" id="node22" href="$STREAMS_8h.html" title="iRRAM/STREAMS.h" alt="" coords="699,229,845,256"/>
+<area shape="rect" id="node29" href="$sizetype_8hh.html" title="iRRAM/sizetype.hh" alt="" coords="739,155,875,181"/>
+<area shape="rect" id="node31" href="$SWITCHES_8h.html" title="iRRAM/SWITCHES.h" alt="" coords="1091,155,1243,181"/>
+<area shape="rect" id="node33" href="$cache_8h.html" title="iRRAM/cache.h" alt="" coords="924,155,1039,181"/>
+</map>

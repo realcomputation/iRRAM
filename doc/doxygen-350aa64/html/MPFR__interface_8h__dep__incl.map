@@ -1,0 +1,37 @@
+<map id="include/iRRAM/MPFR_interface.h" name="include/iRRAM/MPFR_interface.h">
+<area shape="rect" id="node2" href="$common_8h.html" title="include/iRRAM/common.h" alt="" coords="1614,95,1789,121"/>
+<area shape="rect" id="node35" href="$MPFR__ext_8h.html" title="src/MPFR/MPFR_ext.h" alt="" coords="2008,415,2168,442"/>
+<area shape="rect" id="node3" href="$core_8h.html" title="include/iRRAM/core.h" alt="" coords="1301,169,1452,196"/>
+<area shape="rect" id="node4" href="$COMPLEX_8h.html" title="include/iRRAM/COMPLEX.h" alt="" coords="25,497,216,524"/>
+<area shape="rect" id="node11" href="$helper-templates_8hh.html" title="include/iRRAM/helper\l&#45;templates.hh" alt="" coords="1758,319,1907,360"/>
+<area shape="rect" id="node25" href="$limit__templates_8h.html" title="include/iRRAM/limit\l_templates.h" alt="" coords="950,408,1088,449"/>
+<area shape="rect" id="node28" href="$LAZYBOOLEAN_8h.html" title="include/iRRAM/LAZYBOOLEAN.h" alt="" coords="1514,244,1737,271"/>
+<area shape="rect" id="node30" href="$STREAMS_8h.html" title="include/iRRAM/STREAMS.h" alt="" coords="1281,244,1472,271"/>
+<area shape="rect" id="node31" href="$sizetype_8hh.html" title="include/iRRAM/sizetype.hh" alt="" coords="1056,326,1238,353"/>
+<area shape="rect" id="node32" href="$RATIONAL_8h.html" title="include/iRRAM/RATIONAL.h" alt="" coords="2390,415,2582,442"/>
+<area shape="rect" id="node34" href="$stack_8cc.html" title="src/stack.cc" alt="" coords="1110,244,1205,271"/>
+<area shape="rect" id="node5" href="$COMPLEX_8cc.html" title="src/COMPLEX.cc" alt="" coords="125,572,252,599"/>
+<area shape="rect" id="node6" href="$limits_8cc.html" title="src/limits.cc" alt="" coords="7,572,100,599"/>
+<area shape="rect" id="node7" href="$lib_8h.html" title="include/iRRAM/lib.h" alt="" coords="1516,572,1655,599"/>
+<area shape="rect" id="node8" href="$mpfr__extension_8cc.html" title="src/MPFR/mpfr_extension.cc" alt="" coords="1305,647,1498,673"/>
+<area shape="rect" id="node9" href="$REALmain_8cc.html" title="src/REALmain.cc" alt="" coords="1523,647,1648,673"/>
+<area shape="rect" id="node10" href="$iRRAM_8h.html" title="include/iRRAM.h" alt="" coords="1673,647,1794,673"/>
+<area shape="rect" id="node12" href="$REAL_8h.html" title="include/iRRAM/REAL.h" alt="" coords="1179,415,1339,442"/>
+<area shape="rect" id="node26" href="$DYADIC_8h.html" title="include/iRRAM/DYADIC.h" alt="" coords="1756,415,1933,442"/>
+<area shape="rect" id="node13" href="$exp__log_8cc.html" title="src/exp_log.cc" alt="" coords="291,497,398,524"/>
+<area shape="rect" id="node14" href="$INTERVAL_8h.html" title="include/iRRAM/INTERVAL.h" alt="" coords="1226,497,1417,524"/>
+<area shape="rect" id="node16" href="$REALMATRIX_8h.html" title="include/iRRAM/REALMATRIX.h" alt="" coords="542,497,752,524"/>
+<area shape="rect" id="node18" href="$SPARSEREALMATRIX_8h.html" title="include/iRRAM/SPARSEREALMATRIX.h" alt="" coords="776,497,1043,524"/>
+<area shape="rect" id="node20" href="$pi__ln2_8cc.html" title="src/pi_ln2.cc" alt="" coords="422,497,518,524"/>
+<area shape="rect" id="node21" href="$REALS_8cc.html" title="src/REALS.cc" alt="" coords="2066,497,2172,524"/>
+<area shape="rect" id="node22" href="$sin__cos_8cc.html" title="src/sin_cos.cc" alt="" coords="1442,497,1548,524"/>
+<area shape="rect" id="node23" href="$sqrt_8cc.html" title="src/sqrt.cc" alt="" coords="1118,497,1202,524"/>
+<area shape="rect" id="node24" href="$STREAMS_8cc.html" title="src/STREAMS.cc" alt="" coords="1725,497,1852,524"/>
+<area shape="rect" id="node15" href="$INTERVAL_8cc.html" title="src/INTERVAL.cc" alt="" coords="1258,572,1386,599"/>
+<area shape="rect" id="node17" href="$REALMATRIX_8cc.html" title="src/REALMATRIX.cc" alt="" coords="573,572,721,599"/>
+<area shape="rect" id="node19" href="$SPARSEREALMATRIX_8cc.html" title="src/SPARSEREALMATRIX.cc" alt="" coords="778,572,980,599"/>
+<area shape="rect" id="node27" href="$DYADIC_8cc.html" title="src/DYADIC.cc" alt="" coords="1927,497,2042,524"/>
+<area shape="rect" id="node29" href="$LAZY__BOOLEAN_8cc.html" title="src/LAZY_BOOLEAN.cc" alt="" coords="1465,326,1632,353"/>
+<area shape="rect" id="node33" href="$RATIONAL_8cc.html" title="src/RATIONAL.cc" alt="" coords="2482,497,2612,524"/>
+<area shape="rect" id="node36" href="$MPFR__ext_8c.html" title="src/MPFR/MPFR_ext.c" alt="" coords="2196,497,2356,524"/>
+</map>

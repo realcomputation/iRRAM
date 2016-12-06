@@ -189,15 +189,15 @@ Functions</h2></td></tr>
 <p class="formulaDsp">
 \[\forall p\in\mathbb{Z} : \Vert f_p(x)-y\Vert_\infty &lt; 2^p\]
 </p>
-<p>in the <a class="el" href="namespacei_r_r_a_m.html">iRRAM</a> limit for \(x, f_p\) and \(y\). In the first case, \(x\) is discrete and therefore exact, the errors introduced stem from imprecision of the computation \(f_p\) itself, which is unbounded. Since \(f_p\) is executed within <a class="el" href="namespacei_r_r_a_m.html">iRRAM</a>, its mathematical operations are exact within \(2^q\), where \(q\) is the current working precision, however the objects operated upon are imprecise intervals and therefore \(f_p\) introduces additional errors. To reduce their effect, the current working precision \(q\) is successively increased, starting at the initial \(P\) when limit was invoked (<code>env.saved_prec()</code>), whenever \(f_q\) could not be computed. If at some point the computation \(f_q\) succeeds, it has computed \(y\) up to \(2^q &lt; 2^p\). The error \(2^p\) is added to \(y\)'s error to ensure correctness.</p>
-<p>If \(x\) is not exact, \(|f_p(x)-y|\) generally is larger than \(2^p\). This additional error cannot get arbitrarily small when increasing \(p\), therefore a different scheme is employed: when computing \(f_P(x)\) failed and also \(f_{p_0}(x)\) failed (where \(p_0\) is the lowest precision available in <a class="el" href="namespacei_r_r_a_m.html">iRRAM</a>), the limit cannot be computed with the current precision of \(x\) and therefore a reiteration is done. If \(f_P(x)\) succeeded but the resulting error \({}+ 2^P\) is larger than \(2^{P[-1]}\) and is larger than \(x\)'s error \({}- 2^{P[-1]}\), then \(p\) is set to \(p_0\) for the potential next iteration. If \(y\)'s error already is smaller than \(2^P\), the iteration succeeded. Otherwise the result is deemed too imprecise and the computation is repeated with \(p\) increased by 4 precision steps.</p>
+<p>in the <a class="el" href="namespaceiRRAM.html">iRRAM</a> limit for \(x, f_p\) and \(y\). In the first case, \(x\) is discrete and therefore exact, the errors introduced stem from imprecision of the computation \(f_p\) itself, which is unbounded. Since \(f_p\) is executed within <a class="el" href="namespaceiRRAM.html">iRRAM</a>, its mathematical operations are exact within \(2^q\), where \(q\) is the current working precision, however the objects operated upon are imprecise intervals and therefore \(f_p\) introduces additional errors. To reduce their effect, the current working precision \(q\) is successively increased, starting at the initial \(P\) when limit was invoked (<code>env.saved_prec()</code>), whenever \(f_q\) could not be computed. If at some point the computation \(f_q\) succeeds, it has computed \(y\) up to \(2^q &lt; 2^p\). The error \(2^p\) is added to \(y\)'s error to ensure correctness.</p>
+<p>If \(x\) is not exact, \(|f_p(x)-y|\) generally is larger than \(2^p\). This additional error cannot get arbitrarily small when increasing \(p\), therefore a different scheme is employed: when computing \(f_P(x)\) failed and also \(f_{p_0}(x)\) failed (where \(p_0\) is the lowest precision available in <a class="el" href="namespaceiRRAM.html">iRRAM</a>), the limit cannot be computed with the current precision of \(x\) and therefore a reiteration is done. If \(f_P(x)\) succeeded but the resulting error \({}+ 2^P\) is larger than \(2^{P[-1]}\) and is larger than \(x\)'s error \({}- 2^{P[-1]}\), then \(p\) is set to \(p_0\) for the potential next iteration. If \(y\)'s error already is smaller than \(2^P\), the iteration succeeded. Otherwise the result is deemed too imprecise and the computation is repeated with \(p\) increased by 4 precision steps.</p>
 <h2>Note </h2>
 <p>There fundamentally are two different variants of <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a>, one taking <em>only</em> parameters representing discrete values and one for the mixed/only-continuous case. Continuity of a type is determined through specializations of the type trait </p><pre class="fragment">template &lt;typename T&gt; struct is_continuous;
 </pre><p>providing a static <code>bool value</code> as defined in &lt;<a class="el" href="lib_8h.html">iRRAM/lib.h</a>&gt;.</p>
-<p>Which one is called when invoking <code>limit(f,args...)</code> is not determined by the actual parameter types of f but by the types of args... This is deliberate and consistent with how <a class="el" href="namespacei_r_r_a_m.html">iRRAM</a> works - i.e. allowing implicit conversions from the types of smaller domain to those with larger domain. Usually there is no need to explicitely specify the template types.</p>
+<p>Which one is called when invoking <code>limit(f,args...)</code> is not determined by the actual parameter types of f but by the types of args... This is deliberate and consistent with how <a class="el" href="namespaceiRRAM.html">iRRAM</a> works - i.e. allowing implicit conversions from the types of smaller domain to those with larger domain. Usually there is no need to explicitely specify the template types.</p>
 <p>Example: </p><pre class="fragment">REAL f(int prec, const REAL &amp;x);
 REAL y = limit(f, 42)
-</pre><p>will <em>not</em> invoke the continuous variant since a <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> will be constructed from the given int using <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>'s implicit converting constructor while <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> is being executed. That <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>'s precision therefore is controlled by <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> and being adjusted as to f's and limit's requirements to yield a precise enough result.</p>
+</pre><p>will <em>not</em> invoke the continuous variant since a <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> will be constructed from the given int using <a class="el" href="classiRRAM_1_1REAL.html">REAL</a>'s implicit converting constructor while <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> is being executed. That <a class="el" href="classiRRAM_1_1REAL.html">REAL</a>'s precision therefore is controlled by <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> and being adjusted as to f's and limit's requirements to yield a precise enough result.</p>
 <p>This behaviour is desirable as the non-continuous parameter version of <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> is more efficient.</p>
 <p>Regarding the same example but calling </p><pre class="fragment">REAL x = 42; // or a complicated computation
 REAL y = limit(f, x);
@@ -208,7 +208,7 @@ REAL y = limit(f, x);
 </pre><p>but may be specialized according to the type's characteristics. In the future it is possible that the continuous variant of <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> will use more fine-grained error information than just the exponent, so it may be helpful to additionally provide </p><pre class="fragment">sizetype geterror(const Ti &amp;)
 </pre><p>for all continuous types Ti used as <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> parameters. Additionally, declarations of </p><pre class="fragment">void     seterror(R &amp;, sizetype)
 sizetype geterror(const R &amp;)
-</pre><p>for result type R must be provided for both of the <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> variants. For <a class="el" href="namespacei_r_r_a_m.html">iRRAM</a>'s types <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>, *REALMATRIX and <a class="el" href="classi_r_r_a_m_1_1_c_o_m_p_l_e_x.html">COMPLEX</a> implementations are available. </p>
+</pre><p>for result type R must be provided for both of the <a class="el" href="group__limits.html#ga2b9a87d47dfd157c7200a335410650ba">limit()</a> variants. For <a class="el" href="namespaceiRRAM.html">iRRAM</a>'s types <a class="el" href="classiRRAM_1_1REAL.html">REAL</a>, *REALMATRIX and <a class="el" href="classiRRAM_1_1COMPLEX.html">COMPLEX</a> implementations are available. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ga4701681603f8346e74299e0e7305d705"></a>
 <div class="memitem">
@@ -217,19 +217,19 @@ sizetype geterror(const R &amp;)
         <tr>
           <td class="memname">REAL iRRAM::iteration </td>
           <td>(</td>
-          <td class="paramtype">void(*)(<a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const int &amp;param)&#160;</td>
+          <td class="paramtype">void(*)(<a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const int &amp;param)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>l</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>r</em>, </td>
         </tr>
         <tr>
@@ -271,7 +271,7 @@ template&lt;typename F , typename... ContArgs&gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; typename std::enable_if&lt;<a class="el" href="namespacei_r_r_a_m.html#af1380c4ff555ed6a63a18d5dda726963">any_continuous</a>&lt;ContArgs...&gt;::value,
+          <td></td><td> -&gt; typename std::enable_if&lt;<a class="el" href="namespaceiRRAM.html#af1380c4ff555ed6a63a18d5dda726963">any_continuous</a>&lt;ContArgs...&gt;::value,
                            decltype(f(0,cont_args...))&gt;::type
 </td>
         </tr>
@@ -312,7 +312,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; typename std::enable_if&lt;!<a class="el" href="namespacei_r_r_a_m.html#af1380c4ff555ed6a63a18d5dda726963">any_continuous</a>&lt;DiscArgs...&gt;::value,
+          <td></td><td> -&gt; typename std::enable_if&lt;!<a class="el" href="namespaceiRRAM.html#af1380c4ff555ed6a63a18d5dda726963">any_continuous</a>&lt;DiscArgs...&gt;::value,
                            decltype(f(0,disc_args...))&gt;::type
 </td>
         </tr>
@@ -330,7 +330,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::limit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_f_u_n_c_t_i_o_n.html">FUNCTION</a>&lt; <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>, int &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1FUNCTION.html">FUNCTION</a>&lt; <a class="el" href="classiRRAM_1_1REAL.html">REAL</a>, int &gt;&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -346,13 +346,13 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">template REAL iRRAM::limit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -372,13 +372,13 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">template COMPLEX iRRAM::limit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_c_o_m_p_l_e_x.html">COMPLEX</a>(*)(int, <a class="el" href="classi_r_r_a_m_1_1_c_o_m_p_l_e_x.html">COMPLEX</a> const &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1COMPLEX.html">COMPLEX</a>(*)(int, <a class="el" href="classiRRAM_1_1COMPLEX.html">COMPLEX</a> const &amp;)&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_c_o_m_p_l_e_x.html">COMPLEX</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1COMPLEX.html">COMPLEX</a> &amp;&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -398,7 +398,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::limit </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_f_u_n_c_t_i_o_n.html">FUNCTION</a>&lt; <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>, int &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1FUNCTION.html">FUNCTION</a>&lt; <a class="el" href="classiRRAM_1_1REAL.html">REAL</a>, int &gt; &amp;&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -416,19 +416,19 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">template REAL iRRAM::limit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -448,13 +448,13 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">template REALMATRIX iRRAM::limit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l_m_a_t_r_i_x.html">REALMATRIX</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l_m_a_t_r_i_x.html">REALMATRIX</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REALMATRIX.html">REALMATRIX</a>(*)(int, const <a class="el" href="classiRRAM_1_1REALMATRIX.html">REALMATRIX</a> &amp;)&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l_m_a_t_r_i_x.html">REALMATRIX</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REALMATRIX.html">REALMATRIX</a> &amp;&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -474,7 +474,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">template REAL iRRAM::limit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int)&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -490,13 +490,13 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">template REAL iRRAM::limit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, int)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, int)&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -522,7 +522,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::limit_hint </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -534,7 +534,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -556,7 +556,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::limit_hint </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -568,13 +568,13 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -596,7 +596,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::limit_lip </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -608,13 +608,13 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype">bool(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>on_domain</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -636,19 +636,19 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::limit_lip </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype">int(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>lip_bound</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -670,7 +670,7 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::limit_lip </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -682,19 +682,19 @@ template&lt;typename F , typename... DiscArgs&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype">bool(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>on_domain</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -764,7 +764,7 @@ template&lt;class ARGUMENT , class DISCRETE , class RESULT &gt; </div>
         <tr>
           <td class="memname">REALMATRIX iRRAM::limit_lip </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l_m_a_t_r_i_x.html">REALMATRIX</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l_m_a_t_r_i_x.html">REALMATRIX</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REALMATRIX.html">REALMATRIX</a>(*)(int, const <a class="el" href="classiRRAM_1_1REALMATRIX.html">REALMATRIX</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -776,13 +776,13 @@ template&lt;class ARGUMENT , class DISCRETE , class RESULT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l_m_a_t_r_i_x.html">REALMATRIX</a> &amp;)&#160;</td>
+          <td class="paramtype">bool(*)(const <a class="el" href="classiRRAM_1_1REALMATRIX.html">REALMATRIX</a> &amp;)&#160;</td>
           <td class="paramname"><em>on_domain</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l_m_a_t_r_i_x.html">REALMATRIX</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REALMATRIX.html">REALMATRIX</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -834,7 +834,7 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::lipschitz </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -846,13 +846,13 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype">bool(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>on_domain</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -874,25 +874,25 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::lipschitz </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>lip_f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype">bool(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>on_domain</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -914,19 +914,19 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::lipschitz </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>lip_f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -948,7 +948,7 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::lipschitz </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -960,7 +960,7 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(int k, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype">bool(*)(int k, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>on_domain</em>, </td>
         </tr>
         <tr>
@@ -972,7 +972,7 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -994,7 +994,7 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::lipschitz </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -1006,19 +1006,19 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype">bool(*)(const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>on_domain</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -1040,7 +1040,7 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="memname">REAL iRRAM::lipschitz </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a>(*)(int, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>(*)(int, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -1052,7 +1052,7 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(int k, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;, const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;)&#160;</td>
+          <td class="paramtype">bool(*)(int k, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;, const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;)&#160;</td>
           <td class="paramname"><em>on_domain</em>, </td>
         </tr>
         <tr>
@@ -1064,13 +1064,13 @@ template&lt;class ARGUMENT , class RESULT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classi_r_r_a_m_1_1_r_e_a_l.html">REAL</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -1138,7 +1138,7 @@ template&lt;class CONT_ARGUMENT , class DISCRETE_ARGUMENT , class RESULT , class
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 6 2016 13:55:37 for iRRAM by
+    <li class="footer">Generated on Tue Dec 6 2016 14:14:18 for iRRAM by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

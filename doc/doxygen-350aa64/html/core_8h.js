@@ -1,11 +1,11 @@
 var core_8h =
 [
-    [ "generic_sizetype", "structi_r_r_a_m_1_1generic__sizetype.html", "structi_r_r_a_m_1_1generic__sizetype" ],
-    [ "FUNCTION", "classi_r_r_a_m_1_1_f_u_n_c_t_i_o_n.html", "classi_r_r_a_m_1_1_f_u_n_c_t_i_o_n" ],
-    [ "iRRAM_Numerical_Exception", "structi_r_r_a_m_1_1i_r_r_a_m___numerical___exception.html", "structi_r_r_a_m_1_1i_r_r_a_m___numerical___exception" ],
-    [ "ITERATION_DATA", "structi_r_r_a_m_1_1_i_t_e_r_a_t_i_o_n___d_a_t_a.html", "structi_r_r_a_m_1_1_i_t_e_r_a_t_i_o_n___d_a_t_a" ],
-    [ "state_t", "structi_r_r_a_m_1_1state__t.html", "structi_r_r_a_m_1_1state__t" ],
-    [ "Iteration", "structi_r_r_a_m_1_1_iteration.html", "structi_r_r_a_m_1_1_iteration" ],
+    [ "generic_sizetype", "structiRRAM_1_1generic__sizetype.html", "structiRRAM_1_1generic__sizetype" ],
+    [ "FUNCTION", "classiRRAM_1_1FUNCTION.html", "classiRRAM_1_1FUNCTION" ],
+    [ "iRRAM_Numerical_Exception", "structiRRAM_1_1iRRAM__Numerical__Exception.html", "structiRRAM_1_1iRRAM__Numerical__Exception" ],
+    [ "ITERATION_DATA", "structiRRAM_1_1ITERATION__DATA.html", "structiRRAM_1_1ITERATION__DATA" ],
+    [ "state_t", "structiRRAM_1_1state__t.html", "structiRRAM_1_1state__t" ],
+    [ "Iteration", "structiRRAM_1_1Iteration.html", "structiRRAM_1_1Iteration" ],
     [ "iRRAM_DEBUG0", "core_8h.html#a9289dc7c8bb4b50555e4f7f7c8277ada", null ],
     [ "iRRAM_DEBUG1", "core_8h.html#af446bda9df16551e174373855ae96b22", null ],
     [ "iRRAM_DEBUG2", "core_8h.html#a123130c1ca3e4ec37b774a57a50032cc", null ],
