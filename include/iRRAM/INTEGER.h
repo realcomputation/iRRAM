@@ -25,20 +25,29 @@ MA 02111-1307, USA.
 #ifndef iRRAM_INTEGER_H
 #define iRRAM_INTEGER_H
 
+#include <string>
+
+#include <iRRAM/core.h>
+
 namespace iRRAM {
 
 /*! \ingroup types */
 class INTEGER 
 {
+	MP_int_type value;
+
+	INTEGER(MP_int_type y);
+
+	friend INTEGER numerator(const RATIONAL &);
+	friend INTEGER denominator(const RATIONAL &);
+
+	friend class RATIONAL;
+	friend class REAL;
+	friend class DYADIC;
+
 public:
 
-friend class REAL;
-friend class DYADIC;
-friend class RATIONAL;
-
 /****** Constructors ******/
-
-INTEGER(MP_int_type y);
 
 INTEGER();
 INTEGER(const int i);
@@ -76,8 +85,6 @@ friend INTEGER 	operator /  (const INTEGER& x, const INTEGER& y);
 friend INTEGER 	operator /  (const INTEGER& x, const int      y);
 friend INTEGER 	operator /  (const int      x, const INTEGER& y);
 
-friend INTEGER 	operator ^  (const INTEGER& x, const INTEGER& y);
-friend INTEGER  operator ^  (const INTEGER& x, const unsigned int y);
 friend INTEGER 	operator << (const INTEGER& x, const int y);
 friend INTEGER 	operator >> (const INTEGER& x, const int y);
 friend INTEGER	operator %  (const INTEGER& x, const INTEGER& y);
@@ -96,6 +103,7 @@ friend INTEGER&	operator /= (	   INTEGER& x, const int      y);
 
 
 
+friend INTEGER  power(const INTEGER& x,       unsigned y);
 friend INTEGER 	sqrt	(const INTEGER& x);
 friend INTEGER		scale	(const INTEGER& x, const int k);
 friend INTEGER		abs	(const INTEGER& x);
@@ -134,18 +142,11 @@ friend std::string    swrite  (const INTEGER& x, const int w);
 friend std::string    swrite  (const INTEGER& x);
 
 explicit operator int()  const ;
-
-
-/****** Private ******/
-//private:
-
-MP_int_type value;
-
 };
 
-inline INTEGER::~INTEGER(){  MP_int_clear(value);}
+inline INTEGER::~INTEGER() { MP_int_clear(value); }
 
-inline INTEGER::INTEGER(MP_int_type y){ value = y; ;}
+inline INTEGER::INTEGER(MP_int_type y) : value(y) {}
 
 inline INTEGER::INTEGER(const int i){
 	MP_int_init(value);
@@ -264,30 +265,18 @@ inline INTEGER::INTEGER(const std::string &s){
 
 
 //****************************************************************************************
-// Power: return  = x ^ n
+// Power: return = x**n
 //****************************************************************************************
 
-inline INTEGER operator ^ (const INTEGER& x, const int n)
+inline INTEGER power(const INTEGER& x, unsigned n)
 {
-  MP_int_type zvalue;
-  MP_int_init(zvalue);
-  MP_int_power_i(x.value,n,zvalue);
-  return zvalue;
+	if (n == 0 || x == 1) return 1;
+	if (n == 1)           return x;
+	MP_int_type zvalue;
+	MP_int_init(zvalue);
+	MP_int_power_i(x.value,n,zvalue);
+	return zvalue;
 }
-
-//****************************************************************************************
-// Power: return = x ^ y, where 0<=y<= (1u<<32)
-//****************************************************************************************
-
-inline INTEGER operator ^ (const INTEGER& x, const INTEGER& y)
-{
-   if (y==0 || x==1) return 1;
-   if (y==1) return x;
-   if( y> (int((1u<<31)-1 )) ) throw iRRAM_Numerical_Exception(iRRAM_integer_error);
-   if(sign(y)<0 ) throw iRRAM_Numerical_Exception(iRRAM_integer_error);
-   return x^(unsigned int)(MP_INTEGER_to_int(y.value));
-}
-
 
 //****************************************************************************************
 // Shifter: returns x << n
