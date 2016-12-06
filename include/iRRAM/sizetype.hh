@@ -29,6 +29,7 @@
 #include <cmath>
 
 #include <iRRAM/core.h>
+#include <iRRAM/STREAMS.h> /* iRRAM_DEBUG* */
 
 namespace iRRAM {
 

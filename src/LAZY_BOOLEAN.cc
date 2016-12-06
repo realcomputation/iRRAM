@@ -27,6 +27,7 @@ MA 02111-1307, USA.
 
 #include <iRRAM/LAZYBOOLEAN.h>
 #include <iRRAM/cache.h>
+#include <iRRAM/STREAMS.h> /* iRRAM_DEBUG* */
 
 namespace iRRAM {
 

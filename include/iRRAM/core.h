@@ -67,19 +67,11 @@ class cachelist;
 class iRRAM_thread_data_class;
 
 
-extern const char *const *const iRRAM_error_msg;
-
 struct iRRAM_Numerical_Exception {
 	iRRAM_Numerical_Exception(const int msg) noexcept : type(msg) {}
 	// private:
 	int type;
 };
-
-#define ERRORDEFINE(x, y) x,
-enum iRRAM_exception_list {
-#include <iRRAM/errno.h>
-};
-#undef ERRORDEFINE
 
 struct ITERATION_DATA {
 	int prec_policy;
@@ -159,8 +151,17 @@ struct Iteration {
 		throw Iteration(x);                                            \
 	} while (0)
 
-} /* ! namespace iRRAM */
 
-#include <iRRAM/STREAMS.h> /* iRRAM::cerr */
+enum struct float_form : int {
+	absolute,
+	relative,
+	show,
+};
+
+#define iRRAM_float_absolute ::iRRAM::float_form::absolute
+#define iRRAM_float_relative ::iRRAM::float_form::relative
+#define iRRAM_float_show     ::iRRAM::float_form::show
+
+} /* ! namespace iRRAM */
 
 #endif /* ! iRRAM_CORE_H  */

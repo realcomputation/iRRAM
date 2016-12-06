@@ -30,6 +30,7 @@ MA 02111-1307, USA.
 #include <iRRAM/sizetype.hh>
 #include <iRRAM/SWITCHES.h>
 #include <iRRAM/cache.h>
+#include <iRRAM/STREAMS.h> /* iRRAM_DEBUG* */
 
 /*!
  * \defgroup limits Limit operations

@@ -34,6 +34,14 @@ void iRRAM_initialize(int argc, char **argv);
  *         parsed options pertaining iRRAM. */
 void iRRAM_initialize2(int *argc, char **argv);
 
+extern const char *const *const iRRAM_error_msg;
+
+#define ERRORDEFINE(x, y) x,
+enum iRRAM_exception_list {
+#include <iRRAM/errno.h>
+};
+#undef ERRORDEFINE
+
 #ifdef __cplusplus
 }
 #endif

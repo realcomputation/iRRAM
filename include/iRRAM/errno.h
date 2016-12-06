@@ -1,3 +1,4 @@
+ERRORDEFINE(iRRAM_success,                 "iRRAM_success")
 ERRORDEFINE(iRRAM_overflow_error,          "iRRAM_overflow_error")
 ERRORDEFINE(iRRAM_underflow_error,         "iRRAM_underflow_error")
 ERRORDEFINE(iRRAM_integer_error,           "iRRAM_integer_error")

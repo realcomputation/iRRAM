@@ -31,17 +31,9 @@ MA 02111-1307, USA.
 #include <iomanip>
 #include <string>
 
-namespace iRRAM { 
+#include <iRRAM/core.h>
 
-enum struct float_form : int {
-	absolute,
-	relative,
-	show,
-};
-
-#define iRRAM_float_absolute ::iRRAM::float_form::absolute
-#define iRRAM_float_relative ::iRRAM::float_form::relative
-#define iRRAM_float_show     ::iRRAM::float_form::show
+namespace iRRAM {
 
 struct _SetRwidth { int _M_n; };
 

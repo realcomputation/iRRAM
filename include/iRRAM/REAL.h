@@ -31,6 +31,7 @@ MA 02111-1307, USA.
 #include <iRRAM/helper-templates.hh>
 #include <iRRAM/LAZYBOOLEAN.h>
 #include <iRRAM/INTEGER.h>
+#include <iRRAM/STREAMS.h> /* float_form, iRRAM_DEBUG* */
 
 #ifdef __SSE2__at_the_moment_not_used_due_to_alignment_problems_in_gcc_4_3
 #include <emmintrin.h>
