@@ -3,7 +3,7 @@ iRRAM
 
 Exact real arithmetic in C++.
 
-Doxygen API documentation: https://fbrausse.github.io/iRRAM
+Doxygen API documentation: http://fbrausse.github.io/iRRAM
 
 PIVP solving
 ------------
