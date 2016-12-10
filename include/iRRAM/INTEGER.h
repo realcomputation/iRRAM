@@ -49,17 +49,18 @@ public:
 
 /****** Constructors ******/
 
-INTEGER();
-INTEGER(const int i);
+INTEGER(int i = 0);
 INTEGER(const std::string &s);
 INTEGER(const char* s);
-INTEGER(const INTEGER& y); 
-INTEGER(const double d);
+INTEGER(const INTEGER& y);
+INTEGER(INTEGER &&o) : value(o.value) { o.value = nullptr; }
+INTEGER(double d);
 
-/****** Copy constructor ******/
+/****** Copy/move assignment ******/
 
 INTEGER& operator = (const int y);
 INTEGER& operator = (const INTEGER& y);
+INTEGER & operator=(INTEGER &&o) { using std::swap; swap(value, o.value); return *this; }
 
 	/****** Destructor ******/
 	
@@ -90,17 +91,18 @@ friend INTEGER 	operator >> (const INTEGER& x, const int y);
 friend INTEGER	operator %  (const INTEGER& x, const INTEGER& y);
 
 friend INTEGER&	operator += (	   INTEGER& x, const INTEGER& y);
-friend INTEGER&	operator += (	   INTEGER& x, const int      y);
+friend INTEGER& operator += (      INTEGER& x,       int      y);
 
 friend INTEGER&	operator -= (	   INTEGER& x, const INTEGER& y);
-friend INTEGER&	operator -= (	   INTEGER& x, const int      y);
+friend INTEGER& operator -= (      INTEGER& x,       int      y);
 
 friend INTEGER&	operator *= (	   INTEGER& x, const INTEGER& y);
-friend INTEGER&	operator *= (	   INTEGER& x, const int      y);
+friend INTEGER& operator *= (      INTEGER& x,       int      y);
 
 friend INTEGER&	operator /= (	   INTEGER& x, const INTEGER& y);
-friend INTEGER&	operator /= (	   INTEGER& x, const int      y);
+friend INTEGER& operator /= (      INTEGER& x,       int      y);
 
+friend INTEGER & operator%=(INTEGER &x, const INTEGER &y);
 
 
 friend INTEGER  power(const INTEGER& x,       unsigned y);
@@ -144,19 +146,37 @@ friend std::string    swrite  (const INTEGER& x);
 explicit operator int()  const ;
 };
 
-inline INTEGER::~INTEGER() { MP_int_clear(value); }
+inline INTEGER::~INTEGER() { if (value) MP_int_clear(value); }
 
 inline INTEGER::INTEGER(MP_int_type y) : value(y) {}
 
-inline INTEGER::INTEGER(const int i){
+inline INTEGER::INTEGER(int i){
 	MP_int_init(value);
 	MP_int_to_INTEGER(i,value);
 }
 
-inline INTEGER::INTEGER(){
-	MP_int_init(value);
-	MP_int_to_INTEGER(0,value);
+inline INTEGER::INTEGER(double d){
+  MP_int_init(value);
+  MP_double_to_INTEGER(d,value);
 }
+
+inline INTEGER::INTEGER(const INTEGER& i){
+  MP_int_init(value);
+  MP_int_duplicate_wo_init(i.value, value);
+}
+
+
+//****************************************************************************************
+// Constructing INTEGER from character string
+// The base is set to 10 (decimal)
+//****************************************************************************************
+
+inline INTEGER::INTEGER(const char* s){
+  MP_int_init(value);
+  MP_string_to_INTEGER(s,value,10);
+}
+
+inline INTEGER::INTEGER(const std::string &s) : INTEGER(s.c_str()) {}
 
 
 inline INTEGER& INTEGER::operator = (const INTEGER& y){
@@ -214,57 +234,6 @@ inline int sign(const INTEGER& x){  return MP_int_sign(x.value); }
 inline int size(const INTEGER& x){ return MP_int_size(x.value);}
 
 //****************************************************************************************
-// Addition: returns x + y
-//****************************************************************************************
-
-inline INTEGER operator + (const INTEGER& x, const INTEGER& y){
-  MP_int_type zvalue;
-  MP_int_init(zvalue);
-  MP_int_add(x.value,y.value,zvalue);
-  return zvalue;
-}
-
-inline INTEGER operator + (const INTEGER& x, const int y){
-  MP_int_type zvalue;
-  MP_int_init(zvalue);
-  if (y<0) MP_int_sub_ui(x.value,-y,zvalue);
-  else     MP_int_add_ui(x.value,y,zvalue);
-  return zvalue;
-}
-
-inline INTEGER operator + (const int     x, const INTEGER& y) {return y+x;}
-
-inline INTEGER::INTEGER(const double d){
-  MP_int_init(value);
-  MP_double_to_INTEGER(d,value);
-}
-
-inline INTEGER::INTEGER(const INTEGER& i){
-  MP_int_init(value);
-  MP_int_duplicate_wo_init(i.value, value);
-}
-
-
-//****************************************************************************************
-// Constructing INTEGER from character string
-// The base is set to 10 (decimal)
-//****************************************************************************************
-
-inline INTEGER::INTEGER(const char* s){
-  MP_int_init(value);
-  MP_string_to_INTEGER(s,value,10);
-}
-
-inline INTEGER::INTEGER(const std::string &s){
-  MP_int_init(value);
-  MP_string_to_INTEGER(s.c_str(),value,10);
-}
-
-
-
-
-
-//****************************************************************************************
 // Power: return = x**n
 //****************************************************************************************
 
@@ -300,6 +269,27 @@ inline INTEGER operator >> (const INTEGER& x, const int n){
 
 
 //****************************************************************************************
+// Addition: returns x + y
+//****************************************************************************************
+
+inline INTEGER operator + (const INTEGER& x, const INTEGER& y){
+  MP_int_type zvalue;
+  MP_int_init(zvalue);
+  MP_int_add(x.value,y.value,zvalue);
+  return zvalue;
+}
+
+inline INTEGER operator + (const INTEGER& x, const int y){
+  MP_int_type zvalue;
+  MP_int_init(zvalue);
+  if (y<0) MP_int_sub_ui(x.value,-y,zvalue);
+  else     MP_int_add_ui(x.value,y,zvalue);
+  return zvalue;
+}
+
+inline INTEGER operator + (const int     x, const INTEGER& y) {return y+x;}
+
+//****************************************************************************************
 // Addition: returns x += y
 //****************************************************************************************
 
@@ -308,7 +298,12 @@ inline INTEGER& operator += (INTEGER& x, const INTEGER& y){
   return x;
 }
 
-inline INTEGER& operator += (INTEGER& x, const int n ){ return x=x+n; }
+inline INTEGER& operator += (INTEGER& x, int n)
+{
+	if (n<0) MP_int_sub_ui(x.value,-n,x.value);
+	else     MP_int_add_ui(x.value, n,x.value);
+	return x;
+}
 
 //****************************************************************************************
 // Subtraction: returns x - y
@@ -321,12 +316,9 @@ inline INTEGER operator - (const INTEGER& x, const INTEGER& y){
   return zvalue;
 }
 
-inline INTEGER operator - (const INTEGER& x, const int y){
-  MP_int_type zvalue;
-  MP_int_init(zvalue);
-  if(y<0) MP_int_add_ui(x.value,-y,zvalue);
-    else  MP_int_sub_ui(x.value,y,zvalue);
-  return zvalue;
+inline INTEGER operator - (const INTEGER& x, const int y)
+{
+	return x + (-y);
 }
 
 inline INTEGER operator - (const int x, const INTEGER& y){
@@ -342,7 +334,7 @@ inline INTEGER& operator -= (INTEGER& x, const INTEGER& y){
   return x;
 }
 
-inline INTEGER& operator -= (INTEGER& x, const int  n){ return x=x-n; }
+inline INTEGER& operator -= (INTEGER& x, int n) { return x += -n; }
 
 //****************************************************************************************
 // Negative: returns -x
@@ -350,9 +342,8 @@ inline INTEGER& operator -= (INTEGER& x, const int  n){ return x=x-n; }
 
 inline INTEGER operator - (const INTEGER& x){
   MP_int_type zvalue;
-  INTEGER y=INTEGER(0);
   MP_int_init(zvalue);
-  MP_int_sub(y.value,x.value,zvalue);
+  MP_int_neg(x.value,zvalue);
   return zvalue;
 }
 
@@ -374,11 +365,9 @@ inline INTEGER operator * (const INTEGER& x, const int y){
   return(zvalue);
 }
 
-inline INTEGER operator * (const int x, const INTEGER& y){
-  MP_int_type zvalue;
-  MP_int_init(zvalue);
-  MP_int_mul_si(y.value,x,zvalue);
-  return(zvalue);
+inline INTEGER operator * (const int x, const INTEGER& y)
+{
+	return y * x;
 }
 
 //****************************************************************************************
@@ -390,9 +379,10 @@ inline INTEGER& operator *= (INTEGER& x, const INTEGER& y){
   return x;
 }
 
-inline INTEGER& operator *= (INTEGER& x, const int n ){
+inline INTEGER& operator *= (INTEGER& x, int n) {
   MP_int_mul_si(x.value,n,x.value);
-  return x; }
+  return x;
+}
 
 //****************************************************************************************
 // Division: returns x / y
@@ -412,9 +402,10 @@ inline INTEGER operator / (const INTEGER& x, const int n){
   MP_int_init(zvalue);
   if(n<0){
     MP_int_div_ui(x.value,-n,zvalue);
-    MP_int_mul_si(zvalue,-1,zvalue);
+    MP_int_neg(zvalue,zvalue);
   }
-  else MP_int_div_ui(x.value,n,zvalue);
+  else
+    MP_int_div_ui(x.value,n,zvalue);
   return zvalue;
 }
 
@@ -429,7 +420,15 @@ inline INTEGER& operator /= (INTEGER& x, const INTEGER& y){
   return x;
 }
 
-inline INTEGER& operator /= (INTEGER& x, const int  n){ return x=x/n; }
+inline INTEGER& operator /= (INTEGER& x, int n)
+{
+	if (n<0) {
+		MP_int_div_ui(x.value,-n,x.value);
+		MP_int_neg(x.value,x.value);
+	} else
+		MP_int_div_ui(x.value,n,x.value);
+	return x;
+}
 
 //****************************************************************************************
 // Modulo: returns x % y
@@ -442,6 +441,11 @@ inline INTEGER operator % (const INTEGER& x, const INTEGER& y){
   return zvalue;
 }
 
+inline INTEGER & operator%=(INTEGER &x, const INTEGER &y)
+{
+	MP_int_modulo(x.value, y.value, x.value);
+	return x;
+}
 
 //****************************************************************************************
 // Square-root: returns SQRT(x)
