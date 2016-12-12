@@ -40,14 +40,18 @@ Authors:  all by Norbert, except:
  */
 
 /*!
+ * \defgroup sizetype sizetype
+ * \brief Positive arithmetic type representing error and size bounds.
+ * \ingroup types
+ */
+
+/*!
  * \defgroup maths Mathematical functions
  */
 
 /*!
  * \defgroup debug Debug
  */
-
-
 
 #ifndef iRRAM_LIB_H
 #define iRRAM_LIB_H

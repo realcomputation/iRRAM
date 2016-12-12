@@ -33,83 +33,41 @@
 
 namespace iRRAM {
 
-typedef typename sizetype::mantissa_t SIZETYPEMANTISSA;
-typedef typename sizetype::exponent_t SIZETYPEEXPONENT;
+/*! \addtogroup sizetype
+ * @{
+ */
 
-const int MANTISSA_BITS = (int) (8*sizeof(SIZETYPEMANTISSA)) ;
+static_assert(CHAR_BIT == 8, "iRRAM only checked for platforms of 8-bit bytes");
+
+const int MANTISSA_BITS = (int)(CHAR_BIT * sizeof(sizetype::mantissa_t));
 const int DIFF_BITS     = 3;
 const int BIT_RANGE     = 8;
 const int BIT_RANGE2    = 8;
-const int GUARD_BITS    =  MANTISSA_BITS - DIFF_BITS;
+const int GUARD_BITS    = MANTISSA_BITS - DIFF_BITS;
 
-const SIZETYPEMANTISSA max_mantissa= 1 <<  GUARD_BITS   ;
-const SIZETYPEMANTISSA min_mantissa= 1 << (GUARD_BITS-BIT_RANGE);
+const typename sizetype::mantissa_t max_mantissa = 1 <<  GUARD_BITS   ;
+const typename sizetype::exponent_t min_mantissa = 1 << (GUARD_BITS-BIT_RANGE);
 
 /* if the exponent of value is smaller than MP_min, it should be increased(!) to (1,min_exponent) */
-const SIZETYPEEXPONENT  min_exponent=MP_min + MANTISSA_BITS;
-
-}
-
-namespace std {
-
-template <typename M,typename E>
-struct numeric_limits<::iRRAM::generic_sizetype<M,E>> {
-	static constexpr bool is_specialized     = true;
-	static constexpr bool is_signed          = std::numeric_limits<M>::is_signed;
-	static constexpr bool is_integer         = false;
-	static constexpr bool is_exact           = false;
-	static constexpr bool has_infinity       = false;
-	static constexpr bool has_quiet_NaN      = false;
-	static constexpr bool has_signalling_NaN = false;
-	static constexpr std::float_denorm_style has_denorm = std::denorm_present;
-	static constexpr bool has_denorm_loss    = true; /* TODO: is this correct? */
-	static constexpr std::float_round_style round_style = std::round_toward_infinity;
-	static constexpr bool is_iec559          = false;
-	static constexpr bool is_bounded         = true; /* TODO: should be false for verification */
-	static constexpr bool is_modulo          = false;
-	static constexpr int  digits             = std::numeric_limits<M>::digits - ::iRRAM::DIFF_BITS;
-	static constexpr int  digits10           = digits * std::log10(2);
-	static constexpr int  max_digits10       = digits10 + 2; /* TODO: is this correct? */
-	static constexpr int  radix              = 2;
-	static constexpr int  min_exponent       = MP_min + std::numeric_limits<M>::digits;
-	// static constexpr int  min_exponent10     = ;
-	static constexpr int  max_exponent       = MP_max - std::numeric_limits<M>::digits;
-	// static constexpr int  max_exponent10     = ;
-	static constexpr bool traps              = false;
-	static constexpr bool tinyness_before    = true; /* TODO: is this correct? */
-
-private:
-	using T = ::iRRAM::generic_sizetype<M,E>;
-
-public:
-	static constexpr T min() { return { (M)1 << (digits - iRRAM::BIT_RANGE), min_exponent }; }
-	static constexpr T lowest() { return { 0, min_exponent }; }
-	static constexpr T max() { return { (M)1 << digits, max_exponent }; }
-	static constexpr T epsilon() { return { (M)1 << (digits - iRRAM::BIT_RANGE), -(digits - iRRAM::BIT_RANGE) }; }
-	// static constexpr T round_error() {}
-	static constexpr T inifinity() { return min(); }
-	static constexpr T quiet_NaN() { return min(); }
-	static constexpr T signaling_NaN() { return min(); }
-	static constexpr T denorm_min() { return { 0, min_exponent }; }
-};
-
-}
-
-namespace iRRAM {
+const typename sizetype::exponent_t min_exponent = MP_min + MANTISSA_BITS;
 
 inline unsigned int scale(const unsigned int w,const int p) {return ((p<=GUARD_BITS)?(w>>p):0); }
 
-// sizetype_normalize(e) **********************************************
-// Try to keep the mantissa between max_mantissa and min_mantissa.
-// It may not be larger than  max_mantissa.
-// It still may stay smaller than min_mantissa afterwards.
-// The value of e may slighty increase during this operation!
-// The value of e must never decrease!
-// If the resulting exponent is out of range (MP_min,MP_max)
-// correct it with an increase in value or produce an error.
-// ********************************************************************
-
-
+/*!
+ * \brief Try to keep the mantissa between \ref max_mantissa and \ref min_mantissa.
+ *
+ * It may not be larger than \ref max_mantissa.
+ * It still may stay smaller than \ref min_mantissa afterwards.
+ * The value of \a e may slighty increase during this operation!
+ * The value of \a e does never decrease!
+ * If the resulting exponent is out of range (\ref MP_min,\ref MP_max)
+ * correct it with an increase in value or reiterate.
+ *
+ * \param [in,out] e
+ *
+ * \sa REITERATE
+ * \exception Iteration when the resulting exponent is >= \ref MP_max
+ */
 inline void sizetype_normalize( sizetype& e) {
   if (iRRAM_unlikely(e.mantissa < min_mantissa)) {
       e.mantissa <<= BIT_RANGE;
@@ -129,24 +87,35 @@ inline void sizetype_normalize( sizetype& e) {
   }
 }
 
+/*!
+ * \brief Try to keep the mantissa between \ref max_mantissa and \ref min_mantissa.
+ * \sa sizetype_normalize(sizetype &)
+ * \param [in] e value to normalize
+ * \return       \a e, normalized
+ * \sa REITERATE
+ * \exception Iteration when the resulting exponent is >= \ref MP_max
+ */
 inline sizetype sizetype_normalize(sizetype &&e)
 {
 	sizetype_normalize(e);
 	return e;
 }
 
-inline sizetype sizetype_power2(int exp)
+inline sizetype sizetype_power2(typename sizetype::exponent_t exp)
 {
 	return sizetype_normalize({1, exp});
 }
 
-// sizetype_inc(x,y) **************************************************
-// Increment x by y
-// Arguments x and y must differ!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
+/*!
+ * \brief Increments \a x by \a y and normalizes \a x.
+ *
+ * Arguments \a x and \a y must differ!
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [out] x
+ * \param [in]  y
+ */
 inline void sizetype_inc(sizetype& x,const sizetype& y)
 {
   if ( y.exponent >  x.exponent) {
@@ -160,32 +129,38 @@ inline void sizetype_inc(sizetype& x,const sizetype& y)
   sizetype_normalize(x);
 }
 
-// x += y **************************************************
-// Increment x by y
-// Arguments x and y must differ!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
+/*!
+ * \brief Increments \a x by \a y and normalizes \a x.
+ *
+ * Arguments \a x and \a y must differ!
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [in,out] x
+ * \param [in]     y
+ */
 inline sizetype & operator+=(sizetype &x, const sizetype &y)
 {
 	sizetype_inc(x, y);
 	return x;
 }
 
-// sizetype_add_one(x,y) **************************************************
-// Let x = y  + 1*2^z
-// Arguments x and y must differ!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
-inline void sizetype_add_one(sizetype& x,const sizetype& y,const SIZETYPEEXPONENT zexp)
+/*!
+ * \brief Sets \a x to \a y + 1*2^\a zexp and normalizes \a x.
+ *
+ * Arguments \a x and \a y must differ!
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [out] x
+ * \param [in]  y, zexp
+ */
+inline void sizetype_add_one(sizetype& x, const sizetype& y, typename sizetype::exponent_t zexp)
 {
 // replace 1*2^(-zexp) by 1048576*2^(-zexp-20)
 // this is still the same numerical value!
 // if zexp is larger than y.exponent, the result is closer to the intended result
-  SIZETYPEEXPONENT zexp_scale= zexp-20;
+  typename sizetype::exponent_t zexp_scale= zexp-20;
   if ( y.exponent >  zexp_scale) {
     x.exponent= y.exponent;
     x.mantissa= y.mantissa + 1048576 ;
@@ -196,13 +171,16 @@ inline void sizetype_add_one(sizetype& x,const sizetype& y,const SIZETYPEEXPONEN
   sizetype_normalize(x);
 }
 
-// sizetype_inc_one(x,y) **************************************************
-// Let x = x  + 1*2^z
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
-inline void sizetype_inc_one(sizetype& x,const SIZETYPEEXPONENT zexp)
+/*!
+ * \brief Sets \a x to \a x + 1*2^\a zexp and normalizes \a x.
+ *
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [in,out] x
+ * \param [in]     zexp
+ */
+inline void sizetype_inc_one(sizetype& x, typename sizetype::exponent_t zexp)
 {
   if ( x.exponent > zexp) {
     x.mantissa ++ ;
@@ -214,15 +192,18 @@ inline void sizetype_inc_one(sizetype& x,const SIZETYPEEXPONENT zexp)
 }
 
 
-// sizetype_inc2(x,y,z) **************************************************
-// Increment x by y and z
-// Arguments x, y and z must differ!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
+/*!
+ * \brief Increments \a x by \a y + \a z and normalizes \a x.
+ *
+ * Arguments \a x, \a y and \a z must differ!
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [in,out] x
+ * \param [in]     y, z
+ */
 inline void sizetype_inc2(sizetype& x,const sizetype& y,const sizetype& z)
-{ SIZETYPEEXPONENT exponent;
+{ typename sizetype::exponent_t exponent;
   exponent=max({x.exponent,y.exponent,z.exponent});
   x.mantissa=scale(x.mantissa,(exponent-x.exponent))
             +scale(y.mantissa,(exponent-y.exponent))
@@ -232,13 +213,16 @@ inline void sizetype_inc2(sizetype& x,const sizetype& y,const sizetype& z)
 }
 
 
-// sizetype_add_wo_norm(x,y,z) **************************************************
-// Add y and z yielding x
-// Argument x must be different from y and z!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
+/*!
+ * \brief Adds \a y and \a z yielding \a x; no normalization.
+ *
+ * Argument \a x must be different from \a y and \a z!
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [out] x
+ * \param [in]  y, z
+ */
 inline void sizetype_add_wo_norm(sizetype& x,const sizetype& y,const sizetype& z)
 {
   if ( y.exponent >  z.exponent) {
@@ -251,32 +235,48 @@ inline void sizetype_add_wo_norm(sizetype& x,const sizetype& y,const sizetype& z
 }
 
 
-// sizetype_add(x,y,z) **************************************************
-// Add y and z yielding x
-// Argument x must be different from y and z!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
+/*!
+ * \brief Adds \a y and \a z yielding \a x and normalizes \a x.
+ *
+ * Argument \a x must be different from \a y and \a z!
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [out] x
+ * \param [in]  y, z
+ */
 inline void sizetype_add(sizetype& x,const sizetype& y,const sizetype& z)
 {
   sizetype_add_wo_norm(x,y,z);
   sizetype_normalize(x);
 }
 
-inline sizetype sizetype_add_power2(sizetype x, int exp) // TODO: better implementation possible
+/*!
+ * \brief Computes \a x+2^\a exp and returns the normalized result.
+ *
+ * The resulting value may be a bit larger than the exact value,
+ * it will never be smaller than the exact value.
+ *
+ * \param [in] x, exp
+ * \return    \a x+2^\a exp, normalized
+ */
+inline sizetype sizetype_add_power2(sizetype x, typename sizetype::exponent_t exp)
+//! \todo more efficient implementation possible, see iRRAM::sizetype_inc_one
 {
 	sizetype r;
 	sizetype_add(r, x, sizetype_power2(exp));
 	return r;
 }
 
-// x = y + z **************************************************
-// Add y and z yielding x
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
+/*!
+ * \brief Adds \a y and \a z yielding \a x and normalizes the result.
+ *
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [in] y, z
+ * \return \a y+\a z, normalized
+ */
 inline sizetype operator+(const sizetype& y,const sizetype& z)
 {
   sizetype x;
@@ -285,20 +285,20 @@ inline sizetype operator+(const sizetype& y,const sizetype& z)
 }
 
 
-inline void sizetype_copy(sizetype& x,const sizetype& y)
-{
-  x.exponent=y.exponent;
-  x.mantissa=y.mantissa;
-}
-
-// sizetype_shift(x,y,s) **************************************************
-// Shift y and s yielding x
-// Arguments x,y may be identical!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
-inline void sizetype_shift(sizetype& x,const sizetype& y,const int s)
+/*!
+ * \brief Shift \a y by \a s yielding \a x.
+ *
+ * Arguments x,y may be identical.
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [out] x
+ * \param [in] y, s
+ * \sa REITERATE
+ * \exception Iteration when the result is too large to be represented by a
+ *                      normalized sizetype
+ */
+inline void sizetype_shift(sizetype& x, const sizetype& y, int s)
 {
   x.exponent=y.exponent+s;
   x.mantissa=y.mantissa;
@@ -314,27 +314,35 @@ inline void sizetype_shift(sizetype& x,const sizetype& y,const int s)
   }
 }
 
-// x = y << s **************************************************
-// Shift y and s yielding x
-// Arguments x,y may be identical!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// *************************************************************
-
-inline sizetype operator<<(const sizetype &y, const int s)
+/*!
+ * \brief Returns \a y left-shifted by \a s, normalized.
+ *
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [in] y, s
+ * \return \a y left-shifted by \a s, normalized.
+ * \sa REITERATE
+ * \exception Iteration when the result is too large to be represented by a
+ *                      normalized sizetype
+ */
+inline sizetype operator<<(const sizetype &y, int s)
 {
 	sizetype x;
 	sizetype_shift(x, y, s);
 	return x;
 }
 
-// sizetype_mult(x,y,z) **************************************************
-// Multiply y and z yielding x
-// Argument x must be different from y and z!
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// ********************************************************************
-
+/*!
+ * \brief Multiplies \a y and \a z yielding \a x and normalizes \a x.
+ *
+ * Argument \a x must be different from \a y and \a z!
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [out] x
+ * \param [in]  y, z
+ */
 inline void sizetype_mult(sizetype& x,const sizetype& y,const sizetype& z)
 { unsigned long long lmantissa=
      ((unsigned long long)(y.mantissa))*z.mantissa;
@@ -347,12 +355,15 @@ inline void sizetype_mult(sizetype& x,const sizetype& y,const sizetype& z)
   sizetype_normalize(x);
 }
 
-// x = y * z ***************************************************
-// Multiply y and z
-// The resulting value may be a bit larger than the exact value,
-// The resulting value may never be smaller than the exact value
-// *************************************************************
-
+/*!
+ * \brief Sets \a y to \a y * \a z, normalized.
+ *
+ * The resulting value may be a bit larger than the exact value,
+ * The resulting value will never be smaller than the exact value.
+ *
+ * \param [in] y, z
+ * \return \a y * \a z, normalized.
+ */
 inline sizetype operator*(const sizetype &y, const sizetype &z)
 {
 	sizetype x;
@@ -360,12 +371,15 @@ inline sizetype operator*(const sizetype &y, const sizetype &z)
 	return x;
 }
 
-// sizetype_max(x,y,z) **************************************************
-// Compute maximum of y and z in x
-// Arguments x,y, and z may all be identical!
-// The resulting value is exactly the maximum
-// ********************************************************************
-
+/*!
+ * \brief Computes the maximum of \a y and \a z and stores it in \a x.
+ *
+ * Arguments \a x, \a y and \a z may all be identical.
+ * The resulting value is exactly the maximum.
+ *
+ * \param [out] x
+ * \param [in]  y, z
+ */
 inline void sizetype_max(sizetype& x,const sizetype& y,const sizetype& z)
 { if (y.exponent>z.exponent)
   {
@@ -375,12 +389,15 @@ inline void sizetype_max(sizetype& x,const sizetype& y,const sizetype& z)
   }
 }
 
-// x = max(y, z) **************************************************
-// Compute maximum of y and z in x
-// Arguments x,y, and z may all be identical!
-// The resulting value is exactly the maximum
-// ****************************************************************
-
+/*!
+ * \brief Returns the maximum of \a y and \a z.
+ *
+ * Arguments \a y and \a z may be identical.
+ * The resulting value is exactly the maximum.
+ *
+ * \param [in] y, z
+ * \return The maximum of \a y and \a z.
+ */
 inline sizetype max(const sizetype &y, const sizetype &z)
 {
 	if (y.exponent > z.exponent)
@@ -389,12 +406,15 @@ inline sizetype max(const sizetype &y, const sizetype &z)
 		return scale(y.mantissa, z.exponent-y.exponent) >= z.mantissa ? y : z;
 }
 
-// sizetype_set(x,m,e) **************************************************
-// Construct a sizetype value x from mantissa m and exponent e
-// The resulting value is allowed to be larger than the exact value
-// ********************************************************************
-
-inline void sizetype_set(sizetype& x,const int mantissa,const int exponent)
+/*!
+ * \brief Construct a sizetype value \a x from \a mantissa and \a exponent.
+ *
+ * The resulting value is allowed to be larger than the exact value.
+ *
+ * \param [out] x \a mantissa * 2^\a exponent, normalized
+ * \param [in] mantissa, exponent
+ */
+inline void sizetype_set(sizetype& x, typename sizetype::mantissa_t mantissa, typename sizetype::exponent_t exponent)
 {
   x.exponent=exponent;
   x.mantissa=mantissa;
@@ -407,11 +427,17 @@ inline void sizetype_exact(sizetype& x)
   x.mantissa=0;
 }
 
-/*Test whether  y<z; for y=z the result is allowed to be true OR false!  */
-inline int sizetype_less(const sizetype& y,const sizetype& z)
+/*!
+ * \brief Tests whether y<z. If y=z the result is allowed to be true OR false!
+ *
+ * \param [in] y, z
+ * \return \c true if \a y<\a z or \a y=\a z; or
+ *         \c false if \a y>\a z or \a y=\a z
+ */
+inline bool sizetype_less(const sizetype& y,const sizetype& z)
 { unsigned int mantissa;
-  if (iRRAM_unlikely(y.mantissa==0)) return 1;
-  if (iRRAM_unlikely(z.mantissa==0)) return 0;
+  if (iRRAM_unlikely(y.mantissa==0)) return true;
+  if (iRRAM_unlikely(z.mantissa==0)) return false;
   if (y.exponent>z.exponent)
   {
     mantissa=scale(z.mantissa,y.exponent-z.exponent);
@@ -431,16 +457,27 @@ inline void sizetype_half(sizetype& x,const sizetype& y)
 /************************ the following functions are unchecked for over/underflow ***************/
 /* also the exact semantics has still to be defined and compared to the applications ************/
 
-
+/*!
+ * \warning unchecked for over-/underflow
+ * \todo exact semantics are not specified
+ */
 inline void sizetype_dec(sizetype& x, const sizetype& y )
 { x.mantissa=x.mantissa - scale(y.mantissa,(x.exponent-y.exponent)) -1 ;
   sizetype_normalize(x);
 }
 
+/*!
+ * \warning unchecked for over-/underflow
+ * \todo exact semantics are not specified
+ */
 inline void sizetype_dec(sizetype& x)
 { x.mantissa -= 1 ;
 }
 
+/*!
+ * \warning unchecked for over-/underflow
+ * \todo exact semantics are not specified
+ */
 inline void sizetype_sqrt(sizetype& x,const sizetype& y)
 {
   if (y.exponent&1) {
@@ -453,6 +490,10 @@ inline void sizetype_sqrt(sizetype& x,const sizetype& y)
   x.mantissa=int(std::sqrt(double(x.mantissa)))+1;
 }
 
+/*!
+ * \warning unchecked for over-/underflow
+ * \todo exact semantics are not specified
+ */
 inline void sizetype_div(sizetype& x,const sizetype& y,const sizetype& z)
 { unsigned long long lmantissa=
          (((unsigned long long)(y.mantissa))<<GUARD_BITS)/z.mantissa;
@@ -465,6 +506,57 @@ inline void sizetype_div(sizetype& x,const sizetype& y,const sizetype& z)
   sizetype_normalize(x);
 }
 
+//! @}
+
 }
+
+namespace std {
+
+/*! \addtogroup sizetype */
+template <typename M,typename E>
+struct numeric_limits<::iRRAM::generic_sizetype<M,E>> {
+	static constexpr bool is_specialized     = true;
+	static constexpr bool is_signed          = std::numeric_limits<M>::is_signed;
+	static constexpr bool is_integer         = false;
+	static constexpr bool is_exact           = false;
+	static constexpr bool has_infinity       = false;
+	static constexpr bool has_quiet_NaN      = false;
+	static constexpr bool has_signalling_NaN = false;
+	static constexpr std::float_denorm_style has_denorm = std::denorm_present;
+	static constexpr bool has_denorm_loss    = true; /*!< \todo is this correct? */
+	static constexpr std::float_round_style round_style = std::round_toward_infinity;
+	static constexpr bool is_iec559          = false;
+	static constexpr bool is_bounded         = true; /*!< \todo should be false for verification */
+	static constexpr bool is_modulo          = false;
+	static constexpr int  digits             = std::numeric_limits<M>::digits - ::iRRAM::DIFF_BITS;
+//	static constexpr int  digits10           = digits * std::log10(2);
+//	static constexpr int  max_digits10       = digits10 + 2; /*!< \todo is this correct? */
+	static constexpr int  radix              = 2;
+	static constexpr int  min_exponent       = MP_min + std::numeric_limits<M>::digits;
+//	static constexpr int  min_exponent10     = ;
+	static constexpr int  max_exponent       = MP_max - std::numeric_limits<M>::digits;
+//	static constexpr int  max_exponent10     = ;
+	static constexpr bool traps              = false;
+	static constexpr bool tinyness_before    = true; /*!< \todo is this correct? */
+
+private:
+	using T = ::iRRAM::generic_sizetype<M,E>;
+
+public:
+	static constexpr T min() { return { (M)1 << (digits - iRRAM::BIT_RANGE), min_exponent }; }
+	static constexpr T lowest() { return { 0, min_exponent }; }
+	static constexpr T max() { return { (M)1 << digits, max_exponent }; }
+	static constexpr T epsilon() { return { (M)1 << (digits - iRRAM::BIT_RANGE), -(digits - iRRAM::BIT_RANGE) }; }
+	// static constexpr T round_error() {}
+	static constexpr T inifinity() { return min(); }
+	static constexpr T quiet_NaN() { return min(); }
+	static constexpr T signaling_NaN() { return min(); }
+	static constexpr T denorm_min() { return { 0, min_exponent }; }
+};
+
+}
+
+static_assert(std::numeric_limits<iRRAM::sizetype>::min_exponent == iRRAM::min_exponent, "internal error");
+
 
 #endif

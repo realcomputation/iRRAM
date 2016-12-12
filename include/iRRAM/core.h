@@ -36,6 +36,7 @@ namespace iRRAM {
 using std::min;
 using std::max;
 
+/* \ingroup sizetype */
 template <typename M,typename E>
 struct generic_sizetype {
 	typedef M mantissa_t;
@@ -44,6 +45,7 @@ struct generic_sizetype {
 	E exponent;
 };
 
+/* \ingroup sizetype */
 typedef generic_sizetype<unsigned int,int> sizetype;
 
 // forward declaration of some classes
