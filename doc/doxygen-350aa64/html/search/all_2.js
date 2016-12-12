@@ -2,8 +2,8 @@ var searchData=
 [
   ['bad',['bad',['../classiRRAM_1_1orstream.html#a3b9635e844c7fc70c3f4c6c8ea63030f',1,'iRRAM::orstream::bad()'],['../classiRRAM_1_1irstream.html#ae3b672c5363355e9d8ea2cd3cb7dc194',1,'iRRAM::irstream::bad()']]],
   ['bind',['bind',['../classiRRAM_1_1FUNCTION.html#afd1e61219b43357091bedb974b068ace',1,'iRRAM::FUNCTION']]],
-  ['bit_5frange',['BIT_RANGE',['../namespaceiRRAM.html#a91fbe04aeae012df6523029373e43ed4',1,'iRRAM']]],
-  ['bit_5frange2',['BIT_RANGE2',['../namespaceiRRAM.html#ad47077d608649865ee88aec44da43ac9',1,'iRRAM']]],
+  ['bit_5frange',['BIT_RANGE',['../group__sizetype.html#ga91fbe04aeae012df6523029373e43ed4',1,'iRRAM']]],
+  ['bit_5frange2',['BIT_RANGE2',['../group__sizetype.html#gad47077d608649865ee88aec44da43ac9',1,'iRRAM']]],
   ['bits',['bits',['../structiRRAM__DYADIC.html#a5202f4b84ec25f2078dcaa4fdc92e3f4',1,'iRRAM_DYADIC']]],
   ['bits_5fper_5fmp_5flimb',['BITS_PER_MP_LIMB',['../MPFR__interface_8h.html#a1c885214898e92f78228f016c0fa7540',1,'MPFR_interface.h']]],
   ['body',['body',['../structint__gmp__sizetype.html#a599105a759c1c66769a3e4a951384834',1,'int_gmp_sizetype']]],

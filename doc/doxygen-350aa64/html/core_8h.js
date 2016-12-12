@@ -19,8 +19,6 @@ var core_8h =
       [ "relative", "core_8h.html#a64727c312132c35ab2781b1b49606cf2a99c483e1d11b1a279a2a1a3960528487", null ],
       [ "show", "core_8h.html#a64727c312132c35ab2781b1b49606cf2aa7dd12b1dab17d25467b0b0a4c8d4a92", null ]
     ] ],
-    [ "max3", "core_8h.html#a25b6df61c69b31887b3d3f4abd4b33e3", null ],
-    [ "max4", "core_8h.html#a5443fc222795e83e885d1256c70a4a64", null ],
     [ "resources", "core_8h.html#ab403fac4ada58233596feebff9f5988e", null ],
     [ "show_statistics", "core_8h.html#ace6b7638282c02f8c7dcfdfd8dc17cbd", null ]
 ];

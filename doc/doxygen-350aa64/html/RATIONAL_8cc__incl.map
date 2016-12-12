@@ -1,10 +1,10 @@
 <map id="src/RATIONAL.cc" name="src/RATIONAL.cc">
 <area shape="rect" id="node5" href="$RATIONAL_8h.html" title="iRRAM/RATIONAL.h" alt="" coords="265,80,411,107"/>
 <area shape="rect" id="node19" href="$INTEGER_8h.html" title="iRRAM/INTEGER.h" alt="" coords="436,80,576,107"/>
-<area shape="rect" id="node6" href="$core_8h.html" title="iRRAM/core.h" alt="" coords="285,155,391,181"/>
-<area shape="rect" id="node9" href="$common_8h.html" title="iRRAM/common.h" alt="" coords="399,229,530,256"/>
-<area shape="rect" id="node10" href="$version_8h.html" title="iRRAM/version.h" alt="" coords="278,453,401,480"/>
-<area shape="rect" id="node11" href="$MPFR__interface_8h.html" title="iRRAM/MPFR_interface.h" alt="" coords="377,304,552,331"/>
-<area shape="rect" id="node18" href="$errno_8h.html" title="iRRAM/errno.h" alt="" coords="577,304,686,331"/>
-<area shape="rect" id="node13" href="$GMP__intrat_8h.html" title="iRRAM/GMP_intrat.h" alt="" coords="470,379,617,405"/>
+<area shape="rect" id="node6" href="$core_8h.html" title="iRRAM/core.h" alt="" coords="317,155,423,181"/>
+<area shape="rect" id="node9" href="$common_8h.html" title="iRRAM/common.h" alt="" coords="431,229,562,256"/>
+<area shape="rect" id="node10" href="$version_8h.html" title="iRRAM/version.h" alt="" coords="310,453,433,480"/>
+<area shape="rect" id="node11" href="$MPFR__interface_8h.html" title="iRRAM/MPFR_interface.h" alt="" coords="409,304,584,331"/>
+<area shape="rect" id="node18" href="$errno_8h.html" title="iRRAM/errno.h" alt="" coords="609,304,718,331"/>
+<area shape="rect" id="node13" href="$GMP__intrat_8h.html" title="iRRAM/GMP_intrat.h" alt="" coords="502,379,649,405"/>
 </map>

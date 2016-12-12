@@ -2,9 +2,7 @@ var searchData=
 [
   ['mag',['mag',['../namespaceiRRAM.html#ae5f685dc5821bbb34763c336a104b0a3',1,'iRRAM']]],
   ['main',['main',['../iRRAM_8h.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'iRRAM.h']]],
-  ['max',['max',['../structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#a661a896233d08e65713f771d23aaeed0',1,'std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;::max()'],['../namespaceiRRAM.html#af31afae8cae5726b2d22e755969ea413',1,'iRRAM::max()']]],
-  ['max3',['max3',['../namespaceiRRAM.html#a25b6df61c69b31887b3d3f4abd4b33e3',1,'iRRAM']]],
-  ['max4',['max4',['../namespaceiRRAM.html#a5443fc222795e83e885d1256c70a4a64',1,'iRRAM']]],
+  ['max',['max',['../structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#a661a896233d08e65713f771d23aaeed0',1,'std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;::max()'],['../group__sizetype.html#gaf31afae8cae5726b2d22e755969ea413',1,'iRRAM::max()']]],
   ['maximum',['maximum',['../group__maths.html#ga2fe0b335df3af3caf42c4714c47782e3',1,'iRRAM']]],
   ['maxnorm',['maxnorm',['../namespaceiRRAM.html#afdf6429e6cc01dc1524323efc193343c',1,'iRRAM::maxnorm(const REALMATRIX &amp;x)'],['../namespaceiRRAM.html#a64870d9ad77028162af9ae4c5fd30751',1,'iRRAM::maxnorm(const SPARSEREALMATRIX &amp;x)']]],
   ['mid',['mid',['../namespaceiRRAM.html#a3947e4f21e3a0b5028bb23cf6e21c8cf',1,'iRRAM']]],

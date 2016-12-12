@@ -34,5 +34,5 @@ var searchData=
   ['gmp_5fmin',['GMP_min',['../MPFR__ext_8h.html#a46a1a3c726f5ada490f76f67672d8c50',1,'GMP_min():&#160;MPFR_ext.h'],['../GMP__intrat_8h.html#a46a1a3c726f5ada490f76f67672d8c50',1,'GMP_min():&#160;GMP_intrat.h']]],
   ['gmp_5frat_5fext_2ec',['GMP_rat_ext.c',['../GMP__rat__ext_8c.html',1,'']]],
   ['good',['good',['../classiRRAM_1_1orstream.html#ad67611ee38c03f0f8d2ce32338fb4bc3',1,'iRRAM::orstream::good()'],['../classiRRAM_1_1irstream.html#addd86540549037e06648f8101e8ba530',1,'iRRAM::irstream::good()']]],
-  ['guard_5fbits',['GUARD_BITS',['../namespaceiRRAM.html#aee8e9a930fe0b73e91e19b081d9fc280',1,'iRRAM']]]
+  ['guard_5fbits',['GUARD_BITS',['../group__sizetype.html#gaee8e9a930fe0b73e91e19b081d9fc280',1,'iRRAM']]]
 ];
