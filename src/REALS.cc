@@ -547,8 +547,6 @@ REAL REAL::mp_absval() const
 
 /*****************************************************/
 
-#ifdef MP_shift
-
 REAL scale(const REAL & x, int n)
 {
 	if (!x.value) {
@@ -565,37 +563,6 @@ REAL scale(const REAL & x, int n)
 	zerror = zerror << n;
 	return REAL(zvalue, zerror);
 }
-
-#else
-
-REAL scale(const REAL & x, int n)
-{
-	if (n == 0)
-		return x;
-	if (n == 1)
-		return 2 * x;
-	stiff code;
-	REAL y = 1;
-	REAL xc = 2;
-	if (n < 0) {
-		xc = y / 2;
-		n = -n;
-	}
-	if (n == 1) {
-		stiff_end();
-		return xc * x;
-	}
-	for (int k = n; k > 0; k = k / 2) {
-		if (k % 2 == 1)
-			y *= xc;
-		if (k == 1)
-			break;
-		xc *= xc;
-	}
-	return y * x;
-}
-
-#endif
 
 
 LAZY_BOOLEAN positive(const REAL & x, int k)

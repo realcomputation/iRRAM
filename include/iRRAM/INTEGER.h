@@ -190,8 +190,6 @@ inline INTEGER& INTEGER::operator = (const int y){
 }
 
 
-#ifdef MP_shift
-
 inline INTEGER scale(const INTEGER& x, const int n)
 {
 	MP_int_type zvalue;
@@ -200,26 +198,7 @@ inline INTEGER scale(const INTEGER& x, const int n)
 	return zvalue;
 }
 
-#else
 
-inline INTEGER scale(const INTEGER& x, const int n)
-{
-	if (n==0) return x;
-	if (n==1) return 2*x;
-	INTEGER y=1;
-	INTEGER xc=2;
-	if (n<0) {xc=y/2;n=-n;}
-	if (n==1) return xc*x;
-	for (int k=n;k>0;k=k/2)
-	{
-		if (k%2==1) y*=xc;
-		if (k==1) break;
-		xc*=xc;
-	}
-	return y*x;
-}
-
-#endif
 //****************************************************************************************
 // Returns the sign of INTEGER objects (-1/0/1): 
 // sign(i)= -1, iff i<0,   sign(i)=1 iff i>0,  and sign(0)=0

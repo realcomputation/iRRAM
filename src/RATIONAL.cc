@@ -146,35 +146,11 @@ int sign(const RATIONAL& x)
 // defines shifting function if none exists in the backend
 //****************************************************************************************
 
-#ifdef MP_shift
-
 RATIONAL scale(RATIONAL x, int n)
 {
 	MP_rat_shift(x.value,x.value,n);
 	return x;
 }
-
-#else
-
-RATIONAL scale(RATIONAL x, int n)
-{
-	if (n==0) return x;
-	if (n==1) { x *= 2; return x; }
-	RATIONAL y=1;
-	RATIONAL xc=2;
-	if (n<0) {xc=y/2;n=-n;}
-	if (n==1) { xc *= x; return xc; }
-	for (int k=n;k>0;k=k/2)
-	{
-		if (k%2==1) y*=xc;
-		if (k==1) break;
-		xc*=xc;
-	}
-	y *= x;
-	return y;
-}
-
-#endif
 
 
 //*********************************************************************/

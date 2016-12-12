@@ -93,20 +93,12 @@ DYADIC DIV (const DYADIC& x, const DYADIC& y,const int p) {
 
 
 
-#ifdef MP_shift
 DYADIC scale(const DYADIC& x, const int n) {
   MP_type zvalue;
   MP_init(zvalue);
   MP_shift(x.value,zvalue,n);
   return DYADIC(zvalue);
 }
-#else
-DYADIC scale(const DYADIC& x, int n) {
- exit(1);
-//#error this can not be compiled
-//#error the implementation is missing for this backend
-}
-#endif
 
 
 DYADIC& DYADIC::operator = (const DYADIC& y) {

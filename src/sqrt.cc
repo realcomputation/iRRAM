@@ -69,9 +69,8 @@ static REAL sqrt_approx(int prec, const REAL & x)
 }
 
 REAL sqrt(const REAL & x) { return limit(sqrt_approx, x); }
-#else
 
-#ifdef MP_mv_sqrt
+#else /* !OLDSQRT */
 
 REAL sqrt(const REAL & x)
 {
@@ -104,33 +103,6 @@ REAL sqrt(const REAL & x)
 	// printf("%d*2^%d\n",zerror.mantissa,zerror.exponent);
 	return REAL(zvalue, zerror);
 }
-
-#else
-
-static REAL gen_sqrt_approx(int k, const REAL & x)
-{
-	REAL a = 1, b = x / a;
-	do {
-		a = (a + b) / 2;
-		b = x / a;
-	} while (!bound(a - b, k));
-	return a;
-}
-#define SQRT_APPROX gen_sqrt_approx
-
-static REAL sqrt_approx(int prec, const REAL & x)
-{
-	if (bound(x, 2 * prec))
-		return 0;
-	int s2 = size(x) / 2;
-	REAL y = scale(x, -s2 * 2);
-	y = lipschitz(SQRT_APPROX, 2, prec - s2, y);
-	return scale(y, s2);
-}
-
-REAL sqrt(const REAL & x) { return limit(sqrt_approx, x); }
 #endif
 
 } // namespace iRRAM
-
-#endif
