@@ -133,12 +133,12 @@ REAL REAL::mp_addition(const REAL & y) const
 	sizetype zerror;
 	int local_prec;
 	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max3(y.error.exponent, this->error.exponent,
-		                  state.ACTUAL_STACK.actual_prec);
+		local_prec = max({y.error.exponent, this->error.exponent,
+		                  state.ACTUAL_STACK.actual_prec});
 	else {
 		local_prec = max(this->vsize.exponent, y.vsize.exponent);
-		local_prec = max3(y.error.exponent, this->error.exponent,
-		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec);
+		local_prec = max({y.error.exponent, this->error.exponent,
+		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec});
 	}
 	MP_init(zvalue);
 	MP_mv_add(this->value, y.value, zvalue, local_prec);
@@ -174,12 +174,12 @@ REAL & REAL::mp_eqaddition(const REAL & y)
 	MP_type zvalue;
 	int local_prec;
 	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max3(y.error.exponent, this->error.exponent,
-		                  state.ACTUAL_STACK.actual_prec);
+		local_prec = max({y.error.exponent, this->error.exponent,
+		                  state.ACTUAL_STACK.actual_prec});
 	else {
 		local_prec = max(this->vsize.exponent, y.vsize.exponent);
-		local_prec = max3(y.error.exponent, this->error.exponent,
-		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec);
+		local_prec = max({y.error.exponent, this->error.exponent,
+		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec});
 	}
 	MP_init(zvalue);
 	MP_mv_add(this->value, y.value, zvalue, local_prec);
@@ -315,12 +315,12 @@ REAL REAL::mp_subtraction(const REAL & y) const
 	sizetype zerror;
 	int local_prec;
 	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max3(y.error.exponent, this->error.exponent,
-		                  state.ACTUAL_STACK.actual_prec);
+		local_prec = max({y.error.exponent, this->error.exponent,
+		                  state.ACTUAL_STACK.actual_prec});
 	else {
 		local_prec = max(this->vsize.exponent, y.vsize.exponent);
-		local_prec = max3(y.error.exponent, this->error.exponent,
-		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec);
+		local_prec = max({y.error.exponent, this->error.exponent,
+		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec});
 	}
 	MP_init(zvalue);
 	MP_mv_sub(this->value, y.value, zvalue, local_prec);
@@ -530,10 +530,10 @@ REAL REAL::mp_absval() const
 // 
 //   MP_type zvalue; sizetype zerror; int local_prec;
 //   if (ACTUAL_STACK.prec_policy == 0)
-//   local_prec=max3(y.error.exponent,this->error.exponent,ACTUAL_STACK.actual_prec);
+//   local_prec=max({y.error.exponent,this->error.exponent,ACTUAL_STACK.actual_prec});
 //   else {
 //   local_prec=max(this->vsize.exponent,y.vsize.exponent);
-//   local_prec=max3(y.error.exponent,this->error.exponent,local_prec-50+ACTUAL_STACK.actual_prec);
+//   local_prec=max({y.error.exponent,this->error.exponent,local_prec-50+ACTUAL_STACK.actual_prec});
 //   }
 //   MP_init(zvalue);
 //   MP_mv_add(this->value,y.value,zvalue,local_prec);

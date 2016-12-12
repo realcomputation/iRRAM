@@ -223,7 +223,7 @@ inline void sizetype_inc_one(sizetype& x,const SIZETYPEEXPONENT zexp)
 
 inline void sizetype_inc2(sizetype& x,const sizetype& y,const sizetype& z)
 { SIZETYPEEXPONENT exponent;
-  exponent=max3(x.exponent,y.exponent,z.exponent);
+  exponent=max({x.exponent,y.exponent,z.exponent});
   x.mantissa=scale(x.mantissa,(exponent-x.exponent))
             +scale(y.mantissa,(exponent-y.exponent))
             +scale(z.mantissa,(exponent-z.exponent)) +2 ;

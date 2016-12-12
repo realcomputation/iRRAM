@@ -36,11 +36,6 @@ namespace iRRAM {
 using std::min;
 using std::max;
 
-inline int max3(const int a,const int b,const int c)
-   { return max(max(a,b),c); }
-inline int max4(const int a,const int b,const int c,const int d)
-   { return max(max(a,b),max(c,d)); }
-
 template <typename M,typename E>
 struct generic_sizetype {
 	typedef M mantissa_t;
