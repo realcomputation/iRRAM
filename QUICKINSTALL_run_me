@@ -185,15 +185,14 @@ Giving up....
     mkdir -p $INST/include
     cd $BASEDIR/$GMP_DIR
     make clean 2> /dev/null
-    ./configure $GMPOPTIONS $OPTIONS --prefix=$INST $VERBOSE
-    make
-    make check
-    if ( ! make install) 
-    then
+    ./configure $GMPOPTIONS $OPTIONS --prefix=$INST $VERBOSE &&
+    make &&
+    make check &&
+    make install || {
       echo "Errors during configuration/compilation/installion of $GMP_SRC..."
       echo "Giving up...."
-      exit
-    fi
+      exit 1
+    }
     cd ..
     rm -r $BASEDIR/$GMP_DIR
   fi # end of GMP compilation
@@ -325,14 +324,13 @@ Giving up....
 
     cd $BASEDIR/$MPFR_DIR
     make clean 2> /dev/null
-    ./configure  $MPFROPTIONS $OPTIONS --with-gmp-include="${GMP_H_DIR}" --with-gmp-lib="${LIBGMPDIR}" --prefix="${INST}" $VERBOSE
-    make
-    if ( ! make install) 
-     then
+    ./configure  $MPFROPTIONS $OPTIONS --with-gmp-include="${GMP_H_DIR}" --with-gmp-lib="${LIBGMPDIR}" --prefix="${INST}" $VERBOSE &&
+    make &&
+    make install || {
       echo "Errors during configuration/compilation/installion of $MPFR_SRC..."
       echo "Giving up...."
-      exit
-    fi
+      exit 1
+    }
     cd ..
     rm -r $BASEDIR/$MPFR_DIR
   fi # end of MPFR compilation
@@ -417,7 +415,11 @@ fi
 if [ "$error_code" == "101" ]; then 
   echo -e "\nSorry, configuring iRRAM failed because of missing or unusable MPFR\n"
   exit 1
-fi 
+fi
+if [ $error_code -ne 0 ]; then
+  echo -e "\nSorry, configuring iRRAM failed, check config.log\n"
+  exit 1
+fi
 
 make $make_params ; error_code=$? 
 if [ "$error_code" == "0" ] ; then
