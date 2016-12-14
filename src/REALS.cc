@@ -856,6 +856,49 @@ REAL::REAL(const INTEGER & y)
 	MP_getsize(value, vsize);
 }
 
+REAL strtoREAL2(const char *s, char **endptr)
+{
+	const char *t = s;
+	const char *int_start, *int_end;
+	const char *frac_start, *frac_end;
+	int frac_zeroes = 0;
+
+	while (isblank(*t)) t++;
+	if (*t == '+' || *t == '-') t++;
+	while (*t == '0') t++;
+	int_start = t;
+	while ('0' <= *t && *t <= '9') t++;
+	int_end = t;
+
+	if (*t == '.') t++;
+	frac_start = t;
+	while (*t == '0') { frac_zeroes++; t++; }
+	while ('0' <= *t && *t <= '9') t++;
+	frac_end = t;
+	while (frac_end > frac_start && frac_end[-1] == '0') frac_end--;
+
+	long exp = 0;
+	if (*t == 'e' || *t == 'E')
+		exp = std::strtol(t+1, endptr, 10);
+
+	/* d[k] ... d[0] . d[-1] .. d[-n] */
+
+	stiff code;
+
+	int k = (int)(int_end - int_start) - 1;
+	int n = frac_end - frac_start;
+	int local_prec = state.ACTUAL_STACK.actual_prec;
+	int q = ((k + 1 - (k<0?frac_zeroes:0) + exp)*10+2)/3 - local_prec;
+
+	MP_type value;
+	MP_init(value);
+	mpfr_set_prec(value, max(10, q+1));
+	int r = mpfr_strtofr(value, s, endptr, 10, MPFR_RNDN);
+	ext_mpfr_remove_trailing_zeroes(value);
+
+	return REAL(value, r ? sizetype_power2(local_prec) : sizetype_exact());
+}
+
 REAL strtoREAL(const char* s, char** endptr){
   stiff code;
   int exp=0;

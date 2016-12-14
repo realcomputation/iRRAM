@@ -427,6 +427,8 @@ inline void sizetype_exact(sizetype& x)
   x.mantissa=0;
 }
 
+inline constexpr sizetype sizetype_exact() { return { 0, min_exponent }; }
+
 /*!
  * \brief Tests whether y<z. If y=z the result is allowed to be true OR false!
  *

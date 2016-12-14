@@ -250,6 +250,7 @@ friend REAL lipschitz (REAL f(const REAL&),
                        const REAL& x);
 
 friend void swap(REAL &, REAL &) noexcept;
+friend REAL strtoREAL2(const char *s, char **endptr);
 
 // implementational issues: --------------------
 private:
@@ -317,6 +318,7 @@ int module(REAL (*f)(const REAL&),const REAL& x, int p);
 
 REAL strtoREAL(const char* s, char** endptr);
 REAL atoREAL(const char* s);
+REAL strtoREAL2(const char *s, char **endptr);
 
 inline REAL round2(const REAL& x) { return REAL(x.as_INTEGER()); }
 inline int  round (const REAL& x) { return int (x.as_INTEGER()); }
