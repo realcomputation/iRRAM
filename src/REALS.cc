@@ -239,6 +239,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 		} else {
 			erg = MP_swrite(x.value, width);
 		}
+		break;
 	}
 	case float_form::relative: {
 		int p;
@@ -277,6 +278,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 			REITERATE(p - x.error.exponent);
 		}
 		erg = MP_swrite(x.value, width);
+		break;
 	}
 	case float_form::show: {
 		int mantissa = (int)(int((MP_size(x.value) - x.error.exponent -
@@ -299,6 +301,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 			erg[width] = 0;
 			free(erg2);
 		}
+		break;
 	}
 	}
 
