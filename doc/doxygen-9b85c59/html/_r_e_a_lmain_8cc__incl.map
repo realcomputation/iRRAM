@@ -1,9 +1,0 @@
-<map id="src/REALmain.cc" name="src/REALmain.cc">
-<area shape="rect" id="node7" href="$core_8h.html" title="iRRAM/core.h" alt="" coords="442,80,551,107"/>
-<area shape="rect" id="node10" href="$common_8h.html" title="iRRAM/common.h" alt="" coords="429,155,564,181"/>
-<area shape="rect" id="node19" href="$errno_8h.html" title="iRRAM/errno.h" alt="" coords="589,155,703,181"/>
-<area shape="rect" id="node20" href="$_s_t_r_e_a_m_s_8h.html" title="iRRAM/STREAMS.h" alt="" coords="748,155,896,181"/>
-<area shape="rect" id="node11" href="$version_8h.html" title="iRRAM/version.h" alt="" coords="304,379,431,405"/>
-<area shape="rect" id="node12" href="$_m_p_f_r__interface_8h.html" title="iRRAM/MPFR_interface.h" alt="" coords="405,229,588,256"/>
-<area shape="rect" id="node14" href="$_g_m_p__intrat_8h.html" title="iRRAM/GMP_intrat.h" alt="" coords="499,304,652,331"/>
-</map>

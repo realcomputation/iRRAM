@@ -611,7 +611,7 @@ Related Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01076">1076</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01078">1078</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
 </div>
 </div>
@@ -631,7 +631,7 @@ Related Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01071">1071</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01073">1073</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
 </div>
 </div>
@@ -650,7 +650,7 @@ Related Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01073">1073</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01075">1075</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
 </div>
 </div>
@@ -1691,7 +1691,7 @@ Related Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01088">1088</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01090">1090</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
 </div>
 </div>
@@ -2711,8 +2711,9 @@ template&lt;typename A , typename B &gt; </div>
 <li>W = optional whitespace; it is discarded</li>
 <li>S = optional sign</li>
 <li>D = optional string of digits <code>0</code>..<code>9</code></li>
-<li>F = optional <code>.</code> followed by optional string of digits <code>0</code>..<code>9</code></li>
-<li>E = optional: <code>e</code> or <code>E</code> followed by an optional sign followed by a string of digits <code>0</code>..<code>9</code> </li>
+<li>F = optional: <code>.</code> followed by optional string of digits <code>0</code>..<code>9</code></li>
+<li>E = optional: <code>e</code> or <code>E</code> followed by an optional sign followed by a string of digits <code>0</code>..<code>9</code></li>
+<li>DF must be non-empty and not just contain <code>.</code> </li>
 </ul>
 </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">endptr</td><td>when non-NULL, the pointer to the end of the represented number is stored in <code>*endptr</code> </td></tr>
@@ -2726,9 +2727,9 @@ template&lt;typename A , typename B &gt; </div>
  Now, MPFR's mpfr_strtofr() guarantees for the exact input \(2^qx&#39;=:2^{\overline q}\overline b\) with \(\overline b\in[2^{-1};1)\) that the error is \(|2^{\overline q}\overline b-2^cb|&lt;2^{\overline q-m}\), therefore <p class="formulaDsp">
 \[(*)=|2^qx&#39;-2^{\overline q}\overline b+2^{\overline q}\overline b-2^cb| &lt;|2^qx&#39;-2^{\overline q}\overline b|+2^{\overline q-m}=2^{\overline q-m} \]
 </p>
- Since \(2^q/10\leq 2^qx&#39;=2^{\overline q}\overline b&lt;2^{\overline q}\), \((*)&lt;2^p\) when \(m&gt;\overline q-p&gt;q-\log_2(10)-p\). The exact precision \(\geq m\) is \(\max(10,m&#39;)\) where \(m&#39;=1+\begin{cases} 1&amp;z=k+n+1\\ \lfloor((g+k-z)\cdot 10+2)/3\rfloor-p&amp;\text{otherwise} \end{cases}\) </dd></dl>
+ Since \(2^{\overline q}/2\leq 2^{\overline q}\overline b=2^qx&#39;&lt;2^q\), the error is bounded, \((*)&lt;2^p\), when \(\overline q-p&lt;q+1-p&lt;\underbrace{\lceil(g+k-z+1)\log_2(10)\rceil+1-p}_{\leq m&#39;}\leq m\). The exact precision is \(\max(10,m&#39;)\) where \(m&#39;=1+\begin{cases} 1&amp;z=k+n+1\\ \lfloor((g+k-z+1)\cdot 10+2)/3+1\rfloor-p&amp;\text{otherwise} \end{cases}\) </dd></dl>
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00904">904</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00906">906</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
 </div>
 </div>
@@ -2852,7 +2853,7 @@ template&lt;typename A , typename B &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceiRRAM.html">iRRAM</a></li><li class="navelem"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a></li>
-    <li class="footer">Generated on Sun Dec 18 2016 13:52:09 for iRRAM by
+    <li class="footer">Generated on Sun Dec 18 2016 14:43:11 for iRRAM by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>
