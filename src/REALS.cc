@@ -856,47 +856,102 @@ REAL::REAL(const INTEGER & y)
 	MP_getsize(value, vsize);
 }
 
+/*! \brief Converts a base-10 string in scientific notation to \ref REAL.
+ *
+ * If \f$p\f$ is the current working precision of iRRAM, \f$k\f$ the number of
+ * digits in the integer part, \f$z\f$ the number of leading zero-digits
+ * (including the fractional part) and \f$g\f$ the exponent, and the represented
+ * value is not zero, then the result has a relative precision of roughly
+ * \f$(g+k-z)\log_2(10)-p\f$ bits, which corresponds to an absolute accuracy of
+ * \f$2^p\f$.
+ *
+ * \param[in] s pointer to base-10 string; format: WSDFE where
+ *              * W = optional whitespace; it is discarded
+ *              * S = optional sign
+ *              * D = optional string of digits `0`..`9`
+ *              * F = optional `.` followed by optional string of digits
+ *                `0`..`9`
+ *              * E = optional: `e` or `E` followed by an optional sign
+ *                followed by a string of digits `0`..`9`
+ * \param[out] endptr when non-NULL, the pointer to the end of the represented
+ *                    number is stored in `*endptr`
+ * \return a REAL object accurate to the current working precision.
+ * 
+ * \par Proof
+ * The precision depends only on DF and E; let \f$x_k\ldots x_{-n}=DF[1..|F|]\f$
+ * and \f$z\in\mathbb N:x[1..z]=\texttt 0^z\f$. To represent zero up to any
+ * accuracy, only 1 bit is required. So let \f$x\neq0\f$ and \f$b\cdot2^c\f$
+ * with \f$b\in[2^{-1};1)\f$ be the result. Then the error is
+ * \f[ (*)=|10^g\sum_{i=-n}^{k-z} x_i\cdot 10^i-2^cb|
+ *    =|2^{\overbrace{(g+k-z+1)\log_2(10)}^{=:q}}
+ *     \underbrace{\sum_{i=-n-(k-z+1)}^{-1}x_{i+k-z+1}\cdot10^i}_{=:x'\in[10^{-1};1)}
+ *    -2^cb|
+ * \f]
+ * Now, MPFR's mpfr_strtofr() guarantees for the exact input
+ * \f$2^qx'=:2^{\overline q}\overline b\f$ with \f$\overline b\in[2^{-1};1)\f$
+ * that the error is
+ * \f$|2^{\overline q}\overline b-2^cb|<2^{\overline q-m}\f$, therefore
+ * \f[(*)=|2^qx'-2^{\overline q}\overline b+2^{\overline q}\overline b-2^cb|
+ *       <|2^qx'-2^{\overline q}\overline b|+2^{\overline q-m}=2^{\overline q-m}
+ * \f]
+ * Since \f$2^q/10\leq 2^qx'=2^{\overline q}\overline b<2^{\overline q}\f$,
+ * \f$(*)<2^p\f$ when \f$m>\overline q-p>q-\log_2(10)-p\f$. The exact precision
+ * \f$\geq m\f$ is \f$\max(10,m')\f$ where \f$m'=1+\begin{cases}
+ *  1&z=k+n+1\\
+ *  \lfloor((g+k-z)\cdot 10+2)/3\rfloor-p&\text{otherwise}
+ * \end{cases}\f$
+ */
 REAL strtoREAL2(const char *s, char **endptr)
 {
 	const char *t = s;
-	const char *int_start, *int_end;
-	const char *frac_start, *frac_end;
-	int frac_zeroes = 0;
+	const char *dk, *d0, *f1, *fn;
+	int k, z = 0, n;
+	long g = 0;
 
 	while (isblank(*t)) t++;
 	if (*t == '+' || *t == '-') t++;
-	while (*t == '0') t++;
-	int_start = t;
-	while ('0' <= *t && *t <= '9') t++;
-	int_end = t;
 
+	dk = t;
+	while (*t == '0') { z++; t++; }
+	while ('0' <= *t && *t <= '9') t++;
+	d0 = t-1;
+	k = d0 - dk;
 	if (*t == '.') t++;
-	frac_start = t;
-	while (*t == '0') { frac_zeroes++; t++; }
+	f1 = t;
+	if (z > k) while (*t == '0') { z++; t++; }
 	while ('0' <= *t && *t <= '9') t++;
-	frac_end = t;
-	while (frac_end > frac_start && frac_end[-1] == '0') frac_end--;
+	fn = t-1;
+	n = fn - f1 + 1;
 
-	long exp = 0;
 	if (*t == 'e' || *t == 'E')
-		exp = std::strtol(t+1, endptr, 10);
+		g = strtol(t+1, (char **)&t, 10);
 
-	/* d[k] ... d[0] . d[-1] .. d[-n] */
+	/* d[k] ... d[0] . f[-1] .. f[-n] */
 
 	stiff code;
 
-	int k = (int)(int_end - int_start) - 1;
-	int n = frac_end - frac_start;
-	int local_prec = state.ACTUAL_STACK.actual_prec;
-	int q = ((k + 1 - (k<0?frac_zeroes:0) + exp)*10+2)/3 - local_prec;
+	int p = state.ACTUAL_STACK.actual_prec;
+	int m = z < k+n+1
+	      ? /* at least one non-zero digit */
+	        ((g+k-z)*10+2)/3 - p /* (g+k-z)*log_2(10) - p */
+	      : 1;
+
+	iRRAM_DEBUG2(2,"strtoREAL2(%s): k: %d, n: %d, z: %d, g: %ld, p: %d, m: %d\n",
+	             s, k, n, z, g, p, m);
+
+	char *mpfr_endptr;
 
 	MP_type value;
 	MP_init(value);
-	mpfr_set_prec(value, max(10, q+1));
-	int r = mpfr_strtofr(value, s, endptr, 10, MPFR_RNDN);
+	mpfr_set_prec(value, max(10, m+1));
+	int r = mpfr_strtofr(value, s, &mpfr_endptr, 10, MPFR_RNDN);
 	ext_mpfr_remove_trailing_zeroes(value);
 
-	return REAL(value, r ? sizetype_power2(local_prec) : sizetype_exact());
+	assert(mpfr_endptr == t);
+	if (endptr)
+		*endptr = (char *)t;
+
+	return REAL(value, r ? sizetype_power2(p) : sizetype_exact());
 }
 
 REAL strtoREAL(const char* s, char** endptr){
@@ -1030,7 +1085,7 @@ double REAL::as_double(const int p) const
 /*****************************************/
 // module function (will be a template later...)
 
-int module(REAL f(const REAL&),const REAL& x, int p){
+int module(REAL (*f)(const REAL&),const REAL& x, int p){
 // Semantics: If m=module(f,x,p), then
 //    |x-z| <=2^m implies  |f(x)-f(z)| <= 2^p 
 
