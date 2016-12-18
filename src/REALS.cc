@@ -51,7 +51,7 @@ void REAL::mp_make_mp()
 		if (!value)
 			MP_init(value);
 		MP_double_to_mp(dp.lower_pos, value);
-		error = sizetype_power2(MP_min);
+		error = sizetype_exact();
 	} else {
 		// now we know that it is not a point interval:
 		MP_init(value);
@@ -72,12 +72,12 @@ void REAL::mp_make_mp()
 		// small as reasonable
 		double rwidth = (dp.upper_neg + dp.lower_pos);
 		int e;
-		unsigned m = (unsigned)(1073741824 * frexp(-rwidth, &e)) + 2;
+		unsigned m = (unsigned)ldexp(frexp(-rwidth, &e), 30) + 2;
 		// Here, the "+2" accounts for the possible truncation error and
-		// the error on the computation of cvalue. The factor 1073741824
-		// is 2^30
+		// the error on the computation of cvalue.
+		/* round to -\infty => dp.upper-dp.lower <= -rwidth <= m*2^(e-30) */
 		// So we have that the interval (dp.lower,dp.upper) is a subset
-		// of the interval (cvalue - m*2^(e+29),cvalue + m*2^(e+29))
+		// of the interval (cvalue - m*2^(e-29),cvalue + m*2^(e-29))
 		error = sizetype_normalize({m, e - 29});
 	}
 	MP_getsize(value, vsize);
