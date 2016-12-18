@@ -869,10 +869,11 @@ REAL::REAL(const INTEGER & y)
  *              * W = optional whitespace; it is discarded
  *              * S = optional sign
  *              * D = optional string of digits `0`..`9`
- *              * F = optional `.` followed by optional string of digits
+ *              * F = optional: `.` followed by optional string of digits
  *                `0`..`9`
  *              * E = optional: `e` or `E` followed by an optional sign
  *                followed by a string of digits `0`..`9`
+ *              * DF must be non-empty and not just contain `.`
  * \param[out] endptr when non-NULL, the pointer to the end of the represented
  *                    number is stored in `*endptr`
  * \return a REAL object accurate to the current working precision.
@@ -894,11 +895,12 @@ REAL::REAL(const INTEGER & y)
  * \f[(*)=|2^qx'-2^{\overline q}\overline b+2^{\overline q}\overline b-2^cb|
  *       <|2^qx'-2^{\overline q}\overline b|+2^{\overline q-m}=2^{\overline q-m}
  * \f]
- * Since \f$2^q/10\leq 2^qx'=2^{\overline q}\overline b<2^{\overline q}\f$,
- * \f$(*)<2^p\f$ when \f$m>\overline q-p>q-\log_2(10)-p\f$. The exact precision
- * \f$\geq m\f$ is \f$\max(10,m')\f$ where \f$m'=1+\begin{cases}
+ * Since \f$2^{\overline q}/2\leq 2^{\overline q}\overline b=2^qx'<2^q\f$,
+ * the error is bounded, \f$(*)<2^p\f$, when
+ * \f$\overline q-p<q+1-p<\underbrace{\lceil(g+k-z+1)\log_2(10)\rceil+1-p}_{\leq m'}\leq m\f$.
+ * The exact precision is \f$\max(10,m')\f$ where \f$m'=1+\begin{cases}
  *  1&z=k+n+1\\
- *  \lfloor((g+k-z)\cdot 10+2)/3\rfloor-p&\text{otherwise}
+ *  \lfloor((g+k-z+1)\cdot 10+2)/3+1\rfloor-p&\text{otherwise}
  * \end{cases}\f$
  */
 REAL strtoREAL2(const char *s, char **endptr)
@@ -933,7 +935,7 @@ REAL strtoREAL2(const char *s, char **endptr)
 	int p = state.ACTUAL_STACK.actual_prec;
 	int m = z < k+n+1
 	      ? /* at least one non-zero digit */
-	        ((g+k-z)*10+2)/3 - p /* (g+k-z)*log_2(10) - p */
+	        ((g+k-z+1)*10+2)/3+1 - p /* (g+k-z+1)*log_2(10)+1 - p */
 	      : 1;
 
 	iRRAM_DEBUG2(2,"strtoREAL2(%s): k: %d, n: %d, z: %d, g: %ld, p: %d, m: %d\n",
