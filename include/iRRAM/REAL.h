@@ -254,12 +254,53 @@ friend REAL strtoREAL2(const char *s, char **endptr);
 
 // implementational issues: --------------------
 public:
-	/*! \invariant `value == NULL` => `dp.lower_pos` <= x <= `-dp.upper_neg` */
+	/*!
+	 * \brief Closed `double` interval containg x.
+	 *
+	 * Let this REAL object denote \f$x\in\mathbb R\f$, then in this
+	 * documentation `dp.lower_pos` is denoted as \f$x_L\f$, `dp.upper_neg`
+	 * is denoted as \f$x_{-U}\f$ and likewise `-dp.upper_neg` is \f$x_U\f$.
+	 * This way of approximating reals is only used in the \ref Iteration
+	 * with `actual_step == 1`.
+	 *
+	 * \invariant `value == NULL` \f$\Longrightarrow x_L\leq x\leq x_U\f$.
+	 */
 	double_pair   dp;
+
+	/*!
+	 * \brief Center of the current interval containing the real value x.
+	 *
+	 * Let this REAL object denote \f$x\in\mathbb R\f$, then in this
+	 * documentation `value` is referred to as \f$x_c\f$. It may differ from
+	 * one \ref Iteration to the next.
+	 *
+	 * \invariant `value != NULL`
+	 * \f$\Longrightarrow|x-x_c|\leq x_\varepsilon\f$
+	 */
 	MP_type       value;
-	/*! \invariant `value != NULL` => `error` is an upper bound on |x-`value`| */
+
+	/*!
+	 * \brief Radius of the current interval containing the real value x.
+	 *
+	 * Let this REAL object denote \f$x\in\mathbb R\f$, then in this
+	 * documentation `error` is referred to as \f$x_\varepsilon\f$. It may
+	 * very well differ from one \ref Iteration to the next.
+	 *
+	 * \invariant `value != NULL`
+	 * \f$\Longrightarrow|x-x_c|\leq x_\varepsilon\f$ */
 	sizetype      error;
-	/*! \invariant `value != NULL` \f$\Rightarrow\texttt{vsize}=m\cdot2^e:(m-1)\cdot2^e\leq|\texttt{value}|<m\cdot2^e\f$ */
+
+	/*!
+	 * \brief Tight \ref sizetype typed approximation to `value`.
+	 *
+	 * Let this REAL object denote \f$x\in\mathbb R\f$, then in this
+	 * documentation `vsize` is referred to as \f$\hat x\f$. It may differ
+	 * from one \ref Iteration to the next.
+	 *
+	 * \invariant `value != NULL`
+	 * \f$\Longrightarrow\texttt{vsize}=m\cdot2^e:(m-1)\cdot2^e
+	 *                                 \leq|x_c|<m\cdot2^e\f$
+	 */
 	sizetype      vsize;
 
 public:

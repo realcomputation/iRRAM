@@ -587,12 +587,25 @@ LAZY_BOOLEAN positive(const REAL & x, int k)
 	return erg;
 }
 
+/*!
+ * \brief Computes a dyadic approximation to \a x that is accurate to 2^p.
+ *
+ * This is a multi-valued function.
+ *
+ * Reiteration is used to ensure \f$x_\varepsilon\leq2^{p+1}\f$. The computed
+ * value at least as precise as \f$x_c\f$ rounded to a multiple of
+ * \f$2^{p-1}\f$.
+ *
+ * \param x the real number to approximate
+ * \param p accuracy
+ * \return a dyadic approximation q that satisfies |x-q|<2^p.
+ * \exception Iteration when \f$2^{p+1}<x_\varepsilon\f$
+ * \sa REITERATE
+ */
 DYADIC approx(const REAL & x, const int p)
 {
-	if (!x.value) {
-		REAL y(x);
-		return approx(y.mp_conv(), p);
-	}
+	if (!x.value)
+		return approx(REAL(x).mp_conv(), p);
 	MP_type result;
 	MP_type erg;
 	if ((state.ACTUAL_STACK.inlimit == 0) &&
@@ -601,9 +614,7 @@ DYADIC approx(const REAL & x, const int p)
 		return DYADIC(erg);
 	}
 
-	sizetype psize;
-	sizetype_set(psize, 1, p + 1);
-	if (sizetype_less(psize, x.error)) {
+	if (sizetype_less(sizetype_power2(p + 1), x.error)) {
 		iRRAM_DEBUG2(1,
 		             "insufficient precision %d*2^(%d) in approx(%d)\n",
 		             x.error.mantissa, x.error.exponent, p);
