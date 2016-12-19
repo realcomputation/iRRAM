@@ -253,10 +253,13 @@ friend void swap(REAL &, REAL &) noexcept;
 friend REAL strtoREAL2(const char *s, char **endptr);
 
 // implementational issues: --------------------
-private:
+public:
+	/*! \invariant `value == NULL` => `dp.lower_pos` <= x <= `-dp.upper_neg` */
 	double_pair   dp;
 	MP_type       value;
+	/*! \invariant `value != NULL` => `error` is an upper bound on |x-`value`| */
 	sizetype      error;
+	/*! \invariant `value != NULL` \f$\Rightarrow\texttt{vsize}=m\cdot2^e:(m-1)\cdot2^e\leq|\texttt{value}|<m\cdot2^e\f$ */
 	sizetype      vsize;
 
 public:

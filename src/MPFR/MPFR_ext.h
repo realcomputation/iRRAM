@@ -118,6 +118,15 @@ if ( MPFR_NOTZERO(z) ) return MPFR_EXP(z);
 else return GMP_min;
 }
 
+/*!
+ * From the multiple precicion representation of a dyadic number \f$z\f$ extract
+ * \f$m\in\mathbb N,e\in\mathbb Z:(m-1)\cdot2^e\leq|z|<m\cdot2^e\f$.
+ * Additionally, \f$z=0\iff m=0\f$.
+ *
+ * \param [in]  z
+ * \param [out] s pointer to a \ref sizetype which gets assigned a value
+ *                \f$m\cdot2^e\f$ bounding \f$|z|\f$
+ */
 iRRAM_STATIC inline void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s)
 {
   int zn=MPFR_MSW_INDEX(z);
@@ -125,9 +134,11 @@ iRRAM_STATIC inline void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s)
 #if BITS_PER_MP_LIMB == 32
     s->mantissa=( ((z->_mpfr_d)[zn]) >> 1 ) + 1;
     s->exponent=MPFR_EXP(z)-BITS_PER_MP_LIMB+1;
-#else  
+#elif BITS_PER_MP_LIMB == 64
     s->mantissa=( ((z->_mpfr_d)[zn]) >> (BITS_PER_MP_LIMB/2+1) ) + 1;
     s->exponent=MPFR_EXP(z)- (BITS_PER_MP_LIMB/2) +1;
+#else
+# error unable to handle BITS_PER_MP_LIMP != 32 and != 64
 #endif
   } else {
     s->mantissa=0;
