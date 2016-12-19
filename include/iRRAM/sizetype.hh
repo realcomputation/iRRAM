@@ -27,6 +27,7 @@
 
 #include <limits>
 #include <cmath>
+#include <cassert>
 
 #include <iRRAM/core.h>
 #include <iRRAM/STREAMS.h> /* iRRAM_DEBUG* */
@@ -181,6 +182,8 @@ inline void sizetype_add_one(sizetype& x, const sizetype& y, typename sizetype::
  * \param [in]     zexp
  */
 inline void sizetype_inc_one(sizetype& x, typename sizetype::exponent_t zexp)
+/*! \bug does not compute what the description says when
+ *       `zexp + 32 > x.exponent > zexp` */
 {
   if ( x.exponent > zexp) {
     x.mantissa ++ ;
@@ -454,6 +457,25 @@ inline void sizetype_half(sizetype& x,const sizetype& y)
 {
   x.exponent=y.exponent-1;
   x.mantissa=y.mantissa;
+}
+
+/*!
+ * \brief Computes the integer approximation to the base-2 logarithm rounded
+ *        towards positive infinity.
+ * \param [in] x normalized value
+ * \return \f$\lceil\log_2(x)\rceil\f$ for \f$x\neq0\f$;
+ *         \ref min_exponent otherwise
+ */
+inline int sizetype_log2(const sizetype &x)
+{
+	int r;
+	typename sizetype::mantissa_t v = x.mantissa;
+	if (!v)
+		return min_exponent;
+	r  = CHAR_BIT * sizeof(v) - clz(v) - 1;
+	r += (v & (v-1)) != 0;                  /* ceil(log2(v)) */
+	r += x.exponent;
+	return r;
 }
 
 /************************ the following functions are unchecked for over/underflow ***************/

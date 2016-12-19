@@ -33,6 +33,30 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
+/*!
+ * \brief Computes the number of leading zeros of its integral argument.
+ * \param x integer
+ * \return Number of leading zero bits of x, also when `x == 0`.
+ */
+template <typename T>
+static inline unsigned clz(T x)
+{
+	unsigned r = x != 0;
+	for (unsigned m = (sizeof(x) * CHAR_BIT) >> 1; m > 0; m >>= 1)
+		if (x >= (decltype(x))1 << m) {
+			r += m;
+			x >>= m;
+		}
+	return sizeof(x) * CHAR_BIT - r;
+}
+#if defined(__GNUC__) || defined(__clang__)
+# define CLZ_BODY(x,clz) { return x ? clz(x) : sizeof(x) * CHAR_BIT; }
+template <> inline unsigned clz(unsigned x)           CLZ_BODY(x,__builtin_clz)
+template <> inline unsigned clz(unsigned long x)      CLZ_BODY(x,__builtin_clzl)
+template <> inline unsigned clz(unsigned long long x) CLZ_BODY(x,__builtin_clzll)
+# undef CLZ_BODY
+#endif
+
 using std::min;
 using std::max;
 

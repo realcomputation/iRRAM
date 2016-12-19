@@ -619,33 +619,27 @@ DYADIC approx(const REAL & x, const int p)
 	return DYADIC(erg);
 }
 
+/*!
+ * \exception iRRAM_underflow_error if result is smaller than \ref MP_min
+ */
 int size(const REAL & x)
 {
-	if (!x.value) {
-		REAL y(x);
-		return size(y.mp_conv());
-	}
+	if (!x.value)
+		return size(REAL(x).mp_conv());
 	int result = 0;
 	if ((state.ACTUAL_STACK.inlimit == 0) &&
 	    state.thread_data_address->cache_i.get(result))
 		return result;
-	sizetype xsize = x.vsize;
-	sizetype ergsize;
-	sizetype_add(ergsize, xsize, x.error);
-	unsigned int value = ergsize.mantissa;
-	for (unsigned int m = 32 >> 1; m > 0; m = m >> 1) {
-		if (value >= (((unsigned int)1) << m)) {
-			result += m;
-			value = value >> m;
-		}
-	}
-	if (((unsigned int)1 << result) != ergsize.mantissa)
-		result += 1;
-	result += ergsize.exponent;
+	result = sizetype_log2(x.vsize + x.error);
 
+	/*! \todo the iRRAM_underflow_error exception can never occur since
+	 *        x.vsize and x.error are both valid instances of sizetype and
+	 *        therefore both `>= 2^min_exponent > 2^MP_min` as is their sum
+	 */
 	if (result < MP_min)
 		throw iRRAM_Numerical_Exception(iRRAM_underflow_error);
 
+	sizetype xsize;
 	sizetype_set(xsize, 1, result - 2);
 	sizetype_inc(xsize, x.error);
 	if (sizetype_less(x.vsize, xsize)) {
@@ -877,7 +871,7 @@ REAL::REAL(const INTEGER & y)
  * \param[out] endptr when non-NULL, the pointer to the end of the represented
  *                    number is stored in `*endptr`
  * \return a REAL object accurate to the current working precision.
- * 
+ *
  * \par Proof
  * The precision depends only on DF and E; let \f$x_k\ldots x_{-n}=DF[1..|F|]\f$
  * and \f$z\in\mathbb N:x[1..z]=\texttt 0^z\f$. To represent zero up to any
@@ -897,7 +891,7 @@ REAL::REAL(const INTEGER & y)
  * \f]
  * Since \f$2^{\overline q}/2\leq 2^{\overline q}\overline b=2^qx'<2^q\f$,
  * the error is bounded, \f$(*)<2^p\f$, when
- * \f$\overline q-p<q+1-p<\underbrace{\lceil(g+k-z+1)\log_2(10)\rceil+1-p}_{\leq m'}\leq m\f$.
+ * \f$\overline q-p<m\leq q+1-p<\lceil(g+k-z+1)\log_2(10)\rceil+1-p\leq m'\f$.
  * The exact precision is \f$\max(10,m')\f$ where \f$m'=1+\begin{cases}
  *  1&z=k+n+1\\
  *  \lfloor((g+k-z+1)\cdot 10+2)/3+1\rfloor-p&\text{otherwise}
