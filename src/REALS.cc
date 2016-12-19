@@ -620,7 +620,26 @@ DYADIC approx(const REAL & x, const int p)
 }
 
 /*!
- * \exception iRRAM_underflow_error if result is smaller than \ref MP_min
+ * \brief Returns a tight bound to the logarithmic value of |x|:
+ *        \f$2^{k-2}\leq|x|\leq 2^k\f$.
+ *
+ * This is a multi-valued function; it computes \f$\begin{cases}
+ *    1+\lceil\log_2|x|\rceil\text,&x\neq 0
+ * \\ 1+\lfloor\log_2|x|\rfloor\text,&x\neq 0
+ * \\ \text{undef,}&x=0
+ * \end{cases}\f$
+ *
+ * For \f$\hat x\f$ = `x.vsize` and \f$x_\varepsilon\f$ = `x.error`, this
+ * function computes \f$k=\lceil\log_2(\hat x+x_\varepsilon)\rceil\f$
+ * and via reiteration enforces that \f$\hat x\geq x_\varepsilon+2^{k-2}\f$.
+ *
+ * \param x non-zero real number
+ * \return \f$k\in\mathbb Z:2^{k-2}\leq|x|\leq 2^k\f$,
+ *         where \ref min_exponent <= k < \ref MP_max
+ * \exception iRRAM_Numerical_Exception(iRRAM_underflow_error)
+ *    if x is exact with value zero. If x is not exact but zero, reiterations
+ *    will be performed.
+ * \sa REITERATE
  */
 int size(const REAL & x)
 {
@@ -630,19 +649,15 @@ int size(const REAL & x)
 	if ((state.ACTUAL_STACK.inlimit == 0) &&
 	    state.thread_data_address->cache_i.get(result))
 		return result;
-	result = sizetype_log2(x.vsize + x.error);
 
-	/*! \todo the iRRAM_underflow_error exception can never occur since
-	 *        x.vsize and x.error are both valid instances of sizetype and
-	 *        therefore both `>= 2^min_exponent > 2^MP_min` as is their sum
-	 */
-	if (result < MP_min)
+	sizetype x_max = x.vsize + x.error;
+
+	if (x_max.mantissa == 0)
 		throw iRRAM_Numerical_Exception(iRRAM_underflow_error);
 
-	sizetype xsize;
-	sizetype_set(xsize, 1, result - 2);
-	sizetype_inc(xsize, x.error);
-	if (sizetype_less(x.vsize, xsize)) {
+	result = sizetype_log2(x_max);
+
+	if (sizetype_less(x.vsize, sizetype_add_power2(x.error, result - 2))) {
 		iRRAM_DEBUG2(
 		        1,
 		        "insufficient precision %d*2^(%d) in size %d*2^(%d)\n",
