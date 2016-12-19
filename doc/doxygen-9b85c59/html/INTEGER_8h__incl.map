@@ -1,8 +1,0 @@
-<map id="include/iRRAM/INTEGER.h" name="include/iRRAM/INTEGER.h">
-<area shape="rect" id="node3" href="$core_8h.html" title="iRRAM/core.h" alt="" coords="101,80,210,107"/>
-<area shape="rect" id="node6" href="$common_8h.html" title="iRRAM/common.h" alt="" coords="220,155,355,181"/>
-<area shape="rect" id="node7" href="$version_8h.html" title="iRRAM/version.h" alt="" coords="95,379,221,405"/>
-<area shape="rect" id="node8" href="$MPFR__interface_8h.html" title="iRRAM/MPFR_interface.h" alt="" coords="196,229,379,256"/>
-<area shape="rect" id="node15" href="$errno_8h.html" title="iRRAM/errno.h" alt="" coords="403,229,518,256"/>
-<area shape="rect" id="node10" href="$GMP__intrat_8h.html" title="iRRAM/GMP_intrat.h" alt="" coords="289,304,443,331"/>
-</map>
