@@ -620,26 +620,37 @@ DYADIC approx(const REAL & x, const int p)
 }
 
 /*!
- * \brief Returns a tight bound to the logarithmic value of |x|:
- *        \f$2^{k-2}\leq|x|\leq 2^k\f$.
+ * \brief Returns a tight bound to the logarithmic value of |\a x|:
+ *        \f$2^{k-2}-2^e\leq|x|<2^k\f$, where \a e is `x.vsize.exponent`.
  *
- * This is a multi-valued function; it computes \f$\begin{cases}
- *    1+\lceil\log_2|x|\rceil\text,&x\neq 0
- * \\ 1+\lfloor\log_2|x|\rfloor\text,&x\neq 0
- * \\ \text{undef,}&x=0
- * \end{cases}\f$
+ * This is a multi-valued function.
  *
- * For \f$\hat x\f$ = `x.vsize` and \f$x_\varepsilon\f$ = `x.error`, this
- * function computes \f$k=\lceil\log_2(\hat x+x_\varepsilon)\rceil\f$
- * and via reiteration enforces that \f$\hat x\geq x_\varepsilon+2^{k-2}\f$.
+ * For \f$\hat x=m\cdot2^e\f$ = `x.vsize` and \f$x_\varepsilon\f$ = `x.error`,
+ * this function computes
+ * \f$k=\lceil\log_2(\hat x+x_\varepsilon)\rceil>\log_2|x|\f$
+ * and via reiteration enforces that
+ * \f$\hat x\geq x_\varepsilon+2^{k-2}\f$ which is equivalent to
+ * \f$2^{k-2}\leq\hat x-x_\varepsilon=(m-1)\cdot2^e-x_\varepsilon+2^e
+ *           \leq|x|+2^e\f$,
+ * the guarrantee therefore is \f$2^{k-2}-2^e\leq|x|<2^k\f$.
  *
  * \param x non-zero real number
- * \return \f$k\in\mathbb Z:2^{k-2}\leq|x|\leq 2^k\f$,
- *         where \ref min_exponent <= k < \ref MP_max
+ * \return \f$k\in\mathbb Z:2^{k-2}-2^e\leq|x|<2^k\f$,
+ *         where \a e is `x.vsize.exponent` and
+ *         \ref min_exponent <= \a k < \ref MP_max
  * \exception iRRAM_Numerical_Exception(iRRAM_underflow_error)
  *    if x is exact with value zero. If x is not exact but zero, reiterations
  *    will be performed.
  * \sa REITERATE
+ * \todo According to documentation, size(const REAL &) should compute
+ * \f$\begin{cases}
+ *    1+\lfloor\log_2|x|\rfloor\text,&x\neq 0
+ * \\ 1+\lceil\log_2|x|\rceil\text,&x\neq 0
+ * \\ \text{undef,}&x=0
+ * \end{cases}\f$ but it does compute \f$\begin{cases}
+ *    i+\lfloor\log_2|x|\rfloor\text,&x\neq 0, i\in\{1,2,3\}
+ * \\ \text{undef,}&x=0
+ * \end{cases}\f$
  */
 int size(const REAL & x)
 {
