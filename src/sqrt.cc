@@ -99,7 +99,7 @@ REAL sqrt(const REAL & x)
 		                 zerror.exponent);
 	MP_init(zvalue);
 	MP_mv_sqrt(x.value, zvalue, local_prec);
-	sizetype_inc_one(zerror, local_prec);
+	zerror = sizetype_add_power2(zerror, local_prec);
 	// printf("%d*2^%d\n",zerror.mantissa,zerror.exponent);
 	return REAL(zvalue, zerror);
 }

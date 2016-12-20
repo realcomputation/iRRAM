@@ -144,7 +144,7 @@ REAL REAL::mp_addition(const REAL & y) const
 	MP_mv_add(this->value, y.value, zvalue, local_prec);
 
 	sizetype_add_wo_norm(zerror, this->error, y.error);
-	sizetype_inc_one(zerror, local_prec);
+	zerror = sizetype_add_power2(zerror, local_prec);
 
 	return REAL(zvalue, zerror);
 }
@@ -165,7 +165,7 @@ REAL REAL::mp_addition(const int n) const
 	}
 	MP_init(zvalue);
 	MP_mv_addi(this->value, n, zvalue, local_prec);
-	sizetype_add_one(zerror, this->error, local_prec);
+	zerror = sizetype_add_power2(this->error, local_prec);
 	return REAL(zvalue, zerror);
 }
 
@@ -185,7 +185,7 @@ REAL & REAL::mp_eqaddition(const REAL & y)
 	MP_mv_add(this->value, y.value, zvalue, local_prec);
 
 	this->error += y.error;
-	sizetype_inc_one(this->error, local_prec);
+	this->error = sizetype_add_power2(this->error, local_prec);
 
 	/*  zerror = sizetype_power2(local_prec);
 	  sizetype_inc2(this->error,y.error,zerror);*/
@@ -329,7 +329,7 @@ REAL REAL::mp_subtraction(const REAL & y) const
 	MP_mv_sub(this->value, y.value, zvalue, local_prec);
 
 	sizetype_add_wo_norm(zerror, this->error, y.error);
-	sizetype_inc_one(zerror, local_prec);
+	zerror = sizetype_add_power2(zerror, local_prec);
 	/*
 	  zerror = sizetype_power2(local_prec);
 	  sizetype_inc2(zerror,this->error,y.error);
@@ -354,7 +354,7 @@ REAL REAL::mp_subtraction(const int n) const
 	}
 	MP_init(zvalue);
 	MP_mv_subi(this->value, n, zvalue, local_prec);
-	sizetype_add_one(zerror, this->error, local_prec);
+	zerror = sizetype_add_power2(this->error, local_prec);
 	return REAL(zvalue, zerror);
 }
 
@@ -375,7 +375,7 @@ REAL REAL::mp_invsubtraction(const int n) const
 	}
 	MP_init(zvalue);
 	MP_mv_isub(n, this->value, zvalue, local_prec);
-	sizetype_add_one(zerror, this->error, local_prec);
+	zerror = sizetype_add_power2(this->error, local_prec);
 	return REAL(zvalue, zerror);
 }
 
@@ -396,7 +396,7 @@ REAL REAL::mp_multiplication(const REAL & y) const
 		                         state.ACTUAL_STACK.actual_prec);
 	MP_init(zvalue);
 	MP_mv_mul(this->value, y.value, zvalue, local_prec);
-	sizetype_inc_one(zerror, local_prec);
+	zerror = sizetype_add_power2(zerror, local_prec);
 	return REAL(zvalue, zerror);
 }
 
@@ -416,7 +416,7 @@ REAL REAL::mp_multiplication(const int n) const
 		                         state.ACTUAL_STACK.actual_prec);
 	MP_init(zvalue);
 	MP_mv_muli(this->value, n, zvalue, local_prec);
-	sizetype_inc_one(zerror, local_prec);
+	zerror = sizetype_add_power2(zerror, local_prec);
 	return REAL(zvalue, zerror);
 }
 
@@ -449,7 +449,7 @@ REAL REAL::mp_division(const REAL & y) const
 		                         state.ACTUAL_STACK.actual_prec);
 	MP_init(zvalue);
 	MP_mv_div(this->value, y.value, zvalue, local_prec);
-	sizetype_inc_one(zerror, local_prec);
+	zerror = sizetype_add_power2(zerror, local_prec);
 	return REAL(zvalue, zerror);
 }
 
@@ -468,7 +468,7 @@ REAL REAL::mp_division(const int n) const
 		                         state.ACTUAL_STACK.actual_prec);
 	MP_init(zvalue);
 	MP_mv_divi(this->value, n, zvalue, local_prec);
-	sizetype_inc_one(zerror, local_prec);
+	zerror = sizetype_add_power2(zerror, local_prec);
 	return REAL(zvalue, zerror);
 }
 
@@ -496,7 +496,7 @@ REAL REAL::mp_square() const
 		                         50 + state.ACTUAL_STACK.actual_prec);
 	MP_init(zvalue);
 	MP_mv_mul(this->value, this->value, zvalue, local_prec);
-	sizetype_inc_one(zerror, local_prec);
+	zerror = sizetype_add_power2(zerror, local_prec);
 	return REAL(zvalue, zerror);
 }
 
@@ -542,7 +542,7 @@ REAL REAL::mp_absval() const
 //   MP_mv_add(this->value,y.value,zvalue,local_prec);
 // 
 //   sizetype_add_wo_norm(zerror,this->error,y.error);
-//   sizetype_inc_one(zerror,local_prec);
+//   zerror = sizetype_add_power2(zerror,local_prec);
 // 
 //   return REAL(zvalue,zerror);
 // }
@@ -760,7 +760,7 @@ LAZY_BOOLEAN bound(const REAL & x, const int k)
 	}
 	sizetype lowsize, ksize, highsize;
 	sizetype_set(ksize, 1, k);
-	sizetype_add_one(lowsize, x.error, k - 1);
+	lowsize = sizetype_add_power2(x.error, k - 1);
 	sizetype_add(highsize, x.vsize, x.error);
 	if (sizetype_less(x.vsize, lowsize) && sizetype_less(ksize, highsize)) {
 		iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) in bounding "

@@ -148,55 +148,6 @@ inline sizetype & operator+=(sizetype &x, const sizetype &y)
 }
 
 /*!
- * \brief Sets \a x to \a y + 1*2^\a zexp and normalizes \a x.
- *
- * Arguments \a x and \a y must differ!
- * The resulting value may be a bit larger than the exact value,
- * The resulting value will never be smaller than the exact value.
- *
- * \param [out] x
- * \param [in]  y, zexp
- */
-inline void sizetype_add_one(sizetype& x, const sizetype& y, typename sizetype::exponent_t zexp)
-{
-// replace 1*2^(-zexp) by 1048576*2^(-zexp-20)
-// this is still the same numerical value!
-// if zexp is larger than y.exponent, the result is closer to the intended result
-  typename sizetype::exponent_t zexp_scale= zexp-20;
-  if ( y.exponent >  zexp_scale) {
-    x.exponent= y.exponent;
-    x.mantissa= y.mantissa + 1048576 ;
-  } else {
-    x.exponent= zexp_scale;
-    x.mantissa= (scale(y.mantissa,(zexp_scale-y.exponent))+1) + 1048576 ;
-  }
-  sizetype_normalize(x);
-}
-
-/*!
- * \brief Sets \a x to \a x + 1*2^\a zexp and normalizes \a x.
- *
- * The resulting value may be a bit larger than the exact value,
- * The resulting value will never be smaller than the exact value.
- *
- * \param [in,out] x
- * \param [in]     zexp
- */
-inline void sizetype_inc_one(sizetype& x, typename sizetype::exponent_t zexp)
-/*! \bug does not compute what the description says when
- *       `zexp + 32 > x.exponent > zexp` */
-{
-  if ( x.exponent > zexp) {
-    x.mantissa ++ ;
-  } else {
-    x.mantissa=scale(x.mantissa,(zexp-x.exponent)) + 2 ;
-    x.exponent= zexp;
-  }
-  sizetype_normalize(x);
-}
-
-
-/*!
  * \brief Increments \a x by \a y + \a z and normalizes \a x.
  *
  * Arguments \a x, \a y and \a z must differ!
@@ -262,14 +213,25 @@ inline void sizetype_add(sizetype& x,const sizetype& y,const sizetype& z)
  * it will never be smaller than the exact value.
  *
  * \param [in] x, exp
- * \return    \a x+2^\a exp, normalized
+ * \return \a x+2^\a exp, normalized
+ * \sa REITERATE
+ * \exception Iteration when the result is too large to be represented by a
+ *                      normalized sizetype
  */
-inline sizetype sizetype_add_power2(sizetype x, typename sizetype::exponent_t exp)
-//! \todo more efficient implementation possible, see iRRAM::sizetype_inc_one
+inline sizetype sizetype_add_power2(sizetype x,
+                                    typename sizetype::exponent_t exp)
 {
-	sizetype r;
-	sizetype_add(r, x, sizetype_power2(exp));
-	return r;
+	/* leave as much of the original mantissa intact as possible */
+	if (exp < x.exponent + GUARD_BITS) {
+		x.mantissa += 1U << max(0, exp - x.exponent);
+		/* x.exponent remains unchanged */
+	} else {
+		x.mantissa  = scale(x.mantissa, exp-(GUARD_BITS-1)-x.exponent)+1
+		            + (1U << (GUARD_BITS-1));
+		x.exponent  = exp-(GUARD_BITS-1);
+	}
+	sizetype_normalize(x);
+	return x;
 }
 
 /*!

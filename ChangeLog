@@ -15,6 +15,7 @@
     * several optimizations regarding copying of temporaries and arithmetical
       operators
     * iRRAM_exec is a template taking an arbitrary functional object
+    * sizetype: remove add_one()/inc_one() in favour of optimized add_power2()
   * multi-thread support:
     * no explicit dependency on (p)threads anymore -> allow builds on Windows
     * gather (most of) iRRAM's state into one TLS variable -> tiny speedup
