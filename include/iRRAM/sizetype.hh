@@ -25,9 +25,10 @@
 #ifndef SIZETYPE_HH
 #define SIZETYPE_HH
 
-#include <limits>
+#include <climits>
 #include <cmath>
 #include <cassert>
+#include <limits>
 
 #include <iRRAM/core.h>
 #include <iRRAM/STREAMS.h> /* iRRAM_DEBUG* */

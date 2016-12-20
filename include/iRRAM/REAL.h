@@ -572,8 +572,8 @@ inline REAL & REAL::operator=(REAL &&y) noexcept
 inline REAL & REAL::operator=(REAL &&y) noexcept
 {
 	using std::swap;
-	if (iRRAM_unlikely(y.value)) {
-		swap(value, y.value);
+	swap(value, y.value);
+	if (iRRAM_unlikely(value)) {
 		vsize = y.vsize;
 		error = y.error;
 	} else
