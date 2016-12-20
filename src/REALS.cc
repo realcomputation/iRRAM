@@ -723,6 +723,35 @@ int upperbound(const REAL & x)
 	return result;
 }
 
+/*!
+ * \brief Multi-valued check whether 2^k bounds |x|.
+ *
+ * If it is necessary to check that a number is small enough (e.g. given as the
+ * error of an approximating algorithm), bound(x,k) should
+ * be preferred over size(x)<k as there is no singularity at x=0.
+ *
+ * The current approximation to \f$x\f$ is deemed precise enough,
+ * predicate \f$P_k(\hat x,x_\varepsilon)\f$, when
+ * \f$\neg(\hat x<x_\varepsilon+2^{k-1}\wedge2^k<\hat x+x_\varepsilon)\f$.
+ * Otherwise, \f$\bot\f$ is returned. These are the cases:
+ * 1. \f$\bot\f$: \f$\neg P_k(\hat x,x_\varepsilon)\Longrightarrow\hat x+x_\varepsilon>2^k=2\cdot2^{k-1}>2(\hat x-x_\varepsilon)\Longrightarrow x_\varepsilon>\hat x/3>|x|/3\f$.
+ * 2. \f$T\f$: \f$P_k(\hat x,x_\varepsilon)\wedge\hat x<2^k\Longrightarrow2^k>\hat x+x_\varepsilon>|x|\f$
+ * 3. \f$F\f$: \f$P_k(\hat x,x_\varepsilon)\wedge\hat x\geq2^k\Longrightarrow\hat x-x_\varepsilon\geq 2^{k-1}\Longrightarrow|x|\geq 2^{k-1}-2^e\f$ for \f$\hat x=m\cdot2^e\f$.
+ *
+ * \param x real number to bound the absolute value of
+ * \param k base-2 logarithm of the bound
+ * \return \f$\text{bound}(x,k)=\begin{cases}
+ *    \bot,&\neg P_k(\hat x,x_\varepsilon)\Longrightarrow x_\varepsilon>|x|/3
+ * \\ T,&P_k(\hat x,x_\varepsilon)\wedge\hat x<2^k\Longrightarrow |x|<2^k
+ * \\ F,&P_k(\hat x,x_\varepsilon)\wedge\hat x\not<2^k\Longrightarrow |x|\geq 2^{k-1}-2^e
+ * \end{cases}\f$
+ * \todo According to documentation, this function should compute
+ * \f$\begin{cases}
+ *    T,&|x|\leq 2^k
+ * \\ F,&|x|\geq 2^{k-2}
+ * \\ \bot,&\text{otherwise}
+ * \end{cases}\f$
+ */
 LAZY_BOOLEAN bound(const REAL & x, const int k)
 {
 	if (!x.value) {
