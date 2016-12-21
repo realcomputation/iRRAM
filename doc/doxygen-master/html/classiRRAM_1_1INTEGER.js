@@ -7,7 +7,7 @@ var classiRRAM_1_1INTEGER =
     [ "INTEGER", "classiRRAM_1_1INTEGER.html#aabd91de0c64c964bd41bf388f2c781f8", null ],
     [ "INTEGER", "classiRRAM_1_1INTEGER.html#ab860a448cbcfd7a99f609893631f1c57", null ],
     [ "~INTEGER", "classiRRAM_1_1INTEGER.html#a9a4ccd3a25992554a631062fc237e862", null ],
-    [ "operator int", "classiRRAM_1_1INTEGER.html#adb33a3c3fff2f0d557446c710b98379a", null ],
+    [ "operator int", "classiRRAM_1_1INTEGER.html#ab2a3f4211a875e95ea8badd9ae88afc2", null ],
     [ "operator=", "classiRRAM_1_1INTEGER.html#a81ed1221e52ea274a7b2edfde753a0a7", null ],
     [ "operator=", "classiRRAM_1_1INTEGER.html#ad376a946128546af2d3684b3ccfcd400", null ],
     [ "operator=", "classiRRAM_1_1INTEGER.html#a0770df547f8e0c6a4498c2c1565b2fa8", null ],

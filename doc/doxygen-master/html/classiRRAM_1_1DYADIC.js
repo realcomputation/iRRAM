@@ -7,7 +7,7 @@ var classiRRAM_1_1DYADIC =
     [ "DYADIC", "classiRRAM_1_1DYADIC.html#a41cf4689de6a2c458cb5f0d8d4f68d5a", null ],
     [ "DYADIC", "classiRRAM_1_1DYADIC.html#af4b68db71d8a1f1ec3bb64e801d2eade", null ],
     [ "~DYADIC", "classiRRAM_1_1DYADIC.html#acb7b4aeb0eaa7cbeaa468e0081e41123", null ],
-    [ "as_INTEGER", "classiRRAM_1_1DYADIC.html#a7fdf53823c1ec8e2eee4b4ff5c30a2d1", null ],
+    [ "as_INTEGER", "classiRRAM_1_1DYADIC.html#a6ed25dcc9854b551528020e647d3e5d0", null ],
     [ "operator=", "classiRRAM_1_1DYADIC.html#a07dfb3428dd6e128abf9a961ddead7ee", null ],
     [ "operator=", "classiRRAM_1_1DYADIC.html#a186b5fbec55d3341e4219745acf4810f", null ],
     [ "abs", "classiRRAM_1_1DYADIC.html#aae62de0c6db06592b4614c940a818997", null ],

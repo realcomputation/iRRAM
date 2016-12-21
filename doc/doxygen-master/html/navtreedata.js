@@ -2,7 +2,6 @@ var NAVTREE =
 [
   [ "iRRAM", "index.html", [
     [ "Todo List", "todo.html", null ],
-    [ "Bug List", "bug.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
@@ -45,11 +44,11 @@ var NAVTREEINDEX =
 ".html",
 "INTEGER_8h.html#af335d320248e9b405996fad9ace41853",
 "RATIONAL_8cc.html#ab1068bf45907c65dfc7eac6c5051764a",
-"classiRRAM_1_1DYADIC.html#afc6a723f458cfe9c9a724554087c84d7",
-"classiRRAM_1_1REAL.html#a93e2dc440462d76907e7d18962b9daca",
-"common_8h.html",
-"group__trigonometry.html#ga73faed73e438d09990937fa892d5cb09",
-"structiRRAM_1_1conditional__comparison__overloads.html"
+"classiRRAM_1_1DYADIC__precision.html",
+"classiRRAM_1_1REAL.html#a9abba2572050ecc7ddc8ebb1937032bf",
+"common_8h.html#a1f0b2e2bd4484f897f00853e3be068e7",
+"group__trigonometry.html#ga99b317ffa86c6e871e66822ed48a9530",
+"structiRRAM_1_1conditional__comparison__overloads.html#a54c2ed607be44454e61e872a2c40b78a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -9,7 +9,7 @@ var searchData=
   ['mig',['mig',['../namespaceiRRAM.html#a8b244866b9fd4de3be443ad328a6a7c6',1,'iRRAM']]],
   ['min',['min',['../structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#ab56aeb4f6f8c9fa02a2a510feaee6787',1,'std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;']]],
   ['minimum',['minimum',['../group__maths.html#gae8c84e10cce45ccda89c0f803a2433de',1,'iRRAM']]],
-  ['modify',['modify',['../classiRRAM_1_1iRRAM__cache.html#a15b3ab0ee095a358108dd7a0d3cb1f27',1,'iRRAM::iRRAM_cache']]],
+  ['modify',['modify',['../classiRRAM_1_1iRRAM__cache.html#ae1361557ae5c63d96814804dbb613f69',1,'iRRAM::iRRAM_cache']]],
   ['module',['module',['../classiRRAM_1_1REAL.html#ad3b854f736b21c97960a8ca51ea6a539',1,'iRRAM::REAL::module()'],['../namespaceiRRAM.html#a6132fdfd6a36d3c44a3dbd7976fe45b3',1,'iRRAM::module()']]],
   ['modulo',['modulo',['../group__maths.html#ga5daa52740f7014a5c20727ffe68b4043',1,'iRRAM']]],
   ['mpfr_5fext_5fcos',['mpfr_ext_cos',['../mpfr__extension_8cc.html#a801a5610fbfad344d1c1c8f6f02c1936',1,'mpfr_ext_cos(mpfr_ptr r, mpfr_srcptr u, int p):&#160;mpfr_extension.cc'],['../mpfr__extension_8h.html#a801a5610fbfad344d1c1c8f6f02c1936',1,'mpfr_ext_cos(mpfr_ptr r, mpfr_srcptr u, int p):&#160;mpfr_extension.cc']]],

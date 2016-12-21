@@ -12,7 +12,7 @@ var indexSectionsWithContent =
   9: "abcdefilmnoprstuwz",
   10: "_bdegimr",
   11: "dlmst",
-  12: "bt"
+  12: "t"
 };
 
 var indexSectionNames =

@@ -2,8 +2,8 @@ var classiRRAM_1_1COMPLEX =
 [
     [ "COMPLEX", "classiRRAM_1_1COMPLEX.html#a5f9e9048fa187223ece6359d99d25af5", null ],
     [ "adderror", "classiRRAM_1_1COMPLEX.html#a8cd3f83d3d7d6e70d61574c22a00b431", null ],
-    [ "geterror", "classiRRAM_1_1COMPLEX.html#a73205bc896a6cc3393c4135c93d82809", null ],
-    [ "geterror", "classiRRAM_1_1COMPLEX.html#ac56fca3ff08fe7b19a0b0743924353ae", null ],
+    [ "geterror", "classiRRAM_1_1COMPLEX.html#a307874887759b4de2cc8e6e5c51df183", null ],
+    [ "geterror", "classiRRAM_1_1COMPLEX.html#a86b1731af56498d75d2304fa949cfccc", null ],
     [ "seterror", "classiRRAM_1_1COMPLEX.html#a89bd35abeaea6c121c4cb6fdbd33a327", null ],
     [ "abs", "classiRRAM_1_1COMPLEX.html#a1ccdebf9b4b26683483139f388a377b0", null ],
     [ "arg", "classiRRAM_1_1COMPLEX.html#a6fca2dcc195798e72ada258205eadf32", null ],

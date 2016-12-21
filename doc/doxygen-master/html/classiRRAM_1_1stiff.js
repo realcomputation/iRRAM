@@ -7,8 +7,8 @@ var classiRRAM_1_1stiff =
     [ "stiff", "classiRRAM_1_1stiff.html#a82005f2bcd48aa800462f86569d7a164", null ],
     [ "stiff", "classiRRAM_1_1stiff.html#aee57c4eb630f14b0e46bf7c3974bc6ed", null ],
     [ "stiff", "classiRRAM_1_1stiff.html#afdc3d3aaba98a6b27336770b14d1df80", null ],
-    [ "inc_step", "classiRRAM_1_1stiff.html#a8a1b123edcbc814b06aab12ea04aa49c", null ],
+    [ "inc_step", "classiRRAM_1_1stiff.html#aeae30fccf2d2314f73e8be457756aa9f", null ],
     [ "operator=", "classiRRAM_1_1stiff.html#ad23bab25334fd93fe41dcd5c3fe38e7b", null ],
-    [ "saved_prec", "classiRRAM_1_1stiff.html#a33c6ec1f63fc4f9e1a7994feb06f8c01", null ],
-    [ "saved_step", "classiRRAM_1_1stiff.html#a92fa7a2648b8c9354b4b8b1712a7375a", null ]
+    [ "saved_prec", "classiRRAM_1_1stiff.html#af1511c8432d910a56944278245e03d86", null ],
+    [ "saved_step", "classiRRAM_1_1stiff.html#a8ecdfb22381e0a102f0eb61c3a89af5f", null ]
 ];

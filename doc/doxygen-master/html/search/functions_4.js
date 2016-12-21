@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['element',['element',['../classiRRAM_1_1REALMATRIX.html#a2c70f7864d623bcb1d2dc677f7b48956',1,'iRRAM::REALMATRIX']]],
+  ['element',['element',['../classiRRAM_1_1REALMATRIX.html#a5038694925fe5abf9f94953ed191fe4f',1,'iRRAM::REALMATRIX']]],
   ['eof',['eof',['../classiRRAM_1_1orstream.html#a7b2e1a440c532acef27701aeb4169d63',1,'iRRAM::orstream::eof()'],['../classiRRAM_1_1irstream.html#ac438457318a95b4d4296611a652f2cab',1,'iRRAM::irstream::eof()']]],
   ['epsilon',['epsilon',['../structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#a2d9da62cc09d2e1c53a5ceddd8321717',1,'std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;']]],
   ['equilib',['equilib',['../namespaceiRRAM.html#a939acbc5658e459f3a8e1665eb6001cb',1,'iRRAM']]],
   ['equilib_5fdel',['equilib_del',['../namespaceiRRAM.html#a5e4954ae3145edb1163e12872d2c27a8',1,'iRRAM']]],
   ['euler',['euler',['../group__maths.html#gad75add220636eebf19f8d07b82f7ede6',1,'iRRAM']]],
-  ['eval',['eval',['../classiRRAM_1_1FUNCTIONAL__object.html#a67738748604c562ecd4a04a48fc2feb6',1,'iRRAM::FUNCTIONAL_object::eval()'],['../classiRRAM_1_1FUNCTIONAL__algorithm.html#a948e8235a20288598c100ab88c511d91',1,'iRRAM::FUNCTIONAL_algorithm::eval()'],['../classiRRAM_1_1FUNCTIONAL__value.html#afac2c35579bf53eda3d6d156289f0d02',1,'iRRAM::FUNCTIONAL_value::eval()']]],
-  ['exec',['exec',['../namespaceiRRAM.html#a27c536834a93aad38c2256983dc15e6b',1,'iRRAM']]],
+  ['eval',['eval',['../classiRRAM_1_1FUNCTIONAL__object.html#a67738748604c562ecd4a04a48fc2feb6',1,'iRRAM::FUNCTIONAL_object::eval()'],['../classiRRAM_1_1FUNCTIONAL__algorithm.html#a2c81a164dc01ca24125f63a71382a858',1,'iRRAM::FUNCTIONAL_algorithm::eval()'],['../classiRRAM_1_1FUNCTIONAL__value.html#afac2c35579bf53eda3d6d156289f0d02',1,'iRRAM::FUNCTIONAL_value::eval()']]],
+  ['exec',['exec',['../namespaceiRRAM.html#aaf5839932d4f468b8799eeda5ca32cc8',1,'iRRAM']]],
   ['exp',['exp',['../group__maths.html#gaad39da8a06210f2d6de45a47137719fa',1,'iRRAM::exp(const COMPLEX &amp;z)'],['../group__maths.html#gae82f39b426489d87acbaef232d92cd02',1,'iRRAM::exp(const REAL &amp;x)'],['../namespaceiRRAM.html#a6dc182da9578324568a4b2a7f44a06c8',1,'iRRAM::exp(const INTERVAL &amp;x)'],['../group__maths.html#ga07aceadaa98180c6af4857392b0071d6',1,'iRRAM::exp(const REALMATRIX &amp;x)']]],
   ['ext_5fmpfr_5fabs',['ext_mpfr_abs',['../MPFR__ext_8h.html#ab928ef36bb9e9175434026d71b48b419',1,'MPFR_ext.h']]],
   ['ext_5fmpfr_5fadd',['ext_mpfr_add',['../MPFR__ext_8h.html#ac235c858fe24989636b317c6418a938c',1,'MPFR_ext.h']]],

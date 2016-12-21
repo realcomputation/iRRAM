@@ -13,12 +13,12 @@ var searchData=
   ['get_5ftype_3c_20mp_5fint_5ftype_20_3e',['get_type&lt; MP_int_type &gt;',['../structiRRAM_1_1get__type_3_01MP__int__type_01_4.html',1,'iRRAM']]],
   ['get_5ftype_3c_20mp_5ftype_20_3e',['get_type&lt; MP_type &gt;',['../structiRRAM_1_1get__type_3_01MP__type_01_4.html',1,'iRRAM']]],
   ['get_5ftype_3c_20short_20_3e',['get_type&lt; short &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
-  ['get_5ftype_3c_20std_3a_3aistream_20_2a_20_3e',['get_type&lt; std::istream * &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
-  ['get_5ftype_3c_20std_3a_3aostream_20_2a_20_3e',['get_type&lt; std::ostream * &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
+  ['get_5ftype_3c_20std_3a_3aistream_20_2a_3e',['get_type&lt; std::istream *&gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
+  ['get_5ftype_3c_20std_3a_3aostream_20_2a_3e',['get_type&lt; std::ostream *&gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
   ['get_5ftype_3c_20std_3a_3astring_20_3e',['get_type&lt; std::string &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
   ['get_5ftype_3c_20unsigned_20int_20_3e',['get_type&lt; unsigned int &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
   ['get_5ftype_3c_20unsigned_20long_20_3e',['get_type&lt; unsigned long &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
   ['get_5ftype_3c_20unsigned_20long_20long_20_3e',['get_type&lt; unsigned long long &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
   ['get_5ftype_3c_20unsigned_20short_20_3e',['get_type&lt; unsigned short &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
-  ['get_5ftype_3c_20void_20_2a_20_3e',['get_type&lt; void * &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]]
+  ['get_5ftype_3c_20void_20_2a_3e',['get_type&lt; void *&gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]]
 ];
