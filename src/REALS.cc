@@ -40,6 +40,44 @@ MA 02111-1307, USA.
 # error "Currently no further backends defined!"
 #endif
 
+/*!
+ * \todo
+ * REALs with MP-backend are infectious: every operation involving other
+ * `double_pair` REALs will result in a MP-backed result even on
+ * precision-level 1. Check which of the following functions could be fitted to
+ * work on the `double_pair` representation directly or could at least be
+ * adapted to return a precision-level 1 result:
+ * - sqrt(const REAL &)
+ * - power(const REAL &, int)
+ * - power(const REAL &, const REAL &)
+ * - sqrt(const REAL &)
+ * - approx(const REAL &, const int)
+ * - bound(const REAL &, const int)
+ * - size(const REAL &)
+ * - upperbound(const REAL &)
+ * - modulo(const REAL &, const REAL &)
+ * - limit() family
+ * - scale(const REAL &, int)
+ * - REAL::geterror()
+ * - REAL::adderror()
+ * - REAL::getsize()
+ * - REAL::as_INTEGER()
+ * - swrite(const REAL &, const int, const float_form)
+ * - strtoREAL2(const char *, char **)
+ * - pi()
+ * - euler()
+ * - ln2()
+ * - root(const REAL &, int n) at least for `n == 3`
+ * - trigonometric functions
+ * \todo
+ * Special care has to be taken in case C/C++ library functions are used to
+ * implement those. Only `sqrt(double)` and `fma(double,double,double)` provide
+ * error guarrantees according to the respective standards (for `fma` including
+ * POSIX). Standard compliance in this respect also cannot be assumed for every
+ * C/C++ standard library but should probably be white-listed for proven
+ * implementations.
+ */
+
 namespace iRRAM {
 
 void REAL::mp_make_mp()
