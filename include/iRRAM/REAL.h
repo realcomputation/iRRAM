@@ -295,11 +295,14 @@ public:
 	 *
 	 * Let this REAL object denote \f$x\in\mathbb R\f$, then in this
 	 * documentation `vsize` is referred to as \f$\hat x\f$. It may differ
-	 * from one \ref Iteration to the next.
+	 * from one \ref Iteration to the next. Additionally, for non-zero
+	 * \f$\hat x\f$, we refer to \f$\check x=(m-1)\cdot2^e\f$, the value of
+	 * which depends on the \ref sizetype representation of
+	 * \f$\hat x=m\cdot2^e\f$.
 	 *
 	 * \invariant `value != NULL`
-	 * \f$\Longrightarrow\texttt{vsize}=m\cdot2^e:(m-1)\cdot2^e
-	 *                                 \leq|x_c|<m\cdot2^e\f$
+	 * \f$\Longrightarrow\texttt{vsize}=m\cdot2^e:(m-1)\cdot2^e=\check x
+	 *                                 \leq|x_c|<\hat x=m\cdot2^e\f$
 	 */
 	sizetype      vsize;
 
