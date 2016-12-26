@@ -20,7 +20,7 @@ var searchData=
   ['single_5fvalued',['single_valued',['../structiRRAM_1_1single__valued.html#a062e5c43c3494dbaf993d14963f50954',1,'iRRAM::single_valued']]],
   ['sinh',['sinh',['../group__trigonometry.html#gaf02f587f2eef979cf7fa985b475f0842',1,'iRRAM::sinh(const COMPLEX &amp;z)'],['../group__trigonometry.html#gabb8735c22c36c776e41aa2474026cf47',1,'iRRAM::sinh(const REAL &amp;x)']]],
   ['size',['size',['../classiRRAM_1_1DYADIC.html#a7f6cbe8a76928d4a55b44a69b3e5533e',1,'iRRAM::DYADIC::size()'],['../classiRRAM_1_1INTEGER.html#a158a716a3840c07d2561718ae820c4f4',1,'iRRAM::INTEGER::size()'],['../classiRRAM_1_1REAL.html#a114722c519cbd98d63791f48d2b082df',1,'iRRAM::REAL::size()'],['../namespaceiRRAM.html#a5d319b4b95e8d71636412200028fc3d6',1,'iRRAM::size(const DYADIC &amp;x)'],['../namespaceiRRAM.html#acccdf705077cc02b2bc1870acd456b58',1,'iRRAM::size(const REAL &amp;x)'],['../namespaceiRRAM.html#a1c952117ea4de3f8a1bea61212b0fd3c',1,'iRRAM::size(const INTEGER &amp;x)']]],
-  ['sizetype',['sizetype',['../namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa',1,'iRRAM::sizetype()'],['../group__sizetype.html',1,'(Global Namespace)']]],
+  ['sizetype',['sizetype',['../namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4',1,'iRRAM::sizetype()'],['../group__sizetype.html',1,'(Global Namespace)']]],
   ['sizetype_2ehh',['sizetype.hh',['../sizetype_8hh.html',1,'']]],
   ['sizetype_5fadd',['sizetype_add',['../group__sizetype.html#ga8e21593e8aaab9c1cf3e0262804bad88',1,'iRRAM']]],
   ['sizetype_5fadd_5fpower2',['sizetype_add_power2',['../group__sizetype.html#gaffada8093813b8818ac1598321d76620',1,'iRRAM']]],

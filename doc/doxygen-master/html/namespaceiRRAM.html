@@ -214,8 +214,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ae39c265295b2fad62e8eab5d0e9626fa"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="structiRRAM_1_1generic__sizetype.html">generic_sizetype</a>&lt; unsigned int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a></td></tr>
-<tr class="separator:ae39c265295b2fad62e8eab5d0e9626fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dbaae5219675b5bc13e6ffdc59946a4"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="structiRRAM_1_1generic__sizetype.html">generic_sizetype</a>&lt; uint32_t, int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a></td></tr>
+<tr class="separator:a8dbaae5219675b5bc13e6ffdc59946a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a678d813fb68ff70c1d6bbcead0825a68"><td class="memTemplParams" colspan="2">template&lt;typename Base , typename EquivBase , typename Compat , typename Ret  = Base&gt; </td></tr>
 <tr class="memitem:a678d813fb68ff70c1d6bbcead0825a68"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiRRAM.html#a678d813fb68ff70c1d6bbcead0825a68">enable_if_compat</a> = typename std::enable_if&lt; std::is_same&lt; typename std::remove_cv&lt; EquivBase &gt;::type, typename std::remove_cv&lt; Base &gt;::type &gt;::value &amp;&amp;std::is_convertible&lt; Compat, Base &gt;::value,Ret &gt;::type</td></tr>
 <tr class="separator:a678d813fb68ff70c1d6bbcead0825a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -665,6 +665,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga5afeb059421acdb704c4bc4d15bec8f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__maths.html#ga5afeb059421acdb704c4bc4d15bec8f3">root</a> (const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;x, int n)</td></tr>
 <tr class="separator:ga5afeb059421acdb704c4bc4d15bec8f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadb8ebd2712ef7455c900f935c21b7bce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce">sqrt</a> (const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;x)</td></tr>
+<tr class="memdesc:gadb8ebd2712ef7455c900f935c21b7bce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the square root of the argument <em>x</em>.  <a href="group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce">More...</a><br /></td></tr>
 <tr class="separator:gadb8ebd2712ef7455c900f935c21b7bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac98527033be169894648a0432681b41c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiRRAM.html#ac98527033be169894648a0432681b41c">operator!</a> (<a class="el" href="classiRRAM_1_1orstream.html">orstream</a> &amp;x)</td></tr>
 <tr class="separator:ac98527033be169894648a0432681b41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -984,75 +985,76 @@ Functions</h2></td></tr>
 <tr class="separator:a83470c2a3110d18616a1ffb4e1db141e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8f2c86c318fab821d3defef96d86c454"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga8f2c86c318fab821d3defef96d86c454">scale</a> (const unsigned int w, const int p)</td></tr>
 <tr class="separator:ga8f2c86c318fab821d3defef96d86c454"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga476906e5d8496590e0c50c271ab090fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga476906e5d8496590e0c50c271ab090fa">sizetype_normalize</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;e)</td></tr>
+<tr class="memitem:ga476906e5d8496590e0c50c271ab090fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga476906e5d8496590e0c50c271ab090fa">sizetype_normalize</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;e)</td></tr>
 <tr class="memdesc:ga476906e5d8496590e0c50c271ab090fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to keep the mantissa between <a class="el" href="group__sizetype.html#gae29f3c12d08cdbcd503155aae33415a4">max_mantissa</a> and <a class="el" href="group__sizetype.html#ga8d901116f01358802f239a8087fa44fa">min_mantissa</a>.  <a href="group__sizetype.html#ga476906e5d8496590e0c50c271ab090fa">More...</a><br /></td></tr>
 <tr class="separator:ga476906e5d8496590e0c50c271ab090fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga59ce5a794c0574453bd563853c4d3322"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga59ce5a794c0574453bd563853c4d3322">sizetype_normalize</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;&amp;e)</td></tr>
+<tr class="memitem:ga59ce5a794c0574453bd563853c4d3322"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga59ce5a794c0574453bd563853c4d3322">sizetype_normalize</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;&amp;e)</td></tr>
 <tr class="memdesc:ga59ce5a794c0574453bd563853c4d3322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to keep the mantissa between <a class="el" href="group__sizetype.html#gae29f3c12d08cdbcd503155aae33415a4">max_mantissa</a> and <a class="el" href="group__sizetype.html#ga8d901116f01358802f239a8087fa44fa">min_mantissa</a>.  <a href="group__sizetype.html#ga59ce5a794c0574453bd563853c4d3322">More...</a><br /></td></tr>
 <tr class="separator:ga59ce5a794c0574453bd563853c4d3322"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0d27b17c2ff5cb4207093cc96d2b9666"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga0d27b17c2ff5cb4207093cc96d2b9666">sizetype_power2</a> (typename <a class="el" href="structiRRAM_1_1generic__sizetype.html#af6fe7003c7485748940cac0aabf1220b">sizetype::exponent_t</a> <a class="el" href="group__maths.html#gaad39da8a06210f2d6de45a47137719fa">exp</a>)</td></tr>
+<tr class="memitem:ga0d27b17c2ff5cb4207093cc96d2b9666"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga0d27b17c2ff5cb4207093cc96d2b9666">sizetype_power2</a> (typename <a class="el" href="structiRRAM_1_1generic__sizetype.html#af6fe7003c7485748940cac0aabf1220b">sizetype::exponent_t</a> <a class="el" href="group__maths.html#gaad39da8a06210f2d6de45a47137719fa">exp</a>)</td></tr>
 <tr class="separator:ga0d27b17c2ff5cb4207093cc96d2b9666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3ddf86fc6829d63c16817a8400ca0312"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga3ddf86fc6829d63c16817a8400ca0312">sizetype_inc</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y)</td></tr>
+<tr class="memitem:ga3ddf86fc6829d63c16817a8400ca0312"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga3ddf86fc6829d63c16817a8400ca0312">sizetype_inc</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y)</td></tr>
 <tr class="memdesc:ga3ddf86fc6829d63c16817a8400ca0312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments <em>x</em> by <em>y</em> and normalizes <em>x</em>.  <a href="group__sizetype.html#ga3ddf86fc6829d63c16817a8400ca0312">More...</a><br /></td></tr>
 <tr class="separator:ga3ddf86fc6829d63c16817a8400ca0312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga22dfdf24de6b62839afe8c0ad69baa00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga22dfdf24de6b62839afe8c0ad69baa00">operator+=</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y)</td></tr>
+<tr class="memitem:ga22dfdf24de6b62839afe8c0ad69baa00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga22dfdf24de6b62839afe8c0ad69baa00">operator+=</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y)</td></tr>
 <tr class="memdesc:ga22dfdf24de6b62839afe8c0ad69baa00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments <em>x</em> by <em>y</em> and normalizes <em>x</em>.  <a href="group__sizetype.html#ga22dfdf24de6b62839afe8c0ad69baa00">More...</a><br /></td></tr>
 <tr class="separator:ga22dfdf24de6b62839afe8c0ad69baa00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac60adffe866b51d0ad7dde3edb2124f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gac60adffe866b51d0ad7dde3edb2124f9">sizetype_inc2</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:gac60adffe866b51d0ad7dde3edb2124f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gac60adffe866b51d0ad7dde3edb2124f9">sizetype_inc2</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:gac60adffe866b51d0ad7dde3edb2124f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments <em>x</em> by <em>y</em> + <em>z</em> and normalizes <em>x</em>.  <a href="group__sizetype.html#gac60adffe866b51d0ad7dde3edb2124f9">More...</a><br /></td></tr>
 <tr class="separator:gac60adffe866b51d0ad7dde3edb2124f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf6ecc94e02958df8f739bf3635b4d2ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaf6ecc94e02958df8f739bf3635b4d2ca">sizetype_add_wo_norm</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:gaf6ecc94e02958df8f739bf3635b4d2ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaf6ecc94e02958df8f739bf3635b4d2ca">sizetype_add_wo_norm</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:gaf6ecc94e02958df8f739bf3635b4d2ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds <em>y</em> and <em>z</em> yielding <em>x</em>; no normalization.  <a href="group__sizetype.html#gaf6ecc94e02958df8f739bf3635b4d2ca">More...</a><br /></td></tr>
 <tr class="separator:gaf6ecc94e02958df8f739bf3635b4d2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8e21593e8aaab9c1cf3e0262804bad88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga8e21593e8aaab9c1cf3e0262804bad88">sizetype_add</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:ga8e21593e8aaab9c1cf3e0262804bad88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga8e21593e8aaab9c1cf3e0262804bad88">sizetype_add</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:ga8e21593e8aaab9c1cf3e0262804bad88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds <em>y</em> and <em>z</em> yielding <em>x</em> and normalizes <em>x</em>.  <a href="group__sizetype.html#ga8e21593e8aaab9c1cf3e0262804bad88">More...</a><br /></td></tr>
 <tr class="separator:ga8e21593e8aaab9c1cf3e0262804bad88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaffada8093813b8818ac1598321d76620"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaffada8093813b8818ac1598321d76620">sizetype_add_power2</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> x, typename <a class="el" href="structiRRAM_1_1generic__sizetype.html#af6fe7003c7485748940cac0aabf1220b">sizetype::exponent_t</a> <a class="el" href="group__maths.html#gaad39da8a06210f2d6de45a47137719fa">exp</a>)</td></tr>
+<tr class="memitem:gaffada8093813b8818ac1598321d76620"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaffada8093813b8818ac1598321d76620">sizetype_add_power2</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> x, typename <a class="el" href="structiRRAM_1_1generic__sizetype.html#af6fe7003c7485748940cac0aabf1220b">sizetype::exponent_t</a> <a class="el" href="group__maths.html#gaad39da8a06210f2d6de45a47137719fa">exp</a>)</td></tr>
 <tr class="memdesc:gaffada8093813b8818ac1598321d76620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes <em>x+2^<em>exp</em> and</em> returns the normalized result.  <a href="group__sizetype.html#gaffada8093813b8818ac1598321d76620">More...</a><br /></td></tr>
 <tr class="separator:gaffada8093813b8818ac1598321d76620"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1999237bc7d581e7bfc7f22cf824843d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga1999237bc7d581e7bfc7f22cf824843d">operator+</a> (const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:ga1999237bc7d581e7bfc7f22cf824843d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga1999237bc7d581e7bfc7f22cf824843d">operator+</a> (const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:ga1999237bc7d581e7bfc7f22cf824843d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds <em>y</em> and <em>z</em> yielding <em>x</em> and normalizes the result.  <a href="group__sizetype.html#ga1999237bc7d581e7bfc7f22cf824843d">More...</a><br /></td></tr>
 <tr class="separator:ga1999237bc7d581e7bfc7f22cf824843d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab3cf34bfc2f462e61091ca89ae319deb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gab3cf34bfc2f462e61091ca89ae319deb">sizetype_shift</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, int s)</td></tr>
+<tr class="memitem:gab3cf34bfc2f462e61091ca89ae319deb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gab3cf34bfc2f462e61091ca89ae319deb">sizetype_shift</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, int s)</td></tr>
 <tr class="memdesc:gab3cf34bfc2f462e61091ca89ae319deb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shift <em>y</em> by <em>s</em> yielding <em>x</em>.  <a href="group__sizetype.html#gab3cf34bfc2f462e61091ca89ae319deb">More...</a><br /></td></tr>
 <tr class="separator:gab3cf34bfc2f462e61091ca89ae319deb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa4d56407e48eacbaa10bc4d5dabf86b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaa4d56407e48eacbaa10bc4d5dabf86b2">operator&lt;&lt;</a> (const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, int s)</td></tr>
+<tr class="memitem:gaa4d56407e48eacbaa10bc4d5dabf86b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaa4d56407e48eacbaa10bc4d5dabf86b2">operator&lt;&lt;</a> (const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, int s)</td></tr>
 <tr class="memdesc:gaa4d56407e48eacbaa10bc4d5dabf86b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <em>y</em> left-shifted by <em>s</em>, normalized.  <a href="group__sizetype.html#gaa4d56407e48eacbaa10bc4d5dabf86b2">More...</a><br /></td></tr>
 <tr class="separator:gaa4d56407e48eacbaa10bc4d5dabf86b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad438b0e5fbaa6c50c9e1f4de84f257dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gad438b0e5fbaa6c50c9e1f4de84f257dd">sizetype_mult</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:gad438b0e5fbaa6c50c9e1f4de84f257dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gad438b0e5fbaa6c50c9e1f4de84f257dd">sizetype_mult</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:gad438b0e5fbaa6c50c9e1f4de84f257dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies <em>y</em> and <em>z</em> yielding <em>x</em> and normalizes <em>x</em>.  <a href="group__sizetype.html#gad438b0e5fbaa6c50c9e1f4de84f257dd">More...</a><br /></td></tr>
 <tr class="separator:gad438b0e5fbaa6c50c9e1f4de84f257dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf4352aac81d231f75797166d61d10a56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaf4352aac81d231f75797166d61d10a56">operator*</a> (const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:gaf4352aac81d231f75797166d61d10a56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaf4352aac81d231f75797166d61d10a56">operator*</a> (const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:gaf4352aac81d231f75797166d61d10a56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <em>y</em> to <em>y</em> * <em>z</em>, normalized.  <a href="group__sizetype.html#gaf4352aac81d231f75797166d61d10a56">More...</a><br /></td></tr>
 <tr class="separator:gaf4352aac81d231f75797166d61d10a56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac4cd77791882490d9d450b4b03e02e86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gac4cd77791882490d9d450b4b03e02e86">sizetype_max</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:gac4cd77791882490d9d450b4b03e02e86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gac4cd77791882490d9d450b4b03e02e86">sizetype_max</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:gac4cd77791882490d9d450b4b03e02e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the maximum of <em>y</em> and <em>z</em> and stores it in <em>x</em>.  <a href="group__sizetype.html#gac4cd77791882490d9d450b4b03e02e86">More...</a><br /></td></tr>
 <tr class="separator:gac4cd77791882490d9d450b4b03e02e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf31afae8cae5726b2d22e755969ea413"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaf31afae8cae5726b2d22e755969ea413">max</a> (const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:gaf31afae8cae5726b2d22e755969ea413"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gaf31afae8cae5726b2d22e755969ea413">max</a> (const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:gaf31afae8cae5726b2d22e755969ea413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum of <em>y</em> and <em>z</em>.  <a href="group__sizetype.html#gaf31afae8cae5726b2d22e755969ea413">More...</a><br /></td></tr>
 <tr class="separator:gaf31afae8cae5726b2d22e755969ea413"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1d2c8321047c8b04f9bc42dd6a01f4b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga1d2c8321047c8b04f9bc42dd6a01f4b8">sizetype_set</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, typename <a class="el" href="structiRRAM_1_1generic__sizetype.html#af159b4118905d7eadf0d660eb44bb746">sizetype::mantissa_t</a> mantissa, typename <a class="el" href="structiRRAM_1_1generic__sizetype.html#af6fe7003c7485748940cac0aabf1220b">sizetype::exponent_t</a> exponent)</td></tr>
+<tr class="memitem:ga1d2c8321047c8b04f9bc42dd6a01f4b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga1d2c8321047c8b04f9bc42dd6a01f4b8">sizetype_set</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, typename <a class="el" href="structiRRAM_1_1generic__sizetype.html#af159b4118905d7eadf0d660eb44bb746">sizetype::mantissa_t</a> mantissa, typename <a class="el" href="structiRRAM_1_1generic__sizetype.html#af6fe7003c7485748940cac0aabf1220b">sizetype::exponent_t</a> exponent)</td></tr>
 <tr class="memdesc:ga1d2c8321047c8b04f9bc42dd6a01f4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a sizetype value <em>x</em> from <em>mantissa</em> and <em>exponent</em>.  <a href="group__sizetype.html#ga1d2c8321047c8b04f9bc42dd6a01f4b8">More...</a><br /></td></tr>
 <tr class="separator:ga1d2c8321047c8b04f9bc42dd6a01f4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8f7c727c4ff22b64aff85aeac840a2ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga8f7c727c4ff22b64aff85aeac840a2ca">sizetype_exact</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x)</td></tr>
+<tr class="memitem:ga8f7c727c4ff22b64aff85aeac840a2ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga8f7c727c4ff22b64aff85aeac840a2ca">sizetype_exact</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x)</td></tr>
 <tr class="separator:ga8f7c727c4ff22b64aff85aeac840a2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga21956baef1fed17469d4944bcd146563"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga21956baef1fed17469d4944bcd146563">sizetype_exact</a> ()</td></tr>
+<tr class="memitem:ga21956baef1fed17469d4944bcd146563"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga21956baef1fed17469d4944bcd146563">sizetype_exact</a> ()</td></tr>
 <tr class="separator:ga21956baef1fed17469d4944bcd146563"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabd08da7b124eacc16315a3cf454cf895"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gabd08da7b124eacc16315a3cf454cf895">sizetype_less</a> (const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:gabd08da7b124eacc16315a3cf454cf895"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gabd08da7b124eacc16315a3cf454cf895">sizetype_less</a> (const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="memdesc:gabd08da7b124eacc16315a3cf454cf895"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests whether y&lt;z. If y=z the result is allowed to be true OR false!  <a href="group__sizetype.html#gabd08da7b124eacc16315a3cf454cf895">More...</a><br /></td></tr>
 <tr class="separator:gabd08da7b124eacc16315a3cf454cf895"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6cb37dcd8620957d43b451e959e05707"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga6cb37dcd8620957d43b451e959e05707">sizetype_half</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y)</td></tr>
+<tr class="memitem:ga6cb37dcd8620957d43b451e959e05707"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga6cb37dcd8620957d43b451e959e05707">sizetype_half</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y)</td></tr>
 <tr class="separator:ga6cb37dcd8620957d43b451e959e05707"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3bfd70e1c828e9ca8f74e07ad8a2c747"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga3bfd70e1c828e9ca8f74e07ad8a2c747">sizetype_log2</a> (const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x)</td></tr>
+<tr class="memitem:ga3bfd70e1c828e9ca8f74e07ad8a2c747"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga3bfd70e1c828e9ca8f74e07ad8a2c747">sizetype_log2</a> (const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x)</td></tr>
 <tr class="memdesc:ga3bfd70e1c828e9ca8f74e07ad8a2c747"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the integer approximation to the base-2 logarithm rounded towards positive infinity.  <a href="group__sizetype.html#ga3bfd70e1c828e9ca8f74e07ad8a2c747">More...</a><br /></td></tr>
 <tr class="separator:ga3bfd70e1c828e9ca8f74e07ad8a2c747"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac008e777d9962452cb8890b7650ab652"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gac008e777d9962452cb8890b7650ab652">sizetype_dec</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y)</td></tr>
+<tr class="memitem:gac008e777d9962452cb8890b7650ab652"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gac008e777d9962452cb8890b7650ab652">sizetype_dec</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y)</td></tr>
 <tr class="separator:gac008e777d9962452cb8890b7650ab652"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9524ca2e3fa7e8211c3111de77086562"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga9524ca2e3fa7e8211c3111de77086562">sizetype_dec</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x)</td></tr>
+<tr class="memitem:ga9524ca2e3fa7e8211c3111de77086562"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga9524ca2e3fa7e8211c3111de77086562">sizetype_dec</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x)</td></tr>
 <tr class="separator:ga9524ca2e3fa7e8211c3111de77086562"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad7e67c8eaf4ef73538a671ae59abbe03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gad7e67c8eaf4ef73538a671ae59abbe03">sizetype_sqrt</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y)</td></tr>
+<tr class="memitem:gad7e67c8eaf4ef73538a671ae59abbe03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#gad7e67c8eaf4ef73538a671ae59abbe03">sizetype_sqrt</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y)</td></tr>
+<tr class="memdesc:gad7e67c8eaf4ef73538a671ae59abbe03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the square root of <em>y</em> and stores it, rounded towards positive infinity, in <em>x</em>.  <a href="group__sizetype.html#gad7e67c8eaf4ef73538a671ae59abbe03">More...</a><br /></td></tr>
 <tr class="separator:gad7e67c8eaf4ef73538a671ae59abbe03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2cd0606eb733e33b24fee1293b9e643a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga2cd0606eb733e33b24fee1293b9e643a">sizetype_div</a> (<a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">sizetype</a> &amp;z)</td></tr>
+<tr class="memitem:ga2cd0606eb733e33b24fee1293b9e643a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sizetype.html#ga2cd0606eb733e33b24fee1293b9e643a">sizetype_div</a> (<a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;x, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;y, const <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">sizetype</a> &amp;z)</td></tr>
 <tr class="separator:ga2cd0606eb733e33b24fee1293b9e643a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3acbf3f333764fad38cd560b6d660ba3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structiRRAM_1_1__SetRwidth.html">_SetRwidth</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiRRAM.html#a3acbf3f333764fad38cd560b6d660ba3">setRwidth</a> (int __n)</td></tr>
 <tr class="separator:a3acbf3f333764fad38cd560b6d660ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1098,10 +1100,9 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd><p class="startdd">REALs with MP-backend are infectious: every operation involving other <code>double_pair</code> REALs will result in a MP-backed result even on precision-level 1. Check which of the following functions could be fitted to work on the <code>double_pair</code> representation directly or could at least be adapted to return a precision-level 1 result:</p><ul>
-<li><a class="el" href="group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce">sqrt(const REAL &amp;)</a></li>
-<li><a class="el" href="group__maths.html#ga959f3cf3f9e2bc4ec2ed42c211698c87">power(const REAL &amp;, int)</a></li>
+<li><a class="el" href="group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce" title="Computes the square root of the argument x. ">sqrt(const REAL &amp;)</a></li>
 <li><a class="el" href="group__maths.html#gaeb6d033fec14f1ec48d8751125ab16e4">power(const REAL &amp;, const REAL &amp;)</a></li>
-<li><a class="el" href="group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce">sqrt(const REAL &amp;)</a></li>
+<li><a class="el" href="group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce" title="Computes the square root of the argument x. ">sqrt(const REAL &amp;)</a></li>
 <li><a class="el" href="namespaceiRRAM.html#ab5a3c978c85968a8e9fca2468e2d0d75" title="Computes a dyadic approximation to x that is accurate to 2^p. ">approx(const REAL &amp;, const int)</a></li>
 <li><a class="el" href="namespaceiRRAM.html#acbff5b4d83f94ea76f661db3abb8a3c8" title="Multi-valued check whether 2^k bounds |x|. ">bound(const REAL &amp;, const int)</a></li>
 <li><a class="el" href="namespaceiRRAM.html#acccdf705077cc02b2bc1870acd456b58" title="Returns a tight bound to the logarithmic value of |x|: , where e is x.vsize.exponent. ">size(const REAL &amp;)</a></li>
@@ -1121,8 +1122,11 @@ Variables</h2></td></tr>
 <li><a class="el" href="group__maths.html#ga5afeb059421acdb704c4bc4d15bec8f3">root(const REAL &amp;, int n)</a> at least for <code>n == 3</code></li>
 <li>trigonometric functions </li>
 </ul>
-<p class="enddd">Special care has to be taken in case C/C++ library functions are used to implement those. Only <code>sqrt(double)</code> and <code>fma(double,double,double)</code> provide error guarrantees according to the respective standards (for <code>fma</code> including POSIX). Standard compliance in this respect also cannot be assumed for every C/C++ standard library but should probably be white-listed for proven implementations. </p>
+<p class="enddd">Special care has to be taken in case C/C++ library functions are used to implement those. Only <code>sqrt(double)</code> and <code>fma(double,double,double)</code> provide error guarrantees according to the respective standards (for <code>fma</code> including POSIX). Standard compliance in this respect also cannot be assumed for every C/C++ standard library but should probably be white-listed for proven implementations. See</p><ul>
+<li><a class="el" href="group__sizetype.html#gad7e67c8eaf4ef73538a671ae59abbe03" title="Computes the square root of y and stores it, rounded towards positive infinity, in x...">sizetype_sqrt()</a> </li>
+</ul>
 </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>The functions <a class="el" href="classiRRAM_1_1REAL.html#ad52da4ecaf2a2a44e7f5467ae7daa8f8">REAL::geterror()</a>, <a class="el" href="classiRRAM_1_1REAL.html#aa61b8bbcde229232f9089fe8ce0065ea">REAL::getsize()</a> (and maybe <a class="el" href="classiRRAM_1_1REAL.html#aa92815af24102c71982cbb9662710aa8">REAL::adderror()</a>?) are sometimes used to implicitely convert to an MP-backed <a class="el" href="classiRRAM_1_1REAL.html">REAL</a>. That's not part of their contract. Identify and fix those. </dd></dl>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="af1380c4ff555ed6a63a18d5dda726963"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af1380c4ff555ed6a63a18d5dda726963">&sect;&nbsp;</a></span>any_continuous</h2>
@@ -1178,19 +1182,19 @@ template&lt;typename Base , typename EquivBase , typename Compat , typename Ret 
 
 </div>
 </div>
-<a id="ae39c265295b2fad62e8eab5d0e9626fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae39c265295b2fad62e8eab5d0e9626fa">&sect;&nbsp;</a></span>sizetype</h2>
+<a id="a8dbaae5219675b5bc13e6ffdc59946a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dbaae5219675b5bc13e6ffdc59946a4">&sect;&nbsp;</a></span>sizetype</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="structiRRAM_1_1generic__sizetype.html">generic_sizetype</a>&lt;unsigned int,int&gt; <a class="el" href="namespaceiRRAM.html#ae39c265295b2fad62e8eab5d0e9626fa">iRRAM::sizetype</a></td>
+          <td class="memname">typedef <a class="el" href="structiRRAM_1_1generic__sizetype.html">generic_sizetype</a>&lt;uint32_t,int32_t&gt; <a class="el" href="namespaceiRRAM.html#a8dbaae5219675b5bc13e6ffdc59946a4">iRRAM::sizetype</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="core_8h_source.html#l00073">73</a> of file <a class="el" href="core_8h_source.html">core.h</a>.</p>
+<p>Definition at line <a class="el" href="core_8h_source.html#l00074">74</a> of file <a class="el" href="core_8h_source.html">core.h</a>.</p>
 
 </div>
 </div>
@@ -1220,7 +1224,7 @@ template&lt;typename Base , typename EquivBase , typename Compat , typename Ret 
 <tr><td class="fieldname"><a id="a64727c312132c35ab2781b1b49606cf2aa7dd12b1dab17d25467b0b0a4c8d4a92"></a>show&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="core_8h_source.html#l00176">176</a> of file <a class="el" href="core_8h_source.html">core.h</a>.</p>
+<p>Definition at line <a class="el" href="core_8h_source.html#l00177">177</a> of file <a class="el" href="core_8h_source.html">core.h</a>.</p>
 
 </div>
 </div>
@@ -1273,9 +1277,9 @@ template&lt;typename Base , typename EquivBase , typename Compat , typename Ret 
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00817">817</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00820">820</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -1297,7 +1301,7 @@ template&lt;typename Base , typename EquivBase , typename Compat , typename Ret 
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00301">301</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="INTERVAL_8cc_source.html#l00301">iRRAM::INTERVAL::acos</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="INTERVAL_8cc_source.html#l00301">iRRAM::INTERVAL::acos</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -1418,9 +1422,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="core_8h.html#a451bb64697c11ccad0d9f956a602105f">REITERATE</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00643">643</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00650">650</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="REALS_8cc_source.html#l00643">iRRAM::REAL::approx</a>, <a class="el" href="cache_8h_source.html#l00133">iRRAM::iRRAM_thread_data_class::cache_mp</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00068">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="MPFR__interface_8h_source.html#l00121">MP_copy</a>, <a class="el" href="MPFR__interface_8h_source.html#l00111">MP_duplicate_w_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, <a class="el" href="core_8h_source.html#l00169">REITERATE</a>, <a class="el" href="sizetype_8hh_source.html#l00405">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00106">sizetype_power2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="REALS_8cc_source.html#l00650">iRRAM::REAL::approx</a>, <a class="el" href="cache_8h_source.html#l00133">iRRAM::iRRAM_thread_data_class::cache_mp</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00162">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="MPFR__interface_8h_source.html#l00121">MP_copy</a>, <a class="el" href="MPFR__interface_8h_source.html#l00111">MP_duplicate_w_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, <a class="el" href="core_8h_source.html#l00170">REITERATE</a>, <a class="el" href="sizetype_8hh_source.html#l00406">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00107">sizetype_power2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 <p>Referenced by <a class="el" href="sqrt_8cc_source.html#l00032">root()</a>.</p>
 
@@ -1444,7 +1448,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="COMPLEX_8cc_source.html#l00165">165</a> of file <a class="el" href="COMPLEX_8cc_source.html">COMPLEX.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">iRRAM::COMPLEX::abs</a>, <a class="el" href="COMPLEX_8cc_source.html#l00431">acos()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00407">asin()</a>, <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">choose()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00031">iRRAM::COMPLEX::COMPLEX()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00095">iRRAM::COMPLEX::imag</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, <a class="el" href="REALS_8cc_source.html#l00609">positive()</a>, and <a class="el" href="COMPLEX_8cc_source.html#l00092">iRRAM::COMPLEX::real</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">iRRAM::COMPLEX::abs</a>, <a class="el" href="COMPLEX_8cc_source.html#l00431">acos()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00407">asin()</a>, <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">choose()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00031">iRRAM::COMPLEX::COMPLEX()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00095">iRRAM::COMPLEX::imag</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, <a class="el" href="REALS_8cc_source.html#l00616">positive()</a>, and <a class="el" href="COMPLEX_8cc_source.html#l00092">iRRAM::COMPLEX::real</a>.</p>
 
 <p>Referenced by <a class="el" href="mpfr__extension_8cc_source.html#l00037">mpfr_wrapper()</a>.</p>
 
@@ -1468,7 +1472,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00296">296</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="INTERVAL_8cc_source.html#l00296">iRRAM::INTERVAL::asin</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="INTERVAL_8cc_source.html#l00296">iRRAM::INTERVAL::asin</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -1510,11 +1514,11 @@ template&lt;class RESULT , class... PARAM&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01086">1086</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01093">1093</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="REALS_8cc_source.html#l01057">strtoREAL()</a>.</p>
+<p>References <a class="el" href="REALS_8cc_source.html#l01064">strtoREAL()</a>.</p>
 
-<p>Referenced by <a class="el" href="REAL_8h_source.html#l00356">iRRAM::REAL::seterror()</a>.</p>
+<p>Referenced by <a class="el" href="REAL_8h_source.html#l00359">iRRAM::REAL::seterror()</a>.</p>
 
 </div>
 </div>
@@ -1593,11 +1597,11 @@ template&lt;class RESULT , class... PARAM&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>\(\text{bound}(x,k)=\begin{cases} \bot,&amp;\neg P_k(\hat x,x_\varepsilon)\Longrightarrow x_\varepsilon&gt;|x|/3 \\ T,&amp;P_k(\hat x,x_\varepsilon)\wedge\hat x&lt;2^k\Longrightarrow |x|&lt;2^k \\ F,&amp;P_k(\hat x,x_\varepsilon)\wedge\hat x\not&lt;2^k\Longrightarrow |x|\geq 2^{k-1}-2^e \end{cases}\) </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>According to documentation, this function should compute \(\begin{cases} T,&amp;|x|\leq 2^k \\ F,&amp;|x|\geq 2^{k-2} \\ \bot,&amp;\text{otherwise} \end{cases}\) </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>According to documentation, this function should compute \(\begin{cases} T,&amp;|x|\leq 2^k \\ F,&amp;|x|\geq 2^{k-2} \\ \bot,&amp;\text{otherwise} \end{cases}\) </dd></dl>
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00793">793</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00800">800</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="REALS_8cc_source.html#l00793">iRRAM::REAL::bound</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00068">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="sizetype_8hh_source.html#l00203">sizetype_add()</a>, <a class="el" href="sizetype_8hh_source.html#l00221">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00405">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00383">sizetype_set()</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00304">iRRAM::REAL::vsize</a>.</p>
+<p>References <a class="el" href="REALS_8cc_source.html#l00800">iRRAM::REAL::bound</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="core_8h_source.html#l00162">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="sizetype_8hh_source.html#l00204">sizetype_add()</a>, <a class="el" href="sizetype_8hh_source.html#l00222">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00406">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00384">sizetype_set()</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00307">iRRAM::REAL::vsize</a>.</p>
 
 </div>
 </div>
@@ -1619,7 +1623,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00049">49</a> of file <a class="el" href="LAZY__BOOLEAN_8cc_source.html">LAZY_BOOLEAN.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>.</p>
 
 </div>
 </div>
@@ -1675,7 +1679,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">58</a> of file <a class="el" href="LAZY__BOOLEAN_8cc_source.html">LAZY_BOOLEAN.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00160">iRRAM_DEBUG1</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="core_8h_source.html#l00169">REITERATE</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG1</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="core_8h_source.html#l00170">REITERATE</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>.</p>
 
 <p>Referenced by <a class="el" href="COMPLEX_8cc_source.html#l00165">arg()</a>, <a class="el" href="sin__cos_8cc_source.html#l00260">atan()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00221">cos()</a>, <a class="el" href="sin__cos_8cc_source.html#l00310">cosech()</a>, <a class="el" href="sin__cos_8cc_source.html#l00346">cosh()</a>, <a class="el" href="sin__cos_8cc_source.html#l00385">coth()</a>, <a class="el" href="sin__cos_8cc_source.html#l00292">sech()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00158">sin()</a>, <a class="el" href="sin__cos_8cc_source.html#l00328">sinh()</a>, and <a class="el" href="sin__cos_8cc_source.html#l00364">tanh()</a>.</p>
 
@@ -1699,7 +1703,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="REALMATRIX_8cc_source.html#l00289">289</a> of file <a class="el" href="REALMATRIX_8cc_source.html">REALMATRIX.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALMATRIX_8cc_source.html#l00237">iRRAM::REALMATRIX::bound</a>, <a class="el" href="REALMATRIX_8h_source.html#l00084">iRRAM::REALMATRIX::columns</a>, <a class="el" href="REALMATRIX_8cc_source.html#l00048">iRRAM::REALMATRIX::eye</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxcolumn</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxrow</a>, and <a class="el" href="REALMATRIX_8h_source.html#l00082">iRRAM::REALMATRIX::rows</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALMATRIX_8cc_source.html#l00237">iRRAM::REALMATRIX::bound</a>, <a class="el" href="REALMATRIX_8h_source.html#l00084">iRRAM::REALMATRIX::columns</a>, <a class="el" href="REALMATRIX_8cc_source.html#l00048">iRRAM::REALMATRIX::eye</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxcolumn</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxrow</a>, and <a class="el" href="REALMATRIX_8h_source.html#l00082">iRRAM::REALMATRIX::rows</a>.</p>
 
 </div>
 </div>
@@ -1721,7 +1725,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="SPARSEREALMATRIX_8cc_source.html#l00575">575</a> of file <a class="el" href="SPARSEREALMATRIX_8cc_source.html">SPARSEREALMATRIX.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00127">iRRAM::SPARSEREALMATRIX::colvector</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxcolumn</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00039">iRRAM::SPM_ELEMENT::nextrow</a>, and <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00035">iRRAM::SPM_ELEMENT::value</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00127">iRRAM::SPARSEREALMATRIX::colvector</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxcolumn</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00039">iRRAM::SPM_ELEMENT::nextrow</a>, and <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00035">iRRAM::SPM_ELEMENT::value</a>.</p>
 
 </div>
 </div>
@@ -1787,7 +1791,7 @@ template&lt;class RESULT , class INTERMEDIATE , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00221">221</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">choose()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00221">iRRAM::INTERVAL::cos</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, <a class="el" href="REALS_8cc_source.html#l01092">modulo()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">choose()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00221">iRRAM::INTERVAL::cos</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, <a class="el" href="REALS_8cc_source.html#l01099">modulo()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -2006,7 +2010,7 @@ template&lt;typename F , typename... Args&gt; </div>
 
 <p>Definition at line <a class="el" href="lib_8h_source.html#l00085">85</a> of file <a class="el" href="lib_8h_source.html">lib.h</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="core_8h_source.html#l00117">iRRAM::state_t::cache_active</a>, <a class="el" href="STREAMS_8cc_source.html#l00039">cerr</a>, <a class="el" href="classiRRAM_1_1iRRAM__cache__type.html#a7e0459cea99c9b9ca21319f8c44e990e">iRRAM::iRRAM_cache_type::clear()</a>, <a class="el" href="STREAMS_8cc_source.html#l00041">cout</a>, <a class="el" href="core_8h_source.html#l00105">iRRAM::state_t::debug</a>, <a class="el" href="core_8h_source.html#l00110">iRRAM::state_t::highlevel</a>, <a class="el" href="cache_8h_source.html#l00072">iRRAM::cachelist::id</a>, <a class="el" href="SWITCHES_8h_source.html#l00132">iRRAM::stiff::inc_step()</a>, <a class="el" href="core_8h_source.html#l00106">iRRAM::state_t::infinite</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00115">iRRAM::state_t::inReiterate</a>, <a class="el" href="errno_8cc_source.html#l00011">iRRAM_error_msg</a>, <a class="el" href="common_8h_source.html#l00012">iRRAM_likely</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="stack_8cc_source.html#l00038">iRRAM_VERSION_rt</a>, <a class="el" href="core_8h_source.html#l00118">iRRAM::state_t::max_active</a>, <a class="el" href="core_8h_source.html#l00108">iRRAM::state_t::max_prec</a>, <a class="el" href="core_8h_source.html#l00164">iRRAM::Iteration::prec_diff</a>, <a class="el" href="core_8h_source.html#l00098">iRRAM::ITERATION_DATA::prec_policy</a>, <a class="el" href="core_8h_source.html#l00107">iRRAM::state_t::prec_skip</a>, <a class="el" href="core_8h_source.html#l00109">iRRAM::state_t::prec_start</a>, <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::prec_step</a>, <a class="el" href="STREAMS_8cc_source.html#l00130">iRRAM::orstream::reset()</a>, <a class="el" href="classiRRAM_1_1iRRAM__cache__type.html#a7a42f6c9778d5bf861dc42ed2f4515b5">iRRAM::iRRAM_cache_type::rewind()</a>, <a class="el" href="STREAMS_8cc_source.html#l00128">iRRAM::orstream::rewind()</a>, <a class="el" href="REALmain_8cc_source.html#l00079">show_statistics()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>, and <a class="el" href="core_8h_source.html#l00094">iRRAM::iRRAM_Numerical_Exception::type</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="core_8h_source.html#l00118">iRRAM::state_t::cache_active</a>, <a class="el" href="STREAMS_8cc_source.html#l00039">cerr</a>, <a class="el" href="classiRRAM_1_1iRRAM__cache__type.html#a7e0459cea99c9b9ca21319f8c44e990e">iRRAM::iRRAM_cache_type::clear()</a>, <a class="el" href="STREAMS_8cc_source.html#l00041">cout</a>, <a class="el" href="core_8h_source.html#l00106">iRRAM::state_t::debug</a>, <a class="el" href="core_8h_source.html#l00111">iRRAM::state_t::highlevel</a>, <a class="el" href="cache_8h_source.html#l00072">iRRAM::cachelist::id</a>, <a class="el" href="SWITCHES_8h_source.html#l00132">iRRAM::stiff::inc_step()</a>, <a class="el" href="core_8h_source.html#l00107">iRRAM::state_t::infinite</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00116">iRRAM::state_t::inReiterate</a>, <a class="el" href="errno_8cc_source.html#l00011">iRRAM_error_msg</a>, <a class="el" href="common_8h_source.html#l00012">iRRAM_likely</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="stack_8cc_source.html#l00038">iRRAM_VERSION_rt</a>, <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::max_active</a>, <a class="el" href="core_8h_source.html#l00109">iRRAM::state_t::max_prec</a>, <a class="el" href="core_8h_source.html#l00165">iRRAM::Iteration::prec_diff</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::prec_policy</a>, <a class="el" href="core_8h_source.html#l00108">iRRAM::state_t::prec_skip</a>, <a class="el" href="core_8h_source.html#l00110">iRRAM::state_t::prec_start</a>, <a class="el" href="core_8h_source.html#l00102">iRRAM::ITERATION_DATA::prec_step</a>, <a class="el" href="STREAMS_8cc_source.html#l00130">iRRAM::orstream::reset()</a>, <a class="el" href="classiRRAM_1_1iRRAM__cache__type.html#a7a42f6c9778d5bf861dc42ed2f4515b5">iRRAM::iRRAM_cache_type::rewind()</a>, <a class="el" href="STREAMS_8cc_source.html#l00128">iRRAM::orstream::rewind()</a>, <a class="el" href="REALmain_8cc_source.html#l00079">show_statistics()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>, and <a class="el" href="core_8h_source.html#l00095">iRRAM::iRRAM_Numerical_Exception::type</a>.</p>
 
 <p>Referenced by <a class="el" href="REALmain_8cc_source.html#l00109">iRRAM_exec()</a>, <a class="el" href="iRRAM_8h_source.html#l00034">main()</a>, and <a class="el" href="mpfr__extension_8cc_source.html#l00037">mpfr_wrapper()</a>.</p>
 
@@ -2074,7 +2078,7 @@ template&lt;typename F , typename... Args&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00126">126</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -2292,7 +2296,7 @@ template&lt;typename S , typename T , typename... ContArgs&gt; </div>
 
 <p>Definition at line <a class="el" href="limit__templates_8h_source.html#l00181">181</a> of file <a class="el" href="limit__templates_8h_source.html">limit_templates.h</a>.</p>
 
-<p>References <a class="el" href="namespaceiRRAM.html#a0a3af7b79e31e3d9b1e436a7d90105a4">geterror_exp()</a>, and <a class="el" href="sizetype_8hh_source.html#l00367">max()</a>.</p>
+<p>References <a class="el" href="namespaceiRRAM.html#a0a3af7b79e31e3d9b1e436a7d90105a4">geterror_exp()</a>, and <a class="el" href="sizetype_8hh_source.html#l00368">max()</a>.</p>
 
 </div>
 </div>
@@ -2512,7 +2516,7 @@ template&lt;typename S , typename T , typename... ContArgs&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00338">338</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -2544,7 +2548,7 @@ template&lt;typename S , typename T , typename... ContArgs&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00335">335</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -2868,7 +2872,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00118">118</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -2890,7 +2894,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="REALMATRIX_8cc_source.html#l00271">271</a> of file <a class="el" href="REALMATRIX_8cc_source.html">REALMATRIX.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxcolumn</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxrow</a>, <a class="el" href="DYADIC_8cc_source.html#l00131">size()</a>, and <a class="el" href="REALMATRIX_8h_source.html#l00115">iRRAM::REALMATRIX::values</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxcolumn</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxrow</a>, <a class="el" href="DYADIC_8cc_source.html#l00131">size()</a>, and <a class="el" href="REALMATRIX_8h_source.html#l00115">iRRAM::REALMATRIX::values</a>.</p>
 
 </div>
 </div>
@@ -2912,7 +2916,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="SPARSEREALMATRIX_8cc_source.html#l00545">545</a> of file <a class="el" href="SPARSEREALMATRIX_8cc_source.html">SPARSEREALMATRIX.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxrow</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00038">iRRAM::SPM_ELEMENT::nextcol</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00126">iRRAM::SPARSEREALMATRIX::rowvector</a>, and <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00035">iRRAM::SPM_ELEMENT::value</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxrow</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00038">iRRAM::SPM_ELEMENT::nextcol</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00126">iRRAM::SPARSEREALMATRIX::rowvector</a>, and <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00035">iRRAM::SPM_ELEMENT::value</a>.</p>
 
 </div>
 </div>
@@ -2956,7 +2960,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00122">122</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -3000,9 +3004,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01188">1188</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01195">1195</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="REALS_8cc_source.html#l00833">iRRAM::REAL::adderror()</a>, <a class="el" href="REALS_8cc_source.html#l00643">iRRAM::REAL::approx</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="core_8h_source.html#l00105">iRRAM::state_t::debug</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="REALS_8cc_source.html#l00855">iRRAM::REAL::geterror()</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG2</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="core_8h_source.html#l00068">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="REALS_8cc_source.html#l00844">iRRAM::REAL::seterror()</a>, <a class="el" href="sizetype_8hh_source.html#l00106">sizetype_power2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="REALS_8cc_source.html#l00840">iRRAM::REAL::adderror()</a>, <a class="el" href="REALS_8cc_source.html#l00650">iRRAM::REAL::approx</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="core_8h_source.html#l00106">iRRAM::state_t::debug</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="REALS_8cc_source.html#l00862">iRRAM::REAL::geterror()</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00162">iRRAM_DEBUG2</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="REALS_8cc_source.html#l00851">iRRAM::REAL::seterror()</a>, <a class="el" href="sizetype_8hh_source.html#l00107">sizetype_power2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>.</p>
 
 </div>
 </div>
@@ -3178,7 +3182,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="STREAMS_8cc_source.html#l00335">335</a> of file <a class="el" href="STREAMS_8cc_source.html">STREAMS.cc</a>.</p>
 
-<p>References <a class="el" href="cache_8h_source.html#l00120">iRRAM::iRRAM_thread_data_class::cache_b</a>, <a class="el" href="STREAMS_8cc_source.html#l00290">iRRAM_inexec</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="STREAMS_8h_source.html#l00117">iRRAM::orstream::target</a>, and <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>.</p>
+<p>References <a class="el" href="cache_8h_source.html#l00120">iRRAM::iRRAM_thread_data_class::cache_b</a>, <a class="el" href="STREAMS_8cc_source.html#l00290">iRRAM_inexec</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="STREAMS_8h_source.html#l00117">iRRAM::orstream::target</a>, and <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>.</p>
 
 </div>
 </div>
@@ -3200,7 +3204,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="STREAMS_8cc_source.html#l00377">377</a> of file <a class="el" href="STREAMS_8cc_source.html">STREAMS.cc</a>.</p>
 
-<p>References <a class="el" href="cache_8h_source.html#l00120">iRRAM::iRRAM_thread_data_class::cache_b</a>, <a class="el" href="STREAMS_8cc_source.html#l00290">iRRAM_inexec</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>.</p>
+<p>References <a class="el" href="cache_8h_source.html#l00120">iRRAM::iRRAM_thread_data_class::cache_b</a>, <a class="el" href="STREAMS_8cc_source.html#l00290">iRRAM_inexec</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>.</p>
 
 </div>
 </div>
@@ -3414,7 +3418,7 @@ template&lt;class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00815">815</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00818">818</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
 </div>
 </div>
@@ -3606,7 +3610,7 @@ template&lt;class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00063">63</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -4016,9 +4020,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00663">663</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00666">666</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -4058,9 +4062,9 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00690">690</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00693">693</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -4582,9 +4586,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00587">587</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00590">590</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -4624,9 +4628,9 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00600">600</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00603">603</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -4824,7 +4828,7 @@ template&lt;&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00049">49</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -5306,9 +5310,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00623">623</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00626">626</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -5348,9 +5352,9 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00632">632</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00635">635</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -5390,9 +5394,9 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00641">641</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00644">644</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -6008,9 +6012,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00720">720</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00723">723</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -6050,9 +6054,9 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00754">754</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00757">757</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -6540,7 +6544,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00800">800</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00803">803</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
 <p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
@@ -6620,9 +6624,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00584">584</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00587">587</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REALS_8cc_source.html#l00591">iRRAM::REAL::scale</a>.</p>
+<p>References <a class="el" href="REALS_8cc_source.html#l00598">iRRAM::REAL::scale</a>.</p>
 
 </div>
 </div>
@@ -6804,7 +6808,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00811">811</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00814">814</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
 </div>
 </div>
@@ -7022,7 +7026,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00814">814</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00817">817</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
 </div>
 </div>
@@ -7330,7 +7334,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00812">812</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00815">815</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
 </div>
 </div>
@@ -7512,7 +7516,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00813">813</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00816">816</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
 </div>
 </div>
@@ -7590,9 +7594,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00585">585</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00588">588</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REALS_8cc_source.html#l00591">iRRAM::REAL::scale</a>.</p>
+<p>References <a class="el" href="REALS_8cc_source.html#l00598">iRRAM::REAL::scale</a>.</p>
 
 </div>
 </div>
@@ -7734,9 +7738,9 @@ template&lt;class PARAM &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00609">609</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00616">616</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00068">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="MPFR__interface_8h_source.html#l00201">MP_sign</a>, <a class="el" href="REALS_8cc_source.html#l00609">iRRAM::REAL::positive</a>, <a class="el" href="sizetype_8hh_source.html#l00405">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00106">sizetype_power2()</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00304">iRRAM::REAL::vsize</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="core_8h_source.html#l00162">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="MPFR__interface_8h_source.html#l00201">MP_sign</a>, <a class="el" href="REALS_8cc_source.html#l00616">iRRAM::REAL::positive</a>, <a class="el" href="sizetype_8hh_source.html#l00406">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00107">sizetype_power2()</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00307">iRRAM::REAL::vsize</a>.</p>
 
 <p>Referenced by <a class="el" href="COMPLEX_8cc_source.html#l00165">arg()</a>, and <a class="el" href="exp__log_8cc_source.html#l00081">exp()</a>.</p>
 
@@ -7770,9 +7774,9 @@ template&lt;class PARAM &gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00136">136</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00136">iRRAM::INTERVAL::power</a>, <a class="el" href="INTERVAL_8cc_source.html#l00131">iRRAM::INTERVAL::square</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00136">iRRAM::INTERVAL::power</a>, <a class="el" href="INTERVAL_8cc_source.html#l00131">iRRAM::INTERVAL::square</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
-<p>Referenced by <a class="el" href="pi__ln2_8cc_source.html#l00039">ln2()</a>, <a class="el" href="REAL_8h_source.html#l00368">round()</a>, and <a class="el" href="REALS_8cc_source.html#l01057">strtoREAL()</a>.</p>
+<p>Referenced by <a class="el" href="pi__ln2_8cc_source.html#l00039">ln2()</a>, <a class="el" href="REAL_8h_source.html#l00371">round()</a>, and <a class="el" href="REALS_8cc_source.html#l01064">strtoREAL()</a>.</p>
 
 </div>
 </div>
@@ -8042,9 +8046,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00368">368</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00371">371</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00817">iRRAM::REAL::abs</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2adc4d53aa0d117d8b189b36d161af4e96">absolute</a>, <a class="el" href="COMPLEX_8cc_source.html#l00431">acos()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00497">acosec()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00569">acosech()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00521">acosh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00473">acotan()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00545">acoth()</a>, <a class="el" href="REALS_8cc_source.html#l00897">iRRAM::REAL::as_INTEGER()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00485">asec()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00557">asech()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00407">asin()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00509">asinh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00454">atan()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00533">atanh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00236">cos()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00283">cosec()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00395">cosech()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00332">cosh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00272">cotan()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00371">coth()</a>, <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="exp__log_8cc_source.html#l00106">euler()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00196">exp()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00039">ln2()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00184">log()</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, <a class="el" href="REALS_8cc_source.html#l01092">modulo()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00212">MP_getsize</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00136">power()</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, <a class="el" href="sqrt_8cc_source.html#l00032">root()</a>, <a class="el" href="REALS_8cc_source.html#l00516">rshow()</a>, <a class="el" href="REALS_8cc_source.html#l00514">rwrite()</a>, <a class="el" href="REALS_8cc_source.html#l00515">rwritee()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00294">sec()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00383">sech()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00212">sin()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00305">sinh()</a>, <a class="el" href="sqrt_8cc_source.html#l00075">iRRAM::REAL::sqrt</a>, <a class="el" href="REALS_8cc_source.html#l00237">iRRAM::REAL::swrite</a>, <a class="el" href="COMPLEX_8cc_source.html#l00261">tan()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00359">tanh()</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00304">iRRAM::REAL::vsize</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00820">iRRAM::REAL::abs</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2adc4d53aa0d117d8b189b36d161af4e96">absolute</a>, <a class="el" href="COMPLEX_8cc_source.html#l00431">acos()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00497">acosec()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00569">acosech()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00521">acosh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00473">acotan()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00545">acoth()</a>, <a class="el" href="REALS_8cc_source.html#l00904">iRRAM::REAL::as_INTEGER()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00485">asec()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00557">asech()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00407">asin()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00509">asinh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00454">atan()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00533">atanh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00236">cos()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00283">cosec()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00395">cosech()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00332">cosh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00272">cotan()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00371">coth()</a>, <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="exp__log_8cc_source.html#l00106">euler()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00196">exp()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00039">ln2()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00184">log()</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, <a class="el" href="REALS_8cc_source.html#l01099">modulo()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00212">MP_getsize</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00136">power()</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, <a class="el" href="sqrt_8cc_source.html#l00032">root()</a>, <a class="el" href="REALS_8cc_source.html#l00523">rshow()</a>, <a class="el" href="REALS_8cc_source.html#l00521">rwrite()</a>, <a class="el" href="REALS_8cc_source.html#l00522">rwritee()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00294">sec()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00383">sech()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00212">sin()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00305">sinh()</a>, <a class="el" href="sqrt_8cc_source.html#l00106">iRRAM::REAL::sqrt</a>, <a class="el" href="REALS_8cc_source.html#l00244">iRRAM::REAL::swrite</a>, <a class="el" href="COMPLEX_8cc_source.html#l00261">tan()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00359">tanh()</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00307">iRRAM::REAL::vsize</a>.</p>
 
 </div>
 </div>
@@ -8072,11 +8076,11 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00367">367</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00370">370</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REALS_8cc_source.html#l00897">iRRAM::REAL::as_INTEGER()</a>, and <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>.</p>
+<p>References <a class="el" href="REALS_8cc_source.html#l00904">iRRAM::REAL::as_INTEGER()</a>, and <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>.</p>
 
-<p>Referenced by <a class="el" href="REALS_8cc_source.html#l01092">modulo()</a>.</p>
+<p>Referenced by <a class="el" href="REALS_8cc_source.html#l01099">modulo()</a>.</p>
 
 </div>
 </div>
@@ -8098,7 +8102,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="REALMATRIX_8cc_source.html#l00278">278</a> of file <a class="el" href="REALMATRIX_8cc_source.html">REALMATRIX.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxcolumn</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, and <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxrow</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxcolumn</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, and <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxrow</a>.</p>
 
 </div>
 </div>
@@ -8120,7 +8124,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="SPARSEREALMATRIX_8cc_source.html#l00558">558</a> of file <a class="el" href="SPARSEREALMATRIX_8cc_source.html">SPARSEREALMATRIX.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxrow</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00038">iRRAM::SPM_ELEMENT::nextcol</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00126">iRRAM::SPARSEREALMATRIX::rowvector</a>, and <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00035">iRRAM::SPM_ELEMENT::value</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxrow</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00038">iRRAM::SPM_ELEMENT::nextcol</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00126">iRRAM::SPARSEREALMATRIX::rowvector</a>, and <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00035">iRRAM::SPM_ELEMENT::value</a>.</p>
 
 </div>
 </div>
@@ -8150,11 +8154,11 @@ template&lt;class RESULT , class... PARAM&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00516">516</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00523">523</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="STREAMS_8cc_source.html#l00041">cout</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00068">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="sizetype_8hh_source.html#l00367">max()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00135">MP_abs</a>, <a class="el" href="MPFR__interface_8h_source.html#l00212">MP_getsize</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00145">MP_mv_mul</a>, <a class="el" href="MPFR__interface_8h_source.html#l00201">MP_sign</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="core_8h_source.html#l00098">iRRAM::ITERATION_DATA::prec_policy</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2aa7dd12b1dab17d25467b0b0a4c8d4a92">show</a>, <a class="el" href="sizetype_8hh_source.html#l00221">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00405">sizetype_less()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="REALS_8cc_source.html#l00237">iRRAM::REAL::swrite</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00304">iRRAM::REAL::vsize</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="STREAMS_8cc_source.html#l00041">cout</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="core_8h_source.html#l00162">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="sizetype_8hh_source.html#l00368">max()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00135">MP_abs</a>, <a class="el" href="MPFR__interface_8h_source.html#l00212">MP_getsize</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00145">MP_mv_mul</a>, <a class="el" href="MPFR__interface_8h_source.html#l00201">MP_sign</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::prec_policy</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2aa7dd12b1dab17d25467b0b0a4c8d4a92">show</a>, <a class="el" href="sizetype_8hh_source.html#l00222">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00406">sizetype_less()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="REALS_8cc_source.html#l00244">iRRAM::REAL::swrite</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00307">iRRAM::REAL::vsize</a>.</p>
 
-<p>Referenced by <a class="el" href="REAL_8h_source.html#l00368">round()</a>.</p>
+<p>Referenced by <a class="el" href="REAL_8h_source.html#l00371">round()</a>.</p>
 
 </div>
 </div>
@@ -8184,11 +8188,11 @@ template&lt;class RESULT , class... PARAM&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00514">514</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00521">521</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2adc4d53aa0d117d8b189b36d161af4e96">absolute</a>, <a class="el" href="STREAMS_8cc_source.html#l00041">cout</a>, and <a class="el" href="REALS_8cc_source.html#l00237">iRRAM::REAL::swrite</a>.</p>
+<p>References <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2adc4d53aa0d117d8b189b36d161af4e96">absolute</a>, <a class="el" href="STREAMS_8cc_source.html#l00041">cout</a>, and <a class="el" href="REALS_8cc_source.html#l00244">iRRAM::REAL::swrite</a>.</p>
 
-<p>Referenced by <a class="el" href="REAL_8h_source.html#l00368">round()</a>.</p>
+<p>Referenced by <a class="el" href="REAL_8h_source.html#l00371">round()</a>.</p>
 
 </div>
 </div>
@@ -8218,11 +8222,11 @@ template&lt;class RESULT , class... PARAM&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00515">515</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00522">522</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="STREAMS_8cc_source.html#l00041">cout</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2a99c483e1d11b1a279a2a1a3960528487">relative</a>, and <a class="el" href="REALS_8cc_source.html#l00237">iRRAM::REAL::swrite</a>.</p>
+<p>References <a class="el" href="STREAMS_8cc_source.html#l00041">cout</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2a99c483e1d11b1a279a2a1a3960528487">relative</a>, and <a class="el" href="REALS_8cc_source.html#l00244">iRRAM::REAL::swrite</a>.</p>
 
-<p>Referenced by <a class="el" href="REAL_8h_source.html#l00368">round()</a>.</p>
+<p>Referenced by <a class="el" href="REAL_8h_source.html#l00371">round()</a>.</p>
 
 </div>
 </div>
@@ -8256,7 +8260,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>References <a class="el" href="DYADIC_8cc_source.html#l00039">iRRAM::DYADIC::DYADIC()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00248">MP_shift</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, and <a class="el" href="DYADIC_8h_source.html#l00112">iRRAM::DYADIC::value</a>.</p>
 
-<p>Referenced by <a class="el" href="exp__log_8cc_source.html#l00106">euler()</a>, <a class="el" href="limits_8cc_source.html#l00597">iteration()</a>, <a class="el" href="exp__log_8cc_source.html#l00179">log()</a>, <a class="el" href="sizetype_8hh_source.html#l00367">max()</a>, <a class="el" href="sqrt_8cc_source.html#l00032">root()</a>, <a class="el" href="sizetype_8hh_source.html#l00221">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00181">sizetype_add_wo_norm()</a>, <a class="el" href="sizetype_8hh_source.html#l00451">sizetype_dec()</a>, <a class="el" href="sizetype_8hh_source.html#l00121">sizetype_inc()</a>, <a class="el" href="sizetype_8hh_source.html#l00160">sizetype_inc2()</a>, <a class="el" href="sizetype_8hh_source.html#l00405">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00349">sizetype_max()</a>, and <a class="el" href="sin__cos_8cc_source.html#l00213">tan()</a>.</p>
+<p>Referenced by <a class="el" href="exp__log_8cc_source.html#l00106">euler()</a>, <a class="el" href="limits_8cc_source.html#l00597">iteration()</a>, <a class="el" href="exp__log_8cc_source.html#l00179">log()</a>, <a class="el" href="sizetype_8hh_source.html#l00368">max()</a>, <a class="el" href="sqrt_8cc_source.html#l00032">root()</a>, <a class="el" href="sizetype_8hh_source.html#l00222">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00182">sizetype_add_wo_norm()</a>, <a class="el" href="sizetype_8hh_source.html#l00452">sizetype_dec()</a>, <a class="el" href="sizetype_8hh_source.html#l00122">sizetype_inc()</a>, <a class="el" href="sizetype_8hh_source.html#l00161">sizetype_inc2()</a>, <a class="el" href="sizetype_8hh_source.html#l00406">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00350">sizetype_max()</a>, and <a class="el" href="sin__cos_8cc_source.html#l00213">tan()</a>.</p>
 
 </div>
 </div>
@@ -8358,9 +8362,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00591">591</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00598">598</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="REALS_8cc_source.html#l00855">iRRAM::REAL::geterror()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00248">MP_shift</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, <a class="el" href="REALS_8cc_source.html#l00591">iRRAM::REAL::scale</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REALS_8cc_source.html#l00862">iRRAM::REAL::geterror()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00248">MP_shift</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, <a class="el" href="REALS_8cc_source.html#l00598">iRRAM::REAL::scale</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -8473,7 +8477,7 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="REALmain_8cc_source.html#l00079">79</a> of file <a class="el" href="REALmain_8cc_source.html">REALmain.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="STREAMS_8cc_source.html#l00039">cerr</a>, <a class="el" href="pi__ln2_8cc_source.html#l00016">ln2_time</a>, <a class="el" href="core_8h_source.html#l00108">iRRAM::state_t::max_prec</a>, <a class="el" href="MPFR__interface_8h_source.html#l00240">MP_var_count</a>, <a class="el" href="MPFR__ext_8c_source.html#l00010">mpfr_TotalAllocVarCount</a>, <a class="el" href="MPFR__ext_8c_source.html#l00011">mpfr_TotalFreedVarCount</a>, <a class="el" href="pi__ln2_8cc_source.html#l00017">pi_time</a>, <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::prec_step</a>, <a class="el" href="REALmain_8cc_source.html#l00064">resources()</a>, and <a class="el" href="stack_8cc_source.html#l00046">state</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="STREAMS_8cc_source.html#l00039">cerr</a>, <a class="el" href="pi__ln2_8cc_source.html#l00016">ln2_time</a>, <a class="el" href="core_8h_source.html#l00109">iRRAM::state_t::max_prec</a>, <a class="el" href="MPFR__interface_8h_source.html#l00240">MP_var_count</a>, <a class="el" href="MPFR__ext_8c_source.html#l00010">mpfr_TotalAllocVarCount</a>, <a class="el" href="MPFR__ext_8c_source.html#l00011">mpfr_TotalFreedVarCount</a>, <a class="el" href="pi__ln2_8cc_source.html#l00017">pi_time</a>, <a class="el" href="core_8h_source.html#l00102">iRRAM::ITERATION_DATA::prec_step</a>, <a class="el" href="REALmain_8cc_source.html#l00064">resources()</a>, and <a class="el" href="stack_8cc_source.html#l00046">state</a>.</p>
 
 <p>Referenced by <a class="el" href="lib_8h_source.html#l00085">exec()</a>.</p>
 
@@ -8527,7 +8531,7 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00158">158</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">choose()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, <a class="el" href="REALS_8cc_source.html#l01092">modulo()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00158">iRRAM::INTERVAL::sin</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">choose()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, <a class="el" href="REALS_8cc_source.html#l01099">modulo()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00158">iRRAM::INTERVAL::sin</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -8618,11 +8622,11 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="core_8h.html#a451bb64697c11ccad0d9f956a602105f">REITERATE</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>According to documentation, <a class="el" href="namespaceiRRAM.html#acccdf705077cc02b2bc1870acd456b58" title="Returns a tight bound to the logarithmic value of |x|: , where e is x.vsize.exponent. ">size(const REAL &amp;)</a> should compute \(\begin{cases} 1+\lfloor\log_2|x|\rfloor\text,&amp;x\neq 0 \\ 1+\lceil\log_2|x|\rceil\text,&amp;x\neq 0 \\ \text{undef,}&amp;x=0 \end{cases}\) but it does compute \(\begin{cases} i+\lfloor\log_2|x|\rfloor\text,&amp;x\neq 0, i\in\{1,2,3\} \\ \text{undef,}&amp;x=0 \end{cases}\) </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>According to documentation, <a class="el" href="namespaceiRRAM.html#acccdf705077cc02b2bc1870acd456b58" title="Returns a tight bound to the logarithmic value of |x|: , where e is x.vsize.exponent. ">size(const REAL &amp;)</a> should compute \(\begin{cases} 1+\lfloor\log_2|x|\rfloor\text,&amp;x\neq 0 \\ 1+\lceil\log_2|x|\rceil\text,&amp;x\neq 0 \\ \text{undef,}&amp;x=0 \end{cases}\) but it does compute \(\begin{cases} i+\lfloor\log_2|x|\rfloor\text,&amp;x\neq 0, i\in\{1,2,3\} \\ \text{undef,}&amp;x=0 \end{cases}\) </dd></dl>
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00704">704</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00711">711</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00068">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, <a class="el" href="core_8h_source.html#l00169">REITERATE</a>, <a class="el" href="REALS_8cc_source.html#l00704">iRRAM::REAL::size</a>, <a class="el" href="sizetype_8hh_source.html#l00221">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00405">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00432">sizetype_log2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00304">iRRAM::REAL::vsize</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00162">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, <a class="el" href="core_8h_source.html#l00170">REITERATE</a>, <a class="el" href="REALS_8cc_source.html#l00711">iRRAM::REAL::size</a>, <a class="el" href="sizetype_8hh_source.html#l00222">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00406">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00433">sizetype_log2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00307">iRRAM::REAL::vsize</a>.</p>
 
 </div>
 </div>
@@ -8660,7 +8664,7 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="REALMATRIX_8cc_source.html#l00132">132</a> of file <a class="el" href="REALMATRIX_8cc_source.html">REALMATRIX.cc</a>.</p>
 
-<p>References <a class="el" href="REALMATRIX_8cc_source.html#l00034">ELEMENT</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxcolumn</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxrow</a>, and <a class="el" href="REALS_8cc_source.html#l00734">upperbound()</a>.</p>
+<p>References <a class="el" href="REALMATRIX_8cc_source.html#l00034">ELEMENT</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxcolumn</a>, <a class="el" href="REALMATRIX_8h_source.html#l00116">iRRAM::REALMATRIX::maxrow</a>, and <a class="el" href="REALS_8cc_source.html#l00741">upperbound()</a>.</p>
 
 </div>
 </div>
@@ -8698,7 +8702,7 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="SPARSEREALMATRIX_8cc_source.html#l00460">460</a> of file <a class="el" href="SPARSEREALMATRIX_8cc_source.html">SPARSEREALMATRIX.cc</a>.</p>
 
-<p>References <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00037">iRRAM::SPM_ELEMENT::colindex</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00127">iRRAM::SPARSEREALMATRIX::colvector</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxcolumn</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxrow</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00038">iRRAM::SPM_ELEMENT::nextcol</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00039">iRRAM::SPM_ELEMENT::nextrow</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00036">iRRAM::SPM_ELEMENT::rowindex</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00126">iRRAM::SPARSEREALMATRIX::rowvector</a>, <a class="el" href="SPARSEREALMATRIX_8cc_source.html#l00135">iRRAM::SPARSEREALMATRIX::sparse_get_ptr</a>, <a class="el" href="SPARSEREALMATRIX_8cc_source.html#l00032">iRRAM::SPARSEREALMATRIX::sparse_set</a>, <a class="el" href="REALS_8cc_source.html#l00734">upperbound()</a>, and <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00035">iRRAM::SPM_ELEMENT::value</a>.</p>
+<p>References <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00037">iRRAM::SPM_ELEMENT::colindex</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00127">iRRAM::SPARSEREALMATRIX::colvector</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxcolumn</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00129">iRRAM::SPARSEREALMATRIX::maxrow</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00038">iRRAM::SPM_ELEMENT::nextcol</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00039">iRRAM::SPM_ELEMENT::nextrow</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00036">iRRAM::SPM_ELEMENT::rowindex</a>, <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00126">iRRAM::SPARSEREALMATRIX::rowvector</a>, <a class="el" href="SPARSEREALMATRIX_8cc_source.html#l00135">iRRAM::SPARSEREALMATRIX::sparse_get_ptr</a>, <a class="el" href="SPARSEREALMATRIX_8cc_source.html#l00032">iRRAM::SPARSEREALMATRIX::sparse_set</a>, <a class="el" href="REALS_8cc_source.html#l00741">upperbound()</a>, and <a class="el" href="SPARSEREALMATRIX_8h_source.html#l00035">iRRAM::SPM_ELEMENT::value</a>.</p>
 
 </div>
 </div>
@@ -8928,7 +8932,7 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="INTERVAL_8cc_source.html#l00131">131</a> of file <a class="el" href="INTERVAL_8cc_source.html">INTERVAL.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01133">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01145">minimum()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00131">iRRAM::INTERVAL::square</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00098">abs()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00030">iRRAM::INTERVAL::INTERVAL()</a>, <a class="el" href="INTERVAL_8h_source.html#l00119">iRRAM::INTERVAL::low</a>, <a class="el" href="REALS_8cc_source.html#l01140">maximum()</a>, <a class="el" href="REALS_8cc_source.html#l01152">minimum()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00131">iRRAM::INTERVAL::square</a>, and <a class="el" href="INTERVAL_8h_source.html#l00120">iRRAM::INTERVAL::upp</a>.</p>
 
 </div>
 </div>
@@ -8956,9 +8960,9 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00778">778</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00781">781</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00268">iRRAM::REAL::dp</a>, <a class="el" href="common_8h_source.html#l00013">iRRAM_unlikely</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -9034,11 +9038,11 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01057">1057</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01064">1064</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="COMPLEX_8cc_source.html#l00196">exp()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00136">power()</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, and <a class="el" href="RATIONAL_8cc_source.html#l00139">sign()</a>.</p>
+<p>References <a class="el" href="COMPLEX_8cc_source.html#l00196">exp()</a>, <a class="el" href="INTERVAL_8cc_source.html#l00136">power()</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, and <a class="el" href="RATIONAL_8cc_source.html#l00139">sign()</a>.</p>
 
-<p>Referenced by <a class="el" href="REALS_8cc_source.html#l01086">atoREAL()</a>, and <a class="el" href="REAL_8h_source.html#l00356">iRRAM::REAL::seterror()</a>.</p>
+<p>Referenced by <a class="el" href="REALS_8cc_source.html#l01093">atoREAL()</a>, and <a class="el" href="REAL_8h_source.html#l00359">iRRAM::REAL::seterror()</a>.</p>
 
 </div>
 </div>
@@ -9094,9 +9098,9 @@ template&lt;class RESULT1 , class RESULT2 , class... PARAM&gt; </div>
 </p>
  Since \(2^{\overline q}/2\leq 2^{\overline q}\overline b=2^qx&#39;&lt;2^q\), the error is bounded, \((*)&lt;2^p\), when \(\overline q-p&lt;m\leq q+1-p&lt;\lceil(g+k-z+1)\log_2(10)\rceil+1-p\leq m&#39;\). The exact precision is \(\max(10,m&#39;)\) where \(m&#39;=1+\begin{cases} 1&amp;z=k+n+1\\ \lfloor((g+k-z+1)\cdot 10+2)/3+1\rfloor-p&amp;\text{otherwise} \end{cases}\) </dd></dl>
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01004">1004</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l01011">1011</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="MPFR__ext_8h_source.html#l00094">ext_mpfr_remove_trailing_zeroes()</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG2</a>, <a class="el" href="sizetype_8hh_source.html#l00367">max()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, <a class="el" href="sizetype_8hh_source.html#l00390">sizetype_exact()</a>, <a class="el" href="sizetype_8hh_source.html#l00106">sizetype_power2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="MPFR__ext_8h_source.html#l00094">ext_mpfr_remove_trailing_zeroes()</a>, <a class="el" href="core_8h_source.html#l00162">iRRAM_DEBUG2</a>, <a class="el" href="sizetype_8hh_source.html#l00368">max()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, <a class="el" href="sizetype_8hh_source.html#l00391">sizetype_exact()</a>, <a class="el" href="sizetype_8hh_source.html#l00107">sizetype_power2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
 
 </div>
 </div>
@@ -9292,11 +9296,11 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REAL_8h_source.html#l00539">539</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
+<p>Definition at line <a class="el" href="REAL_8h_source.html#l00542">542</a> of file <a class="el" href="REAL_8h_source.html">REAL.h</a>.</p>
 
-<p>References <a class="el" href="REAL_8h_source.html#l00539">iRRAM::REAL::swap</a>.</p>
+<p>References <a class="el" href="REAL_8h_source.html#l00542">iRRAM::REAL::swap</a>.</p>
 
-<p>Referenced by <a class="el" href="cache_8h_source.html#l00041">iRRAM::wrap_type&lt; T, clearfct &gt;::operator=()</a>, <a class="el" href="DYADIC_8h_source.html#l00050">iRRAM::DYADIC::operator=()</a>, <a class="el" href="RATIONAL_8cc_source.html#l00113">iRRAM::RATIONAL::operator=()</a>, <a class="el" href="INTEGER_8h_source.html#l00063">iRRAM::INTEGER::operator=()</a>, <a class="el" href="REAL_8h_source.html#l00572">iRRAM::REAL::operator=()</a>, and <a class="el" href="cache_8h_source.html#l00038">iRRAM::wrap_type&lt; T, clearfct &gt;::wrap_type()</a>.</p>
+<p>Referenced by <a class="el" href="cache_8h_source.html#l00041">iRRAM::wrap_type&lt; T, clearfct &gt;::operator=()</a>, <a class="el" href="DYADIC_8h_source.html#l00050">iRRAM::DYADIC::operator=()</a>, <a class="el" href="RATIONAL_8cc_source.html#l00113">iRRAM::RATIONAL::operator=()</a>, <a class="el" href="INTEGER_8h_source.html#l00063">iRRAM::INTEGER::operator=()</a>, <a class="el" href="REAL_8h_source.html#l00575">iRRAM::REAL::operator=()</a>, and <a class="el" href="cache_8h_source.html#l00038">iRRAM::wrap_type&lt; T, clearfct &gt;::wrap_type()</a>.</p>
 
 </div>
 </div>
@@ -9366,9 +9370,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00237">237</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00244">244</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2adc4d53aa0d117d8b189b36d161af4e96">absolute</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00130">iRRAM::iRRAM_thread_data_class::cache_s</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="sizetype_8hh_source.html#l00048">GUARD_BITS</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00161">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00068">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="sizetype_8hh_source.html#l00367">max()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00212">MP_getsize</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00146">MP_mv_div</a>, <a class="el" href="MPFR__interface_8h_source.html#l00151">MP_mv_divi</a>, <a class="el" href="MPFR__interface_8h_source.html#l00149">MP_mv_isub</a>, <a class="el" href="MPFR__interface_8h_source.html#l00145">MP_mv_mul</a>, <a class="el" href="MPFR__interface_8h_source.html#l00150">MP_mv_muli</a>, <a class="el" href="MPFR__interface_8h_source.html#l00144">MP_mv_sub</a>, <a class="el" href="MPFR__interface_8h_source.html#l00148">MP_mv_subi</a>, <a class="el" href="MPFR__interface_8h_source.html#l00211">MP_size</a>, <a class="el" href="MPFR__interface_8h_source.html#l00219">MP_swrite</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="core_8h_source.html#l00098">iRRAM::ITERATION_DATA::prec_policy</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="REAL_8h_source.html#l00482">iRRAM::REAL::REAL()</a>, <a class="el" href="core_8h_source.html#l00169">REITERATE</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2a99c483e1d11b1a279a2a1a3960528487">relative</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2aa7dd12b1dab17d25467b0b0a4c8d4a92">show</a>, <a class="el" href="REALS_8cc_source.html#l00704">iRRAM::REAL::size</a>, <a class="el" href="sizetype_8hh_source.html#l00221">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00181">sizetype_add_wo_norm()</a>, <a class="el" href="sizetype_8hh_source.html#l00451">sizetype_dec()</a>, <a class="el" href="sizetype_8hh_source.html#l00484">sizetype_div()</a>, <a class="el" href="sizetype_8hh_source.html#l00419">sizetype_half()</a>, <a class="el" href="sizetype_8hh_source.html#l00405">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00073">sizetype_normalize()</a>, <a class="el" href="sizetype_8hh_source.html#l00106">sizetype_power2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="REALS_8cc_source.html#l00237">iRRAM::REAL::swrite</a>, <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00304">iRRAM::REAL::vsize</a>.</p>
+<p>References <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2adc4d53aa0d117d8b189b36d161af4e96">absolute</a>, <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00130">iRRAM::iRRAM_thread_data_class::cache_s</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="sizetype_8hh_source.html#l00049">GUARD_BITS</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00162">iRRAM_DEBUG2</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="sizetype_8hh_source.html#l00368">max()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00212">MP_getsize</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00146">MP_mv_div</a>, <a class="el" href="MPFR__interface_8h_source.html#l00151">MP_mv_divi</a>, <a class="el" href="MPFR__interface_8h_source.html#l00149">MP_mv_isub</a>, <a class="el" href="MPFR__interface_8h_source.html#l00145">MP_mv_mul</a>, <a class="el" href="MPFR__interface_8h_source.html#l00150">MP_mv_muli</a>, <a class="el" href="MPFR__interface_8h_source.html#l00144">MP_mv_sub</a>, <a class="el" href="MPFR__interface_8h_source.html#l00148">MP_mv_subi</a>, <a class="el" href="MPFR__interface_8h_source.html#l00211">MP_size</a>, <a class="el" href="MPFR__interface_8h_source.html#l00219">MP_swrite</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::prec_policy</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="REAL_8h_source.html#l00485">iRRAM::REAL::REAL()</a>, <a class="el" href="core_8h_source.html#l00170">REITERATE</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2a99c483e1d11b1a279a2a1a3960528487">relative</a>, <a class="el" href="namespaceiRRAM.html#a64727c312132c35ab2781b1b49606cf2aa7dd12b1dab17d25467b0b0a4c8d4a92">show</a>, <a class="el" href="REALS_8cc_source.html#l00711">iRRAM::REAL::size</a>, <a class="el" href="sizetype_8hh_source.html#l00222">sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00182">sizetype_add_wo_norm()</a>, <a class="el" href="sizetype_8hh_source.html#l00452">sizetype_dec()</a>, <a class="el" href="sizetype_8hh_source.html#l00504">sizetype_div()</a>, <a class="el" href="sizetype_8hh_source.html#l00420">sizetype_half()</a>, <a class="el" href="sizetype_8hh_source.html#l00406">sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00074">sizetype_normalize()</a>, <a class="el" href="sizetype_8hh_source.html#l00107">sizetype_power2()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="REALS_8cc_source.html#l00244">iRRAM::REAL::swrite</a>, <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00307">iRRAM::REAL::vsize</a>.</p>
 
 </div>
 </div>
@@ -9534,9 +9538,9 @@ template&lt;class RESULT , class... PARAM&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00734">734</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
+<p>Definition at line <a class="el" href="REALS_8cc_source.html#l00741">741</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="core_8h_source.html#l00131">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00068">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="sizetype_8hh_source.html#l00203">sizetype_add()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="core_8h_source.html#l00119">iRRAM::state_t::thread_data_address</a>, <a class="el" href="REALS_8cc_source.html#l00734">iRRAM::REAL::upperbound</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00304">iRRAM::REAL::vsize</a>.</p>
+<p>References <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="cache_8h_source.html#l00123">iRRAM::iRRAM_thread_data_class::cache_i</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="cache_8h_source.html#l00088">iRRAM::iRRAM_cache&lt; DATA &gt;::get()</a>, <a class="el" href="core_8h_source.html#l00100">iRRAM::ITERATION_DATA::inlimit</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="cache_8h_source.html#l00082">iRRAM::iRRAM_cache&lt; DATA &gt;::put()</a>, <a class="el" href="sizetype_8hh_source.html#l00204">sizetype_add()</a>, <a class="el" href="stack_8cc_source.html#l00046">state</a>, <a class="el" href="core_8h_source.html#l00120">iRRAM::state_t::thread_data_address</a>, <a class="el" href="REALS_8cc_source.html#l00741">iRRAM::REAL::upperbound</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00307">iRRAM::REAL::vsize</a>.</p>
 
 <p>Referenced by <a class="el" href="REALMATRIX_8cc_source.html#l00132">solve()</a>.</p>
 
@@ -9611,7 +9615,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="STREAMS_8cc_source.html#l00039">39</a> of file <a class="el" href="STREAMS_8cc_source.html">STREAMS.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="lib_8h_source.html#l00085">exec()</a>, <a class="el" href="limits_8cc_source.html#l00664">limit()</a>, <a class="el" href="limit__templates_8h_source.html#l00149">limit_debug()</a>, <a class="el" href="limit__templates_8h_source.html#l00159">limit_debug2()</a>, <a class="el" href="REALS_8cc_source.html#l00815">iRRAM::REAL::rcheck()</a>, and <a class="el" href="REALmain_8cc_source.html#l00079">show_statistics()</a>.</p>
+<p>Referenced by <a class="el" href="lib_8h_source.html#l00085">exec()</a>, <a class="el" href="limits_8cc_source.html#l00664">limit()</a>, <a class="el" href="limit__templates_8h_source.html#l00149">limit_debug()</a>, <a class="el" href="limit__templates_8h_source.html#l00159">limit_debug2()</a>, <a class="el" href="REALS_8cc_source.html#l00822">iRRAM::REAL::rcheck()</a>, and <a class="el" href="REALmain_8cc_source.html#l00079">show_statistics()</a>.</p>
 
 </div>
 </div>
@@ -9663,7 +9667,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="STREAMS_8cc_source.html#l00041">41</a> of file <a class="el" href="STREAMS_8cc_source.html">STREAMS.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="REALMATRIX_8cc_source.html#l00426">equilib_del()</a>, <a class="el" href="lib_8h_source.html#l00085">exec()</a>, <a class="el" href="STREAMS_8cc_source.html#l00052">iRRAM::orstream::orstream()</a>, <a class="el" href="REALS_8cc_source.html#l00516">rshow()</a>, <a class="el" href="REALS_8cc_source.html#l00514">rwrite()</a>, <a class="el" href="REALS_8cc_source.html#l00515">rwritee()</a>, <a class="el" href="REALMATRIX_8cc_source.html#l00370">steady_state()</a>, and <a class="el" href="STREAMS_8cc_source.html#l00211">iRRAM::orstream::~orstream()</a>.</p>
+<p>Referenced by <a class="el" href="REALMATRIX_8cc_source.html#l00426">equilib_del()</a>, <a class="el" href="lib_8h_source.html#l00085">exec()</a>, <a class="el" href="STREAMS_8cc_source.html#l00052">iRRAM::orstream::orstream()</a>, <a class="el" href="REALS_8cc_source.html#l00523">rshow()</a>, <a class="el" href="REALS_8cc_source.html#l00521">rwrite()</a>, <a class="el" href="REALS_8cc_source.html#l00522">rwritee()</a>, <a class="el" href="REALMATRIX_8cc_source.html#l00370">steady_state()</a>, and <a class="el" href="STREAMS_8cc_source.html#l00211">iRRAM::orstream::~orstream()</a>.</p>
 
 </div>
 </div>
@@ -9751,7 +9755,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 
 <p>Definition at line <a class="el" href="stack_8cc_source.html#l00046">46</a> of file <a class="el" href="stack_8cc_source.html">stack.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="cache_8h_source.html#l00108">iRRAM::iRRAM_cache&lt; std::istream *&gt;::activate()</a>, <a class="el" href="REALS_8cc_source.html#l00643">approx()</a>, <a class="el" href="REALS_8cc_source.html#l00897">iRRAM::REAL::as_INTEGER()</a>, <a class="el" href="STREAMS_8cc_source.html#l00328">iRRAM::orstream::bad()</a>, <a class="el" href="STREAMS_8cc_source.html#l00370">iRRAM::irstream::bad()</a>, <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00049">check()</a>, <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">choose()</a>, <a class="el" href="DYADIC_8h_source.html#l00124">iRRAM::DYADIC_precision::DYADIC_precision()</a>, <a class="el" href="STREAMS_8cc_source.html#l00307">iRRAM::orstream::eof()</a>, <a class="el" href="STREAMS_8cc_source.html#l00349">iRRAM::irstream::eof()</a>, <a class="el" href="exp__log_8cc_source.html#l00106">euler()</a>, <a class="el" href="lib_8h_source.html#l00085">exec()</a>, <a class="el" href="STREAMS_8cc_source.html#l00314">iRRAM::orstream::fail()</a>, <a class="el" href="STREAMS_8cc_source.html#l00356">iRRAM::irstream::fail()</a>, <a class="el" href="DYADIC_8h_source.html#l00036">iRRAM::DYADIC::getprec()</a>, <a class="el" href="STREAMS_8cc_source.html#l00321">iRRAM::orstream::good()</a>, <a class="el" href="STREAMS_8cc_source.html#l00363">iRRAM::irstream::good()</a>, <a class="el" href="SWITCHES_8h_source.html#l00132">iRRAM::stiff::inc_step()</a>, <a class="el" href="REALmain_8cc_source.html#l00119">iRRAM_initialize2()</a>, <a class="el" href="STREAMS_8cc_source.html#l00102">iRRAM::irstream::irstream()</a>, <a class="el" href="limits_8cc_source.html#l00597">iteration()</a>, <a class="el" href="limit__templates_8h_source.html#l00297">limit()</a>, <a class="el" href="limit__templates_8h_source.html#l00149">limit_debug()</a>, <a class="el" href="limit__templates_8h_source.html#l00159">limit_debug2()</a>, <a class="el" href="limit__templates_8h_source.html#l00406">limit_lip()</a>, <a class="el" href="limit__templates_8h_source.html#l00330">limit_mv()</a>, <a class="el" href="limits_8cc_source.html#l00207">lipschitz()</a>, <a class="el" href="limit__templates_8h_source.html#l00521">lipschitz_1p_1a()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00039">ln2()</a>, <a class="el" href="REALS_8cc_source.html#l01188">module()</a>, <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00034">iRRAM::LAZY_BOOLEAN::operator bool()</a>, <a class="el" href="STREAMS_8cc_source.html#l00342">iRRAM::orstream::operator bool()</a>, <a class="el" href="STREAMS_8cc_source.html#l00384">iRRAM::irstream::operator bool()</a>, <a class="el" href="STREAMS_8cc_source.html#l00335">operator!()</a>, <a class="el" href="REAL_8h_source.html#l00517">iRRAM::REAL::operator=()</a>, <a class="el" href="STREAMS_8cc_source.html#l00253">iRRAM::irstream::operator&gt;&gt;()</a>, <a class="el" href="STREAMS_8cc_source.html#l00060">iRRAM::orstream::orstream()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, <a class="el" href="SWITCHES_8h_source.html#l00090">iRRAM::precision_mode::precision_mode()</a>, <a class="el" href="REAL_8h_source.html#l00484">iRRAM::REAL::REAL()</a>, <a class="el" href="STREAMS_8cc_source.html#l00130">iRRAM::orstream::reset()</a>, <a class="el" href="STREAMS_8cc_source.html#l00128">iRRAM::orstream::rewind()</a>, <a class="el" href="REALS_8cc_source.html#l00516">rshow()</a>, <a class="el" href="SWITCHES_8h_source.html#l00108">iRRAM::stiff::set_prec_step()</a>, <a class="el" href="REALmain_8cc_source.html#l00079">show_statistics()</a>, <a class="el" href="SWITCHES_8h_source.html#l00070">iRRAM::single_valued::single_valued()</a>, <a class="el" href="REALS_8cc_source.html#l00704">size()</a>, <a class="el" href="sqrt_8cc_source.html#l00075">sqrt()</a>, <a class="el" href="REALS_8cc_source.html#l01004">strtoREAL2()</a>, <a class="el" href="REALS_8cc_source.html#l00237">swrite()</a>, <a class="el" href="REALS_8cc_source.html#l00734">upperbound()</a>, <a class="el" href="DYADIC_8h_source.html#l00129">iRRAM::DYADIC_precision::~DYADIC_precision()</a>, <a class="el" href="STREAMS_8cc_source.html#l00223">iRRAM::irstream::~irstream()</a>, <a class="el" href="STREAMS_8cc_source.html#l00211">iRRAM::orstream::~orstream()</a>, <a class="el" href="SWITCHES_8h_source.html#l00095">iRRAM::precision_mode::~precision_mode()</a>, and <a class="el" href="SWITCHES_8h_source.html#l00071">iRRAM::single_valued::~single_valued()</a>.</p>
+<p>Referenced by <a class="el" href="cache_8h_source.html#l00108">iRRAM::iRRAM_cache&lt; std::istream *&gt;::activate()</a>, <a class="el" href="REALS_8cc_source.html#l00650">approx()</a>, <a class="el" href="REALS_8cc_source.html#l00904">iRRAM::REAL::as_INTEGER()</a>, <a class="el" href="STREAMS_8cc_source.html#l00328">iRRAM::orstream::bad()</a>, <a class="el" href="STREAMS_8cc_source.html#l00370">iRRAM::irstream::bad()</a>, <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00049">check()</a>, <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00058">choose()</a>, <a class="el" href="DYADIC_8h_source.html#l00124">iRRAM::DYADIC_precision::DYADIC_precision()</a>, <a class="el" href="STREAMS_8cc_source.html#l00307">iRRAM::orstream::eof()</a>, <a class="el" href="STREAMS_8cc_source.html#l00349">iRRAM::irstream::eof()</a>, <a class="el" href="exp__log_8cc_source.html#l00106">euler()</a>, <a class="el" href="lib_8h_source.html#l00085">exec()</a>, <a class="el" href="STREAMS_8cc_source.html#l00314">iRRAM::orstream::fail()</a>, <a class="el" href="STREAMS_8cc_source.html#l00356">iRRAM::irstream::fail()</a>, <a class="el" href="DYADIC_8h_source.html#l00036">iRRAM::DYADIC::getprec()</a>, <a class="el" href="STREAMS_8cc_source.html#l00321">iRRAM::orstream::good()</a>, <a class="el" href="STREAMS_8cc_source.html#l00363">iRRAM::irstream::good()</a>, <a class="el" href="SWITCHES_8h_source.html#l00132">iRRAM::stiff::inc_step()</a>, <a class="el" href="REALmain_8cc_source.html#l00119">iRRAM_initialize2()</a>, <a class="el" href="STREAMS_8cc_source.html#l00102">iRRAM::irstream::irstream()</a>, <a class="el" href="limits_8cc_source.html#l00597">iteration()</a>, <a class="el" href="limit__templates_8h_source.html#l00297">limit()</a>, <a class="el" href="limit__templates_8h_source.html#l00149">limit_debug()</a>, <a class="el" href="limit__templates_8h_source.html#l00159">limit_debug2()</a>, <a class="el" href="limit__templates_8h_source.html#l00406">limit_lip()</a>, <a class="el" href="limit__templates_8h_source.html#l00330">limit_mv()</a>, <a class="el" href="limits_8cc_source.html#l00207">lipschitz()</a>, <a class="el" href="limit__templates_8h_source.html#l00521">lipschitz_1p_1a()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00039">ln2()</a>, <a class="el" href="REALS_8cc_source.html#l01195">module()</a>, <a class="el" href="LAZY__BOOLEAN_8cc_source.html#l00034">iRRAM::LAZY_BOOLEAN::operator bool()</a>, <a class="el" href="STREAMS_8cc_source.html#l00342">iRRAM::orstream::operator bool()</a>, <a class="el" href="STREAMS_8cc_source.html#l00384">iRRAM::irstream::operator bool()</a>, <a class="el" href="STREAMS_8cc_source.html#l00335">operator!()</a>, <a class="el" href="REAL_8h_source.html#l00520">iRRAM::REAL::operator=()</a>, <a class="el" href="STREAMS_8cc_source.html#l00253">iRRAM::irstream::operator&gt;&gt;()</a>, <a class="el" href="STREAMS_8cc_source.html#l00060">iRRAM::orstream::orstream()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00141">pi()</a>, <a class="el" href="SWITCHES_8h_source.html#l00090">iRRAM::precision_mode::precision_mode()</a>, <a class="el" href="REAL_8h_source.html#l00487">iRRAM::REAL::REAL()</a>, <a class="el" href="STREAMS_8cc_source.html#l00130">iRRAM::orstream::reset()</a>, <a class="el" href="STREAMS_8cc_source.html#l00128">iRRAM::orstream::rewind()</a>, <a class="el" href="REALS_8cc_source.html#l00523">rshow()</a>, <a class="el" href="SWITCHES_8h_source.html#l00108">iRRAM::stiff::set_prec_step()</a>, <a class="el" href="REALmain_8cc_source.html#l00079">show_statistics()</a>, <a class="el" href="SWITCHES_8h_source.html#l00070">iRRAM::single_valued::single_valued()</a>, <a class="el" href="REALS_8cc_source.html#l00711">size()</a>, <a class="el" href="sqrt_8cc_source.html#l00106">sqrt()</a>, <a class="el" href="REALS_8cc_source.html#l01011">strtoREAL2()</a>, <a class="el" href="REALS_8cc_source.html#l00244">swrite()</a>, <a class="el" href="REALS_8cc_source.html#l00741">upperbound()</a>, <a class="el" href="DYADIC_8h_source.html#l00129">iRRAM::DYADIC_precision::~DYADIC_precision()</a>, <a class="el" href="STREAMS_8cc_source.html#l00223">iRRAM::irstream::~irstream()</a>, <a class="el" href="STREAMS_8cc_source.html#l00211">iRRAM::orstream::~orstream()</a>, <a class="el" href="SWITCHES_8h_source.html#l00095">iRRAM::precision_mode::~precision_mode()</a>, and <a class="el" href="SWITCHES_8h_source.html#l00071">iRRAM::single_valued::~single_valued()</a>.</p>
 
 </div>
 </div>
@@ -9761,7 +9765,7 @@ template&lt;class RESULT , class... PARAM&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceiRRAM.html">iRRAM</a></li>
-    <li class="footer">Generated on Wed Dec 21 2016 05:10:31 for iRRAM by
+    <li class="footer">Generated on Mon Dec 26 2016 12:51:22 for iRRAM by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

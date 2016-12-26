@@ -13,7 +13,7 @@ var core_8h =
     [ "iRRAM_float_relative", "core_8h.html#acf9e813351a434c836bcce2818701cb0", null ],
     [ "iRRAM_float_show", "core_8h.html#a702a73f4fb59cf7d3f9bf654d525a13f", null ],
     [ "REITERATE", "core_8h.html#a451bb64697c11ccad0d9f956a602105f", null ],
-    [ "sizetype", "core_8h.html#ae39c265295b2fad62e8eab5d0e9626fa", null ],
+    [ "sizetype", "core_8h.html#a8dbaae5219675b5bc13e6ffdc59946a4", null ],
     [ "float_form", "core_8h.html#a64727c312132c35ab2781b1b49606cf2", [
       [ "absolute", "core_8h.html#a64727c312132c35ab2781b1b49606cf2adc4d53aa0d117d8b189b36d161af4e96", null ],
       [ "relative", "core_8h.html#a64727c312132c35ab2781b1b49606cf2a99c483e1d11b1a279a2a1a3960528487", null ],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['generic_5fsizetype',['generic_sizetype',['../structiRRAM_1_1generic__sizetype.html',1,'iRRAM']]],
-  ['generic_5fsizetype_3c_20unsigned_20int_2c_20int_20_3e',['generic_sizetype&lt; unsigned int, int &gt;',['../structiRRAM_1_1generic__sizetype.html',1,'iRRAM']]],
+  ['generic_5fsizetype_3c_20uint32_5ft_2c_20int32_5ft_20_3e',['generic_sizetype&lt; uint32_t, int32_t &gt;',['../structiRRAM_1_1generic__sizetype.html',1,'iRRAM']]],
   ['get_5ftype',['get_type',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],
   ['get_5ftype_3c_20bool_20_3e',['get_type&lt; bool &gt;',['../structiRRAM_1_1get__type_3_01bool_01_4.html',1,'iRRAM']]],
   ['get_5ftype_3c_20data_20_3e',['get_type&lt; DATA &gt;',['../structiRRAM_1_1get__type.html',1,'iRRAM']]],

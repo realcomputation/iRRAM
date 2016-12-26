@@ -26,7 +26,7 @@ var hierarchy =
       [ "iRRAM::FUNCTIONAL_value< RESULT, PARAM >", "classiRRAM_1_1FUNCTIONAL__value.html", null ]
     ] ],
     [ "iRRAM::generic_sizetype< M, E >", "structiRRAM_1_1generic__sizetype.html", null ],
-    [ "iRRAM::generic_sizetype< unsigned int, int >", "structiRRAM_1_1generic__sizetype.html", null ],
+    [ "iRRAM::generic_sizetype< uint32_t, int32_t >", "structiRRAM_1_1generic__sizetype.html", null ],
     [ "iRRAM::get_type< T >", "structiRRAM_1_1get__type.html", null ],
     [ "iRRAM::get_type< bool >", "structiRRAM_1_1get__type_3_01bool_01_4.html", null ],
     [ "iRRAM::get_type< DATA >", "structiRRAM_1_1get__type.html", null ],

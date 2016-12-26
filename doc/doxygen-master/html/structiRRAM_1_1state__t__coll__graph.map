@@ -21,7 +21,7 @@
 <area shape="rect" id="node49" href="$classiRRAM_1_1iRRAM__cache.html" title="iRRAM::iRRAM_cache\l\&lt; float \&gt;" alt="" coords="610,1407,773,1449"/>
 <area shape="rect" id="node5" href="$classiRRAM_1_1REAL.html" title="iRRAM::REAL" alt="" coords="1007,149,1115,176"/>
 <area shape="rect" id="node6" href="$structiRRAM_1_1conditional__comparison__overloads.html" title="iRRAM::conditional\l_comparison_overloads\l\&lt; REAL, LAZY_BOOLEAN \&gt;" alt="" coords="592,5,791,61"/>
-<area shape="rect" id="node7" href="$structiRRAM_1_1generic__sizetype.html" title="iRRAM::generic_sizetype\l\&lt; unsigned int, int \&gt;" alt="" coords="602,85,781,126"/>
+<area shape="rect" id="node7" href="$structiRRAM_1_1generic__sizetype.html" title="iRRAM::generic_sizetype\l\&lt; uint32_t, int32_t \&gt;" alt="" coords="602,85,781,126"/>
 <area shape="rect" id="node9" href="$classiRRAM_1_1iRRAM__thread__data__class.html" title="iRRAM::iRRAM_thread\l_data_class" alt="" coords="979,806,1144,847"/>
 <area shape="rect" id="node12" href="$structiRRAM_1_1get__type.html" title="iRRAM::get_type\&lt; long \&gt;" alt="" coords="14,892,193,919"/>
 <area shape="rect" id="node15" href="$structiRRAM_1_1get__type_3_01MP__type_01_4.html" title="iRRAM::get_type\&lt; MP\l_type \&gt;" alt="" coords="23,1125,183,1166"/>
