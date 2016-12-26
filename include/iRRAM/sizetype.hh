@@ -29,6 +29,7 @@
 #include <cmath>
 #include <cassert>
 #include <limits>
+#include <cfloat>
 
 #include <iRRAM/core.h>
 #include <iRRAM/STREAMS.h> /* iRRAM_DEBUG* */
@@ -435,7 +436,7 @@ inline int sizetype_log2(const sizetype &x)
 	typename sizetype::mantissa_t v = x.mantissa;
 	if (!v)
 		return min_exponent;
-	r  = CHAR_BIT * sizeof(v) - clz(v) - 1;
+	r  = CHAR_BIT * sizeof(v) - clz(v) - 1; /* floor(log2(v)) */
 	r += (v & (v-1)) != 0;                  /* ceil(log2(v)) */
 	r += x.exponent;
 	return r;
@@ -462,19 +463,38 @@ inline void sizetype_dec(sizetype& x)
 }
 
 /*!
+ * \brief Computes the square root of \a y and stores it, rounded towards
+ *        positive infinity, in \a x.
+ *
+ * The result is never smaller than the exact value.
+ *
+ * \param [out] x non-normalized (over-approximation of) square root of \a y
+ * \param [in]  y normalized sizetype value
  * \warning unchecked for over-/underflow
- * \todo exact semantics are not specified
  */
 inline void sizetype_sqrt(sizetype& x,const sizetype& y)
 {
+  static_assert(FLT_RADIX == 2 && MANTISSA_BITS <= DBL_MANT_DIG,
+                "sizetype_sqrt() only proven for MANTISSA_BITS <= DBL_MANT_DIG");
   if (y.exponent&1) {
-    x.exponent=(y.exponent-1)>>1;
+    x.exponent=(y.exponent-1)/2;
     x.mantissa=y.mantissa <<1;
   }  else {
-    x.exponent=y.exponent>>1;
+    x.exponent=y.exponent/2;
     x.mantissa=y.mantissa;
   }
-  x.mantissa=int(std::sqrt(double(x.mantissa)))+1;
+  /*! \todo
+   * Cast to integral type depends on correct *rounding* of the *exact* result
+   * of `sqrt(double)` provided by stdlib. Can we be sure of that?
+   *
+   * If so: The argument to sqrt() is exact (DBL_MANT_DIG >= MANTISSA_BITS), the
+   * result will be the closest double <= precise result. This value rounded
+   * upwards is returned. A wrong approximation would require the precise result
+   * to be k+eps and sqrt() to return k-eps', however since the double type does
+   * represent all 32-bit integers (like mantissa_t) exactly, the
+   * closest double <= precise result would then always be (double)k (since
+   * k >= 0), for any integer k and 0 < eps' <= eps < 1ulp. */
+  x.mantissa=(typename sizetype::mantissa_t)std::sqrt(double(x.mantissa))+1;
 }
 
 /*!

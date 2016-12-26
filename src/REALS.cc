@@ -48,7 +48,6 @@ MA 02111-1307, USA.
  * work on the `double_pair` representation directly or could at least be
  * adapted to return a precision-level 1 result:
  * - sqrt(const REAL &)
- * - power(const REAL &, int)
  * - power(const REAL &, const REAL &)
  * - sqrt(const REAL &)
  * - approx(const REAL &, const int)
@@ -75,7 +74,15 @@ MA 02111-1307, USA.
  * error guarrantees according to the respective standards (for `fma` including
  * POSIX). Standard compliance in this respect also cannot be assumed for every
  * C/C++ standard library but should probably be white-listed for proven
- * implementations.
+ * implementations. See
+ * - sizetype_sqrt()
+ */
+
+/*!
+ * \todo
+ * The functions REAL::geterror(), REAL::getsize() (and maybe REAL::adderror()?)
+ * are sometimes used to implicitely convert to an MP-backed REAL. That's not
+ * part of their contract. Identify and fix those.
  */
 
 namespace iRRAM {

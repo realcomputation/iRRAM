@@ -28,6 +28,7 @@ MA 02111-1307, USA.
 
 #include <cstdio>	/* fprintf(3) */
 #include <algorithm>	/* std::min, std::max */
+#include <cstdint>	/* int32_t, uint32_t */
 
 #include <iRRAM/common.h>
 
@@ -43,7 +44,7 @@ static inline unsigned clz(T x)
 {
 	unsigned r = x != 0;
 	for (unsigned m = (sizeof(x) * CHAR_BIT) >> 1; m > 0; m >>= 1)
-		if (x >= (decltype(x))1 << m) {
+		if (x >= (T)1 << m) {
 			r += m;
 			x >>= m;
 		}
@@ -70,7 +71,7 @@ struct generic_sizetype {
 };
 
 /* \ingroup sizetype */
-typedef generic_sizetype<unsigned int,int> sizetype;
+typedef generic_sizetype<uint32_t,int32_t> sizetype;
 
 // forward declaration of some classes
 
