@@ -94,7 +94,7 @@ REAL sqrt(const REAL & x) { return limit(sqrt_approx, x); }
  * \leq x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\f$.
  * The absolute precision used to compute
  * \f$\sqrt{x_c}\f$ is \f$\max\{P,e[z]\}\f$ where
- * \f$z\geq x_\varepsilon/(2\sqrt{\check x})\f$ and
+ * \f$z\geq x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\f$ and
  * \f$e[v]=e\f$ for any \ref sizetype representation \f$m\cdot2^e\f$ of \f$v\f$.
  * The relative precision is \f$\max\{e[\check x]+P,e[z]\}\f$.
  *
@@ -106,10 +106,6 @@ REAL sqrt(const REAL & x) { return limit(sqrt_approx, x); }
  * <2.25\sqrt{x_\varepsilon}\f$
  * and \f$0\approx\sqrt{|x|}\f$ is chosen as an approximation with error
  * \f$\geq3\sqrt{x_\varepsilon}\f$.
- *
- * \bug
- * Assignment of \f$z\f$ as \f$x_\varepsilon/(2\sqrt{\check x})
- * <x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\f$.
  *
  * \todo
  * For \f$0\in[x_c\pm x_\varepsilon]\f$ use
@@ -141,6 +137,7 @@ REAL sqrt(const REAL & x)
 		zerror += zerror << 1;
 		return REAL(zvalue, zerror);
 	}
+	sizetype_dec(xsize, x.error);
 	sizetype_sqrt(proderror, xsize);
 	sizetype_div(zerror, x.error, proderror);
 	sizetype_half(zerror, zerror);
