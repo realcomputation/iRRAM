@@ -85,8 +85,10 @@ REAL sqrt(const REAL & x) { return limit(sqrt_approx, x); }
  * Since \f$\max_{x,y \in [A;B]} 1/|f(x)+f(y)| = 1/|2f(A)|\leq K\f$ for the
  * function's argument \f$x\in[x_c\pm x_\varepsilon]\f$ the error
  * therefore is
- * \f$|f(x_c)-f(x)| \leq K|x-x_c| < Kx_\varepsilon
- *                  \leq x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\f$.
+ * \f$|f(x_c)-f(x)|
+ * \leq K|x-x_c| < Kx_\varepsilon
+ * \leq x_\varepsilon/(\sqrt{\check x}+\sqrt{\check x-x_\varepsilon})
+ * <    x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\f$.
  *
  * This case, \f$x\geq A=\check x-x_\varepsilon>0\f$, is chosen when
  * \f$\check x\geq 4x_\varepsilon\Longrightarrow |x|\geq 3x_\varepsilon\f$,
@@ -117,6 +119,11 @@ REAL sqrt(const REAL & x) { return limit(sqrt_approx, x); }
  * To determine \f$0\notin[x_c\pm x_\varepsilon]\f$ check
  * \f$\check x\geq cx_\varepsilon\f$ with \f$c\in\{2,3\}\f$ for tighter error
  * bounds in both cases.
+ *
+ * \todo
+ * In case \f$0\notin[x_c\pm x_\varepsilon]\f$, does it make sense to use the
+ * bound \f$x_\varepsilon/(\sqrt{\check x}+\sqrt{\check x-x_\varepsilon})\f$
+ * instead of \f$x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\f$?
  *
  * \param x non-negative real number
  * \return sqrt(\a x)
