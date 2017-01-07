@@ -22,7 +22,7 @@ var group__maths =
     [ "power", "group__maths.html#ga959f3cf3f9e2bc4ec2ed42c211698c87", null ],
     [ "root", "group__maths.html#ga5afeb059421acdb704c4bc4d15bec8f3", null ],
     [ "sign", "group__maths.html#ga4b9f5f1f7d9a34d6b4669e667003d810", null ],
-    [ "sqrt", "group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce", null ],
     [ "sqrt", "group__maths.html#gaaad96b48c06426031b6c37209d4a4d06", null ],
+    [ "sqrt", "group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce", null ],
     [ "sqrt", "group__maths.html#ga8651954b45013f3ca3d8c5ffa673befa", null ]
 ];

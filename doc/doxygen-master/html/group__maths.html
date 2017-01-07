@@ -256,7 +256,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="REALS_8cc_source.html#l01167">1167</a> of file <a class="el" href="REALS_8cc_source.html">REALS.cc</a>.</p>
 
-<p>References <a class="el" href="sqrt_8cc_source.html#l00106">iRRAM::REAL::sqrt</a>, and <a class="el" href="REAL_8h_source.html#l00781">iRRAM::REAL::square</a>.</p>
+<p>References <a class="el" href="sqrt_8cc_source.html#l00135">iRRAM::REAL::sqrt</a>, and <a class="el" href="REAL_8h_source.html#l00781">iRRAM::REAL::square</a>.</p>
 
 </div>
 </div>
@@ -691,45 +691,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gadb8ebd2712ef7455c900f935c21b7bce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadb8ebd2712ef7455c900f935c21b7bce">&sect;&nbsp;</a></span>sqrt() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a> iRRAM::sqrt </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Computes the square root of the argument <em>x</em>. </p>
-<p>For domain \([A;B]\) with \(A&gt;0\), the square root function \(f=\sqrt{}\) has a Lipschitz bound: </p><p class="formulaDsp">
-\[ \forall x,y\in[A;B]: |f(x)-f(y)| \leq K\cdot|x-y| = K\cdot|f(x)+f(y)|\cdot|f(x)-f(y)| \Longleftrightarrow 1/|f(x)+f(y)| \leq K \]
-</p>
-<p> Since \(\max_{x,y \in [A;B]} 1/|f(x)+f(y)| = 1/|2f(A)|\leq K\) for the function's argument \(x_c\in(x\pm x_\varepsilon)\) the error therefore is \(|f(x_c)-f(x)| \leq K|x-x_c| &lt; Kx_\varepsilon \leq x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\).</p>
-<p>This case, \(x&gt;A=\check x-x_\varepsilon&gt;0\), is chosen when \(\check x&gt;4x_\varepsilon\). The absolute precision used to compute \(\sqrt{x_c}\) is \(\max\{P,e[z]\}\) where \(z\geq x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\) and \(e[v]=e\) for any <a class="el" href="group__sizetype.html">sizetype</a> representation \(m\cdot2^e\) of \(v\). The relative precision is \(\max\{e[\check x]+P,e[z]\}\).</p>
-<p>Otherwise \(|x|\leq3x_\varepsilon \Longrightarrow0\leq\sqrt{|x|}\leq\sqrt{3x_\varepsilon}\) and \(0\approx\sqrt{|x|}\) is chosen as an approximation with error \(\geq2\sqrt{x_\varepsilon}\).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td>non-negative real number </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>sqrt(<em>x</em>) </dd></dl>
-
-<p>Definition at line <a class="el" href="sqrt_8cc_source.html#l00106">106</a> of file <a class="el" href="sqrt_8cc_source.html">sqrt.cc</a>.</p>
-
-<p>References <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="REALS_8cc_source.html#l00872">iRRAM::REAL::getsize()</a>, <a class="el" href="sizetype_8hh_source.html#l00368">iRRAM::max()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00076">MP_int_to_mp</a>, <a class="el" href="MPFR__interface_8h_source.html#l00247">MP_mv_sqrt</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::prec_policy</a>, <a class="el" href="sizetype_8hh_source.html#l00222">iRRAM::sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00452">iRRAM::sizetype_dec()</a>, <a class="el" href="sizetype_8hh_source.html#l00504">iRRAM::sizetype_div()</a>, <a class="el" href="sizetype_8hh_source.html#l00420">iRRAM::sizetype_half()</a>, <a class="el" href="sizetype_8hh_source.html#l00406">iRRAM::sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00475">iRRAM::sizetype_sqrt()</a>, <a class="el" href="stack_8cc_source.html#l00046">iRRAM::state</a>, and <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>.</p>
-
-</div>
-</div>
 <a id="gaaad96b48c06426031b6c37209d4a4d06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaad96b48c06426031b6c37209d4a4d06">&sect;&nbsp;</a></span>sqrt() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaad96b48c06426031b6c37209d4a4d06">&sect;&nbsp;</a></span>sqrt() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -749,6 +712,49 @@ Functions</h2></td></tr>
 <p>References <a class="el" href="limit__templates_8h_source.html#l00330">iRRAM::limit_mv()</a>.</p>
 
 <p>Referenced by <a class="el" href="COMPLEX_8cc_source.html#l00098">iRRAM::abs()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00431">iRRAM::acos()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00521">iRRAM::acosh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00407">iRRAM::asin()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00509">iRRAM::asinh()</a>, <a class="el" href="COMPLEX_8cc_source.html#l00138">iRRAM::csqrt()</a>, <a class="el" href="exp__log_8cc_source.html#l00106">iRRAM::euler()</a>, <a class="el" href="pi__ln2_8cc_source.html#l00039">iRRAM::ln2()</a>, <a class="el" href="exp__log_8cc_source.html#l00179">iRRAM::log()</a>, <a class="el" href="sqrt_8cc_source.html#l00032">iRRAM::root()</a>, <a class="el" href="COMPLEX_8h_source.html#l00075">iRRAM::COMPLEX::seterror()</a>, <a class="el" href="sizetype_8hh_source.html#l00475">iRRAM::sizetype_sqrt()</a>, and <a class="el" href="sin__cos_8cc_source.html#l00213">iRRAM::tan()</a>.</p>
+
+</div>
+</div>
+<a id="gadb8ebd2712ef7455c900f935c21b7bce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadb8ebd2712ef7455c900f935c21b7bce">&sect;&nbsp;</a></span>sqrt() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiRRAM_1_1REAL.html">REAL</a> iRRAM::sqrt </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes the square root of the argument <em>x</em>. </p>
+<ul>
+<li><p class="startli">For domain \([A;B]\) with \(A&gt;0\), the square root function \(f=\sqrt{}\) has a Lipschitz bound: </p><p class="formulaDsp">
+\[ \forall x,y\in[A;B]: |f(x)-f(y)| \leq K\cdot|x-y| = K\cdot|f(x)+f(y)|\cdot|f(x)-f(y)| \Longleftrightarrow 1/|f(x)+f(y)| \leq K \]
+</p>
+<p> Since \(\max_{x,y \in [A;B]} 1/|f(x)+f(y)| = 1/|2f(A)|\leq K\) for the function's argument \(x\in[x_c\pm x_\varepsilon]\) the error therefore is \(|f(x_c)-f(x)| \leq K|x-x_c| &lt; Kx_\varepsilon \leq x_\varepsilon/(\sqrt{\check x}+\sqrt{\check x-x_\varepsilon}) &lt; x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\).</p>
+<p class="startli">This case, \(x\geq A=\check x-x_\varepsilon&gt;0\), is chosen when \(\check x\geq 4x_\varepsilon\Longrightarrow |x|\geq 3x_\varepsilon\), therefore \(|\sqrt{x_c}-\sqrt x| \leq x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\). The absolute precision used to compute \(\sqrt{x_c}\) is \(\max\{P,e[z]\}\) where \(z\geq x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\) and \(e[v]=e\) for any <a class="el" href="group__sizetype.html">sizetype</a> representation \(m\cdot2^e\) of \(v\). The relative precision is \(\max\{e[\check x]+P,e[z]\}\).</p>
+</li>
+<li>Otherwise, \(x=0\) or \(4x_\varepsilon\geq\check x=\hat x-2^e&gt;\hat x\cdot(1-2^{-32})\), then \(\sqrt{|x|} &lt;\sqrt{\hat x+x_\varepsilon} &lt;\sqrt{4x_\varepsilon/(1-2^{-32})+x_\varepsilon} &lt;2.25\sqrt{x_\varepsilon}\) and \(0\approx\sqrt{|x|}\) is chosen as an approximation with error \(\geq3\sqrt{x_\varepsilon}\).</li>
+</ul>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>For \(0\in[x_c\pm x_\varepsilon]\) use \( \approx[\sqrt{x_\varepsilon}\pm\sqrt{x_\varepsilon}] \) as result to decrease the error and disable representation of non-co-domain values smaller than zero.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>To determine \(0\notin[x_c\pm x_\varepsilon]\) check \( \check x\geq cx_\varepsilon\) with \(c\in\{2,3\} \) for tighter error bounds in both cases.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>In case \(0\notin[x_c\pm x_\varepsilon]\), does it make sense to use the bound \( x_\varepsilon/(\sqrt{\check x}+\sqrt{\check x-x_\varepsilon}) \) instead of \(x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\)?</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>non-negative real number </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>sqrt(<em>x</em>) </dd></dl>
+
+<p>Definition at line <a class="el" href="sqrt_8cc_source.html#l00135">135</a> of file <a class="el" href="sqrt_8cc_source.html">sqrt.cc</a>.</p>
+
+<p>References <a class="el" href="core_8h_source.html#l00101">iRRAM::ITERATION_DATA::actual_prec</a>, <a class="el" href="core_8h_source.html#l00132">iRRAM::state_t::ACTUAL_STACK</a>, <a class="el" href="REAL_8h_source.html#l00291">iRRAM::REAL::error</a>, <a class="el" href="core_8h_source.html#l00070">iRRAM::generic_sizetype&lt; M, E &gt;::exponent</a>, <a class="el" href="REALS_8cc_source.html#l00872">iRRAM::REAL::getsize()</a>, <a class="el" href="core_8h_source.html#l00069">iRRAM::generic_sizetype&lt; M, E &gt;::mantissa</a>, <a class="el" href="sizetype_8hh_source.html#l00368">iRRAM::max()</a>, <a class="el" href="MPFR__interface_8h_source.html#l00058">MP_init</a>, <a class="el" href="MPFR__interface_8h_source.html#l00076">MP_int_to_mp</a>, <a class="el" href="MPFR__interface_8h_source.html#l00247">MP_mv_sqrt</a>, <a class="el" href="MPFR__interface_8h_source.html#l00047">MP_type</a>, <a class="el" href="core_8h_source.html#l00099">iRRAM::ITERATION_DATA::prec_policy</a>, <a class="el" href="sizetype_8hh_source.html#l00222">iRRAM::sizetype_add_power2()</a>, <a class="el" href="sizetype_8hh_source.html#l00452">iRRAM::sizetype_dec()</a>, <a class="el" href="sizetype_8hh_source.html#l00504">iRRAM::sizetype_div()</a>, <a class="el" href="sizetype_8hh_source.html#l00420">iRRAM::sizetype_half()</a>, <a class="el" href="sizetype_8hh_source.html#l00406">iRRAM::sizetype_less()</a>, <a class="el" href="sizetype_8hh_source.html#l00475">iRRAM::sizetype_sqrt()</a>, <a class="el" href="stack_8cc_source.html#l00046">iRRAM::state</a>, <a class="el" href="REAL_8h_source.html#l00280">iRRAM::REAL::value</a>, and <a class="el" href="REAL_8h_source.html#l00307">iRRAM::REAL::vsize</a>.</p>
 
 </div>
 </div>
@@ -787,7 +793,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 26 2016 12:51:22 for iRRAM by
+    <li class="footer">Generated on Sat Jan 7 2017 12:09:20 for iRRAM by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

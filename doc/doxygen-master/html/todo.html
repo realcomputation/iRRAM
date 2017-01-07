@@ -125,19 +125,24 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>According to documentation, this function should compute \(\begin{cases} T,&amp;|x|\leq 2^k \\ F,&amp;|x|\geq 2^{k-2} \\ \bot,&amp;\text{otherwise} \end{cases}\)  </dd>
 <dt><a class="anchor" id="_todo000003"></a>Member <a class="el" href="namespaceiRRAM.html#acccdf705077cc02b2bc1870acd456b58">iRRAM::size</a>  (const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;x)</dt>
 <dd>According to documentation, <a class="el" href="namespaceiRRAM.html#acccdf705077cc02b2bc1870acd456b58" title="Returns a tight bound to the logarithmic value of |x|: , where e is x.vsize.exponent. ">size(const REAL &amp;)</a> should compute \(\begin{cases} 1+\lfloor\log_2|x|\rfloor\text,&amp;x\neq 0 \\ 1+\lceil\log_2|x|\rceil\text,&amp;x\neq 0 \\ \text{undef,}&amp;x=0 \end{cases}\) but it does compute \(\begin{cases} i+\lfloor\log_2|x|\rfloor\text,&amp;x\neq 0, i\in\{1,2,3\} \\ \text{undef,}&amp;x=0 \end{cases}\)  </dd>
-<dt><a class="anchor" id="_todo000006"></a>Member <a class="el" href="group__sizetype.html#ga9524ca2e3fa7e8211c3111de77086562">iRRAM::sizetype_dec</a>  (sizetype &amp;x)</dt>
+<dt><a class="anchor" id="_todo000009"></a>Member <a class="el" href="group__sizetype.html#ga9524ca2e3fa7e8211c3111de77086562">iRRAM::sizetype_dec</a>  (sizetype &amp;x)</dt>
 <dd>exact semantics are not specified  </dd>
-<dt><a class="anchor" id="_todo000005"></a>Member <a class="el" href="group__sizetype.html#gac008e777d9962452cb8890b7650ab652">iRRAM::sizetype_dec</a>  (sizetype &amp;x, const sizetype &amp;y)</dt>
+<dt><a class="anchor" id="_todo000008"></a>Member <a class="el" href="group__sizetype.html#gac008e777d9962452cb8890b7650ab652">iRRAM::sizetype_dec</a>  (sizetype &amp;x, const sizetype &amp;y)</dt>
 <dd>exact semantics are not specified  </dd>
-<dt><a class="anchor" id="_todo000008"></a>Member <a class="el" href="group__sizetype.html#ga2cd0606eb733e33b24fee1293b9e643a">iRRAM::sizetype_div</a>  (sizetype &amp;x, const sizetype &amp;y, const sizetype &amp;z)</dt>
+<dt><a class="anchor" id="_todo000011"></a>Member <a class="el" href="group__sizetype.html#ga2cd0606eb733e33b24fee1293b9e643a">iRRAM::sizetype_div</a>  (sizetype &amp;x, const sizetype &amp;y, const sizetype &amp;z)</dt>
 <dd>exact semantics are not specified  </dd>
-<dt><a class="anchor" id="_todo000007"></a>Member <a class="el" href="group__sizetype.html#gad7e67c8eaf4ef73538a671ae59abbe03">iRRAM::sizetype_sqrt</a>  (sizetype &amp;x, const sizetype &amp;y)</dt>
+<dt><a class="anchor" id="_todo000010"></a>Member <a class="el" href="group__sizetype.html#gad7e67c8eaf4ef73538a671ae59abbe03">iRRAM::sizetype_sqrt</a>  (sizetype &amp;x, const sizetype &amp;y)</dt>
 <dd>Cast to integral type depends on correct <em>rounding</em> of the <em>exact</em> result of <code>sqrt(double)</code> provided by stdlib. Can we be sure of that? </dd>
-<dt><a class="anchor" id="_todo000009"></a> Member <a class="el" href="structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#ac5661bf4c62c56717e1dd7565f8a29ed">std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;::has_denorm_loss</a>  </dt>
+<dt><a class="anchor" id="_todo000005"></a>Member <a class="el" href="group__maths.html#gadb8ebd2712ef7455c900f935c21b7bce">iRRAM::sqrt</a>  (const <a class="el" href="classiRRAM_1_1REAL.html">REAL</a> &amp;x)</dt>
+<dd><p class="startdd">For \(0\in[x_c\pm x_\varepsilon]\) use \( \approx[\sqrt{x_\varepsilon}\pm\sqrt{x_\varepsilon}] \) as result to decrease the error and disable representation of non-co-domain values smaller than zero.</p>
+<p>To determine \(0\notin[x_c\pm x_\varepsilon]\) check \( \check x\geq cx_\varepsilon\) with \(c\in\{2,3\} \) for tighter error bounds in both cases.</p>
+<p class="enddd">In case \(0\notin[x_c\pm x_\varepsilon]\), does it make sense to use the bound \( x_\varepsilon/(\sqrt{\check x}+\sqrt{\check x-x_\varepsilon}) \) instead of \(x_\varepsilon/(2\sqrt{\check x-x_\varepsilon})\)? </p>
+</dd>
+<dt><a class="anchor" id="_todo000012"></a> Member <a class="el" href="structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#ac5661bf4c62c56717e1dd7565f8a29ed">std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;::has_denorm_loss</a>  </dt>
 <dd>is this correct?  </dd>
-<dt><a class="anchor" id="_todo000010"></a> Member <a class="el" href="structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#a49bab1c6a29d4ccc37f0d7c44d482894">std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;::is_bounded</a>  </dt>
+<dt><a class="anchor" id="_todo000013"></a> Member <a class="el" href="structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#a49bab1c6a29d4ccc37f0d7c44d482894">std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;::is_bounded</a>  </dt>
 <dd>should be false for verification  </dd>
-<dt><a class="anchor" id="_todo000011"></a> Member <a class="el" href="structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#a2e199a0b21ec36322feba6149e5135ca">std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;::tinyness_before</a>  </dt>
+<dt><a class="anchor" id="_todo000014"></a> Member <a class="el" href="structstd_1_1numeric__limits_3_1_1iRRAM_1_1generic__sizetype_3_01M_00_01E_01_4_01_4.html#a2e199a0b21ec36322feba6149e5135ca">std::numeric_limits&lt;::iRRAM::generic_sizetype&lt; M, E &gt; &gt;::tinyness_before</a>  </dt>
 <dd>is this correct? </dd>
 </dl>
 </div></div><!-- contents -->
@@ -145,7 +150,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 26 2016 12:51:22 for iRRAM by
+    <li class="footer">Generated on Sat Jan 7 2017 12:09:20 for iRRAM by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>
