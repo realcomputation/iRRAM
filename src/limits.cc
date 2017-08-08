@@ -215,7 +215,7 @@ REAL lipschitz (REAL (*f)(const REAL&),
   sizetype x_error;
 
   {
-    limit_computation env(0);
+    limit_computation env(0, stiff::rel{});
   iRRAM_DEBUG1(2,"starting lipschitz1b ...\n");
 
 // for the computation of the Lipschitz bound, we work with
