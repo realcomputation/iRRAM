@@ -49,33 +49,30 @@ extern "C" {
 #define GMP_min -1000000000
 #define GMP_max 1000000000
 
-/********** MP integer type definition **********/
-typedef mpz_ptr int_gmp_type;
-
 /********** counting vars **********/
 #define MaxFreeVars 1000
-extern iRRAM_TLS int_gmp_type gmp_FreeVarsi[MaxFreeVars];
+extern iRRAM_TLS mpz_ptr gmp_FreeVarsi[MaxFreeVars];
 extern iRRAM_TLS int gmp_FreeVarCounti;
 extern iRRAM_TLS int int_gmp_var_count;
 
 
 /********** initialization function **********/
 
-static inline int_gmp_type int_gmp_init()
+static inline mpz_ptr int_gmp_init()
 {
-	int_gmp_type z;
+	mpz_ptr z;
 	if (gmp_FreeVarCounti>0) {
 		gmp_FreeVarCounti--;
 		z = gmp_FreeVarsi[gmp_FreeVarCounti];
 	}else{
-		z = (int_gmp_type) malloc(sizeof(__mpz_struct));
+		z = (mpz_ptr) malloc(sizeof(__mpz_struct));
 		mpz_init(z);
 	}
 	int_gmp_var_count++;
 	return z;
 }
 
-static inline void int_gmp_free(int_gmp_type z)
+static inline void int_gmp_free(mpz_ptr z)
 {
   if (gmp_FreeVarCounti < MaxFreeVars){
   		gmp_FreeVarsi[gmp_FreeVarCounti]=z;
@@ -89,63 +86,63 @@ static inline void int_gmp_free(int_gmp_type z)
 
 /********** Conversion functions **********/
 
-static inline void int_gmp_int2integer(const int i, int_gmp_type z){mpz_set_si(z,i);}
-static inline void int_gmp_double2int(const double d, int_gmp_type z){mpz_set_d(z,d);}
-static inline void int_gmp_string2int(const char* s, int_gmp_type z, int b){mpz_set_str(z,s,b);}
-static inline int int_gmp_integer2int(const int_gmp_type z){return mpz_get_si(z);}
+static inline void int_gmp_int2integer(const int i, mpz_ptr z){mpz_set_si(z,i);}
+static inline void int_gmp_double2int(const double d, mpz_ptr z){mpz_set_d(z,d);}
+static inline void int_gmp_string2int(const char* s, mpz_ptr z, int b){mpz_set_str(z,s,b);}
+static inline int int_gmp_integer2int(const mpz_ptr z){return mpz_get_si(z);}
 
 /********** standard arithmetic functions for MP integer **********/
 
-static inline void int_gmp_add(const int_gmp_type z1, const int_gmp_type z2, int_gmp_type z){mpz_add(z,z1,z2);}
-static inline void int_gmp_sub(const int_gmp_type z1, const int_gmp_type z2, int_gmp_type z){mpz_sub(z,z1,z2);}
-static inline void int_gmp_mul(const int_gmp_type z1, const int_gmp_type z2, int_gmp_type z){mpz_mul(z,z1,z2);}
-static inline void int_gmp_div(const int_gmp_type z1, const int_gmp_type z2, int_gmp_type z){mpz_tdiv_q(z,z1,z2);}
+static inline void int_gmp_add(const mpz_ptr z1, const mpz_ptr z2, mpz_ptr z){mpz_add(z,z1,z2);}
+static inline void int_gmp_sub(const mpz_ptr z1, const mpz_ptr z2, mpz_ptr z){mpz_sub(z,z1,z2);}
+static inline void int_gmp_mul(const mpz_ptr z1, const mpz_ptr z2, mpz_ptr z){mpz_mul(z,z1,z2);}
+static inline void int_gmp_div(const mpz_ptr z1, const mpz_ptr z2, mpz_ptr z){mpz_tdiv_q(z,z1,z2);}
 
-static inline void int_gmp_add_ui(const int_gmp_type z1, const unsigned int z2, int_gmp_type z){mpz_add_ui(z,z1,z2);}
-static inline void int_gmp_sub_ui(const int_gmp_type z1, const unsigned int z2,int_gmp_type z){mpz_sub_ui(z,z1,z2);}
-static inline void int_gmp_mul_si(const int_gmp_type z1, const int z2, int_gmp_type z){mpz_mul_si(z,z1,z2);}
-static inline void int_gmp_div_ui(const int_gmp_type z1, const unsigned int z2, int_gmp_type z){mpz_tdiv_q_ui(z,z1,z2);}
+static inline void int_gmp_add_ui(const mpz_ptr z1, const unsigned int z2, mpz_ptr z){mpz_add_ui(z,z1,z2);}
+static inline void int_gmp_sub_ui(const mpz_ptr z1, const unsigned int z2,mpz_ptr z){mpz_sub_ui(z,z1,z2);}
+static inline void int_gmp_mul_si(const mpz_ptr z1, const int z2, mpz_ptr z){mpz_mul_si(z,z1,z2);}
+static inline void int_gmp_div_ui(const mpz_ptr z1, const unsigned int z2, mpz_ptr z){mpz_tdiv_q_ui(z,z1,z2);}
 
-static inline void int_gmp_abs(const int_gmp_type z1, int_gmp_type z){mpz_abs(z, z1);}
-static inline void int_gmp_neg(const int_gmp_type z1, int_gmp_type z){mpz_neg(z, z1);}
+static inline void int_gmp_abs(const mpz_ptr z1, mpz_ptr z){mpz_abs(z, z1);}
+static inline void int_gmp_neg(const mpz_ptr z1, mpz_ptr z){mpz_neg(z, z1);}
 
 
 
 /********** more MP integer functions *********/
 
-void int_gmp_root(int_gmp_type z1, unsigned int z2, int_gmp_type z);
-void int_gmp_power_i(int_gmp_type z1, unsigned int z2, int_gmp_type z);
-void int_gmp_power_ii(unsigned int z1, unsigned int z2, int_gmp_type z);
-void int_gmp_fac(unsigned int z1, int_gmp_type z);
-void int_gmp_modulo(int_gmp_type z1, int_gmp_type z2, int_gmp_type z3);
-void int_gmp_sqrt(int_gmp_type z1, int_gmp_type z);
-void int_gmp_shift(int_gmp_type z1, int_gmp_type z, int p);
-int int_gmp_log(int_gmp_type z);
+void int_gmp_root(mpz_ptr z1, unsigned int z2, mpz_ptr z);
+void int_gmp_power_i(mpz_ptr z1, unsigned int z2, mpz_ptr z);
+void int_gmp_power_ii(unsigned int z1, unsigned int z2, mpz_ptr z);
+void int_gmp_fac(unsigned int z1, mpz_ptr z);
+void int_gmp_modulo(mpz_ptr z1, mpz_ptr z2, mpz_ptr z3);
+void int_gmp_sqrt(mpz_ptr z1, mpz_ptr z);
+void int_gmp_shift(mpz_ptr z1, mpz_ptr z, int p);
+int int_gmp_log(mpz_ptr z);
 
 
 /********** output functions for MP integers **********/
 
-void int_gmp_writee(int_gmp_type z, int w);
-char* int_gmp_swritee(int_gmp_type z, int w);
-void int_gmp_write(int_gmp_type z, int w);
-void int_gmp_outstr(int_gmp_type z, int w);
-void int_gmp_printf(int_gmp_type z);
-char* int_gmp_sprintf(int_gmp_type z);
+void int_gmp_writee(mpz_ptr z, int w);
+char* int_gmp_swritee(mpz_ptr z, int w);
+void int_gmp_write(mpz_ptr z, int w);
+void int_gmp_outstr(mpz_ptr z, int w);
+void int_gmp_printf(mpz_ptr z);
+char* int_gmp_sprintf(mpz_ptr z);
 
 
 /********** copying MP integers with/without initializing **********/
 
-static inline void int_gmp_duplicate_w_init(const int_gmp_type z1, int_gmp_type *z2){
+static inline void int_gmp_duplicate_w_init(const mpz_ptr z1, mpz_ptr *z2){
   *z2=int_gmp_init();
   mpz_set(*z2,z1);
 }
 
-static inline void int_gmp_duplicate_wo_init(const int_gmp_type z1, int_gmp_type z2){mpz_set(z2,z1);}
+static inline void int_gmp_duplicate_wo_init(const mpz_ptr z1, mpz_ptr z2){mpz_set(z2,z1);}
 
 /********* sign, size, and comparison of integer*/
-static inline int int_gmp_sgn(const int_gmp_type z){return mpz_sgn(z);}
-static inline int int_gmp_cmp(const int_gmp_type z1,const  int_gmp_type z2){return mpz_cmp(z1,z2);}
-static inline int int_gmp_size(const int_gmp_type z){
+static inline int int_gmp_sgn(const mpz_ptr z){return mpz_sgn(z);}
+static inline int int_gmp_cmp(const mpz_ptr z1,const  mpz_ptr z2){return mpz_cmp(z1,z2);}
+static inline int int_gmp_size(const mpz_ptr z){
 	if (mpz_sgn(z) == 0 )  return 0; else   return mpz_sizeinbase(z,2);}
 
 /********** MP rational type definition **********/
@@ -221,8 +218,8 @@ char* rat_gmp_sprintf(const rat_gmp_type z);
 void rat_gmp_string_2_rat(rat_gmp_type z, const char* s);
 void rat_gmp_double_2_rat(rat_gmp_type z, const double d);
 
-static inline void rat_gmp_get_numerator(int_gmp_type z, const rat_gmp_type z1){mpq_get_num(z,z1);}
-static inline void rat_gmp_get_denominator(int_gmp_type z, const rat_gmp_type z1){mpq_get_den(z,z1);}
+static inline void rat_gmp_get_numerator(mpz_ptr z, const rat_gmp_type z1){mpq_get_num(z,z1);}
+static inline void rat_gmp_get_denominator(mpz_ptr z, const rat_gmp_type z1){mpq_get_den(z,z1);}
 
 
 /********** copying MP rationals with/without initializing ***********/

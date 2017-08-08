@@ -45,11 +45,11 @@ iRRAM_TLS int rat_gmp_var_count=0;
 
 void rat_gmp_add_si(const rat_gmp_type z1, int z2, rat_gmp_type z)
 {
-	int_gmp_type src_num = mpq_numref(z1);
-	int_gmp_type src_den = mpq_denref(z1);
-	int_gmp_type tgt_num = mpq_numref(z);
-	int_gmp_type tgt_den = mpq_denref(z);
-	int_gmp_type temp = int_gmp_init();
+	mpz_ptr src_num = mpq_numref(z1);
+	mpz_ptr src_den = mpq_denref(z1);
+	mpz_ptr tgt_num = mpq_numref(z);
+	mpz_ptr tgt_den = mpq_denref(z);
+	mpz_ptr temp = int_gmp_init();
 
 	mpz_set(tgt_den, src_den);
 	mpz_mul_si(temp, src_den, z2);
@@ -68,9 +68,9 @@ void rat_gmp_add_si(const rat_gmp_type z1, int z2, rat_gmp_type z)
 
 void rat_gmp_add_ui(const rat_gmp_type z1, const unsigned int z2, rat_gmp_type z)
 {
-	int_gmp_type num;
-	int_gmp_type den;
-	int_gmp_type temp;
+	mpz_ptr num;
+	mpz_ptr den;
+	mpz_ptr temp;
 	num=int_gmp_init();
 	den=int_gmp_init();
 	temp=int_gmp_init();
@@ -99,9 +99,9 @@ return;
 
 void rat_gmp_sub_ui(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
 {
-	int_gmp_type num;
-	int_gmp_type den;
-	int_gmp_type temp;
+	mpz_ptr num;
+	mpz_ptr den;
+	mpz_ptr temp;
 	num=int_gmp_init();
 	den=int_gmp_init();
 	temp=int_gmp_init();
@@ -130,8 +130,8 @@ return;
 
 void rat_gmp_mul_si(rat_gmp_type z1, int z2, rat_gmp_type z)
 {
-	int_gmp_type num;
-	int_gmp_type den;
+	mpz_ptr num;
+	mpz_ptr den;
 	num=int_gmp_init();
 	den=int_gmp_init();
 	mpq_get_num(num,z1);
@@ -156,8 +156,8 @@ return;
 
 void rat_gmp_div_si(rat_gmp_type z1, int z2, rat_gmp_type z)
 {
-	int_gmp_type num;
-	int_gmp_type den;
+	mpz_ptr num;
+	mpz_ptr den;
 	num=int_gmp_init();
 	den=int_gmp_init();
 	mpq_get_num(num,z1);
@@ -185,8 +185,8 @@ return;
 
 void rat_gmp_si_div(int z1, rat_gmp_type z2, rat_gmp_type z)
 {
-	int_gmp_type num;
-	int_gmp_type den;
+	mpz_ptr num;
+	mpz_ptr den;
 	num=int_gmp_init();
 	den=int_gmp_init();
 	mpq_get_num(num,z2);
@@ -213,9 +213,9 @@ return;
 void rat_gmp_power(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
 {
 	int sign;
-	int_gmp_type num;
-	int_gmp_type den;
-	int_gmp_type temp;
+	mpz_ptr num;
+	mpz_ptr den;
+	mpz_ptr temp;
 	num=int_gmp_init();
 	den=int_gmp_init();
 	temp=int_gmp_init();
@@ -266,7 +266,7 @@ char* rat_gmp_sprintf(rat_gmp_type z)
 
 void rat_gmp_shift(rat_gmp_type z1, rat_gmp_type z, int n)
 {
-	int_gmp_type num,den;
+	mpz_ptr num,den;
 	num=int_gmp_init();
 	den=int_gmp_init();
 	mpq_get_num(num,z1);

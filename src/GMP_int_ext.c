@@ -39,7 +39,7 @@ MA 02111-1307, USA.
 /* Variables for counting free space                                      */
 /**************************************************************************/
 
-iRRAM_TLS int_gmp_type gmp_FreeVarsi[MaxFreeVars];
+iRRAM_TLS mpz_ptr gmp_FreeVarsi[MaxFreeVars];
 iRRAM_TLS int gmp_FreeVarCounti=0L;
 iRRAM_TLS int int_gmp_var_count=0;
 
@@ -54,7 +54,7 @@ iRRAM_TLS int int_gmp_var_count=0;
 /*  		  3. GMP_integer                                          */
 /**************************************************************************/
 
-void int_gmp_root(int_gmp_type z1, unsigned int z2, int_gmp_type z)
+void int_gmp_root(mpz_ptr z1, unsigned int z2, mpz_ptr z)
 {
   mpz_root(z, z1, z2);
   return;
@@ -71,7 +71,7 @@ void int_gmp_root(int_gmp_type z1, unsigned int z2, int_gmp_type z)
 /*             3. GMP_integer                                             */
 /**************************************************************************/
 
-void int_gmp_power_i(int_gmp_type z1, unsigned int z2, int_gmp_type z)
+void int_gmp_power_i(mpz_ptr z1, unsigned int z2, mpz_ptr z)
 {
  mpz_pow_ui(z, z1, z2);
  return;
@@ -88,7 +88,7 @@ void int_gmp_power_i(int_gmp_type z1, unsigned int z2, int_gmp_type z)
 /*            3. GMP_integer                                              */
 /**************************************************************************/
 
-void int_gmp_power_ii(unsigned int z1, unsigned int z2, int_gmp_type z)
+void int_gmp_power_ii(unsigned int z1, unsigned int z2, mpz_ptr z)
 {
  mpz_ui_pow_ui(z, z1, z2);
  return;
@@ -104,7 +104,7 @@ void int_gmp_power_ii(unsigned int z1, unsigned int z2, int_gmp_type z)
 /* 		  2. GMP_integer                                          */
 /**************************************************************************/
 
-void int_gmp_fac(unsigned int z1, int_gmp_type z)
+void int_gmp_fac(unsigned int z1, mpz_ptr z)
 {
  mpz_fac_ui(z, z1);
  return;
@@ -120,7 +120,7 @@ void int_gmp_fac(unsigned int z1, int_gmp_type z)
 /* 		  3. GMP_integer                                          */
 /**************************************************************************/
 
-void int_gmp_modulo(int_gmp_type z1, int_gmp_type z2, int_gmp_type z)
+void int_gmp_modulo(mpz_ptr z1, mpz_ptr z2, mpz_ptr z)
 {
  mpz_mod(z, z1, z2);
  return;
@@ -139,7 +139,7 @@ void int_gmp_modulo(int_gmp_type z1, int_gmp_type z2, int_gmp_type z)
 /**************************************************************************/
 
 
-char* int_gmp_swritee(int_gmp_type z, int w)
+char* int_gmp_swritee(mpz_ptr z, int w)
 {
   char *n, *s;
   int l;
@@ -170,7 +170,7 @@ char* int_gmp_swritee(int_gmp_type z, int w)
 /*  return: char*                                                         */
 /**************************************************************************/
 
-char* int_gmp_sprintf(int_gmp_type z)
+char* int_gmp_sprintf(mpz_ptr z)
 {
   return mpz_get_str(NULL,10,z);
 }
@@ -185,7 +185,7 @@ char* int_gmp_sprintf(int_gmp_type z)
 /*            2. GMP_integer                                              */
 /**************************************************************************/
 
-void int_gmp_sqrt(int_gmp_type z1, int_gmp_type z)
+void int_gmp_sqrt(mpz_ptr z1, mpz_ptr z)
 {
  mpz_sqrt(z,z1);
  return;
@@ -202,7 +202,7 @@ void int_gmp_sqrt(int_gmp_type z1, int_gmp_type z)
 /*            3. int integer n                                            */
 /**************************************************************************/
 
-void int_gmp_shift(int_gmp_type z1, int_gmp_type z, int n)
+void int_gmp_shift(mpz_ptr z1, mpz_ptr z, int n)
 {
   if (n>=0) mpz_mul_2exp(z, z1, n);
   else mpz_tdiv_q_2exp(z, z1, -n);  /* truncate-div */

@@ -45,7 +45,7 @@ MA 02111-1307, USA.
 /****** Type definitions ******/
 
 #define MP_type         ext_mpfr_type
-#define MP_int_type     int_gmp_type
+#define MP_int_type     mpz_ptr
 #define MP_rat_type     rat_gmp_type
 
 
