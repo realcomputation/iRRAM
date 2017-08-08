@@ -51,7 +51,6 @@ extern "C" {
 
 /********** MP integer type definition **********/
 typedef mpz_ptr int_gmp_type;
-typedef struct {unsigned int body;} int_gmp_sizetype;
 
 /********** counting vars **********/
 #define MaxFreeVars 1000
