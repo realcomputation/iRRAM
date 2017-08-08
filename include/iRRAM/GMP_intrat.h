@@ -145,31 +145,28 @@ static inline int int_gmp_cmp(const mpz_ptr z1,const  mpz_ptr z2){return mpz_cmp
 static inline int int_gmp_size(const mpz_ptr z){
 	if (mpz_sgn(z) == 0 )  return 0; else   return mpz_sizeinbase(z,2);}
 
-/********** MP rational type definition **********/
-typedef mpq_ptr rat_gmp_type;
-
 /********** counting vars **********/
 #define rat_MaxFreeVars 1000
 extern iRRAM_TLS int rat_gmp_var_count;
-extern iRRAM_TLS rat_gmp_type rat_gmp_FreeVarsi[rat_MaxFreeVars];
+extern iRRAM_TLS mpq_ptr rat_gmp_FreeVarsi[rat_MaxFreeVars];
 extern iRRAM_TLS int rat_gmp_FreeVarCount;
 
 /********** initialization function **********/
 
-static inline rat_gmp_type rat_gmp_init(){
-	rat_gmp_type z;
+static inline mpq_ptr rat_gmp_init(){
+	mpq_ptr z;
 	if (rat_gmp_FreeVarCount>0){
 		rat_gmp_FreeVarCount--;
 		z = rat_gmp_FreeVarsi[rat_gmp_FreeVarCount];
 	}else{
-		z = (rat_gmp_type) malloc(sizeof(__mpq_struct));
+		z = (mpq_ptr) malloc(sizeof(__mpq_struct));
 		mpq_init(z);
 	}
 	rat_gmp_var_count++;
 	return z;
 }
 
-static inline void rat_gmp_free(rat_gmp_type z){
+static inline void rat_gmp_free(mpq_ptr z){
 	if(rat_gmp_FreeVarCount < rat_MaxFreeVars){
 		rat_gmp_FreeVarsi[rat_gmp_FreeVarCount]=z;
 		rat_gmp_FreeVarCount++;
@@ -181,55 +178,55 @@ static inline void rat_gmp_free(rat_gmp_type z){
 }
 
 /* canonicalize the given rational, used for used defined rationals */
-static inline void rat_gmp_canon(rat_gmp_type z){mpq_canonicalize(z);}
+static inline void rat_gmp_canon(mpq_ptr z){mpq_canonicalize(z);}
 
 
 /********** standard arithmetic functions for MP rational **********/
 /********** + - * / *********/
 
-static inline void rat_gmp_add(const rat_gmp_type z1, const rat_gmp_type z2, rat_gmp_type z){mpq_add(z,z1,z2);}
-static inline void rat_gmp_sub(const rat_gmp_type z1, const rat_gmp_type z2, rat_gmp_type z){mpq_sub(z,z1,z2);}
-static inline void rat_gmp_mul(const rat_gmp_type z1, const rat_gmp_type z2, rat_gmp_type z){mpq_mul(z,z1,z2);}
-static inline void rat_gmp_div(const rat_gmp_type z1, const rat_gmp_type z2, rat_gmp_type z){mpq_div(z,z1,z2);}
-void rat_gmp_add_si(const rat_gmp_type z1, int z2, rat_gmp_type z);
-void rat_gmp_add_ui(const rat_gmp_type z1, const unsigned int z2, rat_gmp_type z);
-void rat_gmp_sub_ui(const rat_gmp_type z1, const unsigned int z2, rat_gmp_type z);
-void rat_gmp_mul_si(const rat_gmp_type z1, const int z2, rat_gmp_type z);
-void rat_gmp_div_si(const rat_gmp_type z1, const int z2, rat_gmp_type z);
-void rat_gmp_si_div(const int z1, const rat_gmp_type z2, rat_gmp_type z);
-static inline void rat_gmp_abs(const rat_gmp_type z1, rat_gmp_type z){mpq_abs(z,z1);}
-static inline void rat_gmp_neg(const rat_gmp_type z1, rat_gmp_type z){mpq_neg(z,z1);}
+static inline void rat_gmp_add(const mpq_ptr z1, const mpq_ptr z2, mpq_ptr z){mpq_add(z,z1,z2);}
+static inline void rat_gmp_sub(const mpq_ptr z1, const mpq_ptr z2, mpq_ptr z){mpq_sub(z,z1,z2);}
+static inline void rat_gmp_mul(const mpq_ptr z1, const mpq_ptr z2, mpq_ptr z){mpq_mul(z,z1,z2);}
+static inline void rat_gmp_div(const mpq_ptr z1, const mpq_ptr z2, mpq_ptr z){mpq_div(z,z1,z2);}
+void rat_gmp_add_si(const mpq_ptr z1, int z2, mpq_ptr z);
+void rat_gmp_add_ui(const mpq_ptr z1, const unsigned int z2, mpq_ptr z);
+void rat_gmp_sub_ui(const mpq_ptr z1, const unsigned int z2, mpq_ptr z);
+void rat_gmp_mul_si(const mpq_ptr z1, const int z2, mpq_ptr z);
+void rat_gmp_div_si(const mpq_ptr z1, const int z2, mpq_ptr z);
+void rat_gmp_si_div(const int z1, const mpq_ptr z2, mpq_ptr z);
+static inline void rat_gmp_abs(const mpq_ptr z1, mpq_ptr z){mpq_abs(z,z1);}
+static inline void rat_gmp_neg(const mpq_ptr z1, mpq_ptr z){mpq_neg(z,z1);}
 
 
 /********** more MP rational functions *********/
 /********** ^!%>>... **********/
 
-void rat_gmp_power(rat_gmp_type z1, unsigned int z2, rat_gmp_type z);
-void rat_gmp_powerr(rat_gmp_type z1, rat_gmp_type z2, rat_gmp_type z);
-void rat_gmp_shift(rat_gmp_type z1, rat_gmp_type z, int p);
+void rat_gmp_power(mpq_ptr z1, unsigned int z2, mpq_ptr z);
+void rat_gmp_powerr(mpq_ptr z1, mpq_ptr z2, mpq_ptr z);
+void rat_gmp_shift(mpq_ptr z1, mpq_ptr z, int p);
 
 
 /********** output functions for MP rationals ************/
 
-char* rat_gmp_swritee(const rat_gmp_type z, const int w);
-char* rat_gmp_sprintf(const rat_gmp_type z);
+char* rat_gmp_swritee(const mpq_ptr z, const int w);
+char* rat_gmp_sprintf(const mpq_ptr z);
 
 
-void rat_gmp_string_2_rat(rat_gmp_type z, const char* s);
-void rat_gmp_double_2_rat(rat_gmp_type z, const double d);
+void rat_gmp_string_2_rat(mpq_ptr z, const char* s);
+void rat_gmp_double_2_rat(mpq_ptr z, const double d);
 
-static inline void rat_gmp_get_numerator(mpz_ptr z, const rat_gmp_type z1){mpq_get_num(z,z1);}
-static inline void rat_gmp_get_denominator(mpz_ptr z, const rat_gmp_type z1){mpq_get_den(z,z1);}
+static inline void rat_gmp_get_numerator(mpz_ptr z, const mpq_ptr z1){mpq_get_num(z,z1);}
+static inline void rat_gmp_get_denominator(mpz_ptr z, const mpq_ptr z1){mpq_get_den(z,z1);}
 
 
 /********** copying MP rationals with/without initializing ***********/
-static inline void rat_gmp_duplicate_w_init(const rat_gmp_type z1, rat_gmp_type *z2){
+static inline void rat_gmp_duplicate_w_init(const mpq_ptr z1, mpq_ptr *z2){
   *z2=rat_gmp_init(); mpq_set(*z2,z1);}
-static inline void rat_gmp_duplicate_wo_init(const rat_gmp_type z1, rat_gmp_type z2){mpq_set(z2,z1);}
+static inline void rat_gmp_duplicate_wo_init(const mpq_ptr z1, mpq_ptr z2){mpq_set(z2,z1);}
 
 /********* sign and comparison of integer and rational */
-static inline int rat_gmp_sgn(const rat_gmp_type z){return mpq_sgn(z);}
-static inline int rat_gmp_cmp(const rat_gmp_type z1,const  rat_gmp_type z2){return mpq_cmp(z1,z2);}
+static inline int rat_gmp_sgn(const mpq_ptr z){return mpq_sgn(z);}
+static inline int rat_gmp_cmp(const mpq_ptr z1,const  mpq_ptr z2){return mpq_cmp(z1,z2);}
 
 #ifdef __cplusplus
 }

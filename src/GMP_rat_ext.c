@@ -38,12 +38,12 @@ MA 02111-1307, USA.
 
 
 #define rat_MaxFreeVars 1000
-iRRAM_TLS rat_gmp_type rat_gmp_FreeVarsi[rat_MaxFreeVars];
+iRRAM_TLS mpq_ptr rat_gmp_FreeVarsi[rat_MaxFreeVars];
 iRRAM_TLS int rat_gmp_FreeVarCount=0L;
 iRRAM_TLS int rat_gmp_var_count=0;
 
 
-void rat_gmp_add_si(const rat_gmp_type z1, int z2, rat_gmp_type z)
+void rat_gmp_add_si(const mpq_ptr z1, int z2, mpq_ptr z)
 {
 	mpz_ptr src_num = mpq_numref(z1);
 	mpz_ptr src_den = mpq_denref(z1);
@@ -66,7 +66,7 @@ void rat_gmp_add_si(const rat_gmp_type z1, int z2, rat_gmp_type z)
 /* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
-void rat_gmp_add_ui(const rat_gmp_type z1, const unsigned int z2, rat_gmp_type z)
+void rat_gmp_add_ui(const mpq_ptr z1, const unsigned int z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -97,7 +97,7 @@ return;
 /* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
-void rat_gmp_sub_ui(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
+void rat_gmp_sub_ui(mpq_ptr z1, unsigned int z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -128,7 +128,7 @@ return;
 /* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
-void rat_gmp_mul_si(rat_gmp_type z1, int z2, rat_gmp_type z)
+void rat_gmp_mul_si(mpq_ptr z1, int z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -154,7 +154,7 @@ return;
 /* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
-void rat_gmp_div_si(rat_gmp_type z1, int z2, rat_gmp_type z)
+void rat_gmp_div_si(mpq_ptr z1, int z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -183,7 +183,7 @@ return;
 /* Last change: 18.06.2001                                                   */
 /* ***************************************************************************/
 
-void rat_gmp_si_div(int z1, rat_gmp_type z2, rat_gmp_type z)
+void rat_gmp_si_div(int z1, mpq_ptr z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -210,7 +210,7 @@ return;
 /* Comment: base=MP exponent=int                                             */
 /*****************************************************************************/
 
-void rat_gmp_power(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
+void rat_gmp_power(mpq_ptr z1, unsigned int z2, mpq_ptr z)
 {
 	int sign;
 	mpz_ptr num;
@@ -236,7 +236,7 @@ void rat_gmp_power(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
 
 
 
-char* rat_gmp_swritee(rat_gmp_type z, int w)
+char* rat_gmp_swritee(mpq_ptr z, int w)
 {
   char *n, *s;
   int l;
@@ -258,13 +258,13 @@ char* rat_gmp_swritee(rat_gmp_type z, int w)
 }
 
 
-char* rat_gmp_sprintf(rat_gmp_type z)
+char* rat_gmp_sprintf(mpq_ptr z)
 {
 	return mpq_get_str(NULL, 10, z);
 }
 
 
-void rat_gmp_shift(rat_gmp_type z1, rat_gmp_type z, int n)
+void rat_gmp_shift(mpq_ptr z1, mpq_ptr z, int n)
 {
 	mpz_ptr num,den;
 	num=int_gmp_init();
@@ -283,7 +283,7 @@ void rat_gmp_shift(rat_gmp_type z1, rat_gmp_type z, int n)
 	int_gmp_free(den);
 }
 
-void rat_gmp_string_2_rat(rat_gmp_type z, const char* s)
+void rat_gmp_string_2_rat(mpq_ptr z, const char* s)
 {
 	mpq_set_str(z,s,10);
 	mpq_canonicalize(z);
