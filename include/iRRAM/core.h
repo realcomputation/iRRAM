@@ -32,6 +32,16 @@ MA 02111-1307, USA.
 
 #include <iRRAM/common.h>
 
+#ifndef iRRAM_BACKENDS
+# error error: no usable backend, defined iRRAM_BACKENDS
+#endif
+
+#if iRRAM_BACKEND_MPFR
+# include <iRRAM/MPFR_interface.h>
+#else
+# error "Currently no additional backend!"
+#endif
+
 namespace iRRAM {
 
 /*!
