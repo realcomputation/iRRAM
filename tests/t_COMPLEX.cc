@@ -20,7 +20,7 @@ static bool test_sqrt()
 	lt[run] = run_sqrt(z);
 	printf("run %d, lt: %d\n", run, lt[run]);
 	if (++run < sizeof(lt)/sizeof(*lt)) {
-		REITERATE(0);
+		iRRAM_REITERATE(0);
 	} else
 		return lt[0] == lt[1];
 #else

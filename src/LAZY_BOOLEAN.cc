@@ -37,7 +37,7 @@ LAZY_BOOLEAN::operator bool() const {
 
     if ( value <= LAZY_BOOLEAN::BOTTOM ){
       iRRAM_DEBUG1(1,"lazy boolean values BOTTOM leading to iteration\n");
-      REITERATE(0);
+      iRRAM_REITERATE(0);
     }
 
     result=value;
@@ -81,7 +81,7 @@ int choose(const LAZY_BOOLEAN& x1,
 
   if ( minvalue == LAZY_BOOLEAN::BOTTOM ){
     iRRAM_DEBUG1(1,"lazy boolean value BOTTOM leading to iteration\n");
-    REITERATE(0);
+    iRRAM_REITERATE(0);
   }
 
   if ( state.ACTUAL_STACK.inlimit==0 ) state.thread_data_address->cache_i.put(result);

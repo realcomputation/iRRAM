@@ -283,7 +283,7 @@ auto limit(F f, const ContArgs &... cont_args)
 				firsttime = 1;
 			} else {
 				iRRAM_DEBUG1(1,"computation of general limit_gen1 failed totally\n");
-				REITERATE(0);
+				iRRAM_REITERATE(0);
 			}
 		}
 	}
@@ -381,7 +381,7 @@ RESULT limit_mv (RESULT (*f)(int prec,
       firsttime=1;
       } else {
       iRRAM_DEBUG1(1,"computation of limit_gen1 failed totally\n");
-      REITERATE(0);
+      iRRAM_REITERATE(0);
       }}
    if ( firsttime != 0 || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
@@ -408,7 +408,7 @@ RESULT  limit_lip (RESULT  (*f)(int,const ARGUMENT&,DISCRETE param),
 	    bool (*on_domain)(const ARGUMENT&),
             const ARGUMENT& x,DISCRETE param)
 {
-  if ( on_domain(x) != true ) REITERATE(0);
+  if ( on_domain(x) != true ) iRRAM_REITERATE(0);
 
   limit_computation env;
 
@@ -462,7 +462,7 @@ RESULT  limit_lip (RESULT  (*f)(int,const ARGUMENT&,DISCRETE param),
 // 	    bool on_domain(const PARAM& param, const ARGUMENT&),
 //             const PARAM& param, const ARGUMENT& x)
 // {
-//   if ( on_domain(param,x) != true ) REITERATE(0);
+//   if ( on_domain(param,x) != true ) iRRAM_REITERATE(0);
 // 
 //   ITERATION_STACK SAVED_STACK;
 // 
@@ -523,7 +523,7 @@ RESULT lipschitz_1p_1a (RESULT (*f)(const DISCRETE_ARGUMENT&, const PARAM& param
             bool (*on_domain)(const CONT_ARGUMENT&, const PARAM& param),
             const CONT_ARGUMENT& x, const PARAM& param )
 {
-  if ( on_domain(x,param) != true ) REITERATE(0);
+  if ( on_domain(x,param) != true ) iRRAM_REITERATE(0);
 
   limit_computation env(0);
   iRRAM_DEBUG1(2,"starting lipschitz_1p_1a ...\n");

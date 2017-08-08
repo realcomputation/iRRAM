@@ -176,8 +176,8 @@ struct Iteration {
 	constexpr Iteration(int p) : prec_diff(p) {}
 };
 
-// inline void REITERATE(int p_diff){inReiterate = true; throw Iteration(p_diff); }
-#define REITERATE(x)                                                           \
+// inline void iRRAM_REITERATE(int p_diff){inReiterate = true; throw Iteration(p_diff); }
+#define iRRAM_REITERATE(x)                                                           \
 	do {                                                                   \
 		state.inReiterate = true;                                      \
 		throw Iteration(x);                                            \

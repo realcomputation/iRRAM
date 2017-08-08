@@ -90,7 +90,7 @@ namespace iRRAM {
 void REAL::mp_make_mp()
 {
 	if (!std::isfinite(dp.upper_neg) || !std::isfinite(dp.lower_pos))
-		REITERATE(0);
+		iRRAM_REITERATE(0);
 	if (dp.upper_neg == -dp.lower_pos) {
 		// here we have a point interval...
 		if (!value)
@@ -272,7 +272,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 			iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) in "
 			                "conversion with precision 2^(%d)\n",
 			             x.error.mantissa, x.error.exponent, p);
-			REITERATE(p - x.error.exponent);
+			iRRAM_REITERATE(p - x.error.exponent);
 		}
 
 		if (s <= p) {
@@ -320,7 +320,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 			iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) in "
 			                "writing with precision 2^(%d)\n",
 			             x.error.mantissa, x.error.exponent, p);
-			REITERATE(p - x.error.exponent);
+			iRRAM_REITERATE(p - x.error.exponent);
 		}
 		erg = MP_swrite(x.value, width);
 		break;
@@ -476,7 +476,7 @@ REAL REAL::mp_division(const REAL & y) const
 		                "denominator of size %d*2^(%d)\n",
 		             y.error.mantissa, y.error.exponent,
 		             y.vsize.mantissa, y.vsize.exponent);
-		REITERATE(0);
+		iRRAM_REITERATE(0);
 	}
 	h1 = this->vsize * y.error;
 	h2 = y.vsize * this->error;
@@ -645,7 +645,7 @@ LAZY_BOOLEAN positive(const REAL & x, int k)
  * \param p accuracy
  * \return a dyadic approximation q that satisfies |x-q|<2^p.
  * \exception Iteration when \f$2^{p+1}<x_\varepsilon\f$
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  */
 DYADIC approx(const REAL & x, const int p)
 {
@@ -663,7 +663,7 @@ DYADIC approx(const REAL & x, const int p)
 		iRRAM_DEBUG2(1,
 		             "insufficient precision %d*2^(%d) in approx(%d)\n",
 		             x.error.mantissa, x.error.exponent, p);
-		REITERATE(p - x.error.exponent);
+		iRRAM_REITERATE(p - x.error.exponent);
 	}
 	MP_init(erg);
 	MP_copy(x.value, erg, p - 1);
@@ -697,7 +697,7 @@ DYADIC approx(const REAL & x, const int p)
  * \exception iRRAM_Numerical_Exception(iRRAM_underflow_error)
  *    if x is exact with value zero. If x is not exact but zero, reiterations
  *    will be performed.
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  * \todo According to documentation, size(const REAL &) should compute
  * \f$\begin{cases}
  *    1+\lfloor\log_2|x|\rfloor\text,&x\neq 0
@@ -730,7 +730,7 @@ int size(const REAL & x)
 		        "insufficient precision %d*2^(%d) in size %d*2^(%d)\n",
 		        x.error.mantissa, x.error.exponent, x.vsize.mantissa,
 		        x.vsize.exponent);
-		REITERATE(0);
+		iRRAM_REITERATE(0);
 	}
 
 	if (state.ACTUAL_STACK.inlimit == 0)
@@ -925,7 +925,7 @@ INTEGER REAL::as_INTEGER() const
 		iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) converting "
 		                "to integer\n",
 		             this->error.mantissa, this->error.exponent);
-		REITERATE(-y.error.exponent);
+		iRRAM_REITERATE(-y.error.exponent);
 	}
 	MP_int_init(value);
 	MP_mp_to_INTEGER(y.value, value);

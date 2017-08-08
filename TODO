@@ -202,7 +202,7 @@ Add:
                    tmp_a=a; if (tmp_a.val==true) return_val=1; 
                    else {tmp_b.val=b; if (tmp_b.val==true) return_val=2;
 		   else {tmp_a.val==false && tmp_b.val==false) return_val=0;
-		   else REITERATE; cache_add (return_val); continous_end();}  
+		   else iRRAM_REITERATE; cache_add (return_val); continous_end();}
     Perhaps a function "INTERNAL_VALUE(tmp_a)" could be used here instead of making
     tmp_a.val a public value.
     As an alternative, we could try templates, but they are much harder to use.

@@ -47,7 +47,7 @@ REAL limit_lip (REAL (*f)(int,const REAL&),
 	    bool (*on_domain)(const REAL&),
             const REAL& x)
 {
-  if ( on_domain(x) != true ) REITERATE(0);
+  if ( on_domain(x) != true ) iRRAM_REITERATE(0);
 
   limit_computation env;
 
@@ -137,7 +137,7 @@ REAL limit_lip     (REAL (*f)(int, const REAL&, const REAL&),
          const REAL& x,
          const REAL& y)
 {
-  if ( on_domain(x,y) != true ) REITERATE(0);
+  if ( on_domain(x,y) != true ) iRRAM_REITERATE(0);
 
   limit_computation env;
 
@@ -180,7 +180,7 @@ REAL lipschitz (REAL (*f)(const REAL&),
 	    bool (*on_domain)(const REAL&),
             const REAL& x)
 {
-  if ( on_domain(x) != true ) REITERATE(0);
+  if ( on_domain(x) != true ) iRRAM_REITERATE(0);
 
   REAL x_new,lip_result;
   sizetype x_error;
@@ -209,7 +209,7 @@ REAL lipschitz (REAL (*f)(const REAL&),
 	    bool (*on_domain)(const REAL&),
             const REAL& x)
 {
-  if ( on_domain(x) != true ) REITERATE(0);
+  if ( on_domain(x) != true ) iRRAM_REITERATE(0);
 
   REAL x_new,lip_result,lip_bound;
   sizetype x_error;
@@ -291,7 +291,7 @@ REAL lipschitz (REAL (*f)(int, const REAL&),
             int k,
             const REAL& x)
 {
-  if ( on_domain(k,x) != true ) REITERATE(0);
+  if ( on_domain(k,x) != true ) iRRAM_REITERATE(0);
   REAL x_new,lip_result;
   sizetype x_error;
 
@@ -320,7 +320,7 @@ REAL lipschitz (REAL (*f)(const REAL&, const REAL&),
             const REAL& x,
             const REAL& y)
 {
-  if ( on_domain(x,y) != true ) REITERATE(0);
+  if ( on_domain(x,y) != true ) iRRAM_REITERATE(0);
   REAL x_new,y_new,lip_result;
   sizetype x_error,y_error;
 
@@ -356,7 +356,7 @@ REAL lipschitz (REAL (*f)(int, const REAL&, const REAL&),
             const REAL& x,
             const REAL& y)
 {
-  if ( on_domain(k,x,y) != true ) REITERATE(0);
+  if ( on_domain(k,x,y) != true ) iRRAM_REITERATE(0);
   REAL x_new,y_new,lip_result;
   sizetype x_error,y_error;
 
@@ -427,7 +427,7 @@ REAL limit_hint    (REAL (*f)(int, const REAL&),
     }}
   if ( ! success) {
     iRRAM_DEBUG1(1,"computation of limit_hint1 failed\n");
-    REITERATE(0);
+    iRRAM_REITERATE(0);
   }
   lim.seterror(lim_error);
   iRRAM_DEBUG2(2,"end of limit_hint1 with error %d*2^(%d)\n",
@@ -476,7 +476,7 @@ REAL limit_hint    (REAL (*f)(int, const REAL&, const REAL&),
     }}
   if ( ! success) {
     iRRAM_DEBUG1(1,"computation of limit_hint1 failed\n");
-    REITERATE(0);
+    iRRAM_REITERATE(0);
   }
   lim.seterror(lim_error);
   iRRAM_DEBUG2(2,"end of limit_hint1 with error %d*2^(%d)\n",
@@ -490,7 +490,7 @@ REALMATRIX limit_lip (REALMATRIX (*f)(int,const REALMATRIX&),
 	    bool (*on_domain)(const REALMATRIX&),
             const REALMATRIX& x)
 {
-  if ( on_domain(x) != true ) REITERATE(0);
+  if ( on_domain(x) != true ) iRRAM_REITERATE(0);
 
   limit_computation env;
 
@@ -713,7 +713,7 @@ REAL limit (const FUNCTION<REAL,int> & f )
       firsttime=1;
       } else {
       iRRAM_DEBUG1(1,"computation of limit_FUNCTION failed totally\n");
-      REITERATE(0);
+      iRRAM_REITERATE(0);
       }}
   }
   lim.seterror(lim_error);
