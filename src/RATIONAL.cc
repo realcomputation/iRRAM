@@ -257,6 +257,12 @@ INTEGER numerator (const RATIONAL& x){
   return zvalue;
 }
 
+RATIONAL power(RATIONAL x, unsigned n)
+{
+	MP_rat_power(x.value, n, x.value);
+	return x;
+}
+
 //****************************************************************************************
 // Comparators
 // returns boolean value 1 if x<y, 0 otherwise
