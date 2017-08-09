@@ -250,6 +250,7 @@ gmp_link_check([C++])
 LIBS_INST="-lgmp $LIBS_INST"
 LIBS="$LDADD $LIBS_INST"
 
+# TODO: also preferred for MPFR: mpfr_get_prec(x) and mpfr_get_exp(x) as macros
 
 with_backends=`echo "$with_backends" | $SED 's#,\+# #g' | LC_ALL=C tr 'a-z' 'A-Z'`
 with_backends=`echo $with_backends`

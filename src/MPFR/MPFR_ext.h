@@ -40,20 +40,25 @@ MA 02111-1307, USA.
 
 
 #include <iRRAM/MPFR_interface.h>
+#include <mpfr.h>
 
 /* const unsigned int BITS_PER_MP_LIMB  = 8*sizeof (mp_limb_t); */
 /* #include "gmp-mparam.h"  */
 /* #include "mpfr-impl.h"   */
 
-#define MPFR_PREC(x)      ((x)->_mpfr_prec)
-#define MPFR_EXP(x)       ((x)->_mpfr_exp)
-#define MPFR_MANT(x)      ((x)->_mpfr_d)
-#define MPFR_LAST_LIMB(x) ((MPFR_PREC (x) - 1) / GMP_NUMB_BITS)
-#define MPFR_LIMB_SIZE(x) (MPFR_LAST_LIMB (x) + 1)
-#define MPFR_NOTZERO(x)  !( mpfr_sgn(x)==0)
-
-
-#include <mpfr.h>
+#ifndef MPFR_USE_NO_MACRO
+/* MPFR too old? Watch out, we're on our own! */
+# ifndef mpfr_get_prec
+#  define mpfr_get_prec(x)	((x)->_mpfr_prec)
+# endif
+# ifndef mpfr_get_exp
+#  define mpfr_get_exp(x)	((x)->_mpfr_exp)
+# endif
+#endif
+#define MPFR_MANT(x)		((x)->_mpfr_d)
+#define MPFR_LIMB_SIZE(x)	(MPFR_MSW_INDEX(x) + 1)
+#define MPFR_NOTZERO(x)		!(mpfr_sgn(x)==0)
+#define MPFR_MSW_INDEX(x)	((mpfr_get_prec(x)-1)/BITS_PER_MP_LIMB)
 
 #define MAX_OF(h,i) ((h) >= (i) ? (h) : (i))
 
@@ -114,7 +119,7 @@ mpfr_set_default_prec(32);
 
 inline int ext_mpfr_size(ext_mpfr_type z)
 {
-if ( MPFR_NOTZERO(z) ) return MPFR_EXP(z);
+if ( MPFR_NOTZERO(z) ) return mpfr_get_exp(z);
 else return GMP_min;
 }
 
@@ -133,10 +138,10 @@ iRRAM_STATIC inline void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s)
   if ( MPFR_NOTZERO(z) ) {
 #if BITS_PER_MP_LIMB == 32
     s->mantissa=( ((z->_mpfr_d)[zn]) >> 1 ) + 1;
-    s->exponent=MPFR_EXP(z)-BITS_PER_MP_LIMB+1;
+    s->exponent=mpfr_get_exp(z)-BITS_PER_MP_LIMB+1;
 #elif BITS_PER_MP_LIMB == 64
     s->mantissa=( ((z->_mpfr_d)[zn]) >> (BITS_PER_MP_LIMB/2+1) ) + 1;
-    s->exponent=MPFR_EXP(z)- (BITS_PER_MP_LIMB/2) +1;
+    s->exponent=mpfr_get_exp(z)- (BITS_PER_MP_LIMB/2) +1;
 #else
 # error unable to handle BITS_PER_MP_LIMP != 32 and != 64
 #endif
@@ -224,7 +229,7 @@ inline void ext_mpfr_mul_i(ext_mpfr_type z1, int z2, ext_mpfr_type z, int p)
 int q,s1,zz,maxsize_ifexact;
 s1=ext_mpfr_size(z1);
 q=s1+BITS_PER_MP_LIMB-p+10;if(q<10)q=10;
-maxsize_ifexact=MPFR_PREC(z1)+32;
+maxsize_ifexact=mpfr_get_prec(z1)+32;
 if (q>maxsize_ifexact)q= maxsize_ifexact;
 mpfr_set_prec(z,q);
 if (z2<0) zz=-z2; else zz=z2;

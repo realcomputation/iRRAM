@@ -270,10 +270,6 @@ extern iRRAM_TLS int mpfr_FreeVarCount;
 extern iRRAM_TLS int mpfr_TotalAllocVarCount;
 extern iRRAM_TLS int mpfr_TotalFreedVarCount;
 
-#define MPFR_PREC(x) ((x)->_mpfr_prec)
-#define MPFR_SIZE(x) ((MPFR_PREC(x)-1)/BITS_PER_MP_LIMB+1)
-#define MPFR_MSW_INDEX(x) ((MPFR_PREC(x)-1)/BITS_PER_MP_LIMB)
-
 iRRAM_STATIC void ext_mpfr_remove_trailing_zeroes (mpfr_t x);
 
 void ext_mpfr_initialize(void);
