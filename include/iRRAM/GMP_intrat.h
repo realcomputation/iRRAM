@@ -44,39 +44,44 @@ Changelog: (initial version by Tom van Diessen)
 extern "C" {
 #endif
 
-/********** counting vars **********/
-#define MaxFreeVars 1000
-extern iRRAM_TLS mpz_ptr gmp_FreeVarsi[MaxFreeVars];
-extern iRRAM_TLS int gmp_FreeVarCounti;
-extern iRRAM_TLS int int_gmp_var_count;
+/********** caching vars **********/
 
+#define iRRAM_MPZ_CACHE_SIZE 1000
+
+struct iRRAM_mpz_cache_t {
+	int free_var_count;
+	size_t int_gmp_var_count;
+	mpz_ptr free_vars[iRRAM_MPZ_CACHE_SIZE];
+};
+
+#define iRRAM_MPZ_CACHE_INIT	{ 0, 0, {0}, }
 
 /********** initialization function **********/
 
-static inline mpz_ptr int_gmp_init()
+static inline mpz_ptr int_gmp_init(struct iRRAM_mpz_cache_t *cache)
 {
 	mpz_ptr z;
-	if (gmp_FreeVarCounti>0) {
-		gmp_FreeVarCounti--;
-		z = gmp_FreeVarsi[gmp_FreeVarCounti];
-	}else{
-		z = (mpz_ptr) malloc(sizeof(mpz_t));
+	if (cache->free_var_count > 0) {
+		cache->free_var_count--;
+		z = cache->free_vars[cache->free_var_count];
+	} else {
+		z = (mpz_ptr)malloc(sizeof(mpz_t));
 		mpz_init(z);
 	}
-	int_gmp_var_count++;
+	cache->int_gmp_var_count++;
 	return z;
 }
 
-static inline void int_gmp_free(mpz_ptr z)
+static inline void int_gmp_free(struct iRRAM_mpz_cache_t *cache, mpz_ptr z)
 {
-  if (gmp_FreeVarCounti < MaxFreeVars){
-  		gmp_FreeVarsi[gmp_FreeVarCounti]=z;
-  		gmp_FreeVarCounti++;
-  }else{
-  	mpz_clear(z);
-  	free(z);
-  }
-  int_gmp_var_count--;
+	if (cache->free_var_count < iRRAM_MPZ_CACHE_SIZE) {
+		cache->free_vars[cache->free_var_count] = z;
+		cache->free_var_count++;
+	} else {
+		mpz_clear(z);
+		free(z);
+	}
+	cache->int_gmp_var_count--;
 }
 
 /********** Conversion functions **********/
@@ -126,11 +131,6 @@ static inline char* int_gmp_sprintf(const mpz_t z){return mpz_get_str(NULL,10,z)
 
 
 /********** copying MP integers with/without initializing **********/
-
-static inline void int_gmp_duplicate_w_init(const mpz_t z1, mpz_ptr *z2){
-  *z2=int_gmp_init();
-  mpz_set(*z2,z1);
-}
 
 static inline void int_gmp_duplicate_wo_init(const mpz_t z1, mpz_t z2){mpz_set(z2,z1);}
 

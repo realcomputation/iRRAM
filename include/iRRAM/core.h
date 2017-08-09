@@ -133,6 +133,7 @@ struct state_t {
 	iRRAM_thread_data_class *thread_data_address = nullptr;
 
 	iRRAM_ext_mpfr_cache_t ext_mpfr_cache = iRRAM_EXT_MPFR_CACHE_INIT;
+	iRRAM_mpz_cache_t mpz_cache = iRRAM_MPZ_CACHE_INIT;
 
 	REAL *ln2_val = nullptr;
 	int   ln2_err = 0;

@@ -54,12 +54,12 @@ MA 02111-1307, USA.
 
 /* Initialization of MP/integer/rational variables */
 #define MP_init(z)      do { z = ext_mpfr_init(&state->ext_mpfr_cache); } while (0)
-#define MP_int_init(z)  do { z = int_gmp_init(); } while (0)
+#define MP_int_init(z)  do { z = int_gmp_init(&state->mpz_cache); } while (0)
 #define MP_rat_init(z)  do { z = rat_gmp_init(); } while (0)
 
 /* Deletion of MP/integer/rational variables */
 #define MP_clear(z)     ext_mpfr_free(&state->ext_mpfr_cache, z)
-#define MP_int_clear(z) int_gmp_free(z)
+#define MP_int_clear(z) int_gmp_free(&state->mpz_cache, z)
 #define MP_rat_clear(z) rat_gmp_free(z)
 
 
@@ -109,7 +109,7 @@ MA 02111-1307, USA.
 #define MP_duplicate_w_init(z1,z2)	do { MP_init(z2); MP_duplicate_wo_init(z1, z2); } while (0)
 #define MP_duplicate_wo_init(z1,z2)	ext_mpfr_duplicate_wo_init(z1,z2) 
 
-#define MP_int_duplicate_w_init(z1,z2)	int_gmp_duplicate_w_init(z1,&(z2))
+#define MP_int_duplicate_w_init(z1,z2)	do { MP_int_init(z2); MP_int_duplicate_wo_init(z1, z2); } while (0)
 #define MP_int_duplicate_wo_init(z1,z2)	int_gmp_duplicate_wo_init(z1,z2) 
 
 #define MP_rat_duplicate_w_init(z1,z2)	rat_gmp_duplicate_w_init(z1,&(z2))
