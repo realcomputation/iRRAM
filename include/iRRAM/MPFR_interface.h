@@ -44,7 +44,7 @@ MA 02111-1307, USA.
 
 /****** Type definitions ******/
 
-#define MP_type         ext_mpfr_type
+#define MP_type         mpfr_ptr
 #define MP_int_type     mpz_ptr
 #define MP_rat_type     mpq_ptr
 
@@ -259,13 +259,12 @@ MA 02111-1307, USA.
 extern "C" {
 #endif
 
-typedef __mpfr_struct  * ext_mpfr_type;
 typedef struct {unsigned int mantissa; int exponent; } ext_mpfr_sizetype;
 typedef mpz_ptr  int_mpfr_type;
 
 extern iRRAM_TLS int ext_mpfr_var_count;
 #define MaxFreeVars 1000
-extern iRRAM_TLS ext_mpfr_type mpfr_FreeVars[];
+extern iRRAM_TLS mpfr_ptr mpfr_FreeVars[];
 extern iRRAM_TLS int mpfr_FreeVarCount;
 extern iRRAM_TLS int mpfr_TotalAllocVarCount;
 extern iRRAM_TLS int mpfr_TotalFreedVarCount;
@@ -274,23 +273,23 @@ iRRAM_STATIC void ext_mpfr_remove_trailing_zeroes (mpfr_t x);
 
 void ext_mpfr_initialize(void);
 
-iRRAM_STATIC void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s);
+iRRAM_STATIC void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s);
 
 #ifdef __cplusplus
 }
 #endif
 
 
-ext_mpfr_type ext_mpfr_init(void);
+mpfr_ptr ext_mpfr_init(void);
 
-inline ext_mpfr_type ext_mpfr_init()
+inline mpfr_ptr ext_mpfr_init()
 {
-	ext_mpfr_type z;
+	mpfr_ptr z;
 	if (mpfr_FreeVarCount > 0) {
 		mpfr_FreeVarCount -= 1;
 		z = mpfr_FreeVars[mpfr_FreeVarCount];
 	} else {
-		z = (ext_mpfr_type)malloc(sizeof(__mpfr_struct));
+		z = (mpfr_ptr)malloc(sizeof(mpfr_t));
 		mpfr_init(z);
 		mpfr_TotalAllocVarCount++;
 	}
@@ -301,9 +300,9 @@ inline ext_mpfr_type ext_mpfr_init()
 	return z;
 }
 
-void ext_mpfr_free(ext_mpfr_type z);
+void ext_mpfr_free(mpfr_ptr z);
 
-inline void ext_mpfr_free(ext_mpfr_type z)
+inline void ext_mpfr_free(mpfr_ptr z)
 {
 	/* fprintf(stderr,"delete %x\n",z); */
 	if (mpfr_FreeVarCount < MaxFreeVars) {

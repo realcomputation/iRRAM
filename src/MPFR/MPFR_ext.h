@@ -67,34 +67,34 @@ MA 02111-1307, USA.
 
 #define iRRAM_mpfr_rounding_mode GMP_RNDN
 
-int ext_mpfr_size(ext_mpfr_type z);
+int ext_mpfr_size(const mpfr_t z);
 
-void ext_mpfr_add(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p);
-void ext_mpfr_sub(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p);
-void ext_mpfr_mul(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p);
-void ext_mpfr_div(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p);
-void ext_mpfr_abs(ext_mpfr_type z1,ext_mpfr_type z);
-void ext_mpfr_truncate(ext_mpfr_type z1,ext_mpfr_type z);
+void ext_mpfr_add(const mpfr_t z1,const mpfr_t z2,mpfr_t z,int p);
+void ext_mpfr_sub(const mpfr_t z1,const mpfr_t z2,mpfr_t z,int p);
+void ext_mpfr_mul(const mpfr_t z1,const mpfr_t z2,mpfr_t z,int p);
+void ext_mpfr_div(const mpfr_t z1,const mpfr_t z2,mpfr_t z,int p);
+void ext_mpfr_abs(const mpfr_t z1,mpfr_t z);
+void ext_mpfr_truncate(const mpfr_t z1,mpfr_t z);
 
-void ext_mpfr_set_z(ext_mpfr_type r, int_mpfr_type i);
-void ext_mpfr_set_f2i(ext_mpfr_type r, int_mpfr_type i);
+void ext_mpfr_set_z(mpfr_t r, int_mpfr_type i);
+void ext_mpfr_set_f2i(mpfr_t r, int_mpfr_type i);
 
-void ext_mpfr_add_i(ext_mpfr_type z1, int z2, ext_mpfr_type z, int p);
-void ext_mpfr_sub_i(ext_mpfr_type z1, int z2, ext_mpfr_type z, int p);
-void ext_mpfr_i_sub(int z1, ext_mpfr_type z2, ext_mpfr_type z, int p);
-void ext_mpfr_mul_i(ext_mpfr_type z1, int z2, ext_mpfr_type z, int p);
-void ext_mpfr_div_i(ext_mpfr_type z1, int z2, ext_mpfr_type z, int p);
-void ext_mpfr_i_div(int z1, ext_mpfr_type z2, ext_mpfr_type z, int p);
+void ext_mpfr_add_i(const mpfr_t z1, int z2, mpfr_t z, int p);
+void ext_mpfr_sub_i(const mpfr_t z1, int z2, mpfr_t z, int p);
+void ext_mpfr_i_sub(int z1, const mpfr_t z2, mpfr_t z, int p);
+void ext_mpfr_mul_i(const mpfr_t z1, int z2, mpfr_t z, int p);
+void ext_mpfr_div_i(const mpfr_t z1, int z2, mpfr_t z, int p);
+void ext_mpfr_i_div(int z1, const mpfr_t z2, mpfr_t z, int p);
 
-void ext_mpfr_writee(ext_mpfr_type z,int w);
-char* ext_mpfr_swritee(ext_mpfr_type z,int w);
-void ext_mpfr_write(ext_mpfr_type z,int w);
+void ext_mpfr_writee(const mpfr_t z,int w);
+char* ext_mpfr_swritee(const mpfr_t z,int w);
+void ext_mpfr_write(const mpfr_t z,int w);
 
-void ext_mpfr_duplicate_w_init(ext_mpfr_type z1,ext_mpfr_type *z2);
-void ext_mpfr_duplicate_wo_init(ext_mpfr_type z1,ext_mpfr_type z2);
+void ext_mpfr_duplicate_w_init(const mpfr_t z1,mpfr_ptr *z2);
+void ext_mpfr_duplicate_wo_init(const mpfr_t z1,mpfr_t z2);
 
-void ext_mpfr_sqrt(ext_mpfr_type z1,ext_mpfr_type z,int p);
-void ext_mpfr_shift(ext_mpfr_type z1,ext_mpfr_type z,int p);
+void ext_mpfr_sqrt(const mpfr_t z1,mpfr_t z,int p);
+void ext_mpfr_shift(const mpfr_t z1,mpfr_t z,int p);
 
 iRRAM_STATIC inline void ext_mpfr_remove_trailing_zeroes (mpfr_t x)
 {
@@ -117,7 +117,7 @@ mpfr_set_default_prec(32);
 }
 
 
-inline int ext_mpfr_size(ext_mpfr_type z)
+inline int ext_mpfr_size(const mpfr_t z)
 {
 if ( MPFR_NOTZERO(z) ) return mpfr_get_exp(z);
 else return GMP_min;
@@ -132,7 +132,7 @@ else return GMP_min;
  * \param [out] s pointer to a \ref sizetype which gets assigned a value
  *                \f$m\cdot2^e\f$ bounding \f$|z|\f$
  */
-iRRAM_STATIC inline void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s)
+iRRAM_STATIC inline void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s)
 {
   int zn=MPFR_MSW_INDEX(z);
   if ( MPFR_NOTZERO(z) ) {
@@ -151,7 +151,7 @@ iRRAM_STATIC inline void ext_mpfr_getsize(ext_mpfr_type z,ext_mpfr_sizetype* s)
   }
 }
 
-inline void ext_mpfr_add(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p)
+inline void ext_mpfr_add(const mpfr_t z1,const mpfr_t z2,mpfr_t z,int p)
 { int q,s1,s2;
   s1=ext_mpfr_size(z1);
   s2=ext_mpfr_size(z2);
@@ -163,7 +163,7 @@ inline void ext_mpfr_add(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p
   return;
 }
 
-inline void ext_mpfr_add_i(ext_mpfr_type z1,int n,ext_mpfr_type z,int p)
+inline void ext_mpfr_add_i(const mpfr_t z1,int n,mpfr_t z,int p)
 { 
 	int q,s1,s2=BITS_PER_MP_LIMB ;
   	s1=ext_mpfr_size(z1);
@@ -176,7 +176,7 @@ inline void ext_mpfr_add_i(ext_mpfr_type z1,int n,ext_mpfr_type z,int p)
 }
 
 
-inline void ext_mpfr_sub(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p)
+inline void ext_mpfr_sub(const mpfr_t z1,const mpfr_t z2,mpfr_t z,int p)
 { int q,s1,s2;
   s1=ext_mpfr_size(z1);
   s2=ext_mpfr_size(z2);
@@ -188,7 +188,7 @@ inline void ext_mpfr_sub(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p
  return;
 }
 
-inline void ext_mpfr_sub_i(ext_mpfr_type z1,int n,ext_mpfr_type z,int p)
+inline void ext_mpfr_sub_i(const mpfr_t z1,int n,mpfr_t z,int p)
 { 
 	int q,s1 ;
   	s1=ext_mpfr_size(z1);
@@ -200,7 +200,7 @@ inline void ext_mpfr_sub_i(ext_mpfr_type z1,int n,ext_mpfr_type z,int p)
 	return;
 }
 
-inline void ext_mpfr_i_sub(int z1,ext_mpfr_type z2,ext_mpfr_type z,int p)
+inline void ext_mpfr_i_sub(int z1,const mpfr_t z2,mpfr_t z,int p)
 { 
 	int q,s2;
   	s2=ext_mpfr_size(z2);
@@ -212,7 +212,7 @@ inline void ext_mpfr_i_sub(int z1,ext_mpfr_type z2,ext_mpfr_type z,int p)
   	return;
 }
 
-inline void ext_mpfr_mul(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p)
+inline void ext_mpfr_mul(const mpfr_t z1,const mpfr_t z2,mpfr_t z,int p)
 { int q,s1,s2;
   s1=ext_mpfr_size(z1);
   s2=ext_mpfr_size(z2);
@@ -224,7 +224,7 @@ inline void ext_mpfr_mul(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p
   return;
 }
 
-inline void ext_mpfr_mul_i(ext_mpfr_type z1, int z2, ext_mpfr_type z, int p)
+inline void ext_mpfr_mul_i(const mpfr_t z1, int z2, mpfr_t z, int p)
 {
 int q,s1,zz,maxsize_ifexact;
 s1=ext_mpfr_size(z1);
@@ -238,7 +238,7 @@ if (z2<0)mpfr_neg(z,z,iRRAM_mpfr_rounding_mode);
 return;
 }
 
-inline void ext_mpfr_div(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p)
+inline void ext_mpfr_div(const mpfr_t z1,const mpfr_t z2,mpfr_t z,int p)
 { int q,s1,s2;
   s1=ext_mpfr_size(z1);
   s2=ext_mpfr_size(z2);
@@ -250,7 +250,7 @@ inline void ext_mpfr_div(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p
   return;
 }
 
-inline void ext_mpfr_div_i(ext_mpfr_type z1,int z2,ext_mpfr_type z,int p)
+inline void ext_mpfr_div_i(const mpfr_t z1,int z2,mpfr_t z,int p)
 { 
 	int q,s1,zz,s2=1;
   	s1=ext_mpfr_size(z1);
@@ -263,7 +263,7 @@ inline void ext_mpfr_div_i(ext_mpfr_type z1,int z2,ext_mpfr_type z,int p)
   	return;
 }
 
-inline void ext_mpfr_i_div(int z1,ext_mpfr_type z2,ext_mpfr_type z,int p)
+inline void ext_mpfr_i_div(int z1,const mpfr_t z2,mpfr_t z,int p)
 { 
 	int q,zz,s2;
   	s2=ext_mpfr_size(z2);
@@ -276,7 +276,7 @@ inline void ext_mpfr_i_div(int z1,ext_mpfr_type z2,ext_mpfr_type z,int p)
   	return;
 }
 
-inline void ext_mpfr_abs(ext_mpfr_type z1,ext_mpfr_type z)
+inline void ext_mpfr_abs(const mpfr_t z1,mpfr_t z)
 {
   int q1=mpfr_get_prec(z1);
   mpfr_set_prec(z,q1);
@@ -284,7 +284,7 @@ inline void ext_mpfr_abs(ext_mpfr_type z1,ext_mpfr_type z)
   return;
 }
 
-inline void ext_mpfr_truncate(ext_mpfr_type z1,ext_mpfr_type z)
+inline void ext_mpfr_truncate(const mpfr_t z1,mpfr_t z)
 {
   int q1=mpfr_get_prec(z1);
   mpfr_set_prec(z,q1);
@@ -293,7 +293,7 @@ inline void ext_mpfr_truncate(ext_mpfr_type z1,ext_mpfr_type z)
 }
 
 
-inline void ext_mpfr_writee(ext_mpfr_type z,int w)
+inline void ext_mpfr_writee(const mpfr_t z,int w)
 { char *s=(char *)malloc(w+1);
 
   long e; 
@@ -309,7 +309,7 @@ inline void ext_mpfr_writee(ext_mpfr_type z,int w)
   free(s);
 }
 
-inline char* ext_mpfr_swritee(ext_mpfr_type z,int w)
+inline char* ext_mpfr_swritee(const mpfr_t z,int w)
 { 
   char* s=(char*)(malloc(w+1));
   char* r=&s[2];
@@ -407,7 +407,7 @@ inline char* ext_mpfr_swritee(ext_mpfr_type z,int w)
   return s;
 }
 
-inline void ext_mpfr_write(ext_mpfr_type z,int w)
+inline void ext_mpfr_write(const mpfr_t z,int w)
 { char *s=(char *)malloc(w+1);
   long e; 
   int i;
@@ -428,16 +428,16 @@ inline void ext_mpfr_write(ext_mpfr_type z,int w)
   free(s);
 }
 
-inline void ext_mpfr_duplicate_wo_init(ext_mpfr_type z1,ext_mpfr_type z2)
+inline void ext_mpfr_duplicate_wo_init(const mpfr_t z1,mpfr_t z2)
 {
   int q1=mpfr_get_prec(z1);
   if (mpfr_get_prec(z2)< q1) mpfr_set_prec(z2,q1);
   mpfr_set(z2,z1,iRRAM_mpfr_rounding_mode);
 }
 
-inline void ext_mpfr_duplicate_w_init(ext_mpfr_type z1,ext_mpfr_type *z2)
+inline void ext_mpfr_duplicate_w_init(const mpfr_t z1,mpfr_ptr *z2)
 {
-/*  *z2 = (ext_mpfr_type) malloc(sizeof (__mpfr_struct)); */
+/*  *z2 = (mpfr_ptr) malloc(sizeof (mpfr_t)); */
 /*  mpfr_init2(*z2,mpfr_get_prec(z1)); */
   int q1=mpfr_get_prec(z1);
   *z2=ext_mpfr_init();
@@ -446,7 +446,7 @@ inline void ext_mpfr_duplicate_w_init(ext_mpfr_type z1,ext_mpfr_type *z2)
   mpfr_set(*z2,z1,iRRAM_mpfr_rounding_mode);
 }
 
-inline void ext_mpfr_sqrt(ext_mpfr_type z1,ext_mpfr_type z,int p)
+inline void ext_mpfr_sqrt(const mpfr_t z1,mpfr_t z,int p)
 { int q,s1;
   s1=ext_mpfr_size(z1);
   q=s1/2-p+1;
@@ -457,7 +457,7 @@ inline void ext_mpfr_sqrt(ext_mpfr_type z1,ext_mpfr_type z,int p)
   return;
 }
 
-inline void ext_mpfr_shift(ext_mpfr_type z1,ext_mpfr_type z,int n)
+inline void ext_mpfr_shift(const mpfr_t z1,mpfr_t z,int n)
 {
   mpfr_set_prec(z,mpfr_get_prec(z1));
   if ( n>=  0 ) mpfr_mul_2exp(z,z1,n,iRRAM_mpfr_rounding_mode);
@@ -465,7 +465,7 @@ inline void ext_mpfr_shift(ext_mpfr_type z1,ext_mpfr_type z,int n)
   return;
 }
 
-inline void ext_mpfr_set_z(ext_mpfr_type r,int_mpfr_type i)
+inline void ext_mpfr_set_z(mpfr_t r,int_mpfr_type i)
 {
   int sib=mpz_sizeinbase(i,2);
   mpfr_set_prec(r,MAX_OF(32,sib));
