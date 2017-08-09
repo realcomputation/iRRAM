@@ -165,7 +165,7 @@ RATIONAL& operator += (RATIONAL& x, const RATIONAL& y)
 
 RATIONAL & operator+=(RATIONAL &x, int y)
 {
-	MP_rat_add_si(x.value, y, x.value);
+	MP_rat_add_si_inplace(y,x.value);
 	return x;
 }
 

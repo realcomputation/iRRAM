@@ -188,12 +188,94 @@ static inline void rat_gmp_add(const mpq_t z1, const mpq_t z2, mpq_t z){mpq_add(
 static inline void rat_gmp_sub(const mpq_t z1, const mpq_t z2, mpq_t z){mpq_sub(z,z1,z2);}
 static inline void rat_gmp_mul(const mpq_t z1, const mpq_t z2, mpq_t z){mpq_mul(z,z1,z2);}
 static inline void rat_gmp_div(const mpq_t z1, const mpq_t z2, mpq_t z){mpq_div(z,z1,z2);}
-void rat_gmp_add_si(const mpq_t z1, int z2, mpq_t z);
-void rat_gmp_add_ui(const mpq_t z1, const unsigned int z2, mpq_t z);
-void rat_gmp_sub_ui(const mpq_t z1, const unsigned int z2, mpq_t z);
-void rat_gmp_mul_si(const mpq_t z1, const int z2, mpq_t z);
-void rat_gmp_div_si(const mpq_t z1, const int z2, mpq_t z);
-void rat_gmp_si_div(const int z1, const mpq_t z2, mpq_t z);
+static inline void rat_gmp_add_ui_inplace(unsigned v, mpq_t r)
+{
+	mpz_addmul_ui(mpq_numref(r), mpq_denref(r), v);
+	/* integer addition, no need to canonicalize since r was canonical
+	 * before */
+}
+static inline void rat_gmp_sub_ui_inplace(unsigned v, mpq_t r)
+{
+	mpz_submul_ui(mpq_numref(r), mpq_denref(r), v);
+	/* integer subtraction, no need to canonicalize since r was canonical
+	 * before */
+}
+static inline void rat_gmp_add_si_inplace(int v, mpq_t r)
+{
+	if (v > 0) {
+		rat_gmp_add_ui_inplace((unsigned)v, r);
+	} else {
+		/* (unsigned)-v has the absolute value of v in any's complement,
+		 * also for v == INT_MIN */
+		rat_gmp_sub_ui_inplace((unsigned)-v, r);
+	}
+}
+
+static inline void rat_gmp_add_si(const mpq_t z1, int z2, mpq_t z)
+{
+	mpq_set(z, z1);
+	rat_gmp_add_si_inplace(z2, z);
+}
+
+/*****************************************************************************/
+/* adding rational and int in GMP                                            */
+/* added: 18.06.2001                                                         */
+/* Last change: 09.08.2017                                                   */
+/*****************************************************************************/
+static inline void rat_gmp_add_ui(const mpq_t z1, const unsigned int z2, mpq_t z)
+{
+	mpq_set(z, z1);
+	rat_gmp_add_ui_inplace(z2, z);
+}
+
+/*****************************************************************************/
+/* subtract rational and int in GMP                                          */
+/* added: 18.06.2001                                                         */
+/* Last change: 09.08.2017                                                   */
+/*****************************************************************************/
+static inline void rat_gmp_sub_ui(const mpq_t z1, const unsigned int z2, mpq_t z)
+{
+	mpq_set(z, z1);
+	rat_gmp_sub_ui_inplace(z2, z);
+}
+
+/*****************************************************************************/
+/* multiplying rational and int in GMP                                       */
+/* added: 18.06.2001                                                         */
+/* Last change: 09.08.2017                                                   */
+/*****************************************************************************/
+static inline void rat_gmp_mul_si(const mpq_t z1, const int z2, mpq_t z)
+{
+	mpz_mul_si(mpq_numref(z), mpq_numref(z1), z2);
+	mpq_set_den(z, mpq_denref(z1));
+	mpq_canonicalize(z);
+}
+
+/*****************************************************************************/
+/* dividing rational by int in GMP                                           */
+/* added: 18.06.2001                                                         */
+/* Last change: 09.08.2017                                                   */
+/*****************************************************************************/
+static inline void rat_gmp_div_si(const mpq_t z1, const int z2, mpq_t z)
+{
+	mpz_mul_si(mpq_denref(z), mpq_denref(z1), z2);
+	mpq_set_num(z, mpq_numref(z1));
+	mpq_canonicalize(z);
+}
+
+/*****************************************************************************/
+/* dividing int by rational in GMP                                           */
+/* added: 18.06.2001                                                         */
+/* Last change: 09.08.2017                                                   */
+/* ***************************************************************************/
+static inline void rat_gmp_si_div(const int z1, const mpq_t z2, mpq_t z)
+{
+	mpq_set_num(z, mpq_numref(z2));
+	mpz_mul_si(mpq_denref(z), mpq_denref(z2), z1);
+	mpz_swap(mpq_numref(z), mpq_denref(z));
+	mpq_canonicalize(z);
+}
+
 static inline void rat_gmp_abs(const mpq_t z1, mpq_t z){mpq_abs(z,z1);}
 static inline void rat_gmp_neg(const mpq_t z1, mpq_t z){mpq_neg(z,z1);}
 
@@ -201,7 +283,19 @@ static inline void rat_gmp_neg(const mpq_t z1, mpq_t z){mpq_neg(z,z1);}
 /********** more MP rational functions *********/
 /********** ^!%>>... **********/
 
-void rat_gmp_power(const mpq_t z1, unsigned int z2, mpq_t z);
+/*****************************************************************************/
+/* power function in GMP                                                     */
+/* added: 19.02.2001                                                         */
+/* Last change: 09.08.2017                                                   */
+/* Comment: base=MP exponent=int                                             */
+/*****************************************************************************/
+static inline void rat_gmp_power(const mpq_t z1, unsigned int z2, mpq_t z)
+{
+	mpz_pow_ui(mpq_numref(z), mpq_numref(z1), z2);
+	mpz_pow_ui(mpq_denref(z), mpq_denref(z1), z2);
+	mpq_canonicalize(z);
+}
+
 void rat_gmp_powerr(const mpq_t z1, const mpq_t z2, mpq_t z);
 void rat_gmp_shift(const mpq_t z1, mpq_t z, int p);
 
@@ -209,7 +303,7 @@ void rat_gmp_shift(const mpq_t z1, mpq_t z, int p);
 /********** output functions for MP rationals ************/
 
 char* rat_gmp_swritee(const mpq_t z, const int w);
-char* rat_gmp_sprintf(const mpq_t z);
+static inline char* rat_gmp_sprintf(const mpq_t z){return mpq_get_str(NULL, 10, z);}
 
 
 void rat_gmp_string_2_rat(mpq_t z, const char* s);
