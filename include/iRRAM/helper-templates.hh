@@ -33,11 +33,11 @@ struct conditional_comparison_overloads {
 	template <typename A,typename B> friend enable_if_compat<Base,A,B,Ret> operator!=(const B &b, const A &a) { return Base(b)!=a; }
 };
 
-template <typename...> struct disjunction : public std::false_type {};
+template <typename...> struct disjunction : std::false_type {};
+template <typename T> struct disjunction<T> : T {};
 
-template <typename C,typename... D> struct disjunction<C,D...> {
-	static constexpr bool value = C::value || disjunction<D...>::value;
-};
+template <typename C,typename... D>
+struct disjunction<C,D...> : std::conditional<C::value,C,disjunction<D...>>::type {};
 
 template <typename T> struct negation {
 	static constexpr bool value = !T::value;
@@ -47,15 +47,9 @@ template <typename... T>
 using conjunction = negation<disjunction<negation<T>...>>;
 
 template <typename C> struct is_continuous : public std::false_type {};
-template <typename C> struct is_continuous<C &> {
-	static constexpr bool value = is_continuous<C>::value;
-};
-template <typename C> struct is_continuous<const C &> {
-	static constexpr bool value = is_continuous<C>::value;
-};
-template <typename C> struct is_continuous<C &&> {
-	static constexpr bool value = is_continuous<C>::value;
-};
+template <typename C> struct is_continuous<C &> : is_continuous<C> {};
+template <typename C> struct is_continuous<const C &> : is_continuous<C> {};
+template <typename C> struct is_continuous<C &&> : is_continuous<C> {};
 
 template <> struct is_continuous<REAL> : public std::true_type {};
 template <> struct is_continuous<REALMATRIX> : public std::true_type {};
