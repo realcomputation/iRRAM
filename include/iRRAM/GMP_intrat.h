@@ -117,16 +117,16 @@ static inline void int_gmp_fac(unsigned int z1, mpz_t z){mpz_fac_ui(z, z1);}
 static inline void int_gmp_modulo(const mpz_t z1, const mpz_t z2, mpz_t z){mpz_mod(z, z1, z2);}
 static inline void int_gmp_sqrt(const mpz_t z1, mpz_t z){mpz_sqrt(z,z1);}
 void int_gmp_shift(const mpz_t z1, mpz_t z, int p);
-int int_gmp_log(mpz_t z);
+//int int_gmp_log(mpz_t z);
 
 
 /********** output functions for MP integers **********/
 
-void int_gmp_writee(const mpz_t z, int w);
+//void int_gmp_writee(const mpz_t z, int w);
 char* int_gmp_swritee(const mpz_t z, int w);
-void int_gmp_write(const mpz_t z, int w);
-void int_gmp_outstr(const mpz_t z, int w);
-void int_gmp_printf(const mpz_t z);
+//void int_gmp_write(const mpz_t z, int w);
+//void int_gmp_outstr(const mpz_t z, int w);
+//void int_gmp_printf(const mpz_t z);
 static inline char* int_gmp_sprintf(const mpz_t z){return mpz_get_str(NULL,10,z);}
 
 

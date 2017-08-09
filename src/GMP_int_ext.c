@@ -24,16 +24,7 @@ MA 02111-1307, USA.
 
 #include <iRRAM/GMP_intrat.h>
 
-#include <strings.h>
-
-#ifndef DEBUG			/* debugging information */
-#define DEBUG 0
-#endif
-#if DEBUG > 0
-  int DEBUG_OP = 1;
-  unsigned int op_count=0;
-  int minshowop = DEBUG ;
-#endif
+#include <string.h>
 
 /**************************************************************************/
 /* Variables for counting free space                                      */
