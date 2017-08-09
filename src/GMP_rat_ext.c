@@ -43,10 +43,10 @@ iRRAM_TLS int rat_gmp_FreeVarCount=0L;
 iRRAM_TLS int rat_gmp_var_count=0;
 
 
-void rat_gmp_add_si(const mpq_ptr z1, int z2, mpq_ptr z)
+void rat_gmp_add_si(mpq_srcptr z1, int z2, mpq_ptr z)
 {
-	mpz_ptr src_num = mpq_numref(z1);
-	mpz_ptr src_den = mpq_denref(z1);
+	mpz_srcptr src_num = mpq_numref(z1);
+	mpz_srcptr src_den = mpq_denref(z1);
 	mpz_ptr tgt_num = mpq_numref(z);
 	mpz_ptr tgt_den = mpq_denref(z);
 	mpz_ptr temp = int_gmp_init();
@@ -66,7 +66,7 @@ void rat_gmp_add_si(const mpq_ptr z1, int z2, mpq_ptr z)
 /* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
-void rat_gmp_add_ui(const mpq_ptr z1, const unsigned int z2, mpq_ptr z)
+void rat_gmp_add_ui(mpq_srcptr z1, const unsigned int z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -97,7 +97,7 @@ return;
 /* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
-void rat_gmp_sub_ui(mpq_ptr z1, unsigned int z2, mpq_ptr z)
+void rat_gmp_sub_ui(mpq_srcptr z1, unsigned int z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -128,7 +128,7 @@ return;
 /* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
-void rat_gmp_mul_si(mpq_ptr z1, int z2, mpq_ptr z)
+void rat_gmp_mul_si(mpq_srcptr z1, int z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -154,7 +154,7 @@ return;
 /* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
-void rat_gmp_div_si(mpq_ptr z1, int z2, mpq_ptr z)
+void rat_gmp_div_si(mpq_srcptr z1, int z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -183,7 +183,7 @@ return;
 /* Last change: 18.06.2001                                                   */
 /* ***************************************************************************/
 
-void rat_gmp_si_div(int z1, mpq_ptr z2, mpq_ptr z)
+void rat_gmp_si_div(int z1, mpq_srcptr z2, mpq_ptr z)
 {
 	mpz_ptr num;
 	mpz_ptr den;
@@ -210,7 +210,7 @@ return;
 /* Comment: base=MP exponent=int                                             */
 /*****************************************************************************/
 
-void rat_gmp_power(mpq_ptr z1, unsigned int z2, mpq_ptr z)
+void rat_gmp_power(mpq_srcptr z1, unsigned int z2, mpq_ptr z)
 {
 	int sign;
 	mpz_ptr num;
@@ -236,7 +236,7 @@ void rat_gmp_power(mpq_ptr z1, unsigned int z2, mpq_ptr z)
 
 
 
-char* rat_gmp_swritee(mpq_ptr z, int w)
+char* rat_gmp_swritee(mpq_srcptr z, int w)
 {
   char *n, *s;
   int l;
@@ -258,13 +258,13 @@ char* rat_gmp_swritee(mpq_ptr z, int w)
 }
 
 
-char* rat_gmp_sprintf(mpq_ptr z)
+char* rat_gmp_sprintf(mpq_srcptr z)
 {
 	return mpq_get_str(NULL, 10, z);
 }
 
 
-void rat_gmp_shift(mpq_ptr z1, mpq_ptr z, int n)
+void rat_gmp_shift(mpq_srcptr z1, mpq_ptr z, int n)
 {
 	mpz_ptr num,den;
 	num=int_gmp_init();
