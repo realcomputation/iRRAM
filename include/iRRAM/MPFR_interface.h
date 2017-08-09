@@ -27,12 +27,6 @@ MA 02111-1307, USA.
 #include <mpfr.h>
 #include <iRRAM/GMP_intrat.h>
 
-#ifdef __cplusplus
-# define iRRAM_STATIC
-#else
-# define iRRAM_STATIC static
-#endif
-
 # ifndef BITS_PER_MP_LIMB
 #  define BITS_PER_MP_LIMB GMP_LIMB_BITS
 # endif
@@ -272,11 +266,11 @@ extern iRRAM_TLS int mpfr_FreeVarCount;
 extern iRRAM_TLS int mpfr_TotalAllocVarCount;
 extern iRRAM_TLS int mpfr_TotalFreedVarCount;
 
-iRRAM_STATIC void ext_mpfr_remove_trailing_zeroes (mpfr_t x);
+void ext_mpfr_remove_trailing_zeroes (mpfr_t x);
 
 void ext_mpfr_initialize(void);
 
-iRRAM_STATIC void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s);
+void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s);
 
 #ifdef __cplusplus
 }

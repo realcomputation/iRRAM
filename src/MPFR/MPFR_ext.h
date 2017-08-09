@@ -96,7 +96,7 @@ void ext_mpfr_duplicate_wo_init(const mpfr_t z1,mpfr_t z2);
 void ext_mpfr_sqrt(const mpfr_t z1,mpfr_t z,int p);
 void ext_mpfr_shift(const mpfr_t z1,mpfr_t z,int p);
 
-iRRAM_STATIC inline void ext_mpfr_remove_trailing_zeroes (mpfr_t x)
+inline void ext_mpfr_remove_trailing_zeroes (mpfr_t x)
 {
    unsigned int xn = MPFR_MSW_INDEX(x);
    unsigned int i;
@@ -132,7 +132,7 @@ else return GMP_min;
  * \param [out] s pointer to a \ref sizetype which gets assigned a value
  *                \f$m\cdot2^e\f$ bounding \f$|z|\f$
  */
-iRRAM_STATIC inline void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s)
+inline void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s)
 {
   int zn=MPFR_MSW_INDEX(z);
   if ( MPFR_NOTZERO(z) ) {
