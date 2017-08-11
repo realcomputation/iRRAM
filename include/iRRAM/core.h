@@ -114,11 +114,11 @@ struct ITERATION_DATA {
 };
 
 struct state_t {
-	int debug = 0;
+	int debug = iRRAM_DEFAULT_DEBUG;
 	int infinite = 0;
-	int prec_skip = 5;
+	int prec_skip = iRRAM_DEFAULT_PREC_SKIP;
 	int max_prec = 1;
-	int prec_start = 1;
+	int prec_start = iRRAM_DEFAULT_PREC_START;
 	bool highlevel = false; /* TODO: remove: iRRAM-timings revealed no performance loss */
 	/* The following boolean "inReiterate" is used to distinguish voluntary
 	 * deletions of rstreams from deletions initiated by iterations.
@@ -187,11 +187,16 @@ void show_statistics();
 extern const int iRRAM_prec_steps;
 extern const int *const iRRAM_prec_array;
 
+inline bool debug_enabled(int level)
+{
+	const state_t &st = *state;
+	return iRRAM_unlikely(st.debug >= actual_stack(st).inlimit + level);
+}
+
 #ifndef NODEBUG
   #define iRRAM_DEBUG0(level,...)                                               \
 	do {                                                                    \
-		const state_t &st = *state;                                     \
-		if (iRRAM_unlikely(st.debug>=st.ACTUAL_STACK.inlimit+(level))) {\
+		if (debug_enabled(level)) {                                     \
 			__VA_ARGS__;                                            \
 		}                                                               \
 	} while (0)
