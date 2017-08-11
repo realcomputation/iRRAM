@@ -253,8 +253,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 	}
 
 	std::string result;
-	if (actual_stack().inlimit == 0 &&
-	    state->thread_data_address->cache_s.get(result))
+	if (get_cached(result))
 		return result;
 
 	int width = w;
@@ -355,8 +354,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 
 	result = erg;
 	free(erg);
-	if (actual_stack().inlimit == 0)
-		state->thread_data_address->cache_s.put(result);
+	put_cached(result);
 	return result;
 }
 
@@ -664,8 +662,7 @@ DYADIC approx(const REAL & x, const int p)
 		return approx(REAL(x).mp_conv(), p);
 	MP_type result;
 	MP_type erg;
-	if ((actual_stack().inlimit == 0) &&
-	    state->thread_data_address->cache_mp.get(result)) {
+	if (get_cached(result)) {
 		MP_duplicate_w_init(result, erg);
 		return DYADIC(erg);
 	}
@@ -679,9 +676,9 @@ DYADIC approx(const REAL & x, const int p)
 	MP_init(erg);
 	MP_copy(x.value, erg, p - 1);
 
-	if (actual_stack().inlimit == 0) {
+	if (actual_stack().inlimit == 0) { /* TODO: make state_t::put_cached lambda-aware */
 		MP_duplicate_w_init(erg, result);
-		state->thread_data_address->cache_mp.put(result);
+		put_cached(result);
 	}
 	return DYADIC(erg);
 }
@@ -724,8 +721,7 @@ int size(const REAL & x)
 	if (!x.value)
 		return size(REAL(x).mp_conv());
 	int result = 0;
-	if ((actual_stack().inlimit == 0) &&
-	    state->thread_data_address->cache_i.get(result))
+	if (get_cached(result))
 		return result;
 
 	sizetype x_max = x.vsize + x.error;
@@ -744,8 +740,7 @@ int size(const REAL & x)
 		iRRAM_REITERATE(0);
 	}
 
-	if (actual_stack().inlimit == 0)
-		state->thread_data_address->cache_i.put(result);
+	put_cached(result);
 	return result;
 }
 
@@ -757,8 +752,7 @@ int upperbound(const REAL & x)
 	}
 	int result;
 	sizetype ergsize;
-	if (actual_stack().inlimit == 0 &&
-	    state->thread_data_address->cache_i.get(result))
+	if (get_cached(result))
 		return result;
 	sizetype_add(ergsize, x.vsize, x.error);
 	while (ergsize.mantissa > (1 << 16)) {
@@ -774,8 +768,7 @@ int upperbound(const REAL & x)
 		ergsize.exponent += 1;
 	}
 	result = ergsize.exponent;
-	if (actual_stack().inlimit == 0)
-		state->thread_data_address->cache_i.put(result);
+	put_cached(result);
 	return result;
 }
 
@@ -918,8 +911,7 @@ INTEGER REAL::as_INTEGER() const
 		return this->mp_conv().as_INTEGER();
 	}
 	MP_int_type result, value;
-	if (actual_stack().inlimit == 0 &&
-	    state->thread_data_address->cache_mpi.get(result)) {
+	if (get_cached(result)) {
 		MP_int_duplicate_w_init(result, value);
 		return value;
 	}
@@ -941,9 +933,9 @@ INTEGER REAL::as_INTEGER() const
 	MP_int_init(value);
 	MP_mp_to_INTEGER(y.value, value);
 
-	if (actual_stack().inlimit == 0) {
+	if (actual_stack().inlimit == 0) { /* TODO: ... or duplicate the MP_*_types */
 		MP_int_duplicate_w_init(value, result);
-		state->thread_data_address->cache_mpi.put(result);
+		put_cached(result);
 	}
 	return value;
 }
@@ -1212,7 +1204,8 @@ int module(REAL (*f)(const REAL&),const REAL& x, int p){
 //  2^{p-1} from d, hence |f(x)-f(z)|<=2^p
 
   int result;
-  if ( (actual_stack().inlimit==0) && state->thread_data_address->cache_i.get(result)) return result;
+  if (get_cached(result))
+    return result;
 
   DYADIC d;
   REAL x_copy=x;
@@ -1287,7 +1280,7 @@ int module(REAL (*f)(const REAL&),const REAL& x, int p){
   }
   
   result=argerror.exponent;
-  if ( actual_stack().inlimit==0 ) state->thread_data_address->cache_i.put(result);
+  put_cached(result);
   return result;
 
 }

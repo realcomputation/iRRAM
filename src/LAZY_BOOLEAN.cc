@@ -33,8 +33,7 @@ namespace iRRAM {
 
 LAZY_BOOLEAN::operator bool() const {
   bool result;
-  if (actual_stack().inlimit != 0 ||
-      !state->thread_data_address->cache_b.get(result)){
+  if (!get_cached(result)){
 
     if ( value <= LAZY_BOOLEAN::BOTTOM ){
       iRRAM_DEBUG1(1,"lazy boolean values BOTTOM leading to iteration\n");
@@ -42,20 +41,17 @@ LAZY_BOOLEAN::operator bool() const {
     }
 
     result=value;
-    if (actual_stack().inlimit == 0)
-      state->thread_data_address->cache_b.put(result);
+    put_cached(result);
   }
   return result;
 }
 
 int check( const LAZY_BOOLEAN& lb) {
   int result;
-  if (actual_stack().inlimit != 0 ||
-      !state->thread_data_address->cache_i.get(result)) {
+  if (!get_cached(result)) {
     result=lb.value;
-    if (actual_stack().inlimit == 0)
-      state->thread_data_address->cache_i.put(result);
-  }   
+    put_cached(result);
+  }
   return result;
 }
 
@@ -67,8 +63,7 @@ int choose(const LAZY_BOOLEAN& x1,
            const LAZY_BOOLEAN& x6)
 {
   int result=0;
-  if (actual_stack().inlimit == 0 &&
-      state->thread_data_address->cache_i.get(result))
+  if (get_cached(result))
     return result;
 
   int minvalue=false;
@@ -90,8 +85,7 @@ int choose(const LAZY_BOOLEAN& x1,
     iRRAM_REITERATE(0);
   }
 
-  if (actual_stack().inlimit == 0)
-    state->thread_data_address->cache_i.put(result);
+  put_cached(result);
   return result;
 }
 

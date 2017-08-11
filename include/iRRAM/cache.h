@@ -114,27 +114,46 @@ void activate(){
 
 };
 
-class iRRAM_thread_data_class { public:
+template <typename T> struct is_cacheable : std::false_type {};
+template <> struct is_cacheable<bool> : std::true_type {};
+template <> struct is_cacheable<short> : std::true_type {};
+template <> struct is_cacheable<unsigned short> : std::true_type {};
+template <> struct is_cacheable<int> : std::true_type {};
+template <> struct is_cacheable<unsigned int> : std::true_type {};
+template <> struct is_cacheable<long> : std::true_type {};
+template <> struct is_cacheable<unsigned long> : std::true_type {};
+template <> struct is_cacheable<long long> : std::true_type {};
+template <> struct is_cacheable<unsigned long long> : std::true_type {};
+template <> struct is_cacheable<float> : std::true_type {};
+template <> struct is_cacheable<double> : std::true_type {};
+template <> struct is_cacheable<void *> : std::true_type {};
+template <> struct is_cacheable<MP_type> : std::true_type {};
+template <> struct is_cacheable<MP_int_type> : std::true_type {};
+template <> struct is_cacheable<std::string> : std::true_type {};
+template <> struct is_cacheable<std::ostream *> : std::true_type {};
+template <> struct is_cacheable<std::istream *> : std::true_type {};
+
+struct iRRAM_thread_data_class final
+: iRRAM_cache<bool>
+, iRRAM_cache<short> // unused
+, iRRAM_cache<unsigned short> // unused
+, iRRAM_cache<int>
+, iRRAM_cache<unsigned int> // unused
+, iRRAM_cache<long> // unusused
+, iRRAM_cache<unsigned long> // unused
+, iRRAM_cache<long long> // unused
+, iRRAM_cache<unsigned long long> // unused
+, iRRAM_cache<float> // unused
+, iRRAM_cache<double> // unused
+, iRRAM_cache<void*> // unused
+, iRRAM_cache<MP_type>
+, iRRAM_cache<MP_int_type>
+, iRRAM_cache<std::string>
+, iRRAM_cache<std::ostream*>
+, iRRAM_cache<std::istream*>
+{
 iRRAM_thread_data_class();
 ~iRRAM_thread_data_class();
-iRRAM_cache<bool> cache_b;
-iRRAM_cache<short> cache_sh;
-iRRAM_cache<unsigned short> cache_ush;
-iRRAM_cache<int> cache_i;
-iRRAM_cache<long> cache_l;
-iRRAM_cache<unsigned long> cache_ul;
-iRRAM_cache<double> cache_d;
-iRRAM_cache<long long> cache_ll;
-iRRAM_cache<unsigned int> cache_ui;
-iRRAM_cache<unsigned long long> cache_ull;
-iRRAM_cache<std::string> cache_s;
-iRRAM_cache<float> cache_f;
-iRRAM_cache<void*> cache_v;
-iRRAM_cache<MP_type> cache_mp;
-iRRAM_cache<MP_int_type> cache_mpi;
-iRRAM_cache<std::ostream*> cache_os;
-iRRAM_cache<std::istream*> cache_is;
-
 };
 
 } // namespace iRRAM

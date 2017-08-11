@@ -345,8 +345,8 @@ RESULT limit_mv (RESULT (*f)(int prec,
   int element_step=env.saved_step();
   int firsttime=2;
 
-  if (!inlimit && !state->thread_data_address->cache_i.get(choice))
-    state->thread_data_address->cache_i.put(choice);
+  if (!inlimit && !get_cached(choice)) /* TODO: why only in case of !inlimit? */
+    put_cached(choice);
 
   x.geterror(x_error);
 
@@ -356,8 +356,7 @@ RESULT limit_mv (RESULT (*f)(int prec,
    try {
     iRRAM_DEBUG2(2,"trying to compute limit_mv with precicion 2^(%d)...\n",element);
     limnew=f(element,&choice,x);
-    if (!inlimit)
-      state->thread_data_address->cache_i.modify(choice);
+    modify_cached(choice);
     element_error = sizetype_power2(element);
     limnew.geterror(limnew_error);
     limnew_error += element_error;

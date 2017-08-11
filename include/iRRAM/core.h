@@ -113,6 +113,8 @@ struct ITERATION_DATA {
 	int prec_step;
 };
 
+template <typename T> class iRRAM_cache;
+
 struct state_t {
 	int debug = iRRAM_DEFAULT_DEBUG;
 	int infinite = 0;
@@ -148,6 +150,7 @@ struct state_t {
 	};
 };
 
+
 template <bool tls> struct state_proxy;
 
 template <> struct state_proxy<true> : protected std::unique_ptr<state_t> {
@@ -177,6 +180,37 @@ extern iRRAM_TLS state_proxy<iRRAM_HAVE_TLS> state;
 inline const ITERATION_DATA & actual_stack(const state_t &st = *state)
 {
 	return st.ACTUAL_STACK;
+}
+
+template <typename T> iRRAM_cache<T> & cache(const state_t &st = *state);
+template <typename T> bool get_cached(T &t, const state_t &st = *state);
+template <typename T> void put_cached(const T &t, const state_t &st = *state);
+template <typename T> void modify_cached(const T &t, const state_t &st = *state);
+
+template <typename T>
+inline iRRAM_cache<T> & cache(const state_t &st)
+{
+	return *static_cast<iRRAM_cache<T> *>(st.thread_data_address);
+}
+
+template <typename T>
+inline bool get_cached(T &t, const state_t &st)
+{
+	return st.ACTUAL_STACK.inlimit == 0 && cache<T>(st).get(t);
+}
+
+template <typename T>
+inline void put_cached(const T &t, const state_t &st)
+{
+	if (st.ACTUAL_STACK.inlimit == 0)
+		cache<T>(st).put(t);
+}
+
+template <typename T>
+inline void modify_cached(const T &t, const state_t &st)
+{
+	if (st.ACTUAL_STACK.inlimit == 0)
+		cache<T>(st).modify(t);
 }
 
 extern void resources(double&,unsigned int&);

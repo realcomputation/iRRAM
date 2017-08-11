@@ -69,7 +69,7 @@ orstream::orstream(std::string s, std::ios::openmode mod)
 	real_f = float_form::absolute;
 
 	if (actual_stack().inlimit == 0) {
-		if (state->thread_data_address->cache_os.get(target)) {
+		if (cache<std::ostream *>().get(target)) {
 			/*    state.thread_data_address->cache_ui.get(real_w);
 			    state.thread_data_address->cache_ui.get(real_f);
 			    state.thread_data_address->cache_b.get(_respect_iteration);*/
@@ -81,7 +81,7 @@ orstream::orstream(std::string s, std::ios::openmode mod)
 		target = new std::ofstream(s.c_str(), mod);
 		iRRAM_DEBUG1(2, "I/O-handler: Creating new output stream '"
 		                        << s << "'\n");
-		state->thread_data_address->cache_os.put(target);
+		cache<std::ostream *>().put(target);
 		/*    state.thread_data_address->cache_ui.put(real_w);
 		    state.thread_data_address->cache_ui.put(real_f);
 		    state.thread_data_address->cache_b.put(_respect_iteration);*/
@@ -107,13 +107,13 @@ irstream::irstream(std::string s, std::ios::openmode mod)
 		return;
 	}
 	if (actual_stack().inlimit == 0) {
-		if (state->thread_data_address->cache_is.get(target)) {
+		if (cache<std::istream *>().get(target)) {
 			return;
 		}
 		iRRAM_DEBUG1(2, "I/O-handler: Creating new input stream '"
 		                        << s << "'\n");
 		target = new std::ifstream(s.c_str(), mod);
-		state->thread_data_address->cache_is.put(target);
+		cache<std::istream *>().put(target);
 	} else {
 		iRRAM_DEBUG1(2, "I/O-handler: Creating new input stream '"
 		                        << s << "'\n");
@@ -250,18 +250,18 @@ irstream::~irstream()
 	return *this;
 
 
-irstream& irstream::operator>>(bool& b)            {iRRAM_in(b,state->thread_data_address->cache_b);}
-irstream& irstream::operator>>(short& i)           {iRRAM_in(i,state->thread_data_address->cache_sh);}
-irstream& irstream::operator>>(unsigned short& ui) {iRRAM_in(ui,state->thread_data_address->cache_ush);}
-irstream& irstream::operator>>(int& i)             {iRRAM_in(i,state->thread_data_address->cache_i);}
-irstream& irstream::operator>>(unsigned int& ui)   {iRRAM_in(ui,state->thread_data_address->cache_ui);}
-irstream& irstream::operator>>(long& l)            {iRRAM_in(l,state->thread_data_address->cache_l);}
-irstream& irstream::operator>>(unsigned long& ul)  {iRRAM_in(ul,state->thread_data_address->cache_ul);}
-irstream& irstream::operator>>(float& d)           {iRRAM_in(d,state->thread_data_address->cache_f);}
-irstream& irstream::operator>>(double& d)          {iRRAM_in(d,state->thread_data_address->cache_d);}
-irstream& irstream::operator>>(long long& ll)      {iRRAM_in(ll,state->thread_data_address->cache_ll);}
-irstream& irstream::operator>>(unsigned long long& ull) {iRRAM_in(ull,state->thread_data_address->cache_ull);}
-irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s,state->thread_data_address->cache_s);}
+irstream& irstream::operator>>(bool& b)            {iRRAM_in(b,cache<bool>());}
+irstream& irstream::operator>>(short& i)           {iRRAM_in(i,cache<short>());}
+irstream& irstream::operator>>(unsigned short& ui) {iRRAM_in(ui,cache<unsigned short>());}
+irstream& irstream::operator>>(int& i)             {iRRAM_in(i,cache<int>());}
+irstream& irstream::operator>>(unsigned int& ui)   {iRRAM_in(ui,cache<unsigned>());}
+irstream& irstream::operator>>(long& l)            {iRRAM_in(l,cache<long>());}
+irstream& irstream::operator>>(unsigned long& ul)  {iRRAM_in(ul,cache<unsigned long>());}
+irstream& irstream::operator>>(float& d)           {iRRAM_in(d,cache<float>());}
+irstream& irstream::operator>>(double& d)          {iRRAM_in(d,cache<double>());}
+irstream& irstream::operator>>(long long& ll)      {iRRAM_in(ll,cache<long long>());}
+irstream& irstream::operator>>(unsigned long long& ull) {iRRAM_in(ull,cache<unsigned long long>());}
+irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s,cache<std::string>());}
 
 #define iRRAM_in2(VAR, DATA)                                                   \
 	std::string s;                                                         \
@@ -271,12 +271,12 @@ irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s,state->thread_dat
 		return *this;                                                  \
 	}                                                                      \
 	if (actual_stack().inlimit == 0) {                                     \
-		if (state->thread_data_address->cache_s.get(s)) {              \
+		if (get_cached(s)) {                                           \
 			VAR = DATA(s);                                         \
 			return *this;                                          \
 		}                                                              \
 		{ single_valued code; *target >> s; VAR = DATA(s); }           \
-		state->thread_data_address->cache_s.put(s);                    \
+		put_cached(s);                                                 \
 	} else {                                                               \
 		*target >> s;                                                  \
 		VAR = DATA(s);                                                 \
@@ -299,7 +299,7 @@ irstream & irstream::operator>>(INTEGER & d) { iRRAM_in2(d, INTEGER); }
 		}                                                              \
 		{ single_valued code; STMNT; }                                 \
 		CACHE.put(VAR);                                                \
-	} else {                                                               \
+	} else { /* TODO: wtf? that can't happen... */                         \
 		STMNT;                                                         \
 	}                                                                      \
 	return VAR;
@@ -307,85 +307,73 @@ irstream & irstream::operator>>(INTEGER & d) { iRRAM_in2(d, INTEGER); }
 bool orstream::eof()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = target->eof())
+	iRRAM_inexec(test, cache<bool>(), test = target->eof())
 }
 
 bool orstream::fail()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = target->fail())
+	iRRAM_inexec(test, cache<bool>(), test = target->fail())
 }
 
 bool orstream::good()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = target->good())
+	iRRAM_inexec(test, cache<bool>(), test = target->good())
 }
 
 bool orstream::bad()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = target->bad())
+	iRRAM_inexec(test, cache<bool>(), test = target->bad())
 }
 
 bool operator!(orstream & x)
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = (x.target->fail()))
+	iRRAM_inexec(test, cache<bool>(), test = (x.target->fail()))
 }
 
 orstream::operator bool()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = !(target->fail()))
+	iRRAM_inexec(test, cache<bool>(), test = !(target->fail()))
 }
 
 bool irstream::eof()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = target->eof())
+	iRRAM_inexec(test, cache<bool>(), test = target->eof())
 }
 
 bool irstream::fail()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = target->fail())
+	iRRAM_inexec(test, cache<bool>(), test = target->fail())
 }
 
 bool irstream::good()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = target->good())
+	iRRAM_inexec(test, cache<bool>(), test = target->good())
 }
 
 bool irstream::bad()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = target->bad())
+	iRRAM_inexec(test, cache<bool>(), test = target->bad())
 }
 
 bool operator!(irstream & x)
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = (x.target->fail()))
+	iRRAM_inexec(test, cache<bool>(), test = x.target->fail())
 }
 
 irstream::operator bool()
 {
 	bool test = false;
-	iRRAM_inexec(test, state->thread_data_address->cache_b,
-	             test = !(target->fail()))
+	iRRAM_inexec(test, cache<bool>(), test = !target->fail())
 }
 
 
