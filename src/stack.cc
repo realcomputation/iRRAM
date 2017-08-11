@@ -43,10 +43,15 @@ namespace iRRAM {
 // iRRAM_TLS bool iRRAM_COMPARE_exact=true; /* unused */
 // iRRAM_TLS int iRRAM_COMPARE_precision=-60; /* unused */
 
-iRRAM_TLS state_t state;
+iRRAM_TLS state_proxy<iRRAM_HAVE_TLS> state;
 
 iRRAM_thread_data_class::iRRAM_thread_data_class() = default;
 iRRAM_thread_data_class::~iRRAM_thread_data_class() = default;
+
+state_proxy<true>::state_proxy()
+: std::unique_ptr<state_t> { std::make_unique<state_t>() }
+{
+}
 
 } // namespace iRRAM
 // 

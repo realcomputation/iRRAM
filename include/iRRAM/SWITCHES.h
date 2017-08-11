@@ -67,8 +67,8 @@ extern const int iRRAM_prec_steps;
  * obsoletes `continous_begin()`, `continous_end()` */
 struct single_valued
 {
-	inline  single_valued() noexcept { state.ACTUAL_STACK.inlimit++; }
-	inline ~single_valued() noexcept { --state.ACTUAL_STACK.inlimit; }
+	inline  single_valued() noexcept { state->ACTUAL_STACK.inlimit++; }
+	inline ~single_valued() noexcept { --state->ACTUAL_STACK.inlimit; }
 };
 
 
@@ -88,11 +88,11 @@ class precision_mode
 	int saved;
 public:
 	inline precision_mode(int policy) noexcept
-	: saved(state.ACTUAL_STACK.prec_policy)
+	: saved(state->ACTUAL_STACK.prec_policy)
 	{
-		state.ACTUAL_STACK.prec_policy = policy;
+		state->ACTUAL_STACK.prec_policy = policy;
 	}
-	inline ~precision_mode() noexcept { state.ACTUAL_STACK.prec_policy = saved; }
+	inline ~precision_mode() noexcept { state->ACTUAL_STACK.prec_policy = saved; }
 };
 
 /*! \brief Temporary increase of the working precision.
@@ -109,9 +109,9 @@ protected:
 	{
 		if (n<1) n=1;
 		if (iRRAM_prec_steps <= n) n = iRRAM_prec_steps-1;
-		state.ACTUAL_STACK.prec_step = n;
-		state.ACTUAL_STACK.actual_prec = iRRAM_prec_array[state.ACTUAL_STACK.prec_step];
-		state.highlevel = (state.ACTUAL_STACK.prec_step > 1);
+		state->ACTUAL_STACK.prec_step = n;
+		state->ACTUAL_STACK.actual_prec = iRRAM_prec_array[state->ACTUAL_STACK.prec_step];
+		state->highlevel = (state->ACTUAL_STACK.prec_step > 1);
 	}
 
 public:
@@ -131,24 +131,24 @@ public:
 
 	void inc_step(int n) const noexcept
 	{
-		set_prec_step(state.ACTUAL_STACK.prec_step + n);
+		set_prec_step(state->ACTUAL_STACK.prec_step + n);
 	}
 };
 //! @} /* end group switches */
 
 template <> inline stiff::stiff(int abs_step, abs) noexcept
-: saved(state.ACTUAL_STACK.prec_step)
+: saved(state->ACTUAL_STACK.prec_step)
 { set_prec_step(abs_step); }
 
 template <> inline stiff::stiff(int rel_step, rel) noexcept
-: stiff(state.ACTUAL_STACK.prec_step + rel_step, abs{}) {}
+: stiff(state->ACTUAL_STACK.prec_step + rel_step, abs{}) {}
 
 /*! \addtogroup switches
  * @{ */
 
 /*! \brief Temporarily halve the working precision. */
 struct relaxed : public stiff {
-	relaxed() : stiff((state.ACTUAL_STACK.prec_step+1)/2, abs{}) {}
+	relaxed() : stiff((state->ACTUAL_STACK.prec_step+1)/2, abs{}) {}
 };
 
 /*! \brief Combination of \ref stiff and single_valued. */

@@ -108,8 +108,10 @@ AS_IF([test "$tls" = thread_local],[tls_std=1],[tls_std=0])
 AS_IF([test -z "$tls"],
   [AS_CASE([x$enable_tls],
      [xyes],[AC_MSG_ERROR([TLS requested, but could not detect any supported thread-local storage class specifier])],
-     [xdetect],[AC_MSG_WARN([could not detect any supported thread-local storage class specifier; disabling thread support])])],
-  [AC_MSG_NOTICE([using $tls as thread-local storage class specifier])])
+     [xdetect],[AC_MSG_WARN([could not detect any supported thread-local storage class specifier; disabling thread support])])
+   AC_SUBST([iRRAM_HAVE_TLS],[0])],
+  [AC_MSG_NOTICE([using $tls as thread-local storage class specifier])
+   AC_SUBST([iRRAM_HAVE_TLS],[1])])
 AC_SUBST([iRRAM_TLS],[$tls])
 AC_SUBST([iRRAM_TLS_STD],[$tls_std])
 

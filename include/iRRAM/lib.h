@@ -84,40 +84,41 @@ namespace iRRAM {
 template <typename F, typename... Args>
 auto exec(F f, const Args &... args) -> decltype(f(args...))
 {
-	state_t &st = state;
+	state_t &st = *state;
+	ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
 	st.thread_data_address = new iRRAM_thread_data_class;
 
-	stiff code(state.prec_start, stiff::abs{});
+	stiff code(st.prec_start, stiff::abs{});
 	fesetround(FE_DOWNWARD);
 	// set the correct rounding mode for REAL using double intervals):
 
 	st.cache_active = new cachelist;
 
-	if (iRRAM_unlikely(state.debug > 0)) {
+	if (iRRAM_unlikely(st.debug > 0)) {
 //		std::stringstream s;
 //		s << std::this_thread::get_id();
 		cerr << "\niRRAM (version " << iRRAM_VERSION_rt
 		     << ", backend " << iRRAM_BACKENDS << ")"
 //		     << " thread " << s.str()
 		     << " starting...\n";
-		st.max_prec = st.ACTUAL_STACK.prec_step;
+		st.max_prec = actual_stack.prec_step;
 	}
 
 	using RESULT = decltype(f(args...));
 	RESULT result;
 
-	st.ACTUAL_STACK.prec_policy = 1;
-	st.ACTUAL_STACK.inlimit = 0;
-	st.highlevel = (st.ACTUAL_STACK.prec_step > 1);
+	actual_stack.prec_policy = 1;
+	actual_stack.inlimit = 0;
+	st.highlevel = (actual_stack.prec_step > 1);
 
 	while (true) {
 		iRRAM::cout.rewind();
 		for (int n = 0; n < st.max_active; n++)
-			state.cache_active->id[n]->rewind();
+			st.cache_active->id[n]->rewind();
 
 		st.inReiterate = false;
-		assert(st.ACTUAL_STACK.inlimit == 0);
-		assert(st.highlevel == (st.ACTUAL_STACK.prec_step > 1));
+		assert(actual_stack.inlimit == 0);
+		assert(st.highlevel == (actual_stack.prec_step > 1));
 
 		int p_end = 0;
 		try {
@@ -125,30 +126,30 @@ auto exec(F f, const Args &... args) -> decltype(f(args...))
 			if (iRRAM_likely(!st.infinite))
 				break;
 		} catch (const Iteration &it) {
-			p_end = st.ACTUAL_STACK.actual_prec + it.prec_diff;
+			p_end = actual_stack.actual_prec + it.prec_diff;
 		} catch (const iRRAM_Numerical_Exception &exc) {
 			cerr << "iRRAM exception: " << iRRAM_error_msg[exc.type]
 			     << "\n";
 			throw;
 		}
 
-		assert(st.highlevel == (st.ACTUAL_STACK.prec_step > 1));
+		assert(st.highlevel == (actual_stack.prec_step > 1));
 
 		int prec_skip = 0;
 		do {
 			prec_skip++;
 			code.inc_step(4);
-		} while ((st.ACTUAL_STACK.actual_prec > p_end) &&
+		} while ((actual_stack.actual_prec > p_end) &&
 		         (prec_skip != st.prec_skip));
 
-		assert(st.ACTUAL_STACK.inlimit == 0);
+		assert(actual_stack.inlimit == 0);
 		if (iRRAM_unlikely(st.debug > 0)) {
 			show_statistics();
-			if (st.max_prec <= st.ACTUAL_STACK.prec_step)
-				st.max_prec = st.ACTUAL_STACK.prec_step;
+			if (st.max_prec <= actual_stack.prec_step)
+				st.max_prec = actual_stack.prec_step;
 			cerr << "increasing precision bound to "
-			     << st.ACTUAL_STACK.actual_prec << "["
-			     << st.ACTUAL_STACK.prec_step << "]\n";
+			     << actual_stack.actual_prec << "["
+			     << actual_stack.prec_step << "]\n";
 		}
 	}
 

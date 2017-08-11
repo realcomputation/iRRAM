@@ -29,6 +29,7 @@ MA 02111-1307, USA.
 #include <cstdio>	/* fprintf(3) */
 #include <algorithm>	/* std::min, std::max */
 #include <cstdint>	/* int32_t, uint32_t */
+#include <memory>	/* std::unique_ptr<state_t> */
 
 #include <iRRAM/common.h>
 
@@ -147,8 +148,36 @@ struct state_t {
 	};
 };
 
-extern iRRAM_TLS state_t state;
+template <bool tls> struct state_proxy;
 
+template <> struct state_proxy<true> : protected std::unique_ptr<state_t> {
+	using std::unique_ptr<state_t>::operator*;
+	using std::unique_ptr<state_t>::operator->;
+	using std::unique_ptr<state_t>::release;
+
+	state_proxy();
+};
+
+template <> struct state_proxy<false> {
+	state_proxy() {}
+
+	const state_t & operator*() const { return st; }
+	      state_t & operator*()       { return st; }
+
+	const state_t * operator->() const { return &st; }
+	      state_t * operator->()       { return &st; }
+
+	void release() const {}
+private:
+	state_t st;
+};
+
+extern iRRAM_TLS state_proxy<iRRAM_HAVE_TLS> state;
+
+inline const ITERATION_DATA & actual_stack(const state_t &st = *state)
+{
+	return st.ACTUAL_STACK;
+}
 
 extern void resources(double&,unsigned int&);
 extern double ln2_time;
@@ -161,7 +190,8 @@ extern const int *const iRRAM_prec_array;
 #ifndef NODEBUG
   #define iRRAM_DEBUG0(level,...)                                               \
 	do {                                                                    \
-		if (iRRAM_unlikely(state.debug>=state.ACTUAL_STACK.inlimit+(level))) {\
+		const state_t &st = *state;                                     \
+		if (iRRAM_unlikely(st.debug>=st.ACTUAL_STACK.inlimit+(level))) {\
 			__VA_ARGS__;                                            \
 		}                                                               \
 	} while (0)
@@ -179,7 +209,7 @@ struct Iteration {
 // inline void iRRAM_REITERATE(int p_diff){inReiterate = true; throw Iteration(p_diff); }
 #define iRRAM_REITERATE(x)                                                           \
 	do {                                                                   \
-		state.inReiterate = true;                                      \
+		state->inReiterate = true;                                     \
 		throw Iteration(x);                                            \
 	} while (0)
 

@@ -2,6 +2,7 @@
 #ifndef iRRAM_VERSION_H
 #define iRRAM_VERSION_H
 
+#define iRRAM_HAVE_TLS		@iRRAM_HAVE_TLS@
 #define iRRAM_TLS		@iRRAM_TLS@
 #define iRRAM_TLS_STD		@iRRAM_TLS_STD@
 

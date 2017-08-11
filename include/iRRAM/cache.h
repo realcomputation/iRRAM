@@ -108,7 +108,7 @@ void clear(){
 void activate(){
   data.clear();
   active=true;
-  state.cache_active->id[state.max_active++]=this;
+  state->cache_active->id[state->max_active++]=this;
   current=0;
 };
 

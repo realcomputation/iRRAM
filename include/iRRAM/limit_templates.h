@@ -147,22 +147,22 @@ namespace iRRAM {
 
 /*! \ingroup debug */
 inline void limit_debug(const char* c){
-  if ( iRRAM_unlikely(state.debug > 0) ){
-    if (state.debug >=state.ACTUAL_STACK.inlimit + 2 )
+  if ( iRRAM_unlikely(state->debug > 0) ){
+    if (state->debug >=actual_stack().inlimit + 2 )
 		cerr << c <<"...\n";
-    if (state.max_prec <= state.ACTUAL_STACK.prec_step) 
-		state.max_prec  = state.ACTUAL_STACK.prec_step;
+    if (state->max_prec <= actual_stack().prec_step) 
+		state->max_prec  = actual_stack().prec_step;
   }
 }
 
 /*! \ingroup debug */
 inline void limit_debug2(const char* c){
-      if ( iRRAM_unlikely(state.debug > 0) ) {
-	    if (state.debug >=state.ACTUAL_STACK.inlimit + 2 )
+      if ( iRRAM_unlikely(state->debug > 0) ) {
+	    if (state->debug >=actual_stack().inlimit + 2 )
 		cerr << c <<", increasing precision locally to "
-			<<state.ACTUAL_STACK.actual_prec<<"\n";
-	    if (state.max_prec <= state.ACTUAL_STACK.prec_step) 
-		state.max_prec  = state.ACTUAL_STACK.prec_step;
+			<<actual_stack().actual_prec<<"\n";
+	    if (state->max_prec <= actual_stack().prec_step) 
+		state->max_prec  = actual_stack().prec_step;
       }
 }
 
@@ -309,7 +309,7 @@ auto limit(F f, const DiscArgs &... disc_args)
 
 	while (1) {
 		try {
-			iRRAM_DEBUG2(2,"trying to compute general limit_0 with precision %d...\n",state.ACTUAL_STACK.actual_prec);
+			iRRAM_DEBUG2(2,"trying to compute general limit_0 with precision %d...\n",actual_stack().actual_prec);
 			lim = f(env.saved_prec(), disc_args...);
 			lim_error = geterror(lim);
 			iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n", lim_error.mantissa, lim_error.exponent);
@@ -332,7 +332,7 @@ RESULT limit_mv (RESULT (*f)(int prec,
                              const ARGUMENT&),
                  const ARGUMENT& x)
 {
-  bool inlimit = state.ACTUAL_STACK.inlimit != 0;
+  bool inlimit = actual_stack().inlimit != 0;
 
   limit_computation env;
 
@@ -345,8 +345,8 @@ RESULT limit_mv (RESULT (*f)(int prec,
   int element_step=env.saved_step();
   int firsttime=2;
 
-  if (!inlimit && !state.thread_data_address->cache_i.get(choice))
-    state.thread_data_address->cache_i.put(choice);
+  if (!inlimit && !state->thread_data_address->cache_i.get(choice))
+    state->thread_data_address->cache_i.put(choice);
 
   x.geterror(x_error);
 
@@ -357,7 +357,7 @@ RESULT limit_mv (RESULT (*f)(int prec,
     iRRAM_DEBUG2(2,"trying to compute limit_mv with precicion 2^(%d)...\n",element);
     limnew=f(element,&choice,x);
     if (!inlimit)
-      state.thread_data_address->cache_i.modify(choice);
+      state->thread_data_address->cache_i.modify(choice);
     element_error = sizetype_power2(element);
     limnew.geterror(limnew_error);
     limnew_error += element_error;
@@ -425,7 +425,7 @@ RESULT  limit_lip (RESULT  (*f)(int,const ARGUMENT&,DISCRETE param),
 
   while (1) {
      try{
-      iRRAM_DEBUG2(2,"trying to compute limit_lip with precision %d...\n",state.ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"trying to compute limit_lip with precision %d...\n",actual_stack().actual_prec);
     lim=f(env.saved_prec(),x_new,param);
     lim.geterror(lim_error);
     if (lim_error.exponent > env.saved_prec()) {
@@ -540,7 +540,7 @@ RESULT lipschitz_1p_1a (RESULT (*f)(const DISCRETE_ARGUMENT&, const PARAM& param
         lip_result=f(x_center,param); }
     catch ( Iteration it)  { try_it=true;
       env.inc_step(2);
-      iRRAM_DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to step %d...\n",state.ACTUAL_STACK.prec_step);
+      iRRAM_DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to step %d...\n",actual_stack().prec_step);
     }
   }
 
