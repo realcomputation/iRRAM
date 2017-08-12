@@ -1,12 +1,14 @@
-#include "MPFR_ext.h"
 
+#include <stdlib.h>
+#include <stddef.h>
 
-iRRAM_TLS int ext_mpfr_var_count=0;
+#include <iRRAM/MPFR_interface.h>
 
-#define MaxFreeVars 1000
-iRRAM_TLS mpfr_ptr mpfr_FreeVars[MaxFreeVars];
-iRRAM_TLS int mpfr_FreeVarCount=0L;
+iRRAM_TLS struct iRRAM_ext_mpfr_cache_t *iRRAM_ext_mpfr_cache;
 
-iRRAM_TLS int mpfr_TotalAllocVarCount=0;
-iRRAM_TLS int mpfr_TotalFreedVarCount=0;
+void ext_mpfr_initialize()
+{
+	mpfr_set_default_prec(32);
 
+	iRRAM_ext_mpfr_cache = calloc(1, sizeof(*iRRAM_ext_mpfr_cache));
+}

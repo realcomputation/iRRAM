@@ -111,12 +111,6 @@ inline void ext_mpfr_remove_trailing_zeroes (mpfr_t x)
    mpfr_round_prec (x, GMP_RNDN, j); 
 }
 
-inline void ext_mpfr_initialize()
-{
-mpfr_set_default_prec(32);
-}
-
-
 inline int ext_mpfr_size(const mpfr_t z)
 {
 if ( MPFR_NOTZERO(z) ) return mpfr_get_exp(z);

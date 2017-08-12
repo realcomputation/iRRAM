@@ -85,8 +85,10 @@ void show_statistics()
   cerr << "   MP-memory in use:   "<<MP_space_count<<"\n"; 
   cerr << "   max MP-memory used: "<<MP_max_space_count<<"\n"; 
 #endif
-  cerr << "   total alloc'ed MPFR: " << mpfr_TotalAllocVarCount << "\n";
-  cerr << "   total free'd   MPFR: " << mpfr_TotalFreedVarCount << "\n";
+  cerr << "   total alloc'ed MPFR: "
+       << iRRAM_ext_mpfr_cache->total_alloc_var_count << "\n";
+  cerr << "   total free'd   MPFR: "
+       << iRRAM_ext_mpfr_cache->total_freed_var_count << "\n";
   double time;
   unsigned int memory;
   resources(time,memory);

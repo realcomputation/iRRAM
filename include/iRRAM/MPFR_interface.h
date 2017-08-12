@@ -234,7 +234,7 @@ MA 02111-1307, USA.
 
 /* Statistics, optional */
 
-#define MP_var_count        ext_mpfr_var_count
+#define MP_var_count        (iRRAM_ext_mpfr_cache->ext_mpfr_var_count)
 /* #define MP_space_count  */
 /* #define MP_max_space_count */
 
@@ -259,16 +259,24 @@ extern "C" {
 typedef struct {unsigned int mantissa; int exponent; } ext_mpfr_sizetype;
 typedef mpz_ptr  int_mpfr_type;
 
-extern iRRAM_TLS int ext_mpfr_var_count;
-#define MaxFreeVars 1000
-extern iRRAM_TLS mpfr_ptr mpfr_FreeVars[];
-extern iRRAM_TLS int mpfr_FreeVarCount;
-extern iRRAM_TLS int mpfr_TotalAllocVarCount;
-extern iRRAM_TLS int mpfr_TotalFreedVarCount;
+#define iRRAM_EXT_MPFR_CACHE_SIZE 1000 /* TODO: make adjustable during init() */
+
+struct iRRAM_ext_mpfr_cache_t {
+	int free_var_count;
+	int ext_mpfr_var_count;
+	size_t total_alloc_var_count;
+	size_t total_freed_var_count;
+	mpfr_ptr free_vars[iRRAM_EXT_MPFR_CACHE_SIZE];
+};
+
+#define iRRAM_EXT_MPFR_CACHE_INIT { 0, 0, 0, 0, {0}, }
+
+extern iRRAM_TLS struct iRRAM_ext_mpfr_cache_t *iRRAM_ext_mpfr_cache;
 
 void ext_mpfr_remove_trailing_zeroes (mpfr_t x);
 
 void ext_mpfr_initialize(void);
+void ext_mpfr_finalize(void);
 
 void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s);
 
@@ -281,16 +289,17 @@ mpfr_ptr ext_mpfr_init(void);
 
 inline mpfr_ptr ext_mpfr_init()
 {
+	struct iRRAM_ext_mpfr_cache_t *cache = iRRAM_ext_mpfr_cache;
 	mpfr_ptr z;
-	if (mpfr_FreeVarCount > 0) {
-		mpfr_FreeVarCount -= 1;
-		z = mpfr_FreeVars[mpfr_FreeVarCount];
+	if (cache->free_var_count > 0) {
+		cache->free_var_count -= 1;
+		z = cache->free_vars[cache->free_var_count];
 	} else {
 		z = (mpfr_ptr)malloc(sizeof(mpfr_t));
 		mpfr_init(z);
-		mpfr_TotalAllocVarCount++;
+		cache->total_alloc_var_count++;
 	}
-	ext_mpfr_var_count += 1;
+	cache->ext_mpfr_var_count += 1;
 
 	/* fprintf(stderr,"create %x\n",z); */
 
@@ -301,16 +310,17 @@ void ext_mpfr_free(mpfr_ptr z);
 
 inline void ext_mpfr_free(mpfr_ptr z)
 {
+	struct iRRAM_ext_mpfr_cache_t *cache = iRRAM_ext_mpfr_cache;
 	/* fprintf(stderr,"delete %x\n",z); */
-	if (mpfr_FreeVarCount < MaxFreeVars) {
-		mpfr_FreeVars[mpfr_FreeVarCount] = z;
-		mpfr_FreeVarCount += 1;
+	if (cache->free_var_count < iRRAM_EXT_MPFR_CACHE_SIZE) {
+		cache->free_vars[cache->free_var_count] = z;
+		cache->free_var_count += 1;
 	} else {
 		mpfr_clear(z);
 		free(z);
-		mpfr_TotalFreedVarCount++;
+		cache->total_freed_var_count++;
 	}
-	ext_mpfr_var_count -= 1;
+	cache->ext_mpfr_var_count -= 1;
 }
 
 #endif /*ifndef MPFR_INTERFACE_H */
