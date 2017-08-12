@@ -50,6 +50,8 @@ void iRRAM_initialize3(const struct iRRAM_init_options *opts);
 
 int iRRAM_parse_args(struct iRRAM_init_options *opts, int *argc, char **argv);
 
+void iRRAM_finalize(void);
+
 extern const char *const *const iRRAM_error_msg;
 
 #define ERRORDEFINE(x, y) x,

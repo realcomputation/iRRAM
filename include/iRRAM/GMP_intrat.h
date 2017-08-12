@@ -44,44 +44,44 @@ Changelog: (initial version by Tom van Diessen)
 extern "C" {
 #endif
 
-/*GMP_min and GMP_max should go to the interface definitions!*/
+/********** caching vars **********/
 
-#define GMP_min -1000000000
-#define GMP_max 1000000000
+#define iRRAM_MPZ_CACHE_SIZE 1000
 
-/********** counting vars **********/
-#define MaxFreeVars 1000
-extern iRRAM_TLS mpz_ptr gmp_FreeVarsi[MaxFreeVars];
-extern iRRAM_TLS int gmp_FreeVarCounti;
-extern iRRAM_TLS int int_gmp_var_count;
+struct iRRAM_mpz_cache_t {
+	int free_var_count;
+	size_t int_gmp_var_count;
+	mpz_ptr free_vars[iRRAM_MPZ_CACHE_SIZE];
+};
 
+#define iRRAM_MPZ_CACHE_INIT	{ 0, 0, {0}, }
 
 /********** initialization function **********/
 
-static inline mpz_ptr int_gmp_init()
+static inline mpz_ptr int_gmp_init(struct iRRAM_mpz_cache_t *cache)
 {
 	mpz_ptr z;
-	if (gmp_FreeVarCounti>0) {
-		gmp_FreeVarCounti--;
-		z = gmp_FreeVarsi[gmp_FreeVarCounti];
-	}else{
-		z = (mpz_ptr) malloc(sizeof(mpz_t));
+	if (cache->free_var_count > 0) {
+		cache->free_var_count--;
+		z = cache->free_vars[cache->free_var_count];
+	} else {
+		z = (mpz_ptr)malloc(sizeof(mpz_t));
 		mpz_init(z);
 	}
-	int_gmp_var_count++;
+	cache->int_gmp_var_count++;
 	return z;
 }
 
-static inline void int_gmp_free(mpz_ptr z)
+static inline void int_gmp_free(struct iRRAM_mpz_cache_t *cache, mpz_ptr z)
 {
-  if (gmp_FreeVarCounti < MaxFreeVars){
-  		gmp_FreeVarsi[gmp_FreeVarCounti]=z;
-  		gmp_FreeVarCounti++;
-  }else{
-  	mpz_clear(z);
-  	free(z);
-  }
-  int_gmp_var_count--;
+	if (cache->free_var_count < iRRAM_MPZ_CACHE_SIZE) {
+		cache->free_vars[cache->free_var_count] = z;
+		cache->free_var_count++;
+	} else {
+		mpz_clear(z);
+		free(z);
+	}
+	cache->int_gmp_var_count--;
 }
 
 /********** Conversion functions **********/
@@ -132,11 +132,6 @@ static inline char* int_gmp_sprintf(const mpz_t z){return mpz_get_str(NULL,10,z)
 
 /********** copying MP integers with/without initializing **********/
 
-static inline void int_gmp_duplicate_w_init(const mpz_t z1, mpz_ptr *z2){
-  *z2=int_gmp_init();
-  mpz_set(*z2,z1);
-}
-
 static inline void int_gmp_duplicate_wo_init(const mpz_t z1, mpz_t z2){mpz_set(z2,z1);}
 
 /********* sign, size, and comparison of integer*/
@@ -146,35 +141,43 @@ static inline int int_gmp_size(const mpz_t z){
 	if (mpz_sgn(z) == 0 )  return 0; else   return mpz_sizeinbase(z,2);}
 
 /********** counting vars **********/
-#define rat_MaxFreeVars 1000
-extern iRRAM_TLS int rat_gmp_var_count;
-extern iRRAM_TLS mpq_ptr rat_gmp_FreeVarsi[rat_MaxFreeVars];
-extern iRRAM_TLS int rat_gmp_FreeVarCount;
+
+#define iRRAM_MPQ_CACHE_SIZE 1000
+
+struct iRRAM_mpq_cache_t {
+	int free_var_count;
+	size_t rat_gmp_var_count;
+	mpq_ptr free_vars[iRRAM_MPQ_CACHE_SIZE];
+};
+
+#define iRRAM_MPQ_CACHE_INIT	{ 0, 0, {0}, }
 
 /********** initialization function **********/
 
-static inline mpq_ptr rat_gmp_init(){
+static inline mpq_ptr rat_gmp_init(struct iRRAM_mpq_cache_t *cache)
+{
 	mpq_ptr z;
-	if (rat_gmp_FreeVarCount>0){
-		rat_gmp_FreeVarCount--;
-		z = rat_gmp_FreeVarsi[rat_gmp_FreeVarCount];
+	if (cache->free_var_count > 0) {
+		cache->free_var_count--;
+		z = cache->free_vars[cache->free_var_count];
 	}else{
-		z = (mpq_ptr) malloc(sizeof(mpq_t));
+		z = (mpq_ptr)malloc(sizeof(mpq_t));
 		mpq_init(z);
 	}
-	rat_gmp_var_count++;
+	cache->rat_gmp_var_count++;
 	return z;
 }
 
-static inline void rat_gmp_free(mpq_ptr z){
-	if(rat_gmp_FreeVarCount < rat_MaxFreeVars){
-		rat_gmp_FreeVarsi[rat_gmp_FreeVarCount]=z;
-		rat_gmp_FreeVarCount++;
+static inline void rat_gmp_free(struct iRRAM_mpq_cache_t *cache, mpq_ptr z)
+{
+	if (cache->free_var_count < iRRAM_MPQ_CACHE_SIZE) {
+		cache->free_vars[cache->free_var_count] = z;
+		cache->free_var_count++;
 	}else{
 		mpq_clear(z);
 		free(z);
 	}
-	rat_gmp_var_count--;
+	cache->rat_gmp_var_count--;
 }
 
 /* canonicalize the given rational, used for used defined rationals */
@@ -314,8 +317,6 @@ static inline void rat_gmp_get_denominator(mpz_t z, const mpq_t z1){mpq_get_den(
 
 
 /********** copying MP rationals with/without initializing ***********/
-static inline void rat_gmp_duplicate_w_init(const mpq_t z1, mpq_ptr *z2){
-  *z2=rat_gmp_init(); mpq_set(*z2,z1);}
 static inline void rat_gmp_duplicate_wo_init(const mpq_t z1, mpq_t z2){mpq_set(z2,z1);}
 
 /********* sign and comparison of integer and rational */

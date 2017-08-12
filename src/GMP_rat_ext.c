@@ -27,20 +27,6 @@ MA 02111-1307, USA.
 
 #include <strings.h>
 
-#ifndef DEBUG
-#define DEBUG 0
-#endif
-#if DEBUG > 0
-  int DEBUG_OP = 1;
-  unsigned int op_count=0;
-  int minshowop = DEBUG ;
-#endif
-
-
-iRRAM_TLS mpq_ptr rat_gmp_FreeVarsi[rat_MaxFreeVars];
-iRRAM_TLS int rat_gmp_FreeVarCount=0L;
-iRRAM_TLS int rat_gmp_var_count=0;
-
 char* rat_gmp_swritee(const mpq_t z, int w)
 {
   char *n, *s;
@@ -62,24 +48,13 @@ char* rat_gmp_swritee(const mpq_t z, int w)
   return s;
 }
 
-
 void rat_gmp_shift(const mpq_t z1, mpq_t z, int n)
 {
-	mpz_ptr num,den;
-	num=int_gmp_init();
-	den=int_gmp_init();
-	mpq_get_num(num,z1);
-	mpq_get_den(den,z1);
-
-  	if (n>=0) mpz_mul_2exp(num, num, n);
-	else mpz_mul_2exp(den, den, -n);	
-
-	mpq_set_num(z,num);
-	mpq_set_den(z,den);
+	if (n > 0)
+		mpz_mul_2exp(mpq_numref(z), mpq_numref(z1), n);
+	else if (n < 0)
+		mpz_mul_2exp(mpq_denref(z), mpq_denref(z1), (unsigned)-n);
 	mpq_canonicalize(z);
-
-	int_gmp_free(num);
-	int_gmp_free(den);
 }
 
 void rat_gmp_string_2_rat(mpq_t z, const char* s)
@@ -87,4 +62,3 @@ void rat_gmp_string_2_rat(mpq_t z, const char* s)
 	mpq_set_str(z,s,10);
 	mpq_canonicalize(z);
 }
-

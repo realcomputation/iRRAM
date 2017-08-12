@@ -111,12 +111,6 @@ inline void ext_mpfr_remove_trailing_zeroes (mpfr_t x)
    mpfr_round_prec (x, GMP_RNDN, j); 
 }
 
-inline void ext_mpfr_initialize()
-{
-mpfr_set_default_prec(32);
-}
-
-
 inline int ext_mpfr_size(const mpfr_t z)
 {
 if ( MPFR_NOTZERO(z) ) return mpfr_get_exp(z);
@@ -433,17 +427,6 @@ inline void ext_mpfr_duplicate_wo_init(const mpfr_t z1,mpfr_t z2)
   int q1=mpfr_get_prec(z1);
   if (mpfr_get_prec(z2)< q1) mpfr_set_prec(z2,q1);
   mpfr_set(z2,z1,iRRAM_mpfr_rounding_mode);
-}
-
-inline void ext_mpfr_duplicate_w_init(const mpfr_t z1,mpfr_ptr *z2)
-{
-/*  *z2 = (mpfr_ptr) malloc(sizeof (mpfr_t)); */
-/*  mpfr_init2(*z2,mpfr_get_prec(z1)); */
-  int q1=mpfr_get_prec(z1);
-  *z2=ext_mpfr_init();
-  if (mpfr_get_prec(*z2)< q1) mpfr_set_prec(*z2,q1);
-/*  ext_mpfr_var_count +=1; */
-  mpfr_set(*z2,z1,iRRAM_mpfr_rounding_mode);
 }
 
 inline void ext_mpfr_sqrt(const mpfr_t z1,mpfr_t z,int p)

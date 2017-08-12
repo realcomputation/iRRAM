@@ -27,14 +27,6 @@ MA 02111-1307, USA.
 #include <string.h>
 
 /**************************************************************************/
-/* Variables for counting free space                                      */
-/**************************************************************************/
-
-iRRAM_TLS mpz_ptr gmp_FreeVarsi[MaxFreeVars];
-iRRAM_TLS int gmp_FreeVarCounti=0L;
-iRRAM_TLS int int_gmp_var_count=0;
-
-/**************************************************************************/
 /* writes integer to a string                                             */
 /* writes z to string with length w                                       */
 /* Arguments: 1. GMP_integer                                              */

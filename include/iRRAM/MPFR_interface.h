@@ -32,6 +32,9 @@ MA 02111-1307, USA.
 # endif
 
 
+#define GMP_min -1000000000
+#define GMP_max 1000000000
+
 #define MP_min    GMP_min
 #define MP_max    GMP_max
 
@@ -46,17 +49,18 @@ MA 02111-1307, USA.
 /****** Initialization functions ******/
 
 /* Backend initialization (if necessary) */
-#define MP_initialize   ext_mpfr_initialize()
+#define MP_initialize   ext_mpfr_initialize(&state->ext_mpfr_cache)
+#define MP_finalize     ext_mpfr_finalize(&state->ext_mpfr_cache)
 
 /* Initialization of MP/integer/rational variables */
-#define MP_init(z)      do { z = ext_mpfr_init(); } while (0)
-#define MP_int_init(z)  do { z = int_gmp_init(); } while (0)
-#define MP_rat_init(z)  do { z = rat_gmp_init(); } while (0)
+#define MP_init(z)      do { z = ext_mpfr_init(&state->ext_mpfr_cache); } while (0)
+#define MP_int_init(z)  do { z = int_gmp_init(&state->mpz_cache); } while (0)
+#define MP_rat_init(z)  do { z = rat_gmp_init(&state->mpq_cache); } while (0)
 
 /* Deletion of MP/integer/rational variables */
-#define MP_clear(z)     ext_mpfr_free(z)
-#define MP_int_clear(z) int_gmp_free(z)
-#define MP_rat_clear(z) rat_gmp_free(z)
+#define MP_clear(z)     ext_mpfr_free(&state->ext_mpfr_cache, z)
+#define MP_int_clear(z) int_gmp_free(&state->mpz_cache, z)
+#define MP_rat_clear(z) rat_gmp_free(&state->mpq_cache, z)
 
 
 /****** typechanging functions ******/
@@ -102,13 +106,13 @@ MA 02111-1307, USA.
 
 /* duplicate value z1 to z2, with/without initialization of z2 */
 
-#define MP_duplicate_w_init(z1,z2)	ext_mpfr_duplicate_w_init(z1,&(z2))
+#define MP_duplicate_w_init(z1,z2)	do { MP_init(z2); MP_duplicate_wo_init(z1, z2); } while (0)
 #define MP_duplicate_wo_init(z1,z2)	ext_mpfr_duplicate_wo_init(z1,z2) 
 
-#define MP_int_duplicate_w_init(z1,z2)	int_gmp_duplicate_w_init(z1,&(z2))
+#define MP_int_duplicate_w_init(z1,z2)	do { MP_int_init(z2); MP_int_duplicate_wo_init(z1, z2); } while (0)
 #define MP_int_duplicate_wo_init(z1,z2)	int_gmp_duplicate_wo_init(z1,z2) 
 
-#define MP_rat_duplicate_w_init(z1,z2)	rat_gmp_duplicate_w_init(z1,&(z2))
+#define MP_rat_duplicate_w_init(z1,z2)	do { MP_rat_init(z2); MP_rat_duplicate_wo_init(z1, z2); } while (0)
 #define MP_rat_duplicate_wo_init(z1,z2)	rat_gmp_duplicate_wo_init(z1,z2) 
 
 /* copy z1 to z2, but precision p is sufficient */
@@ -234,7 +238,7 @@ MA 02111-1307, USA.
 
 /* Statistics, optional */
 
-#define MP_var_count        ext_mpfr_var_count
+#define MP_var_count        (state->ext_mpfr_cache.ext_mpfr_var_count)
 /* #define MP_space_count  */
 /* #define MP_max_space_count */
 
@@ -259,16 +263,22 @@ extern "C" {
 typedef struct {unsigned int mantissa; int exponent; } ext_mpfr_sizetype;
 typedef mpz_ptr  int_mpfr_type;
 
-extern iRRAM_TLS int ext_mpfr_var_count;
-#define MaxFreeVars 1000
-extern iRRAM_TLS mpfr_ptr mpfr_FreeVars[];
-extern iRRAM_TLS int mpfr_FreeVarCount;
-extern iRRAM_TLS int mpfr_TotalAllocVarCount;
-extern iRRAM_TLS int mpfr_TotalFreedVarCount;
+#define iRRAM_EXT_MPFR_CACHE_SIZE 1000 /* TODO: make adjustable during init() */
+
+struct iRRAM_ext_mpfr_cache_t {
+	int free_var_count;
+	int ext_mpfr_var_count;
+	size_t total_alloc_var_count;
+	size_t total_freed_var_count;
+	mpfr_ptr free_vars[iRRAM_EXT_MPFR_CACHE_SIZE];
+};
+
+#define iRRAM_EXT_MPFR_CACHE_INIT	{ 0, 0, 0, 0, {0} }
 
 void ext_mpfr_remove_trailing_zeroes (mpfr_t x);
 
-void ext_mpfr_initialize(void);
+void ext_mpfr_initialize(struct iRRAM_ext_mpfr_cache_t *);
+void ext_mpfr_finalize(struct iRRAM_ext_mpfr_cache_t *);
 
 void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s);
 
@@ -277,40 +287,40 @@ void ext_mpfr_getsize(const mpfr_t z,ext_mpfr_sizetype* s);
 #endif
 
 
-mpfr_ptr ext_mpfr_init(void);
+mpfr_ptr ext_mpfr_init(struct iRRAM_ext_mpfr_cache_t *);
 
-inline mpfr_ptr ext_mpfr_init()
+inline mpfr_ptr ext_mpfr_init(struct iRRAM_ext_mpfr_cache_t *cache)
 {
 	mpfr_ptr z;
-	if (mpfr_FreeVarCount > 0) {
-		mpfr_FreeVarCount -= 1;
-		z = mpfr_FreeVars[mpfr_FreeVarCount];
+	if (cache->free_var_count > 0) {
+		cache->free_var_count -= 1;
+		z = cache->free_vars[cache->free_var_count];
 	} else {
 		z = (mpfr_ptr)malloc(sizeof(mpfr_t));
 		mpfr_init(z);
-		mpfr_TotalAllocVarCount++;
+		cache->total_alloc_var_count++;
 	}
-	ext_mpfr_var_count += 1;
+	cache->ext_mpfr_var_count += 1;
 
 	/* fprintf(stderr,"create %x\n",z); */
 
 	return z;
 }
 
-void ext_mpfr_free(mpfr_ptr z);
+void ext_mpfr_free(struct iRRAM_ext_mpfr_cache_t *, mpfr_ptr z);
 
-inline void ext_mpfr_free(mpfr_ptr z)
+inline void ext_mpfr_free(struct iRRAM_ext_mpfr_cache_t *cache, mpfr_ptr z)
 {
 	/* fprintf(stderr,"delete %x\n",z); */
-	if (mpfr_FreeVarCount < MaxFreeVars) {
-		mpfr_FreeVars[mpfr_FreeVarCount] = z;
-		mpfr_FreeVarCount += 1;
+	if (cache->free_var_count < iRRAM_EXT_MPFR_CACHE_SIZE) {
+		cache->free_vars[cache->free_var_count] = z;
+		cache->free_var_count += 1;
 	} else {
 		mpfr_clear(z);
 		free(z);
-		mpfr_TotalFreedVarCount++;
+		cache->total_freed_var_count++;
 	}
-	ext_mpfr_var_count -= 1;
+	cache->ext_mpfr_var_count -= 1;
 }
 
 #endif /*ifndef MPFR_INTERFACE_H */
