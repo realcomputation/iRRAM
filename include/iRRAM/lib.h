@@ -56,11 +56,6 @@ Authors:  all by Norbert, except:
 #ifndef iRRAM_LIB_H
 #define iRRAM_LIB_H
 
-#include <string>
-#include <cstdint>
-#include <cfenv>
-#include <vector>
-
 #include <iRRAM/LAZYBOOLEAN.h>
 #include <iRRAM/REAL.h>
 #include <iRRAM/DYADIC.h>
@@ -81,92 +76,61 @@ namespace iRRAM {
 /*****************************************/
 // iRRAM_exec template
 
+class run {
+
+	state_t &st;
+	stiff code;
+
+	void loop_init();
+	void loop_fini(int p_end);
+public:
+	run(state_t &st);
+	~run();
+
+	template <typename F,typename... Args>
+	ret_void_t<F,Args...> exec(F f, const Args &... args)
+	{
+		ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
+		while (true) {
+			loop_init();
+
+			int p_end = 0;
+			try {
+				f(args...);
+				if (iRRAM_likely(!st.infinite))
+					break;
+			} catch (const Iteration &it) {
+				p_end = actual_stack.actual_prec + it.prec_diff;
+			} catch (const iRRAM_Numerical_Exception &exc) {
+				/* not handled by run::exec */
+				cerr << "iRRAM exception: "
+				     << iRRAM_error_msg[exc.type] << "\n";
+				throw;
+			}
+
+			loop_fini(p_end);
+		}
+	}
+
+	template <typename F,typename... Args>
+	ret_value_t<F,Args...> exec(F f, const Args &... args)
+	{
+		ret_value_t<F,Args...> r;
+		exec([f,&r](const Args &... args){ r = f(args...); }, args...);
+		return r;
+	}
+};
+
 template <typename F, typename... Args>
-auto exec(F f, const Args &... args) -> decltype(f(args...))
+ret_value_t<F,Args...> exec(F f, const Args &... args)
 {
-	state_t &st = *state;
-	ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
-	st.thread_data_address = new iRRAM_thread_data_class;
+	return run(*state).exec(f, args...);
+}
 
-	stiff code(st.prec_start, stiff::abs{});
-	fesetround(FE_DOWNWARD);
-	// set the correct rounding mode for REAL using double intervals):
-
-	st.cache_active = new cachelist;
-
-	if (iRRAM_unlikely(st.debug > 0)) {
-//		std::stringstream s;
-//		s << std::this_thread::get_id();
-		cerr << "\niRRAM (version " << iRRAM_VERSION_rt
-		     << ", backend " << iRRAM_BACKENDS << ")"
-//		     << " thread " << s.str()
-		     << " starting...\n";
-		st.max_prec = actual_stack.prec_step;
-	}
-
-	using RESULT = decltype(f(args...));
-	RESULT result;
-
-	actual_stack.prec_policy = 1;
-	actual_stack.inlimit = 0;
-	st.highlevel = (actual_stack.prec_step > 1);
-
-	while (true) {
-		iRRAM::cout.rewind();
-		for (int n = 0; n < st.max_active; n++)
-			st.cache_active->id[n]->rewind();
-
-		st.inReiterate = false;
-		assert(actual_stack.inlimit == 0);
-		assert(st.highlevel == (actual_stack.prec_step > 1));
-
-		int p_end = 0;
-		try {
-			result = f(args...);
-			if (iRRAM_likely(!st.infinite))
-				break;
-		} catch (const Iteration &it) {
-			p_end = actual_stack.actual_prec + it.prec_diff;
-		} catch (const iRRAM_Numerical_Exception &exc) {
-			cerr << "iRRAM exception: " << iRRAM_error_msg[exc.type]
-			     << "\n";
-			throw;
-		}
-
-		assert(st.highlevel == (actual_stack.prec_step > 1));
-
-		int prec_skip = 0;
-		do {
-			prec_skip++;
-			code.inc_step(4);
-		} while ((actual_stack.actual_prec > p_end) &&
-		         (prec_skip != st.prec_skip));
-
-		assert(actual_stack.inlimit == 0);
-		if (iRRAM_unlikely(st.debug > 0)) {
-			show_statistics();
-			if (st.max_prec <= actual_stack.prec_step)
-				st.max_prec = actual_stack.prec_step;
-			cerr << "increasing precision bound to "
-			     << actual_stack.actual_prec << "["
-			     << actual_stack.prec_step << "]\n";
-		}
-	}
-
-	iRRAM::cout.reset();
-	for (int n = 0; n < st.max_active; n++)
-		st.cache_active->id[n]->clear();
-
-	st.max_active = 0;
-	delete st.cache_active;
-	delete st.thread_data_address;
-
-	if (iRRAM_unlikely(st.debug > 0)) {
-		show_statistics();
-		cerr << "iRRAM ending \n";
-	}
-
-	return result;
+template <typename F, typename... Args>
+ret_void_t<F,Args...> exec(F f, const Args &... args)
+{
+	run(*state).exec(f, args...);
 }
 
 } // namespace iRRAM

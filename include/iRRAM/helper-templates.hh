@@ -60,6 +60,23 @@ template <typename... Args> struct is_continuous<FUNCTION<REAL,Args...>> : publi
 
 template <typename... T> using any_continuous = disjunction<is_continuous<T>...>;
 
+/* helper templates for invocation of functions:
+ * return type void or not usually need different implementations */
+
+template <typename F,typename... Args>
+using result_of_t = typename std::result_of<F &&(Args &&...)>::type;
+
+namespace internal {
+template <typename R> struct retval       { typedef R    value_type; };
+template <>           struct retval<void> { typedef void void_type; };
+}
+
+template <typename F,typename... Args>
+using ret_void_t = typename internal::retval<result_of_t<F,Args...>>::void_type;
+
+template <typename F,typename... Args>
+using ret_value_t = typename internal::retval<result_of_t<F,Args...>>::value_type;
+
 }
 
 #endif

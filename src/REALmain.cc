@@ -28,6 +28,8 @@ MA 02111-1307, USA.
 #include <cstring>
 #include <vector>
 
+#include <cfenv>
+
 #include <iRRAM/lib.h>
 
 
@@ -102,6 +104,88 @@ void show_statistics()
 		<<"["<<state->max_prec<<"]\n"; 
   else 
     cerr << "   maximal precision:  double\n"; 
+}
+
+run::run(state_t &st)
+: st(st)
+, code(st.prec_start, stiff::abs{})
+{
+	ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
+
+	if (iRRAM_unlikely(st.debug > 0)) {
+//		std::stringstream s;
+//		s << std::this_thread::get_id();
+		cerr << "\niRRAM (version " << iRRAM_VERSION_rt
+		     << ", backend " << iRRAM_BACKENDS << ")"
+//		     << " thread " << s.str()
+		     << " starting...\n";
+	}
+
+	st.thread_data_address = new iRRAM_thread_data_class;
+
+	// set the correct rounding mode for REAL using double intervals):
+	fesetround(FE_DOWNWARD);
+
+	st.cache_active = new cachelist;
+
+	if (iRRAM_unlikely(st.debug > 0))
+		st.max_prec = actual_stack.prec_step;
+
+	actual_stack.prec_policy = 1;
+	actual_stack.inlimit = 0;
+	st.highlevel = (actual_stack.prec_step > 1);
+}
+
+void run::loop_init()
+{
+	ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
+	iRRAM::cout.rewind();
+	for (int n = 0; n < st.max_active; n++)
+		st.cache_active->id[n]->rewind();
+
+	st.inReiterate = false;
+	assert(actual_stack.inlimit == 0);
+	assert(st.highlevel == (actual_stack.prec_step > 1));
+}
+
+void run::loop_fini(int p_end)
+{
+	ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
+	assert(st.highlevel == (actual_stack.prec_step > 1));
+
+	int prec_skip = 0;
+	do {
+		prec_skip++;
+		code.inc_step(4);
+	} while ((actual_stack.actual_prec > p_end) &&
+		 (prec_skip != st.prec_skip));
+
+	assert(actual_stack.inlimit == 0);
+
+	if (iRRAM_unlikely(st.debug > 0)) {
+		show_statistics();
+		if (st.max_prec <= actual_stack.prec_step)
+			st.max_prec = actual_stack.prec_step;
+		cerr << "increasing precision bound to "
+		     << actual_stack.actual_prec << "["
+		     << actual_stack.prec_step << "]\n";
+	}
+}
+
+run::~run()
+{
+	iRRAM::cout.reset();
+	for (int n = 0; n < st.max_active; n++)
+		st.cache_active->id[n]->clear();
+
+	st.max_active = 0;
+	delete st.cache_active;
+	delete st.thread_data_address;
+
+	if (iRRAM_unlikely(st.debug > 0)) {
+		show_statistics();
+		cerr << "iRRAM ending \n";
+	}
 }
 
 } // namespace iRRAM
