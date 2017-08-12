@@ -86,9 +86,9 @@ void show_statistics()
   cerr << "   max MP-memory used: "<<MP_max_space_count<<"\n"; 
 #endif
   cerr << "   total alloc'ed MPFR: "
-       << iRRAM_ext_mpfr_cache->total_alloc_var_count << "\n";
+       << state->ext_mpfr_cache.total_alloc_var_count << "\n";
   cerr << "   total free'd   MPFR: "
-       << iRRAM_ext_mpfr_cache->total_freed_var_count << "\n";
+       << state->ext_mpfr_cache.total_freed_var_count << "\n";
   double time;
   unsigned int memory;
   resources(time,memory);
@@ -329,5 +329,6 @@ extern "C" void iRRAM_initialize(int argc, char **argv)
 
 extern "C" void iRRAM_finalize()
 {
+	using namespace iRRAM;
 	MP_finalize;
 }

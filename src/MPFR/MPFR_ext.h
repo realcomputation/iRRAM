@@ -429,17 +429,6 @@ inline void ext_mpfr_duplicate_wo_init(const mpfr_t z1,mpfr_t z2)
   mpfr_set(z2,z1,iRRAM_mpfr_rounding_mode);
 }
 
-inline void ext_mpfr_duplicate_w_init(const mpfr_t z1,mpfr_ptr *z2)
-{
-/*  *z2 = (mpfr_ptr) malloc(sizeof (mpfr_t)); */
-/*  mpfr_init2(*z2,mpfr_get_prec(z1)); */
-  int q1=mpfr_get_prec(z1);
-  *z2=ext_mpfr_init();
-  if (mpfr_get_prec(*z2)< q1) mpfr_set_prec(*z2,q1);
-/*  ext_mpfr_var_count +=1; */
-  mpfr_set(*z2,z1,iRRAM_mpfr_rounding_mode);
-}
-
 inline void ext_mpfr_sqrt(const mpfr_t z1,mpfr_t z,int p)
 { int q,s1;
   s1=ext_mpfr_size(z1);
