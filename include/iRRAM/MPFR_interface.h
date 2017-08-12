@@ -32,6 +32,9 @@ MA 02111-1307, USA.
 # endif
 
 
+#define GMP_min -1000000000
+#define GMP_max 1000000000
+
 #define MP_min    GMP_min
 #define MP_max    GMP_max
 

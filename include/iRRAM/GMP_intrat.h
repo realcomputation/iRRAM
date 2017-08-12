@@ -44,11 +44,6 @@ Changelog: (initial version by Tom van Diessen)
 extern "C" {
 #endif
 
-/*GMP_min and GMP_max should go to the interface definitions!*/
-
-#define GMP_min -1000000000
-#define GMP_max 1000000000
-
 /********** counting vars **********/
 #define MaxFreeVars 1000
 extern iRRAM_TLS mpz_ptr gmp_FreeVarsi[MaxFreeVars];
