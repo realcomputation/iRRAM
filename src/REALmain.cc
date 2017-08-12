@@ -326,3 +326,8 @@ extern "C" void iRRAM_initialize(int argc, char **argv)
 	std::vector<char *> args(argv, argv+argc+1);
 	iRRAM_initialize2(&argc, &args[0]);
 }
+
+extern "C" void iRRAM_finalize()
+{
+	MP_finalize;
+}

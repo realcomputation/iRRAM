@@ -35,6 +35,7 @@ int main(int argc, char **argv)
 {
 	iRRAM_initialize2(&argc, argv);
 	iRRAM::exec(compute);
+	iRRAM_finalize();
 }
 
 #endif

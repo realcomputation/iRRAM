@@ -47,6 +47,7 @@ MA 02111-1307, USA.
 
 /* Backend initialization (if necessary) */
 #define MP_initialize   ext_mpfr_initialize()
+#define MP_finalize     ext_mpfr_finalize()
 
 /* Initialization of MP/integer/rational variables */
 #define MP_init(z)      do { z = ext_mpfr_init(); } while (0)
@@ -268,8 +269,6 @@ struct iRRAM_ext_mpfr_cache_t {
 	size_t total_freed_var_count;
 	mpfr_ptr free_vars[iRRAM_EXT_MPFR_CACHE_SIZE];
 };
-
-#define iRRAM_EXT_MPFR_CACHE_INIT { 0, 0, 0, 0, {0}, }
 
 extern iRRAM_TLS struct iRRAM_ext_mpfr_cache_t *iRRAM_ext_mpfr_cache;
 
