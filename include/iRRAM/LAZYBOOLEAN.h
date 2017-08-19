@@ -28,11 +28,18 @@ MA 02111-1307, USA.
 #ifndef iRRAM_LAZYBOOLEAN_H
 #define iRRAM_LAZYBOOLEAN_H
 
+#include <array>
+#include <functional>
 #include <initializer_list>
 
 #include <iRRAM/core.h>
+#include <iRRAM/STREAMS.h>
 
 namespace iRRAM {
+
+class LAZY_BOOLEAN;
+
+template <size_t N> using lazy_array = std::array<LAZY_BOOLEAN,N>;
 
 /*! \ingroup types */
 class LAZY_BOOLEAN
@@ -57,6 +64,8 @@ friend int choose(const LAZY_BOOLEAN& x1,
                   const LAZY_BOOLEAN& x6 );
 
 friend std::size_t choose(std::initializer_list<LAZY_BOOLEAN>);
+template <std::size_t N>
+friend std::size_t choose(const std::function<lazy_array<N>()> &pure_function);
 
 explicit operator bool() const;
 friend int check (const LAZY_BOOLEAN& x);
@@ -86,6 +95,36 @@ int choose(const LAZY_BOOLEAN& x1= false,
            const LAZY_BOOLEAN& x6= false );
 
 std::size_t choose(std::initializer_list<LAZY_BOOLEAN>);
+
+template <std::size_t N>
+inline std::size_t choose(const std::function<lazy_array<N>()> &pure_function)
+{
+	using std::find_if;
+
+	std::size_t result;
+	if (get_cached(result))
+		return result;
+
+	auto x = pure_function();
+
+	auto is_true = [](const LAZY_BOOLEAN &p)
+	               { return p.value == true; };
+	auto is_bot  = [](const LAZY_BOOLEAN &p)
+	               { return p.value == LAZY_BOOLEAN::BOTTOM; };
+
+	auto true_pos = find_if(begin(x), end(x), is_true);
+	if (true_pos != end(x)) {
+		result = true_pos - begin(x);
+	} else if (find_if(begin(x), end(x), is_bot) != end(x)) {
+		iRRAM_DEBUG1(1,"choose(pure-fun): lazy boolean value BOTTOM leading to iteration\n");
+		iRRAM_REITERATE(0);
+	} else {
+		result = 0;
+	}
+
+	put_cached(result);
+	return result;
+}
 
 } // namespace iRRAM
 
