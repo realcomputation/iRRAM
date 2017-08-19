@@ -29,6 +29,7 @@ MA 02111-1307, USA.
 #include <cstdio>	/* fprintf(3) */
 #include <algorithm>	/* std::min, std::max */
 #include <cstdint>	/* int32_t, uint32_t */
+#include <climits>
 #include <memory>	/* std::unique_ptr<state_t> */
 
 #include <iRRAM/common.h>

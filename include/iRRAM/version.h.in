@@ -2,6 +2,9 @@
 #ifndef iRRAM_VERSION_H
 #define iRRAM_VERSION_H
 
+/* fix for bug related to '::max_align_t' in <gmp.h> exposed since >=gcc-4.9 */
+#include <stddef.h>
+
 #define iRRAM_HAVE_TLS		@iRRAM_HAVE_TLS@
 #define iRRAM_TLS		@iRRAM_TLS@
 #define iRRAM_TLS_STD		@iRRAM_TLS_STD@

@@ -36,9 +36,9 @@ Changelog: (initial version by Tom van Diessen)
 #include <stdio.h>
 #include <string.h>
 
+#include <iRRAM/version.h>
 #include <gmp.h>
 
-#include <iRRAM/version.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -24,8 +24,8 @@ MA 02111-1307, USA.
 #ifndef MPFR_INTERFACE_H
 #define MPFR_INTERFACE_H
 
-#include <mpfr.h>
 #include <iRRAM/GMP_intrat.h>
+#include <mpfr.h>
 
 # ifndef BITS_PER_MP_LIMB
 #  define BITS_PER_MP_LIMB GMP_LIMB_BITS
