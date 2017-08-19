@@ -28,6 +28,8 @@ MA 02111-1307, USA.
 #ifndef iRRAM_LAZYBOOLEAN_H
 #define iRRAM_LAZYBOOLEAN_H
 
+#include <initializer_list>
+
 #include <iRRAM/core.h>
 
 namespace iRRAM {
@@ -53,6 +55,8 @@ friend int choose(const LAZY_BOOLEAN& x1,
                   const LAZY_BOOLEAN& x4,
                   const LAZY_BOOLEAN& x5,
                   const LAZY_BOOLEAN& x6 );
+
+friend std::size_t choose(std::initializer_list<LAZY_BOOLEAN>);
 
 explicit operator bool() const;
 friend int check (const LAZY_BOOLEAN& x);
@@ -80,6 +84,8 @@ int choose(const LAZY_BOOLEAN& x1= false,
            const LAZY_BOOLEAN& x4= false,
            const LAZY_BOOLEAN& x5= false,
            const LAZY_BOOLEAN& x6= false );
+
+std::size_t choose(std::initializer_list<LAZY_BOOLEAN>);
 
 } // namespace iRRAM
 

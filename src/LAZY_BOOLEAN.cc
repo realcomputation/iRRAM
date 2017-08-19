@@ -25,6 +25,8 @@ MA 02111-1307, USA.
 #include <cstdlib>
 #include <cstring>
 
+#include <algorithm>
+
 #include <iRRAM/LAZYBOOLEAN.h>
 #include <iRRAM/cache.h>
 #include <iRRAM/STREAMS.h> /* iRRAM_DEBUG* */
@@ -53,6 +55,33 @@ int check( const LAZY_BOOLEAN& lb) {
     put_cached(result);
   }
   return result;
+}
+
+std::size_t choose(std::initializer_list<LAZY_BOOLEAN> x)
+{
+	using std::find_if;
+
+	std::size_t result;
+	if (get_cached(result))
+		return result;
+
+	auto is_true = [](const LAZY_BOOLEAN &p)
+	               { return p.value == true; };
+	auto is_bot  = [](const LAZY_BOOLEAN &p)
+	               { return p.value == LAZY_BOOLEAN::BOTTOM; };
+
+	auto true_pos = find_if(begin(x), end(x), is_true);
+	if (true_pos != end(x)) {
+		result = true_pos - begin(x);
+	} else if (find_if(begin(x), end(x), is_bot) != end(x)) {
+		iRRAM_DEBUG1(1,"choose(init-list): lazy boolean value BOTTOM leading to iteration\n");
+		iRRAM_REITERATE(0);
+	} else {
+		result = 0;
+	}
+
+	put_cached(result);
+	return result;
 }
 
 int choose(const LAZY_BOOLEAN& x1,
