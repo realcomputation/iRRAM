@@ -170,10 +170,10 @@ private:
 
 };
 
-extern irstream cin;
-extern orstream cout;
-extern orstream cerr;
-extern orstream clog;
+extern iRRAM_TLS irstream cin;
+extern iRRAM_TLS orstream cout;
+extern iRRAM_TLS orstream cerr;
+extern iRRAM_TLS orstream clog;
 
 }
 

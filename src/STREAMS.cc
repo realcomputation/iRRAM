@@ -36,10 +36,10 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-orstream cerr(&std::cerr, false);
-orstream clog(&std::clog, false);
-orstream cout;
-irstream cin;
+iRRAM_TLS orstream cerr(&std::cerr, false);
+iRRAM_TLS orstream clog(&std::clog, false);
+iRRAM_TLS orstream cout;
+iRRAM_TLS irstream cin;
 
 orstream::orstream(std::ostream * s, bool respect_iteration)
 {
