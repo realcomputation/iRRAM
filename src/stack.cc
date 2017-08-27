@@ -45,8 +45,8 @@ namespace iRRAM {
 
 iRRAM_TLS state_proxy<iRRAM_HAVE_TLS> state;
 
-iRRAM_thread_data_class::iRRAM_thread_data_class() = default;
-iRRAM_thread_data_class::~iRRAM_thread_data_class() = default;
+mv_cache::mv_cache() = default;
+mv_cache::~mv_cache() = default;
 
 state_proxy<true>::state_proxy()
 : std::unique_ptr<state_t> { std::make_unique<state_t>() }

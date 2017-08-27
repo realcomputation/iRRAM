@@ -98,7 +98,7 @@ class REALMATRIX;
 class SPARSEREALMATRIX;
 template <typename R,typename... Args> class FUNCTION;
 class cachelist;
-class iRRAM_thread_data_class;
+struct mv_cache;
 
 
 struct iRRAM_Numerical_Exception {
@@ -129,7 +129,7 @@ struct state_t {
 	int DYADIC_precision = -60;
 	cachelist *cache_active = nullptr;
 	int max_active = 0;
-	iRRAM_thread_data_class *thread_data_address = nullptr;
+	mv_cache *cache_address = nullptr;
 
 	iRRAM_ext_mpfr_cache_t ext_mpfr_cache = iRRAM_EXT_MPFR_CACHE_INIT;
 	iRRAM_mpz_cache_t mpz_cache = iRRAM_MPZ_CACHE_INIT;
@@ -195,7 +195,7 @@ template <typename T> void modify_cached(const T &t, const state_t &st = *state)
 template <typename T>
 inline cache<T> & get_cache(const state_t &st)
 {
-	return *static_cast<cache<T> *>(st.thread_data_address);
+	return *static_cast<cache<T> *>(st.cache_address);
 }
 
 template <typename T>

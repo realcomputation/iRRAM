@@ -133,7 +133,7 @@ template <> struct is_cacheable<std::string> : std::true_type {};
 template <> struct is_cacheable<std::ostream *> : std::true_type {};
 template <> struct is_cacheable<std::istream *> : std::true_type {};
 
-struct iRRAM_thread_data_class final
+struct mv_cache final
 : cache<bool>
 , cache<short> // unused
 , cache<unsigned short> // unused
@@ -152,8 +152,8 @@ struct iRRAM_thread_data_class final
 , cache<std::ostream*>
 , cache<std::istream*>
 {
-iRRAM_thread_data_class();
-~iRRAM_thread_data_class();
+mv_cache();
+~mv_cache();
 };
 
 } // namespace iRRAM

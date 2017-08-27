@@ -123,7 +123,7 @@ run::run(state_t &st)
 		     << " starting...\n";
 	}
 
-	st.thread_data_address = new iRRAM_thread_data_class;
+	st.cache_address = new mv_cache;
 
 	// set the correct rounding mode for REAL using double intervals):
 	fesetround(FE_DOWNWARD);
@@ -182,7 +182,7 @@ run::~run()
 
 	st.max_active = 0;
 	delete st.cache_active;
-	delete st.thread_data_address;
+	delete st.cache_address;
 
 	if (iRRAM_unlikely(st.debug > 0)) {
 		show_statistics();

@@ -69,9 +69,9 @@ orstream::orstream(std::string s, std::ios::openmode mod)
 	real_f = float_form::absolute;
 
 	if (get_cached(target)) {
-		/*    state.thread_data_address->cache_ui.get(real_w);
-		    state.thread_data_address->cache_ui.get(real_f);
-		    state.thread_data_address->cache_b.get(_respect_iteration);*/
+		/*    get_cached<unsigned int>(real_w);
+		    get_cached<unsigned int>(real_f);
+		    get_cached<bool>(_respect_iteration);*/
 		iRRAM_DEBUG1(2,
 		             "I/O-handler: Recreating output stream '"
 		                     << s << "'(" << real_w << ")\n");
@@ -81,9 +81,9 @@ orstream::orstream(std::string s, std::ios::openmode mod)
 	iRRAM_DEBUG1(2, "I/O-handler: Creating new output stream '"
 	                        << s << "'\n");
 	put_cached(target);
-	/*    state.thread_data_address->cache_ui.put(real_w);
-	    state.thread_data_address->cache_ui.put(real_f);
-	    state.thread_data_address->cache_b.put(_respect_iteration);*/
+	/*    put_cached<unsigned int>(real_w);
+	    put_cached<unsigned int>(real_f);
+	    put_cached<bool>(_respect_iteration);*/
 }
 
 irstream::irstream()
