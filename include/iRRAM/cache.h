@@ -62,17 +62,17 @@ template <> struct get_type<MP_int_type> {
 };
 
 
-class iRRAM_cache_type{
+class cache_type{
 public:
 virtual void clear()=0;
 virtual void rewind() noexcept =0;
 };
 
 class cachelist{public:
-iRRAM_cache_type* id[50];
+cache_type* id[50];
 };
 
-template <class DATA> class iRRAM_cache : public iRRAM_cache_type
+template <class DATA> class cache : public cache_type
 {
 public:
 std::vector<typename get_type<DATA>::type> data;
@@ -134,23 +134,23 @@ template <> struct is_cacheable<std::ostream *> : std::true_type {};
 template <> struct is_cacheable<std::istream *> : std::true_type {};
 
 struct iRRAM_thread_data_class final
-: iRRAM_cache<bool>
-, iRRAM_cache<short> // unused
-, iRRAM_cache<unsigned short> // unused
-, iRRAM_cache<int>
-, iRRAM_cache<unsigned int> // unused
-, iRRAM_cache<long> // unusused
-, iRRAM_cache<unsigned long> // unused
-, iRRAM_cache<long long> // unused
-, iRRAM_cache<unsigned long long> // unused
-, iRRAM_cache<float> // unused
-, iRRAM_cache<double> // unused
-, iRRAM_cache<void*> // unused
-, iRRAM_cache<MP_type>
-, iRRAM_cache<MP_int_type>
-, iRRAM_cache<std::string>
-, iRRAM_cache<std::ostream*>
-, iRRAM_cache<std::istream*>
+: cache<bool>
+, cache<short> // unused
+, cache<unsigned short> // unused
+, cache<int>
+, cache<unsigned int> // unused
+, cache<long> // unusused
+, cache<unsigned long> // unused
+, cache<long long> // unused
+, cache<unsigned long long> // unused
+, cache<float> // unused
+, cache<double> // unused
+, cache<void*> // unused
+, cache<MP_type>
+, cache<MP_int_type>
+, cache<std::string>
+, cache<std::ostream*>
+, cache<std::istream*>
 {
 iRRAM_thread_data_class();
 ~iRRAM_thread_data_class();
