@@ -33,12 +33,23 @@ namespace iRRAM {
 template <typename T,void (*clearfct)(T &)>
 struct wrap_type {
 	T v;
+
 	wrap_type() noexcept(noexcept(T())) : v(T()) {}
+
 	wrap_type(const T &v) noexcept(noexcept(T(v))) : v(v) {}
-	wrap_type(wrap_type &&o) noexcept(noexcept(std::swap(v, o.v))) : wrap_type() { using std::swap; swap(v, o.v); }
+
+	wrap_type(wrap_type &&o) noexcept(noexcept(std::swap(v, o.v)))
+	: wrap_type()
+	{ using std::swap; swap(v, o.v); }
+
 	~wrap_type() noexcept { clearfct(v); }
-	wrap_type & operator=(const T &_v) noexcept(noexcept(const_cast<T &>(_v)=_v)) { v = _v; return *this; }
-	wrap_type & operator=(wrap_type o) noexcept(noexcept(std::swap(v, o.v))) { using std::swap; swap(v, o.v); return *this; }
+
+	wrap_type & operator=(const T &_v) noexcept(noexcept(const_cast<T &>(_v)=_v))
+	{ v = _v; return *this; }
+
+	wrap_type & operator=(wrap_type o) noexcept(noexcept(std::swap(v, o.v)))
+	{ using std::swap; swap(v, o.v); return *this; }
+
 	operator T() const noexcept { return v; }
 };
 
@@ -62,56 +73,62 @@ template <> struct get_type<MP_int_type> {
 };
 
 
-class cache_type{
-public:
-virtual void clear()=0;
-virtual void rewind() noexcept =0;
-};
-
-class cachelist{public:
-cache_type* id[50];
-};
-
-template <class DATA> class cache : public cache_type
+struct cache_type
 {
+	virtual void clear() = 0;
+	virtual void rewind() noexcept = 0;
+};
+
+struct cachelist
+{
+	cache_type * id[50];
+};
+
+template <class DATA>
+class cache : public cache_type
+{
+	std::vector<typename get_type<DATA>::type> data;
+	unsigned int current = 0;
+	bool active = false;
+
+	void activate()
+	{
+		data.clear();
+		active = true;
+		state->cache_active->id[state->max_active++] = this;
+		current = 0;
+	}
+
 public:
-std::vector<typename get_type<DATA>::type> data;
-unsigned int current = 0;
-bool active = false;
+	void put(const DATA & x)
+	{
+		if (iRRAM_unlikely(!active))
+			activate();
+		data.emplace_back(x);
+		current++;
+	}
 
-void put(const DATA& x){
-  if (iRRAM_unlikely(!active)){activate();}
-  data.emplace_back(x);
-  current++;
-};
+	bool get(DATA & x) noexcept(noexcept(x=x))
+	{
+		if (current >= data.size())
+			return false;
+		x = data[current++];
+		return true;
+	}
 
-bool get(DATA& x) noexcept(noexcept(x=x)) {
-  if (current>=data.size())return false;
-    x=data[current++];
-  return true; 
-}
+	void modify(const DATA & x) noexcept(noexcept(const_cast<DATA &>(x)=x))
+	{
+		data[current - 1] = x;
+	}
 
-void modify(const DATA& x) noexcept(noexcept(const_cast<DATA &>(x)=x)) {
-  data[current-1]=x;
-}
+	void rewind() noexcept { current = 0; }
 
-void rewind() noexcept {
-  current=0;
-};
-
-void clear(){
-  data.clear();
-  active=false;
-  current=0;
-};
-
-void activate(){
-  data.clear();
-  active=true;
-  state->cache_active->id[state->max_active++]=this;
-  current=0;
-};
-
+	void clear()
+	{
+		data.clear();
+		active = false;
+		current = 0;
+	}
 };
 
 template <typename T> struct is_cacheable : std::false_type {};
@@ -152,8 +169,8 @@ struct mv_cache final
 , cache<std::ostream*>
 , cache<std::istream*>
 {
-mv_cache();
-~mv_cache();
+	mv_cache();
+	~mv_cache();
 };
 
 } // namespace iRRAM

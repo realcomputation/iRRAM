@@ -97,7 +97,7 @@ class INTERVAL;
 class REALMATRIX;
 class SPARSEREALMATRIX;
 template <typename R,typename... Args> class FUNCTION;
-class cachelist;
+struct cachelist;
 struct mv_cache;
 
 
