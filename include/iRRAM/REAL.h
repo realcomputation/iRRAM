@@ -502,10 +502,10 @@ inline REAL & REAL::operator=(const REAL & y)
 			return (*this);
 		}
 		if (y.value) {
-			if (state->ACTUAL_STACK.prec_step == 0)
-				this->mp_from_mp(y);
-			else
+			if (state->highlevel)
 				this->mp_copy_init(y);
+			else
+				this->mp_from_mp(y);
 			return *this;
 		}
 		dp = y.dp;
@@ -526,7 +526,7 @@ inline void swap(REAL &a, REAL &b) noexcept
 }
 
 /* TODO: what are iRRAM's semantics of REAL assignment?
- * Take the highest MPFR precision if ACTUAL_STACK.prec_step > 0?
+ * Take the highest MPFR precision if ACTUAL_STACK.prec_step > iRRAM_DEFAULT_PREC_START?
 inline REAL & REAL::operator=(REAL &&y) noexcept
 {
 	if (this == &y)
@@ -539,10 +539,10 @@ inline REAL & REAL::operator=(REAL &&y) noexcept
 			return *this;
 		}
 		if (y.value) {
-			if (ACTUAL_STACK.prec_step == 0)
-				mp_from_mp(y);
-			else
+			if (state->highlevel)
 				
+			else
+				mp_from_mp(y);
 		}
 	}
 	dp = y.dp;

@@ -111,7 +111,7 @@ protected:
 		if (iRRAM_prec_steps <= n) n = iRRAM_prec_steps-1;
 		state->ACTUAL_STACK.prec_step = n;
 		state->ACTUAL_STACK.actual_prec = iRRAM_prec_array[state->ACTUAL_STACK.prec_step];
-		state->highlevel = (state->ACTUAL_STACK.prec_step > 1);
+		state->highlevel = (state->ACTUAL_STACK.prec_step > iRRAM_DEFAULT_PREC_START);
 	}
 
 public:

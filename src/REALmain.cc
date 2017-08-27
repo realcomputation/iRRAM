@@ -96,7 +96,7 @@ void show_statistics()
   cerr << "   CPU-Time for pi:    "<<pi_time<<" s\n";
   cerr << "   total CPU-Time:     "<<time<<" s\n";
   //cerr << "   total Memory:       "<<memory/1024<<" KB\n";
-  if ( actual_stack().prec_step != 1) 
+  if (actual_stack().prec_step != iRRAM_DEFAULT_PREC_START)
     cerr << "   basic precision:    "<<actual_stack().actual_prec
 		<<"["<<actual_stack().prec_step<<"]\n"; 
   else 
@@ -135,7 +135,7 @@ run::run(state_t &st)
 
 	actual_stack.prec_policy = 1;
 	actual_stack.inlimit = 0;
-	st.highlevel = (actual_stack.prec_step > 1);
+	st.highlevel = (actual_stack.prec_step > iRRAM_DEFAULT_PREC_START);
 }
 
 void run::loop_init()
@@ -147,13 +147,13 @@ void run::loop_init()
 
 	st.inReiterate = false;
 	assert(actual_stack.inlimit == 0);
-	assert(st.highlevel == (actual_stack.prec_step > 1));
+	assert(st.highlevel == (actual_stack.prec_step > iRRAM_DEFAULT_PREC_START));
 }
 
 void run::loop_fini(int p_end)
 {
 	ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
-	assert(st.highlevel == (actual_stack.prec_step > 1));
+	assert(st.highlevel == (actual_stack.prec_step > iRRAM_DEFAULT_PREC_START));
 
 	int prec_skip = 0;
 	do {
