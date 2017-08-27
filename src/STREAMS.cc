@@ -68,29 +68,22 @@ orstream::orstream(std::string s, std::ios::openmode mod)
 	real_w = 20;
 	real_f = float_form::absolute;
 
-	if (actual_stack().inlimit == 0) {
-		if (cache<std::ostream *>().get(target)) {
-			/*    state.thread_data_address->cache_ui.get(real_w);
-			    state.thread_data_address->cache_ui.get(real_f);
-			    state.thread_data_address->cache_b.get(_respect_iteration);*/
-			iRRAM_DEBUG1(2,
-			             "I/O-handler: Recreating output stream '"
-			                     << s << "'(" << real_w << ")\n");
-			return;
-		}
-		target = new std::ofstream(s.c_str(), mod);
-		iRRAM_DEBUG1(2, "I/O-handler: Creating new output stream '"
-		                        << s << "'\n");
-		cache<std::ostream *>().put(target);
-		/*    state.thread_data_address->cache_ui.put(real_w);
-		    state.thread_data_address->cache_ui.put(real_f);
-		    state.thread_data_address->cache_b.put(_respect_iteration);*/
-	} else {
-		target = new std::ofstream(s.c_str(), mod);
-		iRRAM_DEBUG1(2, "I/O-handler: Creating new output stream '"
-		                        << s << "'\n");
+	if (get_cached(target)) {
+		/*    state.thread_data_address->cache_ui.get(real_w);
+		    state.thread_data_address->cache_ui.get(real_f);
+		    state.thread_data_address->cache_b.get(_respect_iteration);*/
+		iRRAM_DEBUG1(2,
+		             "I/O-handler: Recreating output stream '"
+		                     << s << "'(" << real_w << ")\n");
+		return;
 	}
-	return;
+	target = new std::ofstream(s.c_str(), mod);
+	iRRAM_DEBUG1(2, "I/O-handler: Creating new output stream '"
+	                        << s << "'\n");
+	put_cached(target);
+	/*    state.thread_data_address->cache_ui.put(real_w);
+	    state.thread_data_address->cache_ui.put(real_f);
+	    state.thread_data_address->cache_b.put(_respect_iteration);*/
 }
 
 irstream::irstream()
@@ -106,20 +99,12 @@ irstream::irstream(std::string s, std::ios::openmode mod)
 		                "section!\n");
 		return;
 	}
-	if (actual_stack().inlimit == 0) {
-		if (cache<std::istream *>().get(target)) {
-			return;
-		}
-		iRRAM_DEBUG1(2, "I/O-handler: Creating new input stream '"
-		                        << s << "'\n");
-		target = new std::ifstream(s.c_str(), mod);
-		cache<std::istream *>().put(target);
-	} else {
-		iRRAM_DEBUG1(2, "I/O-handler: Creating new input stream '"
-		                        << s << "'\n");
-		target = new std::ifstream(s.c_str(), mod);
-	}
-	return;
+	if (get_cached(target))
+		return;
+	iRRAM_DEBUG1(2, "I/O-handler: Creating new input stream '"
+	                        << s << "'\n");
+	target = new std::ifstream(s.c_str(), mod);
+	put_cached(target);
 }
 
 
@@ -233,35 +218,30 @@ irstream::~irstream()
 }
 
 
-#define iRRAM_in(VAR, CACHE)                                                   \
+#define iRRAM_in(VAR)                                                          \
 	if (actual_stack().inlimit > 0) {                                      \
 		iRRAM_DEBUG1(2, "illegal input in continuous section!\n");     \
 		return *this;                                                  \
 	}                                                                      \
-	if (actual_stack().inlimit == 0) {                                     \
-		if (CACHE.get(VAR)) {                                          \
-			return *this;                                          \
-		}                                                              \
+	if (!get_cached(VAR)) {                                                \
 		{ single_valued code; *target >> VAR; }                        \
-		CACHE.put(VAR);                                                \
-	} else {                                                               \
-		*target >> VAR;                                                \
+		put_cached(VAR);                                               \
 	}                                                                      \
 	return *this;
 
 
-irstream& irstream::operator>>(bool& b)            {iRRAM_in(b,cache<bool>());}
-irstream& irstream::operator>>(short& i)           {iRRAM_in(i,cache<short>());}
-irstream& irstream::operator>>(unsigned short& ui) {iRRAM_in(ui,cache<unsigned short>());}
-irstream& irstream::operator>>(int& i)             {iRRAM_in(i,cache<int>());}
-irstream& irstream::operator>>(unsigned int& ui)   {iRRAM_in(ui,cache<unsigned>());}
-irstream& irstream::operator>>(long& l)            {iRRAM_in(l,cache<long>());}
-irstream& irstream::operator>>(unsigned long& ul)  {iRRAM_in(ul,cache<unsigned long>());}
-irstream& irstream::operator>>(float& d)           {iRRAM_in(d,cache<float>());}
-irstream& irstream::operator>>(double& d)          {iRRAM_in(d,cache<double>());}
-irstream& irstream::operator>>(long long& ll)      {iRRAM_in(ll,cache<long long>());}
-irstream& irstream::operator>>(unsigned long long& ull) {iRRAM_in(ull,cache<unsigned long long>());}
-irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s,cache<std::string>());}
+irstream& irstream::operator>>(bool& b)            {iRRAM_in(b);}
+irstream& irstream::operator>>(short& i)           {iRRAM_in(i);}
+irstream& irstream::operator>>(unsigned short& ui) {iRRAM_in(ui);}
+irstream& irstream::operator>>(int& i)             {iRRAM_in(i);}
+irstream& irstream::operator>>(unsigned int& ui)   {iRRAM_in(ui);}
+irstream& irstream::operator>>(long& l)            {iRRAM_in(l);}
+irstream& irstream::operator>>(unsigned long& ul)  {iRRAM_in(ul);}
+irstream& irstream::operator>>(float& d)           {iRRAM_in(d);}
+irstream& irstream::operator>>(double& d)          {iRRAM_in(d);}
+irstream& irstream::operator>>(long long& ll)      {iRRAM_in(ll);}
+irstream& irstream::operator>>(unsigned long long& ull) {iRRAM_in(ull);}
+irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s);}
 
 #define iRRAM_in2(VAR, DATA)                                                   \
 	std::string s;                                                         \
@@ -270,110 +250,99 @@ irstream& irstream::operator>>(std::string& s)     {iRRAM_in(s,cache<std::string
 		                "section!\n");                                 \
 		return *this;                                                  \
 	}                                                                      \
-	if (actual_stack().inlimit == 0) {                                     \
-		if (get_cached(s)) {                                           \
-			VAR = DATA(s);                                         \
-			return *this;                                          \
-		}                                                              \
-		{ single_valued code; *target >> s; VAR = DATA(s); }           \
+	if (!get_cached(s)) {                                                  \
+		{ single_valued code; *target >> s; }                          \
 		put_cached(s);                                                 \
-	} else {                                                               \
-		*target >> s;                                                  \
-		VAR = DATA(s);                                                 \
-	};                                                                     \
+	}                                                                      \
+	{ single_valued code; VAR = DATA(s); }                                 \
 	return *this;
 
 irstream & irstream::operator>>(REAL & d)    { iRRAM_in2(d, REAL); }
 irstream & irstream::operator>>(INTEGER & d) { iRRAM_in2(d, INTEGER); }
 // irstream&  irstream::operator>>(DYADIC& d){iRRAM_in2(d,DYADIC);}
 
-#define iRRAM_inexec(VAR, CACHE, STMNT)                                        \
+#define iRRAM_inexec(VAR, STMNT)                                               \
 	if (actual_stack().inlimit > 0) {                                      \
 		iRRAM_DEBUG1(2, "I/O-handler: Illegal input in continuous "    \
 		                "section!\n");                                 \
 		return VAR;                                                    \
 	}                                                                      \
-	if (actual_stack().inlimit == 0) {                                     \
-		if (CACHE.get(VAR)) {                                          \
-			return VAR;                                            \
-		}                                                              \
+	if (!get_cached(VAR)) {                                                \
 		{ single_valued code; STMNT; }                                 \
-		CACHE.put(VAR);                                                \
-	} else { /* TODO: wtf? that can't happen... */                         \
-		STMNT;                                                         \
+		put_cached(VAR);                                               \
 	}                                                                      \
 	return VAR;
 
 bool orstream::eof()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = target->eof())
+	iRRAM_inexec(test, test = target->eof())
 }
 
 bool orstream::fail()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = target->fail())
+	iRRAM_inexec(test, test = target->fail())
 }
 
 bool orstream::good()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = target->good())
+	iRRAM_inexec(test, test = target->good())
 }
 
 bool orstream::bad()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = target->bad())
+	iRRAM_inexec(test, test = target->bad())
 }
 
 bool operator!(orstream & x)
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = (x.target->fail()))
+	iRRAM_inexec(test, test = (x.target->fail()))
 }
 
 orstream::operator bool()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = !(target->fail()))
+	iRRAM_inexec(test, test = !(target->fail()))
 }
 
 bool irstream::eof()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = target->eof())
+	iRRAM_inexec(test, test = target->eof())
 }
 
 bool irstream::fail()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = target->fail())
+	iRRAM_inexec(test, test = target->fail())
 }
 
 bool irstream::good()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = target->good())
+	iRRAM_inexec(test, test = target->good())
 }
 
 bool irstream::bad()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = target->bad())
+	iRRAM_inexec(test, test = target->bad())
 }
 
 bool operator!(irstream & x)
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = x.target->fail())
+	iRRAM_inexec(test, test = x.target->fail())
 }
 
 irstream::operator bool()
 {
 	bool test = false;
-	iRRAM_inexec(test, cache<bool>(), test = !target->fail())
+	iRRAM_inexec(test, test = !target->fail())
 }
 
 
