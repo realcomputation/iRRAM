@@ -434,7 +434,7 @@ inline REAL& REAL::operator = (const REAL& y) {
 		return (*this);
 	}
 	if ( y.value ){
-		if (ACTUAL_STACK.prec_step==0) this->mp_from_mp(y);
+		if (ACTUAL_STACK.prec_step==1) this->mp_from_mp(y);
 		else this->mp_copy_init(y);
 		return (*this);
 	}
