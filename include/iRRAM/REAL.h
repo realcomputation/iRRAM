@@ -335,6 +335,13 @@ inline sizetype geterror(const REAL &r) { return r.geterror(); }
 /*! \relates REAL */
 inline void     seterror(REAL &r, const sizetype &err) { r.seterror(err); }
 
+inline void     adderror(REAL &r, const sizetype &err) { r.adderror(err); }
+
+inline void     to_formal_ball(const REAL &r, DYADIC &center, sizetype &err)
+{
+	r.to_formal_ball(center, err);
+}
+
 // for the sake of proving computational adequacy:
 // if q=module(f,x,p), then |z-x|<2^q => |f(z)-f(x)| < 2^p
 //! \related REAL
