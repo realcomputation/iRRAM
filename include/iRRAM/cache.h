@@ -75,6 +75,8 @@ template <> struct get_type<MP_int_type> {
 
 struct cache_type
 {
+	/* never invoked; just to silence compiler */
+	virtual ~cache_type() noexcept = default;
 	virtual void clear() = 0;
 	virtual void rewind() noexcept = 0;
 };
