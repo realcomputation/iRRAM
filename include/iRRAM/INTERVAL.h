@@ -65,7 +65,7 @@ INTERVAL & operator=(INTERVAL &&x) noexcept = default;
 friend INTERVAL  operator +  (      INTERVAL  x, const INTERVAL& y) { x += y; return x; }
 friend INTERVAL& operator += (      INTERVAL& x, const INTERVAL& y);
 
-friend INTERVAL  operator -  (      INTERVAL  x, const INTERVAL& y) { x += y; return x; }
+friend INTERVAL  operator -  (      INTERVAL  x, const INTERVAL& y) { x -= y; return x; }
 friend INTERVAL& operator -= (      INTERVAL& x, const INTERVAL& y);
 friend INTERVAL  operator -  (const INTERVAL& x);
 
