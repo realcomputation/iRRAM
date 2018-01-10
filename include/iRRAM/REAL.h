@@ -90,31 +90,19 @@ public:
 	REAL & operator+=(const REAL &);
 
 	template <typename A,typename B>
-	friend enable_if_compat<REAL,A,B> operator+(const A &a, const B &b)
-	{
-		return a+REAL(b);
-	}
+	friend enable_if_compat<REAL,A,B> operator+(const A &a, const B &b);
 
 	template <typename A,typename B>
-	friend enable_if_compat<REAL,A,B> operator+(const B &b, const A &a)
-	{
-		return a+b;
-	}
+	friend enable_if_compat<REAL,A,B> operator+(const B &b, const A &a);
 
 
 	friend REAL operator-(const REAL &x, const REAL &y);
 
 	template <typename A,typename B>
-	friend enable_if_compat<REAL,A,B> operator-(const A &a, const B &b)
-	{
-		return a-REAL(b);
-	}
+	friend enable_if_compat<REAL,A,B> operator-(const A &a, const B &b);
 
 	template <typename A,typename B>
-	friend enable_if_compat<REAL,A,B> operator-(const B &b, const A &a)
-	{
-		return REAL(b)-a;
-	}
+	friend enable_if_compat<REAL,A,B> operator-(const B &b, const A &a);
 
 	/* double not optimized yet, maybe MPFR contains "x-d" and "d-x" */
 	REAL operator-() const;
@@ -124,16 +112,10 @@ public:
 	friend REAL operator*(const REAL &x, const REAL &y);
 
 	template <typename A,typename B>
-	friend enable_if_compat<REAL,A,B> operator*(const A &a, const B &b)
-	{
-		return a*REAL(b);
-	}
+	friend enable_if_compat<REAL,A,B> operator*(const A &a, const B &b);
 
 	template <typename A,typename B>
-	friend enable_if_compat<REAL,A,B> operator*(const B &b, const A &a)
-	{
-		return a*b;
-	}
+	friend enable_if_compat<REAL,A,B> operator*(const B &b, const A &a);
 
 	REAL & operator*=(const REAL &y) { return *this = *this * y; }
 	REAL & operator*=(      int   n);
@@ -141,16 +123,11 @@ public:
 	friend REAL operator/(const REAL &x, const REAL &y);
 
 	template <typename A,typename B>
-	friend enable_if_compat<REAL,A,B> operator/(const A &a, const B &b)
-	{
-		return a/REAL(b);
-	}
+	friend enable_if_compat<REAL,A,B> operator/(const A &a, const B &b);
 
 	template <typename A,typename B>
-	friend enable_if_compat<REAL,A,B> operator/(const B &b, const A &a)
-	{
-		return REAL(b)/a;
-	}
+	friend enable_if_compat<REAL,A,B> operator/(const B &b, const A &a);
+
 	REAL & operator/=(const REAL &y) { return *this = *this / y; }
 //	REAL & operator/=(      int   n);
 
@@ -360,6 +337,13 @@ inline sizetype geterror(const REAL &r) { return r.geterror(); }
 /*! \relates REAL */
 inline void     seterror(REAL &r, const sizetype &err) { r.seterror(err); }
 
+inline void     adderror(REAL &r, const sizetype &err) { r.adderror(err); }
+
+inline void     to_formal_ball(const REAL &r, DYADIC &center, sizetype &err)
+{
+	r.to_formal_ball(center, err);
+}
+
 // for the sake of proving computational adequacy:
 // if q=module(f,x,p), then |z-x|<2^q => |f(z)-f(x)| < 2^p
 //! \related REAL
@@ -488,7 +472,7 @@ inline REAL::REAL() : REAL(0) {}
 
 inline REAL::REAL(int i) : dp((double)i,-(double)i), value(nullptr)
 {
-	if (iRRAM_unlikely(state.highlevel))
+	if (iRRAM_unlikely(state->highlevel))
 		mp_from_int(i);
 }
 
@@ -496,7 +480,7 @@ inline REAL::REAL(double d) : dp(d,-d), value(nullptr)
 {
 	if (!std::isfinite(d))
 		throw iRRAM_Numerical_Exception(iRRAM_conversion_from_infinite);
-	if (iRRAM_unlikely(state.highlevel))
+	if (iRRAM_unlikely(state->highlevel))
 		mp_from_double(d);
 }
 
@@ -527,10 +511,10 @@ inline REAL & REAL::operator=(const REAL & y)
 			return (*this);
 		}
 		if (y.value) {
-			if (state.ACTUAL_STACK.prec_step == 0)
-				this->mp_from_mp(y);
-			else
+			if (state->highlevel)
 				this->mp_copy_init(y);
+			else
+				this->mp_from_mp(y);
 			return *this;
 		}
 		dp = y.dp;
@@ -551,7 +535,7 @@ inline void swap(REAL &a, REAL &b) noexcept
 }
 
 /* TODO: what are iRRAM's semantics of REAL assignment?
- * Take the highest MPFR precision if ACTUAL_STACK.prec_step > 0?
+ * Take the highest MPFR precision if ACTUAL_STACK.prec_step > iRRAM_DEFAULT_PREC_START?
 inline REAL & REAL::operator=(REAL &&y) noexcept
 {
 	if (this == &y)
@@ -564,10 +548,10 @@ inline REAL & REAL::operator=(REAL &&y) noexcept
 			return *this;
 		}
 		if (y.value) {
-			if (ACTUAL_STACK.prec_step == 0)
-				mp_from_mp(y);
-			else
+			if (state->highlevel)
 				
+			else
+				mp_from_mp(y);
 		}
 	}
 	dp = y.dp;
@@ -600,6 +584,30 @@ inline REAL operator+(const REAL& x, const REAL& y)
 	                              x.dp.upper_neg+y.dp.upper_neg));
 #endif
 }
+
+template <typename A,typename B>
+enable_if_compat<REAL,A,B> operator+(const A &a, const B &b) { return a+REAL(b); }
+
+template <typename A,typename B>
+enable_if_compat<REAL,A,B> operator+(const B &b, const A &a) { return a+b; }
+
+template <typename A,typename B>
+enable_if_compat<REAL,A,B> operator-(const A &a, const B &b) { return a-REAL(b); }
+
+template <typename A,typename B>
+enable_if_compat<REAL,A,B> operator-(const B &b, const A &a) { return REAL(b)-a; }
+
+template <typename A,typename B>
+enable_if_compat<REAL,A,B> operator*(const A &a, const B &b) { return a*REAL(b); }
+
+template <typename A,typename B>
+enable_if_compat<REAL,A,B> operator*(const B &b, const A &a) { return a*b; }
+
+template <typename A,typename B>
+enable_if_compat<REAL,A,B> operator/(const A &a, const B &b) { return a/REAL(b); }
+
+template <typename A,typename B>
+enable_if_compat<REAL,A,B> operator/(const B &b, const A &a) { return REAL(b)/a; }
 
 template <>
 inline REAL operator+(const REAL &x, const int &i)

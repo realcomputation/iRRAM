@@ -53,25 +53,25 @@ AS_VAR_POPDEF([CACHEVAR])dnl
 
 AC_DEFUN([IRRAM_TLS],[
   AC_LANG_PUSH([C])
-  IRRAM_CHECK_SCM([__thread])
-  IRRAM_CHECK_SCM([__declspec(thread)])
+  dnl IRRAM_CHECK_SCM([__thread])
+  dnl IRRAM_CHECK_SCM([__declspec(thread)])
   IRRAM_CHECK_SCM([_Thread_local])
   AC_LANG_POP([C])
 
   AC_LANG_PUSH([C++])
-  IRRAM_CHECK_SCM([__thread])
-  IRRAM_CHECK_SCM([__declspec(thread)])
+  dnl IRRAM_CHECK_SCM([__thread])
+  dnl IRRAM_CHECK_SCM([__declspec(thread)])
   IRRAM_CHECK_SCM([thread_local])
   AC_LANG_POP([C++])
 
   irram_tls=
-  AS_IF([test $irram_cv_check_scm_c___thread = yes &&
-         test $irram_cv_check_scm_cxx___thread = yes],
+  AS_IF([test "$irram_cv_check_scm_c___thread" = yes &&
+         test "$irram_cv_check_scm_cxx___thread" = yes],
     [irram_tls=__thread],
-    [AS_IF([test $irram_cv_check_scm_c___declspec_thread_ = yes &&
-            test $irram_cv_check_scm_cxx___declspec_thread_ = yes],
+    [AS_IF([test "$irram_cv_check_scm_c___declspec_thread_" = yes &&
+            test "$irram_cv_check_scm_cxx___declspec_thread_" = yes],
       [irram_tls="__declspec(thread)"],
-      [AS_IF([test $irram_cv_check_scm_c__Thread_local = yes &&
-              test $irram_cv_check_scm_cxx_thread_local = yes],
+      [AS_IF([test "$irram_cv_check_scm_c__Thread_local" = yes &&
+              test "$irram_cv_check_scm_cxx_thread_local" = yes],
         [irram_tls=thread_local])])])
 ])

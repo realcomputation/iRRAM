@@ -90,7 +90,7 @@ namespace iRRAM {
 void REAL::mp_make_mp()
 {
 	if (!std::isfinite(dp.upper_neg) || !std::isfinite(dp.lower_pos))
-		REITERATE(0);
+		iRRAM_REITERATE(0);
 	if (dp.upper_neg == -dp.lower_pos) {
 		// here we have a point interval...
 		if (!value)
@@ -177,13 +177,14 @@ REAL REAL::mp_addition(const REAL & y) const
 	MP_type zvalue;
 	sizetype zerror;
 	int local_prec;
-	if (state.ACTUAL_STACK.prec_policy == 0)
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
 		local_prec = max({y.error.exponent, this->error.exponent,
-		                  state.ACTUAL_STACK.actual_prec});
+		                  stack.actual_prec});
 	else {
 		local_prec = max(this->vsize.exponent, y.vsize.exponent);
 		local_prec = max({y.error.exponent, this->error.exponent,
-		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec});
+		                  local_prec - 50 + stack.actual_prec});
 	}
 	MP_init(zvalue);
 	MP_mv_add(this->value, y.value, zvalue, local_prec);
@@ -199,14 +200,15 @@ REAL REAL::mp_addition(const int n) const
 	MP_type zvalue;
 	sizetype zerror;
 	int local_prec = 0;
-	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max(this->error.exponent, state.ACTUAL_STACK.actual_prec);
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
+		local_prec = max(this->error.exponent, stack.actual_prec);
 	else {
 		sizetype ysize;
 		ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 		local_prec = max(this->vsize.exponent, ysize.exponent);
 		local_prec = max(this->error.exponent,
-		                 local_prec - 50 + state.ACTUAL_STACK.actual_prec);
+		                 local_prec - 50 + stack.actual_prec);
 	}
 	MP_init(zvalue);
 	MP_mv_addi(this->value, n, zvalue, local_prec);
@@ -218,13 +220,14 @@ REAL & REAL::mp_eqaddition(const REAL & y)
 {
 	MP_type zvalue;
 	int local_prec;
-	if (state.ACTUAL_STACK.prec_policy == 0)
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
 		local_prec = max({y.error.exponent, this->error.exponent,
-		                  state.ACTUAL_STACK.actual_prec});
+		                  stack.actual_prec});
 	else {
 		local_prec = max(this->vsize.exponent, y.vsize.exponent);
 		local_prec = max({y.error.exponent, this->error.exponent,
-		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec});
+		                  local_prec - 50 + stack.actual_prec});
 	}
 	MP_init(zvalue);
 	MP_mv_add(this->value, y.value, zvalue, local_prec);
@@ -250,8 +253,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 	}
 
 	std::string result;
-	if (state.ACTUAL_STACK.inlimit == 0 &&
-	    state.thread_data_address->cache_s.get(result))
+	if (get_cached(result))
 		return result;
 
 	int width = w;
@@ -272,7 +274,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 			iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) in "
 			                "conversion with precision 2^(%d)\n",
 			             x.error.mantissa, x.error.exponent, p);
-			REITERATE(p - x.error.exponent);
+			iRRAM_REITERATE(p - x.error.exponent);
 		}
 
 		if (s <= p) {
@@ -320,7 +322,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 			iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) in "
 			                "writing with precision 2^(%d)\n",
 			             x.error.mantissa, x.error.exponent, p);
-			REITERATE(p - x.error.exponent);
+			iRRAM_REITERATE(p - x.error.exponent);
 		}
 		erg = MP_swrite(x.value, width);
 		break;
@@ -352,8 +354,7 @@ std::string swrite(const REAL & x, const int w, const float_form form)
 
 	result = erg;
 	free(erg);
-	if (state.ACTUAL_STACK.inlimit == 0)
-		state.thread_data_address->cache_s.put(result);
+	put_cached(result);
 	return result;
 }
 
@@ -362,13 +363,14 @@ REAL REAL::mp_subtraction(const REAL & y) const
 	MP_type zvalue;
 	sizetype zerror;
 	int local_prec;
-	if (state.ACTUAL_STACK.prec_policy == 0)
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
 		local_prec = max({y.error.exponent, this->error.exponent,
-		                  state.ACTUAL_STACK.actual_prec});
+		                  stack.actual_prec});
 	else {
 		local_prec = max(this->vsize.exponent, y.vsize.exponent);
 		local_prec = max({y.error.exponent, this->error.exponent,
-		                  local_prec - 50 + state.ACTUAL_STACK.actual_prec});
+		                  local_prec - 50 + stack.actual_prec});
 	}
 	MP_init(zvalue);
 	MP_mv_sub(this->value, y.value, zvalue, local_prec);
@@ -387,15 +389,16 @@ REAL REAL::mp_subtraction(const int n) const
 	MP_type zvalue;
 	sizetype zerror;
 	int local_prec;
-	if (state.ACTUAL_STACK.prec_policy == 0)
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
 		local_prec =
-		        max(this->error.exponent, state.ACTUAL_STACK.actual_prec);
+		        max(this->error.exponent, stack.actual_prec);
 	else {
 		sizetype ysize;
 		ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 		local_prec = max(this->vsize.exponent, ysize.exponent);
 		local_prec = max(this->error.exponent,
-		                 local_prec - 50 + state.ACTUAL_STACK.actual_prec);
+		                 local_prec - 50 + stack.actual_prec);
 	}
 	MP_init(zvalue);
 	MP_mv_subi(this->value, n, zvalue, local_prec);
@@ -408,15 +411,16 @@ REAL REAL::mp_invsubtraction(const int n) const
 	MP_type zvalue;
 	sizetype zerror;
 	int local_prec;
-	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max(this->error.exponent, state.ACTUAL_STACK.actual_prec);
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
+		local_prec = max(this->error.exponent, stack.actual_prec);
 	else {
 		sizetype xsize, ysize;
 		MP_getsize(this->value, xsize);
 		ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 		local_prec = max(xsize.exponent, ysize.exponent);
 		local_prec = max(this->error.exponent,
-		                 local_prec - 50 + state.ACTUAL_STACK.actual_prec);
+		                 local_prec - 50 + stack.actual_prec);
 	}
 	MP_init(zvalue);
 	MP_mv_isub(n, this->value, zvalue, local_prec);
@@ -433,12 +437,13 @@ REAL REAL::mp_multiplication(const REAL & y) const
 	sizetype_add_wo_norm(sumerror, y.vsize, y.error);
 	proderror = sumerror * this->error;
 	zerror += proderror;
-	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
+		local_prec = max(zerror.exponent, stack.actual_prec);
 	else
 		local_prec = max(zerror.exponent,
 		                 this->vsize.exponent + y.vsize.exponent - 50 +
-		                         state.ACTUAL_STACK.actual_prec);
+		                         stack.actual_prec);
 	MP_init(zvalue);
 	MP_mv_mul(this->value, y.value, zvalue, local_prec);
 	zerror = sizetype_add_power2(zerror, local_prec);
@@ -453,12 +458,13 @@ REAL REAL::mp_multiplication(const int n) const
 	ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 	zerror = ysize * this->error;
 
-	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
+		local_prec = max(zerror.exponent, stack.actual_prec);
 	else
 		local_prec = max(zerror.exponent,
 		                 this->vsize.exponent + ysize.exponent - 50 +
-		                         state.ACTUAL_STACK.actual_prec);
+		                         stack.actual_prec);
 	MP_init(zvalue);
 	MP_mv_muli(this->value, n, zvalue, local_prec);
 	zerror = sizetype_add_power2(zerror, local_prec);
@@ -476,7 +482,7 @@ REAL REAL::mp_division(const REAL & y) const
 		                "denominator of size %d*2^(%d)\n",
 		             y.error.mantissa, y.error.exponent,
 		             y.vsize.mantissa, y.vsize.exponent);
-		REITERATE(0);
+		iRRAM_REITERATE(0);
 	}
 	h1 = this->vsize * y.error;
 	h2 = y.vsize * this->error;
@@ -486,12 +492,13 @@ REAL REAL::mp_division(const REAL & y) const
 	sizetype_dec(h3, y.error);
 	h2 = h3 * y.vsize;
 	sizetype_div(zerror, h1, h2);
-	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
+		local_prec = max(zerror.exponent, stack.actual_prec);
 	else
 		local_prec = max(zerror.exponent,
 		                 this->vsize.exponent - y.vsize.exponent - 50 +
-		                         state.ACTUAL_STACK.actual_prec);
+		                         stack.actual_prec);
 	MP_init(zvalue);
 	MP_mv_div(this->value, y.value, zvalue, local_prec);
 	zerror = sizetype_add_power2(zerror, local_prec);
@@ -505,12 +512,13 @@ REAL REAL::mp_division(const int n) const
 	int local_prec;
 	ysize = sizetype_normalize({(unsigned)(n > 0 ? n : -n), 0});
 	sizetype_div(zerror, this->error, ysize);
-	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
+		local_prec = max(zerror.exponent, stack.actual_prec);
 	else
 		local_prec = max(zerror.exponent,
 		                 this->vsize.exponent - ysize.exponent - 50 +
-		                         state.ACTUAL_STACK.actual_prec);
+		                         stack.actual_prec);
 	MP_init(zvalue);
 	MP_mv_divi(this->value, n, zvalue, local_prec);
 	zerror = sizetype_add_power2(zerror, local_prec);
@@ -533,12 +541,13 @@ REAL REAL::mp_square() const
 	zerror += proderror;
 	proderror = this->error * this->error;
 	zerror += proderror;
-	if (state.ACTUAL_STACK.prec_policy == 0)
-		local_prec = max(zerror.exponent, state.ACTUAL_STACK.actual_prec);
+	const auto &stack = actual_stack();
+	if (stack.prec_policy == 0)
+		local_prec = max(zerror.exponent, stack.actual_prec);
 	else
 		local_prec = max(zerror.exponent,
 		                 this->vsize.exponent + this->vsize.exponent -
-		                         50 + state.ACTUAL_STACK.actual_prec);
+		                         50 + stack.actual_prec);
 	MP_init(zvalue);
 	MP_mv_mul(this->value, this->value, zvalue, local_prec);
 	zerror = sizetype_add_power2(zerror, local_prec);
@@ -645,7 +654,7 @@ LAZY_BOOLEAN positive(const REAL & x, int k)
  * \param p accuracy
  * \return a dyadic approximation q that satisfies |x-q|<2^p.
  * \exception Iteration when \f$2^{p+1}<x_\varepsilon\f$
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  */
 DYADIC approx(const REAL & x, const int p)
 {
@@ -653,8 +662,7 @@ DYADIC approx(const REAL & x, const int p)
 		return approx(REAL(x).mp_conv(), p);
 	MP_type result;
 	MP_type erg;
-	if ((state.ACTUAL_STACK.inlimit == 0) &&
-	    state.thread_data_address->cache_mp.get(result)) {
+	if (get_cached(result)) {
 		MP_duplicate_w_init(result, erg);
 		return DYADIC(erg);
 	}
@@ -663,14 +671,14 @@ DYADIC approx(const REAL & x, const int p)
 		iRRAM_DEBUG2(1,
 		             "insufficient precision %d*2^(%d) in approx(%d)\n",
 		             x.error.mantissa, x.error.exponent, p);
-		REITERATE(p - x.error.exponent);
+		iRRAM_REITERATE(p - x.error.exponent);
 	}
 	MP_init(erg);
 	MP_copy(x.value, erg, p - 1);
 
-	if (state.ACTUAL_STACK.inlimit == 0) {
+	if (actual_stack().inlimit == 0) { /* TODO: make state_t::put_cached lambda-aware */
 		MP_duplicate_w_init(erg, result);
-		state.thread_data_address->cache_mp.put(result);
+		put_cached(result);
 	}
 	return DYADIC(erg);
 }
@@ -697,7 +705,7 @@ DYADIC approx(const REAL & x, const int p)
  * \exception iRRAM_Numerical_Exception(iRRAM_underflow_error)
  *    if x is exact with value zero. If x is not exact but zero, reiterations
  *    will be performed.
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  * \todo According to documentation, size(const REAL &) should compute
  * \f$\begin{cases}
  *    1+\lfloor\log_2|x|\rfloor\text,&x\neq 0
@@ -713,8 +721,7 @@ int size(const REAL & x)
 	if (!x.value)
 		return size(REAL(x).mp_conv());
 	int result = 0;
-	if ((state.ACTUAL_STACK.inlimit == 0) &&
-	    state.thread_data_address->cache_i.get(result))
+	if (get_cached(result))
 		return result;
 
 	sizetype x_max = x.vsize + x.error;
@@ -730,11 +737,10 @@ int size(const REAL & x)
 		        "insufficient precision %d*2^(%d) in size %d*2^(%d)\n",
 		        x.error.mantissa, x.error.exponent, x.vsize.mantissa,
 		        x.vsize.exponent);
-		REITERATE(0);
+		iRRAM_REITERATE(0);
 	}
 
-	if (state.ACTUAL_STACK.inlimit == 0)
-		state.thread_data_address->cache_i.put(result);
+	put_cached(result);
 	return result;
 }
 
@@ -746,8 +752,7 @@ int upperbound(const REAL & x)
 	}
 	int result;
 	sizetype ergsize;
-	if ((state.ACTUAL_STACK.inlimit == 0) &&
-	    state.thread_data_address->cache_i.get(result))
+	if (get_cached(result))
 		return result;
 	sizetype_add(ergsize, x.vsize, x.error);
 	while (ergsize.mantissa > (1 << 16)) {
@@ -763,8 +768,7 @@ int upperbound(const REAL & x)
 		ergsize.exponent += 1;
 	}
 	result = ergsize.exponent;
-	if (state.ACTUAL_STACK.inlimit == 0)
-		state.thread_data_address->cache_i.put(result);
+	put_cached(result);
 	return result;
 }
 
@@ -907,8 +911,7 @@ INTEGER REAL::as_INTEGER() const
 		return this->mp_conv().as_INTEGER();
 	}
 	MP_int_type result, value;
-	if ((state.ACTUAL_STACK.inlimit == 0) &&
-	    state.thread_data_address->cache_mpi.get(result)) {
+	if (get_cached(result)) {
 		MP_int_duplicate_w_init(result, value);
 		return value;
 	}
@@ -925,14 +928,14 @@ INTEGER REAL::as_INTEGER() const
 		iRRAM_DEBUG2(1, "insufficient precision %d*2^(%d) converting "
 		                "to integer\n",
 		             this->error.mantissa, this->error.exponent);
-		REITERATE(-y.error.exponent);
+		iRRAM_REITERATE(-y.error.exponent);
 	}
 	MP_int_init(value);
 	MP_mp_to_INTEGER(y.value, value);
 
-	if (state.ACTUAL_STACK.inlimit == 0) {
+	if (actual_stack().inlimit == 0) { /* TODO: ... or duplicate the MP_*_types */
 		MP_int_duplicate_w_init(value, result);
-		state.thread_data_address->cache_mpi.put(result);
+		put_cached(result);
 	}
 	return value;
 }
@@ -1035,7 +1038,7 @@ REAL strtoREAL2(const char *s, char **endptr)
 
 	stiff code;
 
-	int p = state.ACTUAL_STACK.actual_prec;
+	int p = actual_stack().actual_prec;
 	int m = z < k+n+1
 	      ? /* at least one non-zero digit */
 	        ((g+k-z+1)*10+2)/3+1 - p /* (g+k-z+1)*log_2(10)+1 - p */
@@ -1199,7 +1202,8 @@ int module(REAL (*f)(const REAL&),const REAL& x, int p){
 //  2^{p-1} from d, hence |f(x)-f(z)|<=2^p
 
   int result;
-  if ( (state.ACTUAL_STACK.inlimit==0) && state.thread_data_address->cache_i.get(result)) return result;
+  if (get_cached(result))
+    return result;
 
   DYADIC d;
   REAL x_copy=x;
@@ -1231,7 +1235,7 @@ int module(REAL (*f)(const REAL&),const REAL& x, int p){
     x_copy.seterror(argerror);
     x_copy.adderror(testerror);
     bool fail = false;
-  if ( iRRAM_unlikely(state.debug > 0 ) ) {
+  if ( iRRAM_unlikely(state->debug > 0 ) ) {
    sizetype x_error;
    x_copy.geterror(x_error);
   iRRAM_DEBUG2(1,"Testing module: 1*2^%d + %d*2^%d\n",p_arg,argerror.mantissa,argerror.exponent);
@@ -1240,7 +1244,7 @@ int module(REAL (*f)(const REAL&),const REAL& x, int p){
   try { 
       single_valued code;
       REAL z=f(x_copy);
-      if ( iRRAM_unlikely(state.debug > 0 ) ) {
+      if ( iRRAM_unlikely(state->debug > 0 ) ) {
         sizetype z_error;
         z.geterror(z_error);
         iRRAM_DEBUG2(1,"Module yields result %d*2^%d\n",z_error.mantissa,z_error.exponent);
@@ -1274,7 +1278,7 @@ int module(REAL (*f)(const REAL&),const REAL& x, int p){
   }
   
   result=argerror.exponent;
-  if ( state.ACTUAL_STACK.inlimit==0 ) state.thread_data_address->cache_i.put(result);
+  put_cached(result);
   return result;
 
 }

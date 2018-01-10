@@ -68,7 +68,7 @@ inline unsigned int scale(const unsigned int w,const int p) {return ((p<=GUARD_B
  *
  * \param [in,out] e
  *
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  * \exception Iteration when the resulting exponent is >= \ref MP_max
  */
 inline void sizetype_normalize( sizetype& e) {
@@ -86,7 +86,7 @@ inline void sizetype_normalize( sizetype& e) {
   if (iRRAM_unlikely( e.exponent >= MP_max ) )
   {
     iRRAM_DEBUG1(1,"exponent too big in sizetype_normalize ");
-    REITERATE(0);
+    iRRAM_REITERATE(0);
   }
 }
 
@@ -95,7 +95,7 @@ inline void sizetype_normalize( sizetype& e) {
  * \sa sizetype_normalize(sizetype &)
  * \param [in] e value to normalize
  * \return       \a e, normalized
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  * \exception Iteration when the resulting exponent is >= \ref MP_max
  */
 inline sizetype sizetype_normalize(sizetype &&e)
@@ -215,7 +215,7 @@ inline void sizetype_add(sizetype& x,const sizetype& y,const sizetype& z)
  *
  * \param [in] x, exp
  * \return \a x+2^\a exp, normalized
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  * \exception Iteration when the result is too large to be represented by a
  *                      normalized sizetype
  */
@@ -261,7 +261,7 @@ inline sizetype operator+(const sizetype& y,const sizetype& z)
  *
  * \param [out] x
  * \param [in] y, s
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  * \exception Iteration when the result is too large to be represented by a
  *                      normalized sizetype
  */
@@ -277,7 +277,7 @@ inline void sizetype_shift(sizetype& x, const sizetype& y, int s)
   } else  if ( iRRAM_unlikely(x.exponent >= MP_max) )
   {
     iRRAM_DEBUG1(1,"exponent too big in sizetype_shift ");
-    REITERATE(0);
+    iRRAM_REITERATE(0);
   }
 }
 
@@ -289,7 +289,7 @@ inline void sizetype_shift(sizetype& x, const sizetype& y, int s)
  *
  * \param [in] y, s
  * \return \a y left-shifted by \a s, normalized.
- * \sa REITERATE
+ * \sa iRRAM_REITERATE
  * \exception Iteration when the result is too large to be represented by a
  *                      normalized sizetype
  */

@@ -88,6 +88,9 @@ void compute(){
   z=y; z/=x;  if (z != RATIONAL(-35,9))  error(47);
   z=y; z/=-3; if (z != RATIONAL(7,9))  error(48);
 
+  if (power(RATIONAL(-2,3), 3U) != RATIONAL(-8,27)) error(49);
+  if (power(RATIONAL(2,-3), 0U) != RATIONAL(1,1)) error(50);
+
  cout << "test_RATIONAL:      passed\n";
  exit(0);
 }

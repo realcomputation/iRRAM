@@ -14,25 +14,43 @@
 
 #include <iRRAM/version.h>
 
-#ifndef iRRAM_BACKENDS
-# error error: no usable backend, defined iRRAM_BACKENDS
-#endif
-
-#if iRRAM_BACKEND_MPFR
-# include <iRRAM/MPFR_interface.h>
-#else
-# error "Currently no additional backend!"
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define iRRAM_DEFAULT_PREC_SKIP   5
+#define iRRAM_DEFAULT_PREC_START  1
+#define iRRAM_DEFAULT_DEBUG       0
+
+struct iRRAM_init_options {
+	int    starting_prec;
+	int    prec_inc;
+	double prec_factor;
+	int    debug;
+	int    prec_skip;
+	int    prec_start;
+};
+
+#define iRRAM_INIT_OPTIONS_INIT { \
+	/* .starting_prec = */ -50,                       \
+	/* .prec_inc      = */ -20,                       \
+	/* .prec_factor   = */  1.25,                     \
+	/* .debug         = */  iRRAM_DEFAULT_DEBUG,      \
+	/* .prec_skip     = */  iRRAM_DEFAULT_PREC_SKIP,  \
+	/* .prec_start    = */  iRRAM_DEFAULT_PREC_START, \
+}
 
 void iRRAM_initialize(int argc, char **argv);
 
 /*! \brief like iRRAM_initialize(), but modifies its arguments as to remove
  *         parsed options pertaining iRRAM. */
 void iRRAM_initialize2(int *argc, char **argv);
+
+void iRRAM_initialize3(const struct iRRAM_init_options *opts);
+
+int iRRAM_parse_args(struct iRRAM_init_options *opts, int *argc, char **argv);
+
+void iRRAM_finalize(void);
 
 extern const char *const *const iRRAM_error_msg;
 

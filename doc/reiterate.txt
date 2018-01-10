@@ -1,4 +1,4 @@
-REITERATE:
+iRRAM_REITERATE:
   sizetype_normalize(sizetype &)
   sizetype_shift(sizetype &)
 

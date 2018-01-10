@@ -137,7 +137,7 @@ static REAL iterate(REAL f(REAL &, REAL &), REAL const & a_0, REAL const & b_0)
 	single_valued code;
 	do {
 		e = f(a, b);
-	} while (!bound(e, 15 * state.ACTUAL_STACK.actual_prec / 16));
+	} while (!bound(e, 15 * actual_stack().actual_prec / 16));
 	//} while (! bound(e,ACTUAL_STACK.actual_prec));
 	a.geterror(a_error);
 	e.geterror(e_error);

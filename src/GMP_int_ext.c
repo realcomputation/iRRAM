@@ -24,111 +24,7 @@ MA 02111-1307, USA.
 
 #include <iRRAM/GMP_intrat.h>
 
-#include <strings.h>
-
-#ifndef DEBUG			/* debugging information */
-#define DEBUG 0
-#endif
-#if DEBUG > 0
-  int DEBUG_OP = 1;
-  unsigned int op_count=0;
-  int minshowop = DEBUG ;
-#endif
-
-/**************************************************************************/
-/* Variables for counting free space                                      */
-/**************************************************************************/
-
-iRRAM_TLS int_gmp_type gmp_FreeVarsi[MaxFreeVars];
-iRRAM_TLS int gmp_FreeVarCounti=0L;
-iRRAM_TLS int int_gmp_var_count=0;
-
-
-/**************************************************************************/
-/*  nth root of integer in GMP                                            */
-/*  added: 07.02.2001                                                     */
-/*  Last change: 07.02.2001                                               */
-/*  Comment: this root-function truncates the result to the integer part  */
-/*  Arguments: 1. GMP_integer                                             */
-/*  		  2. unsigned int                                         */
-/*  		  3. GMP_integer                                          */
-/**************************************************************************/
-
-void int_gmp_root(int_gmp_type z1, unsigned int z2, int_gmp_type z)
-{
-  mpz_root(z, z1, z2);
-  return;
-}
-
-/**************************************************************************/
-/*  power function in GMP                                                 */
-/*  calculates z = z1 ^ z2                                                */
-/*  added: 07.02.2001                                                     */
-/*  Last change: 07.02.2001                                               */
-/*  Comment: base=MP exponent=int                                         */
-/*  Arguments: 1. GMP_integer                                             */
-/*             2. unsigned integer                                        */
-/*             3. GMP_integer                                             */
-/**************************************************************************/
-
-void int_gmp_power_i(int_gmp_type z1, unsigned int z2, int_gmp_type z)
-{
- mpz_pow_ui(z, z1, z2);
- return;
-}
-
-/**************************************************************************/
-/* power function in GMP                                                  */
-/* calculates z = z1 ^ z2                                                 */
-/* added: 07.02.2001                                                      */
-/* Last change: 07.02.2001                                                */
-/* Comment: base=int exponent=int                                         */
-/* Arguments: 1. unsigned int                                             */
-/*            2. unsigned int                                             */
-/*            3. GMP_integer                                              */
-/**************************************************************************/
-
-void int_gmp_power_ii(unsigned int z1, unsigned int z2, int_gmp_type z)
-{
- mpz_ui_pow_ui(z, z1, z2);
- return;
-}
-
-/**************************************************************************/
-/* factorial function in GMP                                              */
-/* calculates z = z1!                                                     */
-/* added: 07.02.2001                                                      */
-/* Last change: 07.02.2001                                                */
-/* Comment: base is int                                                   */
-/* Arguments: 1. unsigned int                                             */
-/* 		  2. GMP_integer                                          */
-/**************************************************************************/
-
-void int_gmp_fac(unsigned int z1, int_gmp_type z)
-{
- mpz_fac_ui(z, z1);
- return;
-}
-
-/**************************************************************************/
-/* modulo function in GMP                                                 */
-/* calculates z = z1 % z2                                                 */
-/* added: 07.02.2001                                                      */
-/* Last change: 07.02.2001                                                */
-/* Arguments: 1. GMP_integer                                              */
-/* 		  2. GMP_integer                                          */
-/* 		  3. GMP_integer                                          */
-/**************************************************************************/
-
-void int_gmp_modulo(int_gmp_type z1, int_gmp_type z2, int_gmp_type z)
-{
- mpz_mod(z, z1, z2);
- return;
-}
-
-
-
-
+#include <string.h>
 
 /**************************************************************************/
 /* writes integer to a string                                             */
@@ -138,8 +34,7 @@ void int_gmp_modulo(int_gmp_type z1, int_gmp_type z2, int_gmp_type z)
 /* return: char*                                                          */
 /**************************************************************************/
 
-
-char* int_gmp_swritee(int_gmp_type z, int w)
+char* int_gmp_swritee(const mpz_t z, int w)
 {
   char *n, *s;
   int l;
@@ -162,35 +57,6 @@ char* int_gmp_swritee(int_gmp_type z, int w)
 
 
 
-/**************************************************************************/
-/* writes z to string with length calculated                              */
-/* added: 18.07.2001                                                      */
-/* Last change: 18.07.2001                                                */
-/* Arguments: 1. GMP_integer                                              */
-/*  return: char*                                                         */
-/**************************************************************************/
-
-char* int_gmp_sprintf(int_gmp_type z)
-{
-  return mpz_get_str(NULL,10,z);
-}
-
-
-/**************************************************************************/
-/* square root of GMP_integer                                             */
-/* calculates z = squareroot(z1)                                          */
-/* added: 01.02.2001                                                      */
-/* Last change: 01.02.2001                                                */
-/* Arguments: 1. GMP_integer                                              */
-/*            2. GMP_integer                                              */
-/**************************************************************************/
-
-void int_gmp_sqrt(int_gmp_type z1, int_gmp_type z)
-{
- mpz_sqrt(z,z1);
- return;
-}
-
 
 /**************************************************************************/
 /* shifting GMP_integer by n bits                                         */
@@ -202,7 +68,7 @@ void int_gmp_sqrt(int_gmp_type z1, int_gmp_type z)
 /*            3. int integer n                                            */
 /**************************************************************************/
 
-void int_gmp_shift(int_gmp_type z1, int_gmp_type z, int n)
+void int_gmp_shift(const mpz_t z1, mpz_t z, int n)
 {
   if (n>=0) mpz_mul_2exp(z, z1, n);
   else mpz_tdiv_q_2exp(z, z1, -n);  /* truncate-div */

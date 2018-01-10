@@ -38,9 +38,10 @@ static REAL ln2_approx(int prec)
 
 REAL ln2()
 {
-	if (state.ln2_err == 0)
-		state.ln2_val = new REAL;
-	if (state.ln2_err > state.ACTUAL_STACK.actual_prec || state.ln2_err == 0) {
+	REAL *&ln2_val = state->ln2_val;
+	if (state->ln2_err == 0)
+		ln2_val = new REAL;
+	if (state->ln2_err > actual_stack().actual_prec || state->ln2_err == 0) {
 		unsigned int dummy;
 		double s1;
 		resources(s1, dummy);
@@ -53,16 +54,16 @@ REAL ln2()
 			ln2_time -= s1;
 			resources(s1, dummy);
 			ln2_time += s1;
-			delete state.ln2_val;
-			state.ln2_val = new REAL;
-			*state.ln2_val = p * ln2a;
+			delete ln2_val;
+			ln2_val = new REAL;
+			*ln2_val = p * ln2a;
 			sizetype error;
-			state.ln2_val->geterror(error);
-			state.ln2_err = error.mantissa;
-			state.ln2_err = state.ACTUAL_STACK.actual_prec;
+			ln2_val->geterror(error);
+			state->ln2_err = error.mantissa;
+			state->ln2_err = actual_stack().actual_prec;
 		}
 	}
-	return *state.ln2_val;
+	return *ln2_val;
 }
 
 /*****************************************************************/
@@ -140,9 +141,10 @@ static REAL pi_inv_approx_BORWEIN(int prec)
 
 REAL pi()
 {
-	if (state.pi_err == 0)
-		state.pi_val = new REAL;
-	if (state.pi_err > state.ACTUAL_STACK.actual_prec || state.pi_err == 0) {
+	REAL *&pi_val = state->pi_val;
+	if (state->pi_err == 0)
+		pi_val = new REAL;
+	if (state->pi_err > actual_stack().actual_prec || state->pi_err == 0) {
 		//   pi_val = limit(pi_approx_MACHIN);
 		//   pi_val = limit(pi_approx_AGM);
 		unsigned int dummy;
@@ -150,19 +152,19 @@ REAL pi()
 		resources(s1, dummy);
 		stiff code;
 
-		delete state.pi_val;
-		state.pi_val = new REAL;
-		*state.pi_val = 1 / limit(pi_inv_approx_BORWEIN);
+		delete pi_val;
+		pi_val = new REAL;
+		*pi_val = 1 / limit(pi_inv_approx_BORWEIN);
 		pi_time -= s1;
 		resources(s1, dummy);
 		pi_time += s1;
 
 		sizetype error;
-		state.pi_val->geterror(error);
-		state.pi_err = error.mantissa;
-		state.pi_err = state.ACTUAL_STACK.actual_prec;
+		pi_val->geterror(error);
+		state->pi_err = error.mantissa;
+		state->pi_err = actual_stack().actual_prec;
 	}
-	return *state.pi_val;
+	return *pi_val;
 }
 
 } // namespace iRRAM

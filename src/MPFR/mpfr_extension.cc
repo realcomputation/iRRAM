@@ -25,10 +25,7 @@ MA 02111-1307, USA.
 #include <iRRAM/lib.h> /* iRRAM_exec */
 #include <iRRAM/mpfr_extension.h>
 
-#define MPFR_PREC(x) ((x)->_mpfr_prec)
-#define MPFR_SIZE(x) ((MPFR_PREC(x)-1)/BITS_PER_MP_LIMB+1)
-#define MPFR_EXP(x) ((x)->_mpfr_exp)
-#define MPFR_MANT(x) ((x)->_mpfr_d)
+#include "MPFR_ext.h"
 
 using namespace iRRAM;
 
@@ -55,8 +52,8 @@ void mpfr_ext_test (mpfr_ptr y, mpfr_srcptr u, int p, mp_rnd_t rnd_mode)
     do  {
        err=err-10;
        mpfr_wrapper(compute_test,r,u,err);
-//     printf(" %d %d %d\n",MPFR_EXP(r),err,MPFR_EXP(r)+err);
-     } while (!  mpfr_can_round(r,MPFR_EXP(r)+err ,__gmp_default_rounding_mode, rnd_mode, p ));
+//     printf(" %d %d %d\n",mpfr_get_exp(r),err,mpfr_get_exp(r)+err);
+     } while (!  mpfr_can_round(r,mpfr_get_exp(r)+err ,__gmp_default_rounding_mode, rnd_mode, p ));
  
      mpfr_set_prec(y,p);
      mpfr_set(y,r,rnd_mode);

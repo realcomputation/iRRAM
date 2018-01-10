@@ -29,8 +29,20 @@ MA 02111-1307, USA.
 #include <cstdio>	/* fprintf(3) */
 #include <algorithm>	/* std::min, std::max */
 #include <cstdint>	/* int32_t, uint32_t */
+#include <climits>
+#include <memory>	/* std::unique_ptr<state_t> */
 
 #include <iRRAM/common.h>
+
+#ifndef iRRAM_BACKENDS
+# error error: no usable backend, defined iRRAM_BACKENDS
+#endif
+
+#if iRRAM_BACKEND_MPFR
+# include <iRRAM/MPFR_interface.h>
+#else
+# error "Currently no additional backend!"
+#endif
 
 namespace iRRAM {
 
@@ -85,8 +97,8 @@ class INTERVAL;
 class REALMATRIX;
 class SPARSEREALMATRIX;
 template <typename R,typename... Args> class FUNCTION;
-class cachelist;
-class iRRAM_thread_data_class;
+struct cachelist;
+struct mv_cache;
 
 
 struct iRRAM_Numerical_Exception {
@@ -103,11 +115,11 @@ struct ITERATION_DATA {
 };
 
 struct state_t {
-	int debug = 0;
+	int debug = iRRAM_DEFAULT_DEBUG;
 	int infinite = 0;
-	int prec_skip = 5;
+	int prec_skip = iRRAM_DEFAULT_PREC_SKIP;
 	int max_prec = 1;
-	int prec_start = 1;
+	int prec_start = iRRAM_DEFAULT_PREC_START;
 	bool highlevel = false; /* TODO: remove: iRRAM-timings revealed no performance loss */
 	/* The following boolean "inReiterate" is used to distinguish voluntary
 	 * deletions of rstreams from deletions initiated by iterations.
@@ -117,7 +129,11 @@ struct state_t {
 	int DYADIC_precision = -60;
 	cachelist *cache_active = nullptr;
 	int max_active = 0;
-	iRRAM_thread_data_class *thread_data_address = nullptr;
+	mv_cache *cache_address = nullptr;
+
+	iRRAM_ext_mpfr_cache_t ext_mpfr_cache = iRRAM_EXT_MPFR_CACHE_INIT;
+	iRRAM_mpz_cache_t mpz_cache = iRRAM_MPZ_CACHE_INIT;
+	iRRAM_mpq_cache_t mpq_cache = iRRAM_MPQ_CACHE_INIT;
 
 	REAL *ln2_val = nullptr;
 	int   ln2_err = 0;
@@ -137,8 +153,70 @@ struct state_t {
 	};
 };
 
-extern iRRAM_TLS state_t state;
 
+template <bool tls> struct state_proxy;
+
+template <> struct state_proxy<true> : protected std::unique_ptr<state_t> {
+	using std::unique_ptr<state_t>::operator*;
+	using std::unique_ptr<state_t>::operator->;
+	using std::unique_ptr<state_t>::release;
+
+	state_proxy();
+};
+
+template <> struct state_proxy<false> {
+	state_proxy() {}
+
+	const state_t & operator*() const { return st; }
+	      state_t & operator*()       { return st; }
+
+	const state_t * operator->() const { return &st; }
+	      state_t * operator->()       { return &st; }
+
+	void release() const {}
+private:
+	state_t st;
+};
+
+extern iRRAM_TLS state_proxy<iRRAM_HAVE_TLS> state;
+
+inline const ITERATION_DATA & actual_stack(const state_t &st = *state)
+{
+	return st.ACTUAL_STACK;
+}
+
+template <typename T> class cache;
+
+template <typename T> cache<T> & get_cache(const state_t &st = *state);
+template <typename T> bool get_cached(T &t, const state_t &st = *state);
+template <typename T> void put_cached(const T &t, const state_t &st = *state);
+template <typename T> void modify_cached(const T &t, const state_t &st = *state);
+
+template <typename T>
+inline cache<T> & get_cache(const state_t &st)
+{
+	return *static_cast<cache<T> *>(st.cache_address);
+}
+
+template <typename T>
+inline bool get_cached(T &t, const state_t &st)
+{
+	return st.ACTUAL_STACK.inlimit == 0 && get_cache<T>(st).get(t);
+}
+
+template <typename T>
+inline void put_cached(const T &t, const state_t &st)
+{
+	if (st.ACTUAL_STACK.inlimit == 0)
+		get_cache<T>(st).put(t);
+}
+
+template <typename T>
+inline void modify_cached(const T &t, const state_t &st)
+{
+	if (st.ACTUAL_STACK.inlimit == 0)
+		get_cache<T>(st).modify(t);
+}
 
 extern void resources(double&,unsigned int&);
 extern double ln2_time;
@@ -148,10 +226,16 @@ void show_statistics();
 extern const int iRRAM_prec_steps;
 extern const int *const iRRAM_prec_array;
 
+inline bool debug_enabled(int level)
+{
+	const state_t &st = *state;
+	return iRRAM_unlikely(st.debug >= actual_stack(st).inlimit + level);
+}
+
 #ifndef NODEBUG
   #define iRRAM_DEBUG0(level,...)                                               \
 	do {                                                                    \
-		if (iRRAM_unlikely(state.debug>=state.ACTUAL_STACK.inlimit+(level))) {\
+		if (debug_enabled(level)) {                                     \
 			__VA_ARGS__;                                            \
 		}                                                               \
 	} while (0)
@@ -166,10 +250,10 @@ struct Iteration {
 	constexpr Iteration(int p) : prec_diff(p) {}
 };
 
-// inline void REITERATE(int p_diff){inReiterate = true; throw Iteration(p_diff); }
-#define REITERATE(x)                                                           \
+// inline void iRRAM_REITERATE(int p_diff){inReiterate = true; throw Iteration(p_diff); }
+#define iRRAM_REITERATE(x)                                                           \
 	do {                                                                   \
-		state.inReiterate = true;                                      \
+		state->inReiterate = true;                                     \
 		throw Iteration(x);                                            \
 	} while (0)
 

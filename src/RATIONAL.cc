@@ -165,7 +165,7 @@ RATIONAL& operator += (RATIONAL& x, const RATIONAL& y)
 
 RATIONAL & operator+=(RATIONAL &x, int y)
 {
-	MP_rat_add_si(x.value, y, x.value);
+	MP_rat_add_si_inplace(y,x.value);
 	return x;
 }
 
@@ -255,6 +255,12 @@ INTEGER numerator (const RATIONAL& x){
   MP_int_init(zvalue);
   MP_rat_get_numerator(x.value,zvalue);
   return zvalue;
+}
+
+RATIONAL power(RATIONAL x, unsigned n)
+{
+	MP_rat_power(x.value, n, x.value);
+	return x;
 }
 
 //****************************************************************************************

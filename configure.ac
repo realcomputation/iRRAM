@@ -71,7 +71,7 @@ CFLAGS=
 CXXFLAGS=
 AC_PROG_CC_C99
 AC_PROG_CXX
-AX_CXX_COMPILE_STDCXX([11],[noext])
+AX_CXX_COMPILE_STDCXX([14],[noext])
 AM_CFLAGS="$AM_CFLAGS $CFLAGS"
 AM_CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
 CFLAGS=$save_CFLAGS
@@ -108,8 +108,10 @@ AS_IF([test "$tls" = thread_local],[tls_std=1],[tls_std=0])
 AS_IF([test -z "$tls"],
   [AS_CASE([x$enable_tls],
      [xyes],[AC_MSG_ERROR([TLS requested, but could not detect any supported thread-local storage class specifier])],
-     [xdetect],[AC_MSG_WARN([could not detect any supported thread-local storage class specifier; disabling thread support])])],
-  [AC_MSG_NOTICE([using $tls as thread-local storage class specifier])])
+     [xdetect],[AC_MSG_WARN([could not detect any supported thread-local storage class specifier; disabling thread support])])
+   AC_SUBST([iRRAM_HAVE_TLS],[0])],
+  [AC_MSG_NOTICE([using $tls as thread-local storage class specifier])
+   AC_SUBST([iRRAM_HAVE_TLS],[1])])
 AC_SUBST([iRRAM_TLS],[$tls])
 AC_SUBST([iRRAM_TLS_STD],[$tls_std])
 
@@ -250,6 +252,7 @@ gmp_link_check([C++])
 LIBS_INST="-lgmp $LIBS_INST"
 LIBS="$LDADD $LIBS_INST"
 
+# TODO: also preferred for MPFR: mpfr_get_prec(x) and mpfr_get_exp(x) as macros
 
 with_backends=`echo "$with_backends" | $SED 's#,\+# #g' | LC_ALL=C tr 'a-z' 'A-Z'`
 with_backends=`echo $with_backends`
