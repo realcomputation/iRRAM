@@ -108,7 +108,7 @@ void show_statistics()
     cerr << "   maximal precision:  double\n"; 
 }
 
-run::run(state_t &st)
+internal::run::run(state_t &st)
 : st(st)
 , code(st.prec_start, stiff::abs{})
 {
@@ -138,7 +138,7 @@ run::run(state_t &st)
 	st.highlevel = (actual_stack.prec_step > iRRAM_DEFAULT_PREC_START);
 }
 
-void run::loop_init()
+void internal::run::loop_init()
 {
 	ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
 	iRRAM::cout.rewind();
@@ -150,7 +150,7 @@ void run::loop_init()
 	assert(st.highlevel == (actual_stack.prec_step > iRRAM_DEFAULT_PREC_START));
 }
 
-void run::loop_fini(int p_end)
+void internal::run::loop_fini(int p_end)
 {
 	ITERATION_DATA &actual_stack = st.ACTUAL_STACK;
 	assert(st.highlevel == (actual_stack.prec_step > iRRAM_DEFAULT_PREC_START));
@@ -174,7 +174,7 @@ void run::loop_fini(int p_end)
 	}
 }
 
-run::~run()
+internal::run::~run()
 {
 	iRRAM::cout.reset();
 	for (int n = 0; n < st.max_active; n++)
