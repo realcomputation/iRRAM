@@ -24,7 +24,7 @@ MA 02111-1307, USA.
 
 #include <cstdlib>
 #include <cstring>
-
+#include <vector>
 #include <algorithm>
 
 #include <iRRAM/LAZYBOOLEAN.h>
@@ -82,6 +82,40 @@ std::size_t choose(std::initializer_list<LAZY_BOOLEAN> x)
 
 	put_cached(result);
 	return result;
+}
+
+int choose(const std::vector<LAZY_BOOLEAN>& x)
+{
+  int result=0;
+  //if( (ACTUAL_STACK.inlimit==0) && iRRAM_thread_data_address->cache_i.get(result)) return result;
+  if (get_cached(result))
+    return result;
+
+  int minvalue=false;
+  unsigned int i;
+  for (i = 0; i < x.size(); i++) {
+    if (x[i].value == 1) {
+      result = i + 1;
+      break;
+    }
+  }
+  if (i == x.size()) {
+    for (i = 0; i < x.size(); i++) {
+      if (x[i].value == LAZY_BOOLEAN::BOTTOM) {
+        minvalue = LAZY_BOOLEAN::BOTTOM;
+	break;
+      }
+    }
+  }
+
+  if ( minvalue == LAZY_BOOLEAN::BOTTOM ){
+    iRRAM_DEBUG1(1,"lazy boolean value BOTTOM leading to iteration\n");
+    iRRAM_REITERATE(0);
+  }
+
+  //if ( ACTUAL_STACK.inlimit==0 ) iRRAM_thread_data_address->cache_i.put(result);
+  put_cached(result);
+  return result;
 }
 
 int choose(const LAZY_BOOLEAN& x1,

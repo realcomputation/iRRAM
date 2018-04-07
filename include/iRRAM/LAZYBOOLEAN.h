@@ -29,6 +29,7 @@ MA 02111-1307, USA.
 #define iRRAM_LAZYBOOLEAN_H
 
 #include <initializer_list>
+#include <vector>
 
 #include <iRRAM/core.h>
 
@@ -55,7 +56,7 @@ friend int choose(const LAZY_BOOLEAN& x1,
                   const LAZY_BOOLEAN& x4,
                   const LAZY_BOOLEAN& x5,
                   const LAZY_BOOLEAN& x6 );
-
+friend int choose(const std::vector<LAZY_BOOLEAN>& x);
 friend std::size_t choose(std::initializer_list<LAZY_BOOLEAN>);
 
 explicit operator bool() const;
