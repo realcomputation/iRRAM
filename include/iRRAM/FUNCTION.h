@@ -88,6 +88,12 @@ public:
 	FUNCTION(RESULT (*evalp)(const PARAM &... z))
 	: _fobject(new FUNCTIONAL_algorithm<RESULT,PARAM...>(evalp)) {}
 
+	FUNCTION(const std::function<RESULT(const PARAM &...)> &evalp)
+	: _fobject(new FUNCTIONAL_algorithm<RESULT,PARAM...>(evalp)) {}
+
+	FUNCTION(std::function<RESULT(const PARAM &...)> &&evalp)
+	: _fobject(new FUNCTIONAL_algorithm<RESULT,PARAM...>(evalp)) {}
+
 	FUNCTION(
 		const FUNCTION &z
 	) : _fobject(z._fobject) {}
